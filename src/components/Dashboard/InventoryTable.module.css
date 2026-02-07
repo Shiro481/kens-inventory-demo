@@ -157,22 +157,22 @@
 
 /* --- ANIMATIONS --- */
 .row {
-  animation: rowSlideIn 0.4s ease-out backwards;
+  animation: rowSlideIn 0.35s ease-out backwards;
 }
 
-.row:nth-child(n+1) { animation-delay: 0.05s; }
-.row:nth-child(n+2) { animation-delay: 0.1s; }
-.row:nth-child(n+3) { animation-delay: 0.15s; }
-.row:nth-child(n+4) { animation-delay: 0.2s; }
-.row:nth-child(n+5) { animation-delay: 0.25s; }
-.row:nth-child(n+6) { animation-delay: 0.3s; }
-.row:nth-child(n+7) { animation-delay: 0.35s; }
-.row:nth-child(n+8) { animation-delay: 0.4s; }
+.row:nth-child(2) { animation-delay: 0.05s; }
+.row:nth-child(3) { animation-delay: 0.1s; }
+.row:nth-child(4) { animation-delay: 0.15s; }
+.row:nth-child(5) { animation-delay: 0.2s; }
+.row:nth-child(6) { animation-delay: 0.25s; }
+.row:nth-child(7) { animation-delay: 0.3s; }
+.row:nth-child(8) { animation-delay: 0.35s; }
+.row:nth-child(9) { animation-delay: 0.4s; }
 
 @keyframes rowSlideIn {
   from {
     opacity: 0;
-    transform: translateX(-10px);
+    transform: translateX(-15px);
   }
   to {
     opacity: 1;
