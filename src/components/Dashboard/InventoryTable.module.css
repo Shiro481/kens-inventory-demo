@@ -1,0 +1,156 @@
+/* src/components/Dashboard/InventoryTable.module.css */
+.tableHeader {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr 1fr 100px;
+  padding: 15px 20px;
+  border-bottom: 1px solid #333;
+  color: #666;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr 1fr 100px;
+  padding: 20px;
+  border-bottom: 1px solid #1a1a1a;
+  align-items: center;
+  transition: background 0.2s;
+}
+
+.row:hover {
+  background-color: #0a0a0a;
+}
+
+.partInfo {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.iconBox {
+  width: 40px;
+  height: 40px;
+  border: 1px solid #333;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #666;
+}
+
+.partName {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.price {
+  color: #22c55e; /* Matrix Green */
+  font-family: monospace;
+  font-size: 16px;
+}
+
+/* --- BADGES --- */
+.badge {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 10px;
+  text-transform: uppercase;
+  font-weight: bold;
+  display: inline-block;
+  letter-spacing: 1px;
+}
+
+.inStock {
+  background: rgba(34, 197, 94, 0.1);
+  color: #22c55e;
+  border: 1px solid #22c55e;
+}
+
+.lowStock {
+  background: rgba(234, 179, 8, 0.1);
+  color: #eab308;
+  border: 1px solid #eab308;
+}
+
+.outStock {
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+  border: 1px solid #ef4444;
+}
+
+/* --- ACTIONS --- */
+.actions {
+  display: flex;
+  gap: 12px;
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.row:hover .actions {
+  opacity: 1;
+}
+
+.actionBtn {
+  background: transparent;
+  border: 1px solid #333;
+  color: #666;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.actionBtn:hover {
+  background-color: #1a1a1a;
+  color: white;
+  border-color: #666;
+}
+
+.actionBtn.delete:hover {
+  background-color: rgba(239, 68, 68, 0.1);
+  color: #ef4444; /* Red for delete */
+  border-color: #ef4444;
+}
+
+@media (max-width: 768px) {
+  .tableHeader {
+    display: none;
+  }
+
+  .row {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+    border: 1px solid #333;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    background-color: #111;
+  }
+
+  .partInfo {
+    width: 100%;
+    border-bottom: 1px solid #222;
+    padding-bottom: 15px;
+  }
+
+  .price {
+    font-size: 20px;
+    font-weight: bold;
+  }
+
+  .actions {
+    opacity: 1; /* Always show actions on mobile */
+    width: 100%;
+    justify-content: flex-end;
+    margin-top: 10px;
+    border-top: 1px solid #222;
+    padding-top: 15px;
+  }
+}

@@ -1,0 +1,263 @@
+.overview {
+  width: 100%;
+  padding: 24px;
+}
+
+.header {
+  margin-bottom: 32px;
+}
+
+.header h1 {
+  font-size: 32px;
+  font-weight: bold;
+  margin: 0 0 8px 0;
+  letter-spacing: 1px;
+}
+
+.systemStatus {
+  font-size: 12px;
+  color: #666;
+  letter-spacing: 1px;
+}
+
+.operational {
+  color: #4ade80;
+  font-weight: bold;
+}
+
+/* Stats Grid */
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  margin-bottom: 32px;
+}
+
+.statCard {
+  background: #111;
+  border: 1px solid #333;
+  border-radius: 8px;
+  padding: 20px;
+  transition: transform 0.2s, border-color 0.2s;
+}
+
+.statCard:hover {
+  transform: translateY(-2px);
+  border-color: #555;
+}
+
+.statHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.statLabel {
+  font-size: 11px;
+  color: #666;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+.statValue {
+  font-size: 36px;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.statChange {
+  font-size: 11px;
+  color: #4ade80;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+}
+
+.statChangeWarning {
+  font-size: 11px;
+  color: #ff9800;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+}
+
+.statChangeCritical {
+  font-size: 11px;
+  color: #ef4444;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+}
+
+/* Content Grid */
+.contentGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.activityPanel,
+.popularPanel {
+  background: #111;
+  border: 1px solid #333;
+  border-radius: 8px;
+  padding: 24px;
+}
+
+.panelHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #333;
+}
+
+.panelHeader h2 {
+  font-size: 14px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  margin: 0;
+}
+
+.activityIcon,
+.popularIcon {
+  font-size: 18px;
+}
+
+/* Activity List */
+.activityList {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.activityItem {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.activityDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-top: 6px;
+  flex-shrink: 0;
+}
+
+.activityDot.complete {
+  background-color: #4ade80;
+}
+
+.activityDot.restock {
+  background-color: #3b82f6;
+}
+
+.activityDot.alert {
+  background-color: #ef4444;
+}
+
+.activityContent {
+  flex: 1;
+}
+
+.activityTitle {
+  font-size: 13px;
+  font-weight: bold;
+  margin-bottom: 4px;
+  letter-spacing: 0.5px;
+}
+
+.activityDescription {
+  font-size: 12px;
+  color: #888;
+  line-height: 1.4;
+}
+
+/* Popular Parts */
+.popularList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.popularItem {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  padding: 12px;
+  background: #0a0a0a;
+  border-radius: 6px;
+  transition: background-color 0.2s;
+}
+
+.popularItem:hover {
+  background: #1a1a1a;
+}
+
+.popularRank {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+  min-width: 32px;
+}
+
+.popularInfo {
+  flex: 1;
+}
+
+.popularName {
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.popularCategory {
+  font-size: 11px;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.popularStats {
+  text-align: right;
+}
+
+.popularPrice {
+  font-size: 16px;
+  font-weight: bold;
+  color: #4ade80;
+  margin-bottom: 2px;
+}
+
+.popularUnits {
+  font-size: 11px;
+  color: #666;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+  .statsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .contentGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .overview {
+    padding: 16px;
+  }
+  
+  .statsGrid {
+    grid-template-columns: 1fr;
+  }
+  
+  .header h1 {
+    font-size: 24px;
+  }
+}
