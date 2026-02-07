@@ -357,6 +357,7 @@ export default function Dashboard() {
 
               {/* INVENTORY TABLE */}
               <InventoryTable 
+                key={`${searchQuery}-${filterStatus}-${sortBy}`}
                 items={filteredItems}
                 onEdit={handleEditClick}
                 onDelete={handleDelete}
