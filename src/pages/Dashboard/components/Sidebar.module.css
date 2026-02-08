@@ -82,6 +82,13 @@
   gap: 12px;
 }
 
+.userSection {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+
 .userAvatar {
   width: 32px;
   height: 32px;
@@ -98,6 +105,7 @@
 .userInfo {
   display: flex;
   flex-direction: column;
+  flex: 1;
 }
 
 .userName {
@@ -109,6 +117,24 @@
 .userRole {
   font-size: 10px;
   color: #666;
+}
+
+.logoutBtn {
+  background: transparent;
+  border: none;
+  color: #666;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.logoutBtn:hover {
+  background-color: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
 }
 @media (max-width: 768px) {
   .sidebar {

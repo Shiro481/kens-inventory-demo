@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import styles from './EditItemModal.module.css';
-import type { InventoryItem } from '../../types/inventory';
+import type { InventoryItem } from '../../../types/inventory';
 
 interface EditItemModalProps {
   isOpen: boolean;

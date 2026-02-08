@@ -1,15 +1,20 @@
 import { useState, useEffect } from 'react';
 import { Plus, Search, Filter } from 'lucide-react';
-import styles from './dashboard.module.css';
-import { supabase } from '../supabaseClient';
-import type { InventoryItem } from '../types/inventory';
-import { getStatus } from '../types/inventory';
-import Sidebar from './Dashboard/Sidebar';
-import InventoryTable from './Dashboard/InventoryTable';
-import EditItemModal from './Dashboard/EditItemModal';
-import Overview from './Dashboard/Overview';
+import styles from './Dashboard.module.css';
+import { supabase } from '../../lib/supabase';
+import type { InventoryItem } from '../../types/inventory';
+import { getStatus } from '../../types/inventory';
+import Sidebar from './components/Sidebar';
+import InventoryTable from './components/InventoryTable';
+import EditItemModal from './components/EditItemModal';
+import Overview from './components/Overview';
 
-export default function Dashboard() {
+interface DashboardProps {
+  onGoToHome?: () => void;
+  onLogout?: () => void;
+}
+
+export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
   const [items, setItems] = useState<InventoryItem[]>([]);
   const [error, setError] = useState<string | null>(null);
   
@@ -238,7 +243,7 @@ export default function Dashboard() {
 
   return (
     <div className={styles.container}>
-      <Sidebar activeView={activeView} onViewChange={setActiveView} />
+      <Sidebar activeView={activeView} onViewChange={setActiveView} onGoToHome={onGoToHome} onLogout={onLogout} />
 
       {/* MAIN CONTENT */}
       <main className={styles.main}>

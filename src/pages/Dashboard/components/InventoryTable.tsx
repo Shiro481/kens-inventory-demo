@@ -1,7 +1,7 @@
 import { Package, Edit, Trash2 } from 'lucide-react';
 import styles from './InventoryTable.module.css';
-import { getStatus } from '../../types/inventory';
-import type { InventoryItem } from '../../types/inventory';
+import { getStatus } from '../../../types/inventory';
+import type { InventoryItem } from '../../../types/inventory';
 
 interface InventoryTableProps {
   items: InventoryItem[];

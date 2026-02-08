@@ -1,7 +1,7 @@
 import { TrendingUp, AlertTriangle, AlertCircle, Package, DollarSign, Activity, Wrench } from 'lucide-react';
 import styles from './Overview.module.css';
-import type { InventoryItem } from '../../types/inventory';
-import { getStatus } from '../../types/inventory';
+import type { InventoryItem } from '../../../types/inventory';
+import { getStatus } from '../../../types/inventory';
 
 interface OverviewProps {
   items: InventoryItem[];
