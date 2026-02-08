@@ -135,9 +135,12 @@ export default function Pos({ items, onSaleComplete }: PosProps) {
   };
 
   const { settings } = useSettings();
+  
+  // Debug log to trace tax rate updates
+  console.log(`[POS] Active Tax Rate: ${settings.tax_rate}%`);
 
   const subtotal = cart.reduce((sum, item) => sum + (item.price || 0) * item.cartQuantity, 0);
-  const taxRate = settings.tax_rate / 100;
+  const taxRate = (settings.tax_rate ?? 8.25) / 100;
   const tax = subtotal * taxRate;
   const total = subtotal + tax;
 

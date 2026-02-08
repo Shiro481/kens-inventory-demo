@@ -73,21 +73,24 @@ export default function Settings() {
     try {
       const { error } = await supabase
         .from('store_settings')
-        .update({
+        .upsert({
+          id: 1,
           store_name: settings.store_name,
           tax_rate: settings.tax_rate,
           low_stock_threshold: settings.low_stock_threshold,
           currency: settings.currency,
           updated_at: new Date().toISOString()
-        })
-        .eq('id', 1);
+        });
 
       if (error) throw error;
       
+      console.log('[Settings] Database updated, refreshing global context...');
       await refreshSettings();
+      
       setSuccess(true);
       setTimeout(() => setSuccess(false), 3000);
     } catch (err: any) {
+      console.error('[Settings] Save error:', err);
       alert('Error saving settings: ' + err.message);
     } finally {
       setSaving(false);
@@ -108,7 +111,7 @@ export default function Settings() {
     <div className={styles.container}>
       <header className={styles.header}>
         <div className={styles.title}>
-          <h1>SETTTINGS</h1>
+          <h1>SETTINGS</h1>
           <p>CONFIGURE SYSTEM PARAMETERS & PREFERENCES</p>
         </div>
       </header>
