@@ -12,6 +12,8 @@ import EditItemModal from './components/EditItemModal';
 import Overview from './components/Overview';
 import Pos from './components/Pos';
 import SalesHistory from './components/SalesHistory';
+import Analytics from './components/Analytics';
+import Suppliers from './components/Suppliers';
 import DeleteConfirmModal from './components/DeleteConfirmModal';
 
 interface DashboardProps {
@@ -277,6 +279,8 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
         <div key={activeView} className={styles.pageContainer}>
           {activeView === 'overview' && <Overview items={items} />}
           
+          {activeView === 'analytics' && <Analytics />}
+
           {activeView === 'pos' && <Pos items={items} onSaleComplete={fetchParts} />}
           
           {activeView === 'inventory' && (
@@ -401,7 +405,9 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
 
           {activeView === 'sales' && <SalesHistory />}
           
-          {(activeView === 'suppliers' || activeView === 'settings') && (
+          {activeView === 'suppliers' && <Suppliers />}
+          
+          {activeView === 'settings' && (
             <div style={{ padding: '40px', textAlign: 'center', color: '#666' }}>
               <h2>{activeView.toUpperCase()}</h2>
               <p>This module is coming soon.</p>

@@ -1,7 +1,7 @@
-import { LayoutGrid, Package, Users, Settings, LogOut, ShoppingBag, History, Home as HomeIcon } from 'lucide-react';
+import { LayoutGrid, Package, Users, Settings, LogOut, ShoppingBag, History, Home as HomeIcon, TrendingUp } from 'lucide-react';
 import styles from './Sidebar.module.css';
 
-export type DashboardView = 'overview' | 'inventory' | 'pos' | 'sales' | 'suppliers' | 'settings';
+export type DashboardView = 'overview' | 'analytics' | 'inventory' | 'pos' | 'sales' | 'suppliers' | 'settings';
 
 interface SidebarProps {
   activeView: DashboardView;
@@ -25,6 +25,13 @@ export default function Sidebar({ activeView, onViewChange, onGoToHome, onLogout
         >
           <LayoutGrid size={20} />
           <span>OVERVIEW</span>
+        </button>
+        <button 
+          className={`${styles.navItem} ${activeView === 'analytics' ? styles.active : ''}`}
+          onClick={() => onViewChange('analytics')}
+        >
+          <TrendingUp size={20} />
+          <span>ANALYTICS</span>
         </button>
         <button 
           className={`${styles.navItem} ${activeView === 'pos' ? styles.active : ''}`}

@@ -1,31 +1,24 @@
 .modalOverlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.85);
-  backdrop-filter: blur(8px);
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.9);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 2000;
+  z-index: 1100;
+  backdrop-filter: blur(10px);
   animation: fadeIn 0.2s ease-out;
 }
 
 .modalContent {
   background-color: #050505;
-  border: 1px solid #1a1a1a;
-  width: 400px;
+  border: 1px solid var(--border-dim);
+  width: 440px;
   max-width: 90%;
-  padding: 40px;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+  padding: 48px;
   text-align: center;
+  box-shadow: 0 40px 80px rgba(0, 0, 0, 0.8);
+  animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .iconWrapper {
@@ -37,80 +30,88 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 auto;
+  margin: 0 auto 32px;
   border: 1px solid rgba(239, 68, 68, 0.2);
 }
 
-.header h2 {
+.modalContent h2 {
   font-size: 20px;
   font-weight: 900;
-  letter-spacing: 1px;
-  margin: 0 0 8px 0;
+  margin: 0 0 16px 0;
   text-transform: uppercase;
+  letter-spacing: 1.5px;
 }
 
-.header p {
+.modalContent p {
+  color: #555;
   font-size: 14px;
-  color: #666;
-  line-height: 1.5;
-  margin: 0;
+  line-height: 1.6;
+  margin-bottom: 40px;
+  font-weight: 500;
 }
 
 .itemName {
   color: #fff;
-  font-weight: bold;
+  font-weight: 900;
 }
 
-.footer {
+.modalFooter {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  margin-top: 12px;
 }
 
 .deleteBtn {
   background-color: #ef4444;
-  color: #fff;
-  border: none;
+  color: #000;
+  border: 1px solid #ef4444;
   padding: 16px;
   font-weight: 900;
-  letter-spacing: 1.5px;
-  cursor: pointer;
-  border-radius: 4px;
+  font-size: 13px;
+  letter-spacing: 2px;
   text-transform: uppercase;
+  cursor: pointer;
   transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
 }
 
 .deleteBtn:hover:not(:disabled) {
-  background-color: #dc2626;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+  background-color: transparent;
+  color: #ef4444;
+  box-shadow: 0 0 30px rgba(239, 68, 68, 0.2);
 }
 
-.cancelBtn {
-  background: transparent;
-  color: #666;
-  border: none;
-  padding: 10px;
-  font-size: 11px;
-  font-weight: bold;
-  letter-spacing: 1px;
-  cursor: pointer;
-  text-transform: uppercase;
-  transition: color 0.2s;
-}
-
-.cancelBtn:hover:not(:disabled) {
-  color: #fff;
-}
-
-.deleteBtn:disabled, .cancelBtn:disabled {
+.deleteBtn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
 
+.cancelBtn {
+  background: transparent;
+  border: none;
+  color: #444;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 1.5px;
+  cursor: pointer;
+  padding: 10px;
+  transition: color 0.2s;
+}
+
+.cancelBtn:hover {
+  color: #fff;
+}
+
 .spinner {
   animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 @keyframes fadeIn {
@@ -121,9 +122,4 @@
 @keyframes slideUp {
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
 }

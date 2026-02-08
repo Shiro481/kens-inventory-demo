@@ -1,81 +1,86 @@
-/* src/components/Dashboard/InventoryTable.module.css */
 .tableHeader {
   display: grid;
   grid-template-columns: 2fr 1fr 1fr 1fr 1fr 100px;
-  padding: 15px 20px;
-  border-bottom: 1px solid #333;
-  color: #666;
-  font-size: 12px;
+  padding: 20px;
+  border-bottom: 1px solid var(--border-dim);
+  color: #555;
+  font-size: 10px;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 2px;
+  font-weight: 900;
 }
 
 .row {
   display: grid;
   grid-template-columns: 2fr 1fr 1fr 1fr 1fr 100px;
-  padding: 20px;
-  border-bottom: 1px solid #1a1a1a;
+  padding: 24px 20px;
+  border-bottom: 1px solid var(--border-dim);
   align-items: center;
-  transition: background 0.2s;
+  transition: all 0.2s;
 }
 
 .row:hover {
-  background-color: #0a0a0a;
+  background-color: rgba(255, 255, 255, 0.02);
 }
 
 .partInfo {
   display: flex;
-  gap: 15px;
+  gap: 16px;
   align-items: center;
 }
 
 .iconBox {
-  width: 40px;
-  height: 40px;
-  border: 1px solid #333;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--border-dim);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #666;
+  color: #444;
+  background-color: #050505;
 }
 
 .partName {
-  font-weight: bold;
+  font-weight: 900;
   display: block;
   margin-bottom: 4px;
+  letter-spacing: 0.5px;
+  font-size: 15px;
+  color: #fff;
 }
 
 .price {
-  color: #22c55e; /* Matrix Green */
-  font-family: monospace;
+  color: var(--brand-neon);
+  font-weight: 900;
   font-size: 16px;
+  letter-spacing: 0.5px;
 }
 
 /* --- BADGES --- */
 .badge {
   padding: 6px 12px;
-  border-radius: 20px;
-  font-size: 10px;
+  font-size: 9px;
   text-transform: uppercase;
-  font-weight: bold;
+  font-weight: 900;
   display: inline-block;
-  letter-spacing: 1px;
+  letter-spacing: 1.5px;
+  border-radius: 2px;
 }
 
 .inStock {
-  background: rgba(34, 197, 94, 0.1);
-  color: #22c55e;
-  border: 1px solid #22c55e;
+  background: rgba(0, 255, 157, 0.05);
+  color: var(--brand-neon);
+  border: 1px solid var(--brand-neon);
 }
 
 .lowStock {
-  background: rgba(234, 179, 8, 0.1);
+  background: rgba(234, 179, 8, 0.05);
   color: #eab308;
   border: 1px solid #eab308;
 }
 
 .outStock {
-  background: rgba(239, 68, 68, 0.1);
+  background: rgba(239, 68, 68, 0.05);
   color: #ef4444;
   border: 1px solid #ef4444;
 }
@@ -94,11 +99,11 @@
 
 .actionBtn {
   background: transparent;
-  border: 1px solid #333;
-  color: #666;
+  border: 1px solid var(--border-dim);
+  color: #555;
   width: 32px;
   height: 32px;
-  border-radius: 6px;
+  border-radius: 2px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -107,14 +112,14 @@
 }
 
 .actionBtn:hover {
-  background-color: #1a1a1a;
-  color: white;
-  border-color: #666;
+  background-color: #fff;
+  color: #000;
+  border-color: #fff;
 }
 
 .actionBtn.delete:hover {
-  background-color: rgba(239, 68, 68, 0.1);
-  color: #ef4444; /* Red for delete */
+  background-color: #ef4444;
+  color: #000;
   border-color: #ef4444;
 }
 
@@ -128,54 +133,44 @@
     flex-direction: column;
     align-items: flex-start;
     gap: 15px;
-    border: 1px solid #333;
-    border-radius: 8px;
-    margin-bottom: 15px;
-    background-color: #111;
+    border: 1px solid var(--border-dim);
+    margin-bottom: 16px;
+    background-color: #050505;
   }
 
   .partInfo {
     width: 100%;
-    border-bottom: 1px solid #222;
+    border-bottom: 1px solid var(--border-dim);
     padding-bottom: 15px;
   }
 
-  .price {
-    font-size: 20px;
-    font-weight: bold;
-  }
-
   .actions {
-    opacity: 1; /* Always show actions on mobile */
+    opacity: 1;
     width: 100%;
     justify-content: flex-end;
     margin-top: 10px;
-    border-top: 1px solid #222;
+    border-top: 1px solid var(--border-dim);
     padding-top: 15px;
   }
 }
 
 /* --- ANIMATIONS --- */
 .row {
-  animation: rowSlideIn 0.35s ease-out backwards;
+  animation: rowSlideIn 0.3s ease-out backwards;
 }
 
 .row:nth-child(2) { animation-delay: 0.05s; }
 .row:nth-child(3) { animation-delay: 0.1s; }
 .row:nth-child(4) { animation-delay: 0.15s; }
 .row:nth-child(5) { animation-delay: 0.2s; }
-.row:nth-child(6) { animation-delay: 0.25s; }
-.row:nth-child(7) { animation-delay: 0.3s; }
-.row:nth-child(8) { animation-delay: 0.35s; }
-.row:nth-child(9) { animation-delay: 0.4s; }
 
 @keyframes rowSlideIn {
   from {
     opacity: 0;
-    transform: translateX(-15px);
+    transform: translateY(10px);
   }
   to {
     opacity: 1;
-    transform: translateX(0);
+    transform: translateY(0);
   }
 }

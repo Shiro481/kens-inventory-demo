@@ -19,3 +19,14 @@ export const getStatus = (item: InventoryItem) => {
   const minQty = item.minQuantity ?? item.min_qty ?? 10;
   return qty < minQty ? 'Low Stock' : 'In Stock';
 };
+
+export interface Supplier {
+  id: number;
+  created_at?: string;
+  name: string;
+  contact_person?: string;
+  email?: string;
+  phone?: string;
+  address?: string;
+  category?: string;
+}

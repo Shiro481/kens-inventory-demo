@@ -1,0 +1,239 @@
+.container {
+  padding: 40px;
+  background-color: var(--bg-dark);
+  color: #fff;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+  animation: fadeIn 0.4s ease-out;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.title h1 {
+  font-size: 38px;
+  font-weight: 900;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.title p {
+  font-size: 11px;
+  color: #555;
+  font-weight: 900;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-top: 8px;
+}
+
+.addButton {
+  background-color: var(--brand-neon);
+  color: #000;
+  border: 1px solid var(--brand-neon);
+  padding: 14px 28px;
+  font-weight: 900;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.2s;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-size: 13px;
+}
+
+.addButton:hover {
+  background-color: transparent;
+  color: var(--brand-neon);
+  box-shadow: 0 0 30px rgba(0, 255, 157, 0.2);
+}
+
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+}
+
+.searchWrapper {
+  flex: 1;
+  max-width: 450px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  background-color: #050505;
+  border: 1px solid var(--border-dim);
+  padding: 0 20px;
+}
+
+.searchIcon {
+  color: #444;
+}
+
+.searchInput {
+  background: transparent;
+  border: none;
+  color: #fff;
+  padding: 16px 12px;
+  width: 100%;
+  font-size: 14px;
+  outline: none;
+  font-weight: 500;
+}
+
+.searchInput::placeholder {
+  color: #333;
+  text-transform: uppercase;
+  font-weight: 900;
+  letter-spacing: 1.5px;
+  font-size: 11px;
+}
+
+/* Supplier Grid */
+.supplierGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 24px;
+}
+
+.supplierCard {
+  background-color: #050505;
+  border: 1px solid var(--border-dim);
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  position: relative;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.supplierCard:hover {
+  transform: translateY(-4px);
+  border-color: #444;
+  background-color: #0a0a0a;
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.categoryTag {
+  font-size: 9px;
+  font-weight: 900;
+  background-color: #111;
+  color: #666;
+  padding: 4px 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  border: 1px solid #1a1a1a;
+}
+
+.supplierName {
+  font-size: 20px;
+  font-weight: 900;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.contactInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.infoItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #888;
+  font-size: 13px;
+}
+
+.infoIcon {
+  color: #444;
+}
+
+.contactPerson {
+  color: #fff;
+  font-weight: 700;
+}
+
+.cardActions {
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border-dim);
+}
+
+.actionBtn {
+  background: transparent;
+  border: 1px solid var(--border-dim);
+  color: #555;
+  padding: 10px 20px;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  cursor: pointer;
+  flex: 1;
+  transition: all 0.2s;
+}
+
+.actionBtn:hover {
+  border-color: #fff;
+  color: #fff;
+}
+
+.deleteBtn:hover {
+  border-color: #ef4444;
+  color: #ef4444;
+}
+
+.loadingWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  color: #444;
+}
+
+.spinner {
+  animation: rotate 1s linear infinite;
+}
+
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 30px 20px 100px 20px;
+  }
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 24px;
+  }
+  .toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .searchWrapper {
+    max-width: none;
+  }
+}

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Search, ShoppingCart, Box, Minus, Plus, CreditCard, Loader2, Check } from 'lucide-react';
+import { Search, ShoppingCart, Box, Minus, Plus, CreditCard, Banknote, Loader2, Check } from 'lucide-react';
 import styles from './Pos.module.css';
 import type { InventoryItem } from '../../../types/inventory';
 import { supabase } from '../../../lib/supabase';
@@ -20,6 +20,7 @@ export default function Pos({ items, onSaleComplete }: PosProps) {
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [paymentSuccess, setPaymentSuccess] = useState(false);
   const [lastTotal, setLastTotal] = useState(0);
+  const [paymentMethod, setPaymentMethod] = useState<'Cash' | 'Credit Card'>('Cash');
 
   const filteredItems = items.filter(item => {
     const query = searchQuery.toLowerCase();
@@ -104,7 +105,7 @@ export default function Pos({ items, onSaleComplete }: PosProps) {
           subtotal: subtotal,
           tax: tax,
           total: total,
-          payment_method: 'Credit Card' // Default for now
+          payment_method: paymentMethod
         }]);
 
       if (saleError) throw saleError;
@@ -277,8 +278,30 @@ export default function Pos({ items, onSaleComplete }: PosProps) {
                   <p>Order Summary & Confirmation</p>
                 </div>
                 
-                <div className={styles.modalBody}>
-                  <div className={styles.summaryDetail}>
+                  <div className={styles.modalBody}>
+                    <div className={styles.paymentMethodSelect}>
+                      <h3>PAYMENT METHOD</h3>
+                      <div className={styles.methodButtons}>
+                        <button 
+                          className={`${styles.methodBtn} ${paymentMethod === 'Cash' ? styles.methodBtnActive : ''}`}
+                          onClick={() => setPaymentMethod('Cash')}
+                          type="button"
+                        >
+                          <Banknote size={24} />
+                          <span>CASH</span>
+                        </button>
+                        <button 
+                          className={`${styles.methodBtn} ${paymentMethod === 'Credit Card' ? styles.methodBtnActive : ''}`}
+                          onClick={() => setPaymentMethod('Credit Card')}
+                          type="button"
+                        >
+                          <CreditCard size={24} />
+                          <span>CREDIT CARD</span>
+                        </button>
+                      </div>
+                    </div>
+
+                    <div className={styles.summaryDetail}>
                     <div className={styles.summaryItem}>
                       <span>ITEMS count</span>
                       <span>{cart.reduce((s, i) => s + i.cartQuantity, 0)}</span>

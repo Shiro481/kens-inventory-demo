@@ -1,0 +1,200 @@
+.analyticsContainer {
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  background-color: var(--bg-dark);
+  color: #fff;
+  min-height: 100%;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.titleSection h1 {
+  font-size: 38px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.titleSection p {
+  font-size: 11px;
+  color: #555;
+  font-weight: 900;
+  letter-spacing: 2px;
+  margin-top: 8px;
+  text-transform: uppercase;
+}
+
+.timeSelector {
+  display: flex;
+  background-color: #050505;
+  border: 1px solid var(--border-dim);
+  padding: 6px;
+}
+
+.timeBtn {
+  background: transparent;
+  border: none;
+  color: #444;
+  padding: 10px 20px;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 1.5px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-transform: uppercase;
+}
+
+.timeBtnActive {
+  background-color: var(--brand-neon);
+  color: #000;
+}
+
+/* Stats Cards */
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.statCard {
+  background-color: #050505;
+  border: 1px solid var(--border-dim);
+  padding: 32px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  overflow: hidden;
+  transition: all 0.2s;
+}
+
+.statCard:hover {
+  border-color: #444;
+  transform: translateY(-2px);
+}
+
+.statHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  z-index: 1;
+}
+
+.statLabel {
+  font-weight: 900;
+  font-size: 10px;
+  color: #555;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.statValue {
+  font-size: 38px;
+  font-weight: 900;
+  letter-spacing: -0.5px;
+  position: relative;
+  z-index: 1;
+}
+
+.avgOrderValue {
+  color: var(--brand-neon);
+}
+
+/* Charts Section */
+.chartsGrid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 20px;
+}
+
+.chartPanel {
+  background-color: #050505;
+  border: 1px solid var(--border-dim);
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.panelHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.panelHeader h2 {
+  font-size: 16px;
+  font-weight: 900;
+  letter-spacing: 1.5px;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.chartViewBadge {
+  font-size: 9px;
+  font-weight: 900;
+  color: #555;
+  background-color: #111;
+  padding: 6px 12px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.chartContainer {
+  width: 100%;
+  height: 350px;
+}
+
+.spinnerWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 250px;
+  color: #444;
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@media (max-width: 1200px) {
+  .statsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .chartsGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .analyticsContainer {
+    padding: 30px 20px;
+  }
+  .statsGrid {
+    grid-template-columns: 1fr;
+  }
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 24px;
+  }
+  .statCard {
+    padding: 24px;
+  }
+  .chartPanel {
+    padding: 30px 20px;
+  }
+}

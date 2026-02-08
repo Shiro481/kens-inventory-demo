@@ -1,65 +1,66 @@
-/* src/components/Dashboard/EditItemModal.module.css */
 .modalOverlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.7);
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.85);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 1000;
-  backdrop-filter: blur(2px);
+  backdrop-filter: blur(8px);
+  animation: fadeIn 0.2s ease-out;
 }
 
 .modalContent {
-  background-color: #000000;
-  border: 1px solid #333;
+  background-color: #050505;
+  border: 1px solid var(--border-dim);
   width: 600px;
-  padding: 30px;
+  max-width: 95%;
+  padding: 48px;
   position: relative;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 40px 80px rgba(0, 0, 0, 0.8);
+  animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .modalHeader {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 30px;
+  align-items: flex-start;
+  margin-bottom: 40px;
 }
 
 .modalHeader h2 {
-  font-size: 20px;
+  font-size: 24px;
   font-weight: 900;
   margin: 0;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 2px;
 }
 
 .closeBtn {
   background: transparent;
-  border: none;
-  color: #666;
+  border: 1px solid var(--border-dim);
+  color: #444;
   cursor: pointer;
-  padding: 5px;
+  padding: 8px;
+  transition: all 0.2s;
 }
 
 .closeBtn:hover {
-  color: white;
+  color: #fff;
+  border-color: #fff;
 }
 
 .formGrid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 20px;
-  margin-bottom: 30px;
+  gap: 24px;
+  margin-bottom: 40px;
 }
 
 .formGroup {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 12px;
 }
 
 .fullWidth {
@@ -69,62 +70,92 @@
 .formGroup label {
   font-size: 10px;
   text-transform: uppercase;
-  font-weight: bold;
-  letter-spacing: 0.5px;
-  color: #888;
+  font-weight: 900;
+  letter-spacing: 1.5px;
+  color: #555;
 }
 
 .formInput {
-  background-color: #111;
-  border: 1px solid #333;
+  background-color: #000;
+  border: 1px solid var(--border-dim);
   color: white;
-  padding: 12px;
+  padding: 16px;
   font-family: inherit;
   font-size: 14px;
   outline: none;
-  transition: border-color 0.2s;
+  transition: all 0.2s;
 }
 
 .formInput:focus {
-  border-color: #555;
+  border-color: #444;
+  background-color: #0a0a0a;
 }
 
 .modalFooter {
   display: flex;
   justify-content: flex-end;
-  gap: 20px;
+  gap: 24px;
   align-items: center;
+  margin-top: 10px;
 }
 
 .cancelBtn {
   background: transparent;
   border: none;
-  color: #888;
+  color: #555;
   font-size: 12px;
-  font-weight: bold;
-  letter-spacing: 1px;
+  font-weight: 900;
+  letter-spacing: 2px;
   cursor: pointer;
-  text-transform: uppercase;
   padding: 10px;
+  transition: color 0.2s;
 }
 
 .cancelBtn:hover {
-  color: white;
+  color: #fff;
 }
 
 .saveBtn {
-  background-color: white;
-  color: black;
-  border: none;
-  padding: 12px 24px;
+  background-color: var(--brand-neon);
+  color: #000;
+  border: 1px solid var(--brand-neon);
+  padding: 16px 40px;
   font-weight: 900;
-  font-size: 12px;
-  letter-spacing: 1px;
+  font-size: 13px;
+  letter-spacing: 2px;
   text-transform: uppercase;
   cursor: pointer;
-  transition: transform 0.2s;
+  transition: all 0.2s;
 }
 
 .saveBtn:hover {
-  transform: translateY(-2px);
+  background-color: transparent;
+  color: var(--brand-neon);
+  box-shadow: 0 0 30px rgba(0, 255, 157, 0.2);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 600px) {
+  .modalContent {
+    padding: 30px 20px;
+  }
+  .formGrid {
+    grid-template-columns: 1fr;
+  }
+  .modalFooter {
+    flex-direction: column-reverse;
+    gap: 10px;
+  }
+  .saveBtn {
+    width: 100%;
+  }
 }
