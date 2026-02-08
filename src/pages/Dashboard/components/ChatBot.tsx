@@ -35,7 +35,14 @@ export default function ChatBot({
   currentView,
   inventoryStats 
 }: ChatBotProps) {
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] = useState<Message[]>([
+    {
+      id: '1',
+      text: "🚧 **AI Assistant - Under Development**\n\nHello! I'm your AI assistant with enhanced capabilities. I can help you with:\n\n🎯 **Navigation Control**: Say \"navigate to [section]\" to go anywhere\n⚡ **Quick Actions**: \"add item\", \"export report\", \"refresh data\"\n📊 **Smart Insights**: Context-aware help based on current view\n🧠 **Memory**: I remember your preferences and actions\n\n*Note: This feature is currently under development and may have limited capabilities.*\n\nHow can I assist you today?",
+      sender: 'bot',
+      timestamp: new Date()
+    }
+  ]);
   const [inputText, setInputText] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
@@ -422,6 +429,9 @@ export default function ChatBot({
             </button>
           </div>
         </div>
+      )}
+      
+      {/* Floating Toggle Button (when closed) */}
       {!isOpen && (
         <button 
           className={styles.floatingButton}

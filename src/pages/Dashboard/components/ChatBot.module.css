@@ -36,6 +36,23 @@
   border-bottom: 1px solid var(--border-dim);
   border-radius: 12px 12px 0 0;
   cursor: move;
+  position: relative;
+}
+
+.chatHeader::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #ff6b6b, #feca57, #48dbfb, #ff9ff3);
+  animation: developmentPulse 2s ease-in-out infinite;
+}
+
+@keyframes developmentPulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
 }
 
 .headerLeft {
