@@ -1,8 +1,9 @@
 /* src/components/Dashboard/Sidebar.module.css */
 .sidebar {
   width: 260px;
-  border-right: 1px solid #333;
-  padding: 24px;
+  background-color: #000;
+  border-right: 1px solid #111;
+  padding: 24px 0; /* Vertical padding only, let navItems handle horizontal */
   display: flex;
   flex-direction: column;
 }
@@ -10,9 +11,9 @@
 .logo {
   font-size: 18px;
   font-weight: 900;
-  margin-bottom: 40px;
-  padding-bottom: 24px;
-  border-bottom: 1px solid #222;
+  margin-bottom: 30px;
+  padding: 0 24px 24px 24px;
+  border-bottom: 1px solid #111;
   letter-spacing: 1px;
   display: flex;
   align-items: center;
@@ -33,12 +34,14 @@
 
 .logoText {
   font-weight: 800;
+  color: #fff;
+  text-transform: uppercase;
 }
 
 .nav {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 2px;
   flex: 1;
 }
 
@@ -46,31 +49,35 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 12px;
-  color: #888;
+  padding: 14px 24px;
+  color: #555;
   text-decoration: none;
-  border-radius: 4px;
-  margin-bottom: 4px;
   cursor: pointer;
   transition: all 0.2s;
   background: none;
   border: none;
   width: 100%;
   font: inherit;
-  font-weight: 600;
+  font-weight: 700;
   font-size: 11px;
-  letter-spacing: 0.5px;
+  letter-spacing: 1px;
   text-align: left;
+  border-left: 3px solid transparent;
 }
 
 .navItem:hover {
-  background-color: #111;
-  color: white;
+  color: #888;
+  background-color: #0a0a0a;
 }
 
 .active {
-  background-color: #1a1a1a;
-  color: white;
+  color: #00ff9d;
+  background-color: #0a0a0a;
+  border-left: 3px solid #00ff9d;
+}
+
+.active :global(svg) {
+  color: #00ff9d;
 }
 
 .footer {

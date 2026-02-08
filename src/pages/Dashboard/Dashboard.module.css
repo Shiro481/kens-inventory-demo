@@ -449,3 +449,7 @@
     transform: translateY(0);
   }
 }
+
+.posView {
+  padding: 0;
+}

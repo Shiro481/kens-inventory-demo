@@ -5,9 +5,11 @@ import { supabase } from '../../lib/supabase';
 import type { InventoryItem } from '../../types/inventory';
 import { getStatus } from '../../types/inventory';
 import Sidebar from './components/Sidebar';
+import type { DashboardView } from './components/Sidebar';
 import InventoryTable from './components/InventoryTable';
 import EditItemModal from './components/EditItemModal';
 import Overview from './components/Overview';
+import POS from './components/POS';
 
 interface DashboardProps {
   onGoToHome?: () => void;
@@ -19,7 +21,7 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
   const [error, setError] = useState<string | null>(null);
   
   // View State
-  const [activeView, setActiveView] = useState<'overview' | 'inventory'>('overview');
+  const [activeView, setActiveView] = useState<DashboardView>('overview');
   
   // Modal State
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -246,11 +248,13 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
       <Sidebar activeView={activeView} onViewChange={setActiveView} onGoToHome={onGoToHome} onLogout={onLogout} />
 
       {/* MAIN CONTENT */}
-      <main className={styles.main}>
+      <main className={`${styles.main} ${activeView === 'pos' ? styles.posView : ''}`}>
         <div key={activeView} className={styles.pageContainer}>
-          {activeView === 'overview' ? (
-            <Overview items={items} />
-          ) : (
+          {activeView === 'overview' && <Overview items={items} />}
+          
+          {activeView === 'pos' && <POS items={items} />}
+          
+          {activeView === 'inventory' && (
             <>
               <header className={styles.header}>
                 <div className={styles.title}>
@@ -368,6 +372,13 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
                 onDelete={handleDelete}
               />
             </>
+          )}
+
+          {(activeView === 'sales' || activeView === 'suppliers' || activeView === 'settings') && (
+            <div style={{ padding: '40px', textAlign: 'center', color: '#666' }}>
+              <h2>{activeView.toUpperCase()}</h2>
+              <p>This module is coming soon.</p>
+            </div>
           )}
         </div>
       </main>
