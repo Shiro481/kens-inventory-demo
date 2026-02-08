@@ -12,6 +12,7 @@ import EditItemModal from './components/EditItemModal';
 import Overview from './components/Overview';
 import Pos from './components/Pos';
 import SalesHistory from './components/SalesHistory';
+import DeleteConfirmModal from './components/DeleteConfirmModal';
 
 interface DashboardProps {
   onGoToHome?: () => void;
@@ -28,6 +29,11 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
   // Modal State
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<InventoryItem | null>(null);
+  
+  // Delete Modal State
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [itemToDelete, setItemToDelete] = useState<InventoryItem | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   // Filter State
   const [filterStatus, setFilterStatus] = useState<'All' | 'In Stock' | 'Low Stock' | 'Out of Stock'>('All');
@@ -63,20 +69,37 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
     }
   }
 
-  const handleDelete = async (id: number) => {
-    if (!supabase) return;
-    if (window.confirm('Are you sure you want to delete this item?')) {
-      setItems(items.filter(item => item.id !== id));
-      
+  const handleDelete = (id: number) => {
+    const item = items.find(i => i.id === id);
+    if (item) {
+      setItemToDelete(item);
+      setIsDeleteModalOpen(true);
+    }
+  };
+
+  const confirmDelete = async () => {
+    if (!supabase || !itemToDelete) return;
+
+    try {
+      setIsDeleting(true);
       const { error } = await supabase
         .from('Parts')
         .delete()
-        .eq('id', id);
+        .eq('id', itemToDelete.id);
 
       if (error) {
         console.error('Error deleting item:', error);
+        alert(`Error deleting item: ${error.message}`);
         fetchParts();
+      } else {
+        setItems(items.filter(item => item.id !== itemToDelete.id));
       }
+    } catch (err) {
+      console.error('Unexpected error:', err);
+    } finally {
+      setIsDeleting(false);
+      setIsDeleteModalOpen(false);
+      setItemToDelete(null);
     }
   };
 
@@ -394,6 +417,18 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
         categories={Array.from(new Set(items.map(i => i.category).filter(Boolean))) as string[]}
         onClose={handleModalClose}
         onSave={handleSave}
+      />
+
+      {/* DELETE CONFIRMATION MODAL */}
+      <DeleteConfirmModal 
+        isOpen={isDeleteModalOpen}
+        itemName={itemToDelete?.name || ''}
+        loading={isDeleting}
+        onClose={() => {
+          setIsDeleteModalOpen(false);
+          setItemToDelete(null);
+        }}
+        onConfirm={confirmDelete}
       />
     </div>
   );
