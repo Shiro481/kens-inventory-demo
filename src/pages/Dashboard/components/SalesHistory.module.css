@@ -1,0 +1,227 @@
+.container {
+  padding: 40px;
+  background-color: #000;
+  color: #fff;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.title h1 {
+  font-size: 32px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.title p {
+  font-size: 11px;
+  color: #666;
+  font-weight: bold;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-top: 4px;
+}
+
+.statsGrid {
+  display: flex;
+  gap: 16px;
+}
+
+.statCard {
+  background-color: #111;
+  border: 1px solid #1a1a1a;
+  padding: 20px 24px;
+  min-width: 160px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.statLabel {
+  font-size: 10px;
+  color: #666;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.statValue {
+  font-size: 20px;
+  font-weight: 900;
+}
+
+.revenueValue {
+  color: #00ff9d;
+}
+
+/* Toolbar */
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+
+.searchWrapper {
+  flex: 1;
+  max-width: 500px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  background-color: #0a0a0a;
+  border: 1px solid #1a1a1a;
+  padding: 0 16px;
+  border-radius: 4px;
+}
+
+.searchIcon {
+  color: #444;
+}
+
+.searchInput {
+  background: transparent;
+  border: none;
+  color: #fff;
+  padding: 14px 12px;
+  width: 100%;
+  font-size: 13px;
+  outline: none;
+}
+
+.searchInput::placeholder {
+  color: #333;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: bold;
+}
+
+.filterBtn {
+  background: transparent;
+  border: 1px solid #1a1a1a;
+  color: #666;
+  padding: 12px 20px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.2s;
+}
+
+.filterBtn:hover {
+  background-color: #0a0a0a;
+  color: #fff;
+  border-color: #333;
+}
+
+/* History Table */
+.tableContainer {
+  border: 1px solid #1a1a1a;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.tableHeader {
+  display: grid;
+  grid-template-columns: 1.5fr 1.5fr 2fr 1fr 1fr 0.8fr;
+  padding: 16px 24px;
+  background-color: #0a0a0a;
+  border-bottom: 1px solid #1a1a1a;
+}
+
+.columnLabel {
+  font-size: 10px;
+  color: #444;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.tableBody {
+  min-height: 300px;
+  display: flex;
+  flex-direction: column;
+}
+
+.emptyState {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 100px;
+  color: #333;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1.5fr 1.5fr 2fr 1fr 1fr 0.8fr;
+  padding: 20px 24px;
+  border-bottom: 1px solid #111;
+  align-items: center;
+  transition: all 0.2s;
+}
+
+.row:hover {
+  background-color: #050505;
+}
+
+.txId {
+  font-family: monospace;
+  font-size: 12px;
+  font-weight: bold;
+  color: #666;
+}
+
+.dateTime {
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.itemsList {
+  font-size: 12px;
+  color: #888;
+}
+
+.payment {
+  font-size: 11px;
+  font-weight: 800;
+  background-color: #111;
+  padding: 4px 8px;
+  border-radius: 2px;
+  display: inline-block;
+  width: fit-content;
+}
+
+.total {
+  font-size: 14px;
+  font-weight: 800;
+  color: #fff;
+}
+
+.receiptBtn {
+  background: transparent;
+  border: none;
+  color: #444;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.receiptBtn:hover {
+  color: #fff;
+}

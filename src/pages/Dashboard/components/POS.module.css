@@ -16,6 +16,25 @@
   gap: 24px;
   overflow-y: auto;
   border-right: 1px solid #1a1a1a;
+  scrollbar-width: thin;
+  scrollbar-color: #222 #000;
+}
+
+.posMain::-webkit-scrollbar {
+  width: 6px;
+}
+
+.posMain::-webkit-scrollbar-track {
+  background: #000;
+}
+
+.posMain::-webkit-scrollbar-thumb {
+  background: #222;
+  border-radius: 10px;
+}
+
+.posMain::-webkit-scrollbar-thumb:hover {
+  background: #333;
 }
 
 .header h1 {
@@ -192,6 +211,25 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
+  scrollbar-width: thin;
+  scrollbar-color: #222 #000;
+}
+
+.cartList::-webkit-scrollbar {
+  width: 6px;
+}
+
+.cartList::-webkit-scrollbar-track {
+  background: #000;
+}
+
+.cartList::-webkit-scrollbar-thumb {
+  background: #222;
+  border-radius: 10px;
+}
+
+.cartList::-webkit-scrollbar-thumb:hover {
+  background: #333;
 }
 
 .emptyCart {
@@ -323,12 +361,172 @@
   background-color: #00cc7e;
 }
 
-.spinner {
-  animation: spin 1s linear infinite;
+/* --- PAYMENT MODAL --- */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.modalContent {
+  background-color: #050505;
+  border: 1px solid #1a1a1a;
+  width: 450px;
+  max-width: 90%;
+  padding: 40px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+}
+
+.modalHeader {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.modalHeader h2 {
+  font-size: 24px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  margin: 0;
+}
+
+.modalHeader p {
+  font-size: 11px;
+  color: #666;
+  font-weight: bold;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.modalBody {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.summaryDetail {
+  background-color: #0a0a0a;
+  padding: 24px;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.summaryItem {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: #888;
+}
+
+.summaryTotal {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid #1a1a1a;
+}
+
+.summaryTotal label {
+  font-size: 16px;
+  font-weight: 900;
+}
+
+.summaryTotal value {
+  font-size: 24px;
+  font-weight: 900;
+  color: #00ff9d;
+}
+
+.modalFooter {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.confirmBtn {
+  background-color: #00ff9d;
+  color: #000;
+  border: none;
+  padding: 20px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.confirmBtn:hover {
+  background-color: #00cc7e;
+  transform: translateY(-2px);
+}
+
+.cancelModalBtn {
+  background: transparent;
+  color: #666;
+  border: none;
+  padding: 10px;
+  font-size: 11px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  cursor: pointer;
+}
+
+.cancelModalBtn:hover {
+  color: #fff;
+}
+
+/* Success State */
+.successContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  text-align: center;
+}
+
+.successIcon {
+  width: 80px;
+  height: 80px;
+  background-color: #00ff9d;
+  color: #000;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 30px rgba(0, 255, 157, 0.2);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
 

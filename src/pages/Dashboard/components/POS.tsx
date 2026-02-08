@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { Search, ShoppingCart, Box, Minus, Plus, CreditCard, Loader2 } from 'lucide-react';
-import styles from './POS.module.css';
+import { Search, ShoppingCart, Box, Minus, Plus, CreditCard, Loader2, Check } from 'lucide-react';
+import styles from './Pos.module.css';
 import type { InventoryItem } from '../../../types/inventory';
 import { supabase } from '../../../lib/supabase';
 
@@ -8,15 +8,18 @@ interface CartItem extends InventoryItem {
   cartQuantity: number;
 }
 
-interface POSProps {
+interface PosProps {
   items: InventoryItem[];
   onSaleComplete?: () => void;
 }
 
-export default function POS({ items, onSaleComplete }: POSProps) {
+export default function Pos({ items, onSaleComplete }: PosProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const [cart, setCart] = useState<CartItem[]>([]);
   const [loading, setLoading] = useState(false);
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [paymentSuccess, setPaymentSuccess] = useState(false);
+  const [lastTotal, setLastTotal] = useState(0);
 
   const filteredItems = items.filter(item => {
     const query = searchQuery.toLowerCase();
@@ -60,21 +63,23 @@ export default function POS({ items, onSaleComplete }: POSProps) {
     setCart(prev => prev.filter(i => i.id !== id));
   };
 
-  const handlePayment = async () => {
-    if (cart.length === 0 || !supabase || loading) return;
+  const handlePaymentClick = () => {
+    if (cart.length === 0 || loading) return;
+    setShowPaymentModal(true);
+    setPaymentSuccess(false);
+  };
 
-    if (!window.confirm(`Process payment for $${total.toFixed(2)}?`)) return;
+  const handleConfirmPayment = async () => {
+    if (cart.length === 0 || !supabase || loading) return;
     
     setLoading(true);
     try {
       // 1. Update stock for each item in the cart
-      // Note: We use a simple loop here. For high volume, a stored procedure or batch update would be better.
       for (const item of cart) {
         const currentStock = item.stock ?? item.quantity ?? 0;
         const newStock = currentStock - item.cartQuantity;
         
         const payload: any = {};
-        // Check which column exists based on the item properties
         if (Object.keys(item).includes('stock')) payload.stock = newStock;
         else payload.quantity = newStock;
 
@@ -86,19 +91,45 @@ export default function POS({ items, onSaleComplete }: POSProps) {
         if (updateError) throw updateError;
       }
 
-      // 2. Clear cart and notify success
+      // 2. Record the Sale
+      const { error: saleError } = await supabase
+        .from('sales')
+        .insert([{
+          items: cart.map(i => ({
+            id: i.id,
+            name: i.name,
+            price: i.price,
+            quantity: i.cartQuantity
+          })),
+          subtotal: subtotal,
+          tax: tax,
+          total: total,
+          payment_method: 'Credit Card' // Default for now
+        }]);
+
+      if (saleError) throw saleError;
+
+      // 3. Set success state
+      setLastTotal(total);
+      setPaymentSuccess(true);
       setCart([]);
-      alert(`Payment of $${total.toFixed(2)} processed successfully!`);
       
-      // 3. Refresh parent data
+      // 4. Refresh parent data
       if (onSaleComplete) onSaleComplete();
       
     } catch (err: any) {
       console.error('Payment error:', err);
       alert('Error processing payment: ' + (err.message || 'Unknown error'));
+      setShowPaymentModal(false);
     } finally {
       setLoading(false);
     }
+  };
+
+  const closePaymentModal = () => {
+    if (loading) return;
+    setShowPaymentModal(false);
+    setPaymentSuccess(false);
   };
 
   const subtotal = cart.reduce((sum, item) => sum + (item.price || 0) * item.cartQuantity, 0);
@@ -226,7 +257,7 @@ export default function POS({ items, onSaleComplete }: POSProps) {
 
           <button 
             className={`${styles.payBtn} ${cart.length > 0 && !loading ? styles.payBtnActive : ''}`}
-            onClick={handlePayment}
+            onClick={handlePaymentClick}
             disabled={cart.length === 0 || loading}
           >
              {loading ? <Loader2 size={18} className={styles.spinner} /> : <CreditCard size={18} />}
@@ -234,6 +265,85 @@ export default function POS({ items, onSaleComplete }: POSProps) {
           </button>
         </div>
       </div>
+
+      {/* CUSTOM PAYMENT MODAL */}
+      {showPaymentModal && (
+        <div className={styles.modalOverlay}>
+          <div className={styles.modalContent}>
+            {!paymentSuccess ? (
+              <>
+                <div className={styles.modalHeader}>
+                  <h2>COMPLETE TRANSACTION</h2>
+                  <p>Order Summary & Confirmation</p>
+                </div>
+                
+                <div className={styles.modalBody}>
+                  <div className={styles.summaryDetail}>
+                    <div className={styles.summaryItem}>
+                      <span>ITEMS count</span>
+                      <span>{cart.reduce((s, i) => s + i.cartQuantity, 0)}</span>
+                    </div>
+                    <div className={styles.summaryItem}>
+                      <span>SUBTOTAL</span>
+                      <span>${subtotal.toFixed(2)}</span>
+                    </div>
+                    <div className={styles.summaryItem}>
+                      <span>TAX (8.25%)</span>
+                      <span>${tax.toFixed(2)}</span>
+                    </div>
+                    <div className={styles.summaryTotal}>
+                      <label>TOTAL DUE</label>
+                      <span style={{ fontSize: '24px', fontWeight: 900, color: '#00ff9d' }}>
+                        ${total.toFixed(2)}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className={styles.modalFooter}>
+                  <button 
+                    className={styles.confirmBtn} 
+                    onClick={handleConfirmPayment}
+                    disabled={loading}
+                  >
+                    {loading ? 'PROCESSING...' : 'CONFIRM & PAY'}
+                  </button>
+                  <button 
+                    className={styles.cancelModalBtn} 
+                    onClick={closePaymentModal}
+                    disabled={loading}
+                  >
+                    CANCEL
+                  </button>
+                </div>
+              </>
+            ) : (
+              <div className={styles.successContent}>
+                <div className={styles.successIcon}>
+                  <Check size={40} />
+                </div>
+                <div className={styles.modalHeader}>
+                  <h2 style={{ color: '#00ff9d' }}>PAYMENT SUCCESS</h2>
+                  <p>Transaction completed successfully</p>
+                </div>
+                <div className={styles.summaryDetail}>
+                    <div className={styles.summaryItem}>
+                      <span>TOTAL PAID</span>
+                      <span style={{ color: '#fff' }}>${lastTotal.toFixed(2)}</span>
+                    </div>
+                </div>
+                <button 
+                  className={styles.confirmBtn} 
+                  onClick={closePaymentModal}
+                  style={{ width: '100%' }}
+                >
+                  DONE
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+
 import { Plus, Search, Filter } from 'lucide-react';
 import styles from './Dashboard.module.css';
 import { supabase } from '../../lib/supabase';
@@ -9,7 +10,8 @@ import type { DashboardView } from './components/Sidebar';
 import InventoryTable from './components/InventoryTable';
 import EditItemModal from './components/EditItemModal';
 import Overview from './components/Overview';
-import POS from './components/POS';
+import Pos from './components/Pos';
+import SalesHistory from './components/SalesHistory';
 
 interface DashboardProps {
   onGoToHome?: () => void;
@@ -252,7 +254,7 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
         <div key={activeView} className={styles.pageContainer}>
           {activeView === 'overview' && <Overview items={items} />}
           
-          {activeView === 'pos' && <POS items={items} onSaleComplete={fetchParts} />}
+          {activeView === 'pos' && <Pos items={items} onSaleComplete={fetchParts} />}
           
           {activeView === 'inventory' && (
             <>
@@ -374,7 +376,9 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
             </>
           )}
 
-          {(activeView === 'sales' || activeView === 'suppliers' || activeView === 'settings') && (
+          {activeView === 'sales' && <SalesHistory />}
+          
+          {(activeView === 'suppliers' || activeView === 'settings') && (
             <div style={{ padding: '40px', textAlign: 'center', color: '#666' }}>
               <h2>{activeView.toUpperCase()}</h2>
               <p>This module is coming soon.</p>

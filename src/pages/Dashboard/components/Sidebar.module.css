@@ -6,6 +6,10 @@
   padding: 24px 0; /* Vertical padding only, let navItems handle horizontal */
   display: flex;
   flex-direction: column;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  z-index: 100;
 }
 
 .logo {
