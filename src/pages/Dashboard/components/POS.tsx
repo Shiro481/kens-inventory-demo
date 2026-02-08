@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { Search, ShoppingCart, Box, Minus, Plus, CreditCard } from 'lucide-react';
+import { Search, ShoppingCart, Box, Minus, Plus, CreditCard, Loader2 } from 'lucide-react';
 import styles from './POS.module.css';
 import type { InventoryItem } from '../../../types/inventory';
+import { supabase } from '../../../lib/supabase';
 
 interface CartItem extends InventoryItem {
   cartQuantity: number;
@@ -9,11 +10,13 @@ interface CartItem extends InventoryItem {
 
 interface POSProps {
   items: InventoryItem[];
+  onSaleComplete?: () => void;
 }
 
-export default function POS({ items }: POSProps) {
+export default function POS({ items, onSaleComplete }: POSProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const [cart, setCart] = useState<CartItem[]>([]);
+  const [loading, setLoading] = useState(false);
 
   const filteredItems = items.filter(item => {
     const query = searchQuery.toLowerCase();
@@ -57,6 +60,47 @@ export default function POS({ items }: POSProps) {
     setCart(prev => prev.filter(i => i.id !== id));
   };
 
+  const handlePayment = async () => {
+    if (cart.length === 0 || !supabase || loading) return;
+
+    if (!window.confirm(`Process payment for $${total.toFixed(2)}?`)) return;
+    
+    setLoading(true);
+    try {
+      // 1. Update stock for each item in the cart
+      // Note: We use a simple loop here. For high volume, a stored procedure or batch update would be better.
+      for (const item of cart) {
+        const currentStock = item.stock ?? item.quantity ?? 0;
+        const newStock = currentStock - item.cartQuantity;
+        
+        const payload: any = {};
+        // Check which column exists based on the item properties
+        if (Object.keys(item).includes('stock')) payload.stock = newStock;
+        else payload.quantity = newStock;
+
+        const { error: updateError } = await supabase
+          .from('Parts')
+          .update(payload)
+          .eq('id', item.id);
+
+        if (updateError) throw updateError;
+      }
+
+      // 2. Clear cart and notify success
+      setCart([]);
+      alert(`Payment of $${total.toFixed(2)} processed successfully!`);
+      
+      // 3. Refresh parent data
+      if (onSaleComplete) onSaleComplete();
+      
+    } catch (err: any) {
+      console.error('Payment error:', err);
+      alert('Error processing payment: ' + (err.message || 'Unknown error'));
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const subtotal = cart.reduce((sum, item) => sum + (item.price || 0) * item.cartQuantity, 0);
   const taxRate = 0.0825; // 8.25%
   const tax = subtotal * taxRate;
@@ -79,9 +123,10 @@ export default function POS({ items }: POSProps) {
               className={styles.searchInput}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
+              disabled={loading}
             />
           </div>
-          <button className={styles.filterBtn}>
+          <button className={styles.filterBtn} disabled={loading}>
             <div style={{ width: 4, height: 4, backgroundColor: '#666', borderRadius: '50%', margin: '0 auto' }}></div>
           </button>
         </div>
@@ -94,8 +139,8 @@ export default function POS({ items }: POSProps) {
             return (
               <div 
                 key={item.id} 
-                className={`${styles.productCard} ${isOutOfStock ? styles.outOfStock : ''}`}
-                onClick={() => !isOutOfStock && addToCart(item)}
+                className={`${styles.productCard} ${isOutOfStock || loading ? styles.outOfStock : ''}`}
+                onClick={() => !isOutOfStock && !loading && addToCart(item)}
               >
                 <div className={styles.sku}>{item.sku || 'NO SKU'}</div>
                 <div className={styles.productName}>{item.name}</div>
@@ -143,11 +188,19 @@ export default function POS({ items }: POSProps) {
                   <div className={styles.cartItemPrice}>${(item.price || 0).toFixed(2)}</div>
                 </div>
                 <div className={styles.cartItemQtyControls}>
-                  <button className={styles.qtyBtn} onClick={() => updateCartQuantity(item.id, -1)}>
+                  <button 
+                    className={styles.qtyBtn} 
+                    onClick={() => updateCartQuantity(item.id, -1)}
+                    disabled={loading}
+                  >
                     {item.cartQuantity === 1 ? <Box size={14} onClick={() => removeFromCart(item.id)} /> : <Minus size={14} />}
                   </button>
                   <span style={{ minWidth: 20, textAlign: 'center', fontSize: 12, fontWeight: 'bold' }}>{item.cartQuantity}</span>
-                  <button className={styles.qtyBtn} onClick={() => updateCartQuantity(item.id, 1)}>
+                  <button 
+                    className={styles.qtyBtn} 
+                    onClick={() => updateCartQuantity(item.id, 1)}
+                    disabled={loading}
+                  >
                     <Plus size={14} />
                   </button>
                 </div>
@@ -171,9 +224,13 @@ export default function POS({ items }: POSProps) {
             <span className={styles.totalValue}>${total.toFixed(2)}</span>
           </div>
 
-          <button className={`${styles.payBtn} ${cart.length > 0 ? styles.payBtnActive : ''}`}>
-             <CreditCard size={18} />
-             PROCESS PAYMENT
+          <button 
+            className={`${styles.payBtn} ${cart.length > 0 && !loading ? styles.payBtnActive : ''}`}
+            onClick={handlePayment}
+            disabled={cart.length === 0 || loading}
+          >
+             {loading ? <Loader2 size={18} className={styles.spinner} /> : <CreditCard size={18} />}
+             {loading ? 'PROCESSING...' : 'PROCESS PAYMENT'}
           </button>
         </div>
       </div>

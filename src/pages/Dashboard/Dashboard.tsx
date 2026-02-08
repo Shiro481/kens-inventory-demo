@@ -252,7 +252,7 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
         <div key={activeView} className={styles.pageContainer}>
           {activeView === 'overview' && <Overview items={items} />}
           
-          {activeView === 'pos' && <POS items={items} />}
+          {activeView === 'pos' && <POS items={items} onSaleComplete={fetchParts} />}
           
           {activeView === 'inventory' && (
             <>
