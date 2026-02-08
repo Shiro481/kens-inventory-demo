@@ -23,6 +23,9 @@ export default function Settings() {
     low_stock_threshold: 10,
     currency: "USD"
   });
+  
+  const [taxRateInput, setTaxRateInput] = useState('8.25');
+  const [minQuantityInput, setMinQuantityInput] = useState('10');
 
   useEffect(() => {
     fetchSettings();
@@ -53,6 +56,8 @@ export default function Settings() {
           low_stock_threshold: data.low_stock_threshold,
           currency: data.currency
         });
+        setTaxRateInput(String(data.tax_rate));
+        setMinQuantityInput(String(data.low_stock_threshold));
       }
     } catch (err: any) {
       console.error('Error fetching settings:', err.message);
@@ -174,9 +179,14 @@ export default function Settings() {
                   step="0.01"
                   className={styles.formInput}
                   style={{ width: '100%' }}
-                  value={settings.tax_rate}
+                  value={taxRateInput}
                   onChange={e => {
-                    const value = e.target.value;
+                    let value = e.target.value;
+                    // Remove leading zero when typing a number greater than zero
+                    if (value.length > 1 && value.startsWith('0') && !value.startsWith('0.')) {
+                      value = value.slice(1);
+                    }
+                    setTaxRateInput(value);
                     setSettings({...settings, tax_rate: value === '' ? 0 : Number(value)});
                   }}
                   required
@@ -192,9 +202,14 @@ export default function Settings() {
                   type="number" 
                   className={styles.formInput}
                   style={{ width: '100%' }}
-                  value={settings.low_stock_threshold}
+                  value={minQuantityInput}
                   onChange={e => {
-                    const value = e.target.value;
+                    let value = e.target.value;
+                    // Remove leading zero when typing a number greater than zero
+                    if (value.length > 1 && value.startsWith('0') && !value.startsWith('0.')) {
+                      value = value.slice(1);
+                    }
+                    setMinQuantityInput(value);
                     setSettings({...settings, low_stock_threshold: value === '' ? 0 : Number(value)});
                   }}
                   required
