@@ -16,6 +16,8 @@ import Analytics from './components/Analytics';
 import Suppliers from './components/Suppliers';
 import Settings from './components/Settings';
 import DeleteConfirmModal from './components/DeleteConfirmModal';
+import ChatBot from './components/ChatBot';
+import { useSettings } from '../../context/SettingsContext';
 
 interface DashboardProps {
   onGoToHome?: () => void;
@@ -38,6 +40,12 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [itemToDelete, setItemToDelete] = useState<InventoryItem | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
+
+  // ChatBot State
+  const [isChatBotOpen, setIsChatBotOpen] = useState(false);
+
+  // Settings context
+  const { settings } = useSettings();
 
   // Filter State
   const [filterStatus, setFilterStatus] = useState<'All' | 'In Stock' | 'Low Stock' | 'Out of Stock'>('All');
@@ -450,6 +458,91 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
         }}
         onConfirm={confirmDelete}
       />
+
+      {/* AI CHATBOT */}
+      <ChatBot 
+        isOpen={isChatBotOpen}
+        onToggle={() => setIsChatBotOpen(!isChatBotOpen)}
+        onNavigate={(view) => setActiveView(view as DashboardView)}
+        onExecuteAction={(action) => {
+          // Handle action execution
+          if (action === 'addItem') {
+            handleAddItem();
+          } else if (action === 'refresh') {
+            fetchParts();
+          } else if (action === 'exportSalesReport') {
+            setActiveView('analytics');
+          } else if (action === 'exportInventoryReport') {
+            setActiveView('inventory');
+          } else if (action === 'searchLowStock') {
+            setFilterStatus('Low Stock');
+            setActiveView('inventory');
+          }
+        }}
+        currentView={activeView}
+        inventoryStats={{
+          totalItems: items.length,
+          lowStockItems: items.filter(item => {
+            const stock = item.stock ?? item.quantity ?? 0;
+            const minQty = item.minQuantity ?? item.min_qty ?? settings.low_stock_threshold;
+            return stock <= minQty;
+          }).length
+        }}
+      />
+      
+      {/* FLOATING CHATBOT BUTTON (when closed) */}
+      {!isChatBotOpen && (
+        <button 
+          className="chatbot-float-btn"
+          onClick={() => setIsChatBotOpen(true)}
+          title="Open AI Assistant"
+          style={{
+            position: 'fixed',
+            bottom: '20px',
+            right: '20px',
+            width: '60px',
+            height: '60px',
+            backgroundColor: 'var(--brand-neon)',
+            color: '#000',
+            border: 'none',
+            borderRadius: '50%',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            boxShadow: '0 10px 25px rgba(0, 255, 157, 0.3)',
+            zIndex: 999,
+            transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = 'scale(1.1)';
+            e.currentTarget.style.boxShadow = '0 15px 35px rgba(0, 255, 157, 0.4)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = 'scale(1)';
+            e.currentTarget.style.boxShadow = '0 10px 25px rgba(0, 255, 157, 0.3)';
+          }}
+        >
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="M21 15a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2"/>
+            <path d="M21 15a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2"/>
+            <path d="M3 12h18"/>
+            <path d="M12 3v18"/>
+            <circle cx="8" cy="8" r="1"/>
+            <circle cx="16" cy="8" r="1"/>
+          </svg>
+          <span style={{
+            position: 'absolute',
+            top: '8px',
+            right: '8px',
+            width: '12px',
+            height: '12px',
+            backgroundColor: '#ef4444',
+            borderRadius: '50%',
+            border: '2px solid var(--brand-neon)'
+          }}></span>
+        </button>
+      )}
     </div>
   );
 }
