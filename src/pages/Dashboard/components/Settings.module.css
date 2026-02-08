@@ -1,0 +1,218 @@
+.container {
+  padding: 40px;
+  background-color: var(--bg-dark);
+  color: #fff;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+  animation: fadeIn 0.4s ease-out;
+}
+
+.header {
+  margin-bottom: 20px;
+}
+
+.header h1 {
+  font-size: 38px;
+  font-weight: 900;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.header p {
+  font-size: 11px;
+  color: #555;
+  font-weight: 900;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-top: 8px;
+}
+
+.settingsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 32px;
+}
+
+.section {
+  background-color: #050505;
+  border: 1px solid var(--border-dim);
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border-dim);
+}
+
+.iconWrapper {
+  color: var(--brand-neon);
+}
+
+.sectionHeader h2 {
+  font-size: 16px;
+  font-weight: 900;
+  letter-spacing: 1.5px;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.formGroup label {
+  font-size: 10px;
+  text-transform: uppercase;
+  font-weight: 900;
+  letter-spacing: 1.5px;
+  color: #555;
+}
+
+.formInput {
+  background-color: #000;
+  border: 1px solid var(--border-dim);
+  color: white;
+  padding: 16px;
+  font-family: inherit;
+  font-size: 14px;
+  outline: none;
+  transition: all 0.2s;
+}
+
+.formInput:focus {
+  border-color: #444;
+  background-color: #0a0a0a;
+}
+
+.formInput:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  border-style: dashed;
+}
+
+.inputWithSuffix {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.suffix {
+  position: absolute;
+  right: 16px;
+  font-size: 12px;
+  font-weight: 900;
+  color: #333;
+}
+
+.saveBtn {
+  background-color: var(--brand-neon);
+  color: #000;
+  border: 1px solid var(--brand-neon);
+  padding: 18px 40px;
+  font-weight: 900;
+  font-size: 13px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s;
+  align-self: flex-start;
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.saveBtn:hover:not(:disabled) {
+  background-color: transparent;
+  color: var(--brand-neon);
+  box-shadow: 0 0 30px rgba(0, 255, 157, 0.2);
+}
+
+.saveBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.successMsg {
+  color: var(--brand-neon);
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  margin-top: 10px;
+}
+
+.userCard {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.avatar {
+  width: 60px;
+  height: 60px;
+  background-color: #fff;
+  color: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: 900;
+  border-radius: 2px;
+}
+
+.userInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.userEmail {
+  font-size: 16px;
+  font-weight: 800;
+  color: #fff;
+}
+
+.userRole {
+  font-size: 10px;
+  color: #555;
+  text-transform: uppercase;
+  font-weight: 900;
+  letter-spacing: 1px;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 900px) {
+  .settingsGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .container {
+    padding: 30px 20px 100px 20px;
+  }
+  .section {
+    padding: 30px 20px;
+  }
+}
