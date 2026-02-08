@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-import { Plus, Search, Filter } from 'lucide-react';
+import { Plus, Search, Filter, Menu } from 'lucide-react';
 import styles from './Dashboard.module.css';
 import { supabase } from '../../lib/supabase';
 import type { InventoryItem } from '../../types/inventory';
@@ -25,6 +25,7 @@ interface DashboardProps {
 export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
   const [items, setItems] = useState<InventoryItem[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   
   // View State
   const [activeView, setActiveView] = useState<DashboardView>('overview');
@@ -273,7 +274,24 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
 
   return (
     <div className={styles.container}>
-      <Sidebar activeView={activeView} onViewChange={setActiveView} onGoToHome={onGoToHome} onLogout={onLogout} />
+      <Sidebar 
+        activeView={activeView} 
+        onViewChange={setActiveView} 
+        onGoToHome={onGoToHome} 
+        onLogout={onLogout}
+        isOpen={isMobileMenuOpen}
+        onClose={() => setIsMobileMenuOpen(false)}
+      />
+
+      {/* MOBILE HEADER */}
+      <header className={styles.mobileHeader}>
+        <div className={styles.mobileLogo} onClick={onGoToHome}>
+          <div className={styles.mobileLogoIcon}>K</div>
+        </div>
+        <button className={styles.menuBtn} onClick={() => setIsMobileMenuOpen(true)}>
+          <Menu size={24} />
+        </button>
+      </header>
 
       {/* MAIN CONTENT */}
       <main className={`${styles.main} ${activeView === 'pos' ? styles.posView : ''}`}>

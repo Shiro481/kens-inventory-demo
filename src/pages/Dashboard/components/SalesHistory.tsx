@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Search, Filter, FileText, Loader2 } from 'lucide-react';
 import styles from './SalesHistory.module.css';
 import { supabase } from '../../../lib/supabase';
+import { useSettings } from '../../../context/SettingsContext';
 import type { Sale } from '../../../types/sales';
 
 export default function SalesHistory() {
@@ -40,6 +41,7 @@ export default function SalesHistory() {
     );
   });
 
+  const { settings } = useSettings();
   const totalRevenue = sales.reduce((sum, sale) => sum + (sale.total || 0), 0);
   const totalSalesCount = sales.length;
 
@@ -54,7 +56,7 @@ export default function SalesHistory() {
           <div className={styles.statCard}>
             <span className={styles.statLabel}>TOTAL REVENUE</span>
             <span className={`${styles.statValue} ${styles.revenueValue}`}>
-              ${totalRevenue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+              {settings.currency_symbol}{totalRevenue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
             </span>
           </div>
           <div className={styles.statCard}>
@@ -111,7 +113,7 @@ export default function SalesHistory() {
                   {sale.items.length > 2 ? '...' : ''}
                 </span>
                 <span className={styles.payment}>{sale.payment_method.toUpperCase()}</span>
-                <span className={styles.total}>${sale.total.toFixed(2)}</span>
+                <span className={styles.total}>{settings.currency_symbol}{sale.total.toFixed(2)}</span>
                 <button className={styles.receiptBtn}>
                   <FileText size={18} />
                 </button>

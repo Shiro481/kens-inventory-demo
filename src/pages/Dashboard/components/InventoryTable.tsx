@@ -1,6 +1,6 @@
 import { Package, Edit, Trash2 } from 'lucide-react';
 import styles from './InventoryTable.module.css';
-import { getStatus } from '../../../types/inventory';
+import { useSettings } from '../../../context/SettingsContext';
 import type { InventoryItem } from '../../../types/inventory';
 
 interface InventoryTableProps {
@@ -22,9 +22,16 @@ export default function InventoryTable({ items, onEdit, onDelete }: InventoryTab
       </div>
 
       {items.map((item) => {
+        const { settings } = useSettings();
         const qty = item.stock ?? item.quantity ?? 0;
-        const minQty = item.minQuantity ?? item.min_qty ?? 10;
-        const status = getStatus(item);
+        const minQty = item.minQuantity ?? item.min_qty ?? settings.low_stock_threshold;
+        
+        // Temporarily override getStatus logic manually to use settings
+        const getDynamicStatus = () => {
+          if (qty === 0) return 'Out of Stock';
+          return qty < minQty ? 'Low Stock' : 'In Stock';
+        };
+        const status = getDynamicStatus();
         
         return (
           <div key={item.id} className={styles.row}>
@@ -46,7 +53,7 @@ export default function InventoryTable({ items, onEdit, onDelete }: InventoryTab
               {item.category || '-'}
             </div>
             
-            <div className={styles.price}>${item.price?.toFixed(2)}</div>
+            <div className={styles.price}>{settings.currency_symbol}{item.price?.toFixed(2)}</div>
             
             <div style={{ fontWeight: 'bold' }}>
               {qty} <span style={{ color: '#666', fontSize: '12px', fontWeight: 'normal' }}>/ {minQty} min</span>

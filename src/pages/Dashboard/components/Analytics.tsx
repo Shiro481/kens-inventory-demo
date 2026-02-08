@@ -19,6 +19,7 @@ import {
 } from 'recharts';
 import styles from './Analytics.module.css';
 import { supabase } from '../../../lib/supabase';
+import { useSettings } from '../../../context/SettingsContext';
 import type { Sale } from '../../../types/sales';
 
 type TimeRange = 'DAILY' | 'WEEKLY' | 'MONTHLY' | 'YEARLY';
@@ -67,6 +68,9 @@ export default function Analytics() {
       setLoading(false);
     }
   };
+
+  // Calculate metrics
+  const { settings } = useSettings();
 
   // Calculate metrics
   const totalRevenue = sales.reduce((sum, sale) => sum + (sale.total || 0), 0);
@@ -192,7 +196,7 @@ export default function Analytics() {
         }}>
           <p style={{ margin: 0, fontSize: '10px', color: '#666', fontWeight: 900 }}>{label}</p>
           <p style={{ margin: '4px 0 0', fontSize: '14px', fontWeight: 900, color: '#00ff9d' }}>
-            ${payload[0].value.toFixed(2)}
+            {settings.currency_symbol}{payload[0].value.toFixed(2)}
           </p>
         </div>
       );
@@ -229,7 +233,7 @@ export default function Analytics() {
             <DollarSign className={styles.statIcon} size={80} />
           </div>
           <div className={`${styles.statValue} ${styles.totalRevenueValue}`}>
-            ${totalRevenue.toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 1 })}
+            {settings.currency_symbol}{totalRevenue.toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 1 })}
           </div>
         </div>
 
@@ -247,7 +251,7 @@ export default function Analytics() {
             <TrendingUp className={styles.statIcon} size={80} />
           </div>
           <div className={`${styles.statValue} ${styles.avgOrderValue}`}>
-            ${avgOrderValue.toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 1 })}
+            {settings.currency_symbol}{avgOrderValue.toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 1 })}
           </div>
         </div>
 
@@ -295,7 +299,7 @@ export default function Analytics() {
                     fontSize={10} 
                     tickLine={false} 
                     axisLine={false}
-                    tickFormatter={(value) => `$${value}`}
+                    tickFormatter={(value) => `${settings.currency_symbol}${value}`}
                   />
                   <Tooltip content={<CustomTooltip />} />
                   <Area 
@@ -357,7 +361,7 @@ export default function Analytics() {
                     dataKey="orders" 
                     fill="#1a1a1a" 
                     radius={[2, 2, 0, 0]}
-                    onMouseEnter={(data, index) => {}} // Could add hover effect
+                    onMouseEnter={() => {}} // Could add hover effect
                   />
                 </BarChart>
               </ResponsiveContainer>

@@ -3,6 +3,7 @@ import { Search, ShoppingCart, Box, Minus, Plus, CreditCard, Banknote, Loader2, 
 import styles from './Pos.module.css';
 import type { InventoryItem } from '../../../types/inventory';
 import { supabase } from '../../../lib/supabase';
+import { useSettings } from '../../../context/SettingsContext';
 
 interface CartItem extends InventoryItem {
   cartQuantity: number;
@@ -133,8 +134,10 @@ export default function Pos({ items, onSaleComplete }: PosProps) {
     setPaymentSuccess(false);
   };
 
+  const { settings } = useSettings();
+
   const subtotal = cart.reduce((sum, item) => sum + (item.price || 0) * item.cartQuantity, 0);
-  const taxRate = 0.0825; // 8.25%
+  const taxRate = settings.tax_rate / 100;
   const tax = subtotal * taxRate;
   const total = subtotal + tax;
 
@@ -181,7 +184,7 @@ export default function Pos({ items, onSaleComplete }: PosProps) {
                   <div className={styles.qtyInfo}>
                     QTY: <span className={styles.qtyValue}>{stock}</span>
                   </div>
-                  <div className={styles.price}>${(item.price || 0).toFixed(2)}</div>
+                  <div className={styles.price}>{settings.currency_symbol}{(item.price || 0).toFixed(2)}</div>
                 </div>
 
                 {isOutOfStock && (
@@ -189,7 +192,7 @@ export default function Pos({ items, onSaleComplete }: PosProps) {
                 )}
                 
                 {/* Visual indicator for items with low stock or specific status */}
-                {stock > 0 && stock < (item.minQuantity ?? 10) && (
+                {stock > 0 && stock < (item.minQuantity ?? settings.low_stock_threshold) && (
                    <div style={{ position: 'absolute', top: 12, right: 12, width: 8, height: 8, backgroundColor: '#ff9800', borderRadius: '50%' }}></div>
                 )}
               </div>
@@ -217,7 +220,7 @@ export default function Pos({ items, onSaleComplete }: PosProps) {
               <div key={item.id} className={styles.cartItem}>
                 <div className={styles.cartItemInfo}>
                   <div className={styles.cartItemName}>{item.name}</div>
-                  <div className={styles.cartItemPrice}>${(item.price || 0).toFixed(2)}</div>
+                  <div className={styles.cartItemPrice}>{settings.currency_symbol}{(item.price || 0).toFixed(2)}</div>
                 </div>
                 <div className={styles.cartItemQtyControls}>
                   <button 
@@ -244,16 +247,16 @@ export default function Pos({ items, onSaleComplete }: PosProps) {
         <div className={styles.orderSummary}>
           <div className={styles.summaryRow}>
             <span>SUBTOTAL</span>
-            <span className={styles.summaryValue}>${subtotal.toFixed(2)}</span>
+            <span className={styles.summaryValue}>{settings.currency_symbol}{subtotal.toFixed(2)}</span>
           </div>
           <div className={styles.summaryRow}>
-            <span>TAX (8.25%)</span>
-            <span className={styles.summaryValue}>${tax.toFixed(2)}</span>
+            <span>TAX ({settings.tax_rate}%)</span>
+            <span className={styles.summaryValue}>{settings.currency_symbol}{tax.toFixed(2)}</span>
           </div>
           
           <div className={styles.totalRow}>
             <span className={styles.totalLabel}>TOTAL</span>
-            <span className={styles.totalValue}>${total.toFixed(2)}</span>
+            <span className={styles.totalValue}>{settings.currency_symbol}{total.toFixed(2)}</span>
           </div>
 
           <button 
@@ -306,20 +309,20 @@ export default function Pos({ items, onSaleComplete }: PosProps) {
                       <span>ITEMS count</span>
                       <span>{cart.reduce((s, i) => s + i.cartQuantity, 0)}</span>
                     </div>
-                    <div className={styles.summaryItem}>
-                      <span>SUBTOTAL</span>
-                      <span>${subtotal.toFixed(2)}</span>
-                    </div>
-                    <div className={styles.summaryItem}>
-                      <span>TAX (8.25%)</span>
-                      <span>${tax.toFixed(2)}</span>
-                    </div>
-                    <div className={styles.summaryTotal}>
-                      <label>TOTAL DUE</label>
-                      <span style={{ fontSize: '24px', fontWeight: 900, color: '#00ff9d' }}>
-                        ${total.toFixed(2)}
-                      </span>
-                    </div>
+                  <div className={styles.summaryItem}>
+                    <span>SUBTOTAL</span>
+                    <span>{settings.currency_symbol}{subtotal.toFixed(2)}</span>
+                  </div>
+                  <div className={styles.summaryItem}>
+                    <span>TAX ({settings.tax_rate}%)</span>
+                    <span>{settings.currency_symbol}{tax.toFixed(2)}</span>
+                  </div>
+                  <div className={styles.summaryTotal}>
+                    <label>TOTAL DUE</label>
+                    <span style={{ fontSize: '24px', fontWeight: 900, color: '#00ff9d' }}>
+                      {settings.currency_symbol}{total.toFixed(2)}
+                    </span>
+                  </div>
                   </div>
                 </div>
 
@@ -352,7 +355,7 @@ export default function Pos({ items, onSaleComplete }: PosProps) {
                 <div className={styles.summaryDetail}>
                     <div className={styles.summaryItem}>
                       <span>TOTAL PAID</span>
-                      <span style={{ color: '#fff' }}>${lastTotal.toFixed(2)}</span>
+                      <span style={{ color: '#fff' }}>{settings.currency_symbol}{lastTotal.toFixed(2)}</span>
                     </div>
                 </div>
                 <button 

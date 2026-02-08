@@ -3,6 +3,7 @@ import { TrendingUp, AlertTriangle, AlertCircle, Package, DollarSign, Activity, 
 import styles from './Overview.module.css';
 import type { InventoryItem } from '../../../types/inventory';
 import { supabase } from '../../../lib/supabase';
+import { useSettings } from '../../../context/SettingsContext';
 import type { Sale } from '../../../types/sales';
 
 interface OverviewProps {
@@ -27,9 +28,12 @@ export default function Overview({ items }: OverviewProps) {
   // Inverted status check since I don't have the exact import path for getStatus from types/inventory 
   // but I can see it was used in lines 218 of Dashboard.tsx. 
   // Let's use a local helper if needed or assume lines 15 in Pos.tsx works.
+  const { settings } = useSettings();
+
+  // Inverted status check using settings
   const getLocalStatus = (item: InventoryItem) => {
     const stock = item.stock ?? item.quantity ?? 0;
-    const min = item.minQuantity ?? item.min_qty ?? 10;
+    const min = item.minQuantity ?? item.min_qty ?? settings.low_stock_threshold;
     if (stock <= 0) return 'Out of Stock';
     if (stock < min) return 'Low Stock';
     return 'In Stock';
@@ -110,7 +114,7 @@ export default function Overview({ items }: OverviewProps) {
       activities.push({
         type: 'sale',
         title: `SALE COMPLETED #${sale.id.slice(0, 6).toUpperCase()}`,
-        description: `${sale.items.length} items sold • $${sale.total.toFixed(2)}`,
+        description: `${sale.items.length} items sold • ${settings.currency_symbol}${sale.total.toFixed(2)}`,
         time: formatRelativeTime(saleDate),
         timestamp: saleDate
       });
@@ -161,7 +165,7 @@ export default function Overview({ items }: OverviewProps) {
   return (
     <div className={styles.overview}>
       <div className={styles.header}>
-        <h1>GARAGE OVERVIEW</h1>
+        <h1>{settings.store_name} OVERVIEW</h1>
         <div className={styles.systemStatus}>
           SYSTEM STATUS: <span className={styles.operational}>OPERATIONAL</span>
         </div>
@@ -185,7 +189,7 @@ export default function Overview({ items }: OverviewProps) {
             <span className={styles.statLabel}>TOTAL VALUE</span>
             <DollarSign size={18} color="#666" />
           </div>
-          <div className={styles.statValue}>${totalValue.toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 })}</div>
+          <div className={styles.statValue}>{settings.currency_symbol}{totalValue.toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 })}</div>
           <div className={styles.statChange}>
             <TrendingUp size={12} />
             VALUATION
@@ -283,7 +287,7 @@ export default function Overview({ items }: OverviewProps) {
                   <div className={styles.popularCategory}>{part.category || 'UNCATEGORIZED'}</div>
                 </div>
                 <div className={styles.popularStats}>
-                  <div className={styles.popularPrice}>${(part.price || 0).toFixed(2)}</div>
+                  <div className={styles.popularPrice}>{settings.currency_symbol}{(part.price || 0).toFixed(2)}</div>
                   <div className={styles.popularUnits}>{part.totalSold} sold</div>
                 </div>
               </div>

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Save, Store, Calculator, User, Loader2 } from 'lucide-react';
 import styles from './Settings.module.css';
 import { supabase } from '../../../lib/supabase';
+import { useSettings as useGlobalSettings } from '../../../context/SettingsContext';
 
 interface StoreSettings {
   store_name: string;
@@ -60,6 +61,8 @@ export default function Settings() {
     }
   }
 
+  const { refreshSettings } = useGlobalSettings();
+
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!supabase) return;
@@ -81,6 +84,7 @@ export default function Settings() {
 
       if (error) throw error;
       
+      await refreshSettings();
       setSuccess(true);
       setTimeout(() => setSuccess(false), 3000);
     } catch (err: any) {
