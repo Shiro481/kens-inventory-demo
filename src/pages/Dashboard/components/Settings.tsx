@@ -175,7 +175,10 @@ export default function Settings() {
                   className={styles.formInput}
                   style={{ width: '100%' }}
                   value={settings.tax_rate}
-                  onChange={e => setSettings({...settings, tax_rate: Number(e.target.value)})}
+                  onChange={e => {
+                    const value = e.target.value;
+                    setSettings({...settings, tax_rate: value === '' ? 0 : Number(value)});
+                  }}
                   required
                 />
                 <span className={styles.suffix}>%</span>
@@ -190,7 +193,10 @@ export default function Settings() {
                   className={styles.formInput}
                   style={{ width: '100%' }}
                   value={settings.low_stock_threshold}
-                  onChange={e => setSettings({...settings, low_stock_threshold: Number(e.target.value)})}
+                  onChange={e => {
+                    const value = e.target.value;
+                    setSettings({...settings, low_stock_threshold: value === '' ? 0 : Number(value)});
+                  }}
                   required
                 />
                 <span className={styles.suffix}>PCS</span>

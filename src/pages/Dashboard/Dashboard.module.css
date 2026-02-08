@@ -216,6 +216,12 @@
   .main {
     padding: 40px;
   }
+  .statsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .chartsGrid {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 768px) {
@@ -238,5 +244,11 @@
   }
   .filterBtn {
     height: 50px;
+  }
+  .statsGrid {
+    grid-template-columns: 1fr;
+  }
+  .chartsGrid {
+    grid-template-columns: 1fr;
   }
 }
