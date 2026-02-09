@@ -24,17 +24,15 @@
   gap: 12px;
 }
 
-.logoIcon {
+.logoImage {
   width: 32px;
   height: 32px;
-  background-color: var(--brand-neon);
-  color: #000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 900;
-  font-size: 18px;
-  border-radius: 2px;
+  border-radius: 4px;
+  transition: transform 0.2s ease;
+}
+
+.logoImage:hover {
+  transform: scale(1.05);
 }
 
 .logoText {

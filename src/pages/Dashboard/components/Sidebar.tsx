@@ -32,7 +32,7 @@ export default function Sidebar({ activeView, onViewChange, onGoToHome, onLogout
       <aside className={`${styles.sidebar} ${isOpen ? styles.sidebarOpen : ''}`}>
         <div className={styles.sidebarHeader}>
           <div className={styles.logo} onClick={onGoToHome} style={{ cursor: onGoToHome ? 'pointer' : 'default' }}>
-            <div className={styles.logoIcon}>{settings.store_name.charAt(0)}</div>
+            <img src="../src/assets/kenslogo.jpg" alt="KEN'S GARAGE" className={styles.logoImage} />
             <span className={styles.logoText}>{settings.store_name}</span>
           </div>
           <button className={styles.closeBtn} onClick={onClose}>
@@ -107,7 +107,6 @@ export default function Sidebar({ activeView, onViewChange, onGoToHome, onLogout
 
         <div className={styles.footer}>
           <div className={styles.userSection}>
-            <div className={styles.userAvatar}>K</div>
             <div className={styles.userInfo}>
               <div className={styles.userName}>KEN'S GARAGE</div>
               <div className={styles.userRole}>Owner</div>

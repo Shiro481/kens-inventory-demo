@@ -185,20 +185,22 @@
 }
 
 .mobileLogo {
-  cursor: pointer;
-}
-
-.mobileLogoIcon {
-  width: 32px;
-  height: 32px;
-  background-color: var(--brand-neon);
-  color: #000;
   display: flex;
   align-items: center;
-  justify-content: center;
-  font-weight: 900;
-  font-size: 18px;
-  border-radius: 2px;
+  gap: 12px;
+  cursor: pointer;
+  padding: 16px 20px;
+}
+
+.mobileLogoImage {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  transition: transform 0.2s ease;
+}
+
+.mobileLogoImage:hover {
+  transform: scale(1.05);
 }
 
 .menuBtn {

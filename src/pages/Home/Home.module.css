@@ -48,20 +48,18 @@
 .logo {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 16px;
 }
 
-.logoIcon {
-  font-size: 28px;
-  font-weight: 900;
-  background: #fff;
-  color: #000;
-  width: 44px;
-  height: 44px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 2px;
+.logoImage {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  transition: transform 0.3s ease;
+}
+
+.logoImage:hover {
+  transform: scale(1.05);
 }
 
 .logoText {
@@ -237,14 +235,100 @@
   .container {
     padding: 0 5%;
   }
+  
+  .nav {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 40px 0;
+  }
+  
+  .logo {
+    gap: 12px;
+  }
+  
+  .logoImage {
+    width: 32px;
+    height: 32px;
+  }
+  
+  .logoText .brandName {
+    font-size: 16px;
+  }
+  
+  .logoText .version {
+    font-size: 9px;
+  }
+  
+  .statusIndicator {
+    gap: 10px;
+  }
+  
+  .statusText,
+  .est {
+    font-size: 10px;
+  }
+  
   .footer {
     flex-direction: column;
     gap: 50px;
   }
   .title {
     font-size: 4rem;
+    line-height: 0.9;
   }
   .ctaGroup {
     flex-direction: column;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 0 4%;
+  }
+  
+  .nav {
+    padding: 30px 0;
+  }
+  
+  .logo {
+    gap: 10px;
+  }
+  
+  .logoImage {
+    width: 28px;
+    height: 28px;
+  }
+  
+  .logoText .brandName {
+    font-size: 14px;
+  }
+  
+  .logoText .version {
+    font-size: 8px;
+  }
+  
+  .statusIndicator {
+    gap: 8px;
+  }
+  
+  .statusText,
+  .est {
+    font-size: 9px;
+  }
+  
+  .title {
+    font-size: 3rem;
+    line-height: 0.95;
+  }
+  
+  .description {
+    font-size: 1rem;
+  }
+  
+  .primaryBtn,
+  .secondaryBtn {
+    width: 100%;
+    justify-content: center;
   }
 }

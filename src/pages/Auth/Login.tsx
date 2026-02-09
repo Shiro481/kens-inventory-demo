@@ -60,7 +60,7 @@ export default function Login({ onBack, onSuccess }: LoginProps) {
 
       <div className={styles.authCard}>
         <div className={styles.header}>
-          <div className={styles.logoIcon}>K</div>
+          <img src="/kenslogo.svg" alt="KEN'S GARAGE" className={styles.logoIcon} />
           <h1>{isSignUp ? 'Create Account' : 'System Login'}</h1>
           <p>{isSignUp ? 'Join Ken\'s Garage Inventory System' : 'Authorized Access Only'}</p>
         </div>
