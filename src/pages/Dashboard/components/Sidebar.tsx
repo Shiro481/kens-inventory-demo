@@ -1,6 +1,7 @@
 import { LayoutGrid, Package, Users, Settings, LogOut, ShoppingBag, History, Home as HomeIcon, TrendingUp, X } from 'lucide-react';
 import styles from './Sidebar.module.css';
 import { useSettings } from '../../../context/SettingsContext';
+import { useState } from 'react';
 
 export type DashboardView = 'overview' | 'analytics' | 'inventory' | 'pos' | 'sales' | 'suppliers' | 'settings';
 
@@ -15,10 +16,27 @@ interface SidebarProps {
 
 export default function Sidebar({ activeView, onViewChange, onGoToHome, onLogout, isOpen, onClose }: SidebarProps) {
   const { settings } = useSettings();
+  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
   
   const handleViewChange = (view: DashboardView) => {
     onViewChange(view);
     onClose(); // Close menu on mobile after selection
+  };
+
+  const handleLogoutClick = () => {
+    setShowLogoutConfirm(true);
+  };
+
+  const confirmLogout = () => {
+    if (onLogout) {
+      onLogout();
+      onClose();
+    }
+    setShowLogoutConfirm(false);
+  };
+
+  const cancelLogout = () => {
+    setShowLogoutConfirm(false);
   };
 
   return (
@@ -112,16 +130,43 @@ export default function Sidebar({ activeView, onViewChange, onGoToHome, onLogout
               <div className={styles.userRole}>Owner</div>
             </div>
             {onLogout && (
-              <button className={styles.logoutBtn} onClick={() => {
-                onLogout();
-                onClose();
-              }} title="Log Out">
+              <button className={styles.logoutBtn} onClick={handleLogoutClick} title="Log Out">
                 <LogOut size={18} />
               </button>
             )}
           </div>
         </div>
       </aside>
+
+      {/* Logout Confirmation Modal */}
+      {showLogoutConfirm && (
+        <div className={styles.logoutModalOverlay}>
+          <div className={styles.logoutModal}>
+            <div className={styles.logoutModalHeader}>
+              <LogOut size={24} />
+              <h3>Confirm Logout</h3>
+            </div>
+            <div className={styles.logoutModalContent}>
+              <p>Are you sure you want to log out?</p>
+              <p className={styles.logoutModalSubtext}>Any unsaved changes will be lost.</p>
+            </div>
+            <div className={styles.logoutModalActions}>
+              <button 
+                className={styles.cancelBtn}
+                onClick={cancelLogout}
+              >
+                Cancel
+              </button>
+              <button 
+                className={styles.confirmBtn}
+                onClick={confirmLogout}
+              >
+                Log Out
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }

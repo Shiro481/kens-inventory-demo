@@ -137,6 +137,113 @@
   color: #ef4444;
 }
 
+.logoutBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Logout Confirmation Modal */
+.logoutModalOverlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+
+.logoutModal {
+  background-color: #0a0a0a;
+  border: 1px solid var(--border-dim);
+  border-radius: 8px;
+  padding: 32px;
+  max-width: 400px;
+  width: 90%;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8);
+}
+
+.logoutModalHeader {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.logoutModalHeader h3 {
+  font-size: 18px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #fff;
+  margin: 0;
+}
+
+.logoutModalHeader svg {
+  color: var(--brand-neon);
+}
+
+.logoutModalContent {
+  margin-bottom: 32px;
+}
+
+.logoutModalContent p {
+  color: #ccc;
+  font-size: 14px;
+  line-height: 1.5;
+  margin: 0 0 12px 0;
+}
+
+.logoutModalSubtext {
+  color: #888;
+  font-size: 12px;
+  font-style: italic;
+}
+
+.logoutModalActions {
+  display: flex;
+  gap: 16px;
+}
+
+.cancelBtn,
+.confirmBtn {
+  flex: 1;
+  padding: 12px 24px;
+  border-radius: 4px;
+  font-weight: 900;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: 1px solid;
+}
+
+.cancelBtn {
+  background-color: #111;
+  color: #888;
+  border-color: #333;
+}
+
+.cancelBtn:hover {
+  background-color: #1a1a1a;
+  color: #fff;
+  border-color: #444;
+}
+
+.confirmBtn {
+  background-color: var(--brand-neon);
+  color: #000;
+  border-color: var(--brand-neon);
+}
+
+.confirmBtn:hover {
+  background-color: transparent;
+  color: var(--brand-neon);
+  box-shadow: 0 0 20px rgba(0, 255, 157, 0.2);
+}
+
 /* Mobile Hamburger Sidebar Logic */
 .overlay {
   position: fixed;

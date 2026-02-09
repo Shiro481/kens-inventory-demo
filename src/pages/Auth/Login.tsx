@@ -13,7 +13,6 @@ export default function Login({ onBack, onSuccess }: LoginProps) {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [isSignUp, setIsSignUp] = useState(false);
 
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -23,17 +22,16 @@ export default function Login({ onBack, onSuccess }: LoginProps) {
     setError(null);
 
     try {
-      if (isSignUp) {
-        const { data, error } = await supabase.auth.signUp({
-          email,
-          password,
-        });
-        if (error) throw error;
-        if (data.user) {
-          alert('Check your email for confirmation link!');
-          setIsSignUp(false);
-        }
+      // Check if admin email (no password required)
+      if (email === 'deviy63349@helesco.com') {
+        const adminUser = {
+          id: 'admin',
+          email: 'deviy63349@helesco.com',
+          user_metadata: { role: 'admin' }
+        };
+        onSuccess(adminUser);
       } else {
+        // For future password authentication
         const { data, error } = await supabase.auth.signInWithPassword({
           email,
           password,
@@ -44,7 +42,7 @@ export default function Login({ onBack, onSuccess }: LoginProps) {
         }
       }
     } catch (err: any) {
-      setError(err.message || 'An error occurred during authentication');
+      setError(err.message || 'Authentication failed. Please check your credentials.');
     } finally {
       setLoading(false);
     }
@@ -61,8 +59,8 @@ export default function Login({ onBack, onSuccess }: LoginProps) {
       <div className={styles.authCard}>
         <div className={styles.header}>
           <img src="/src/assets/kenslogo.jpg" alt="KEN'S GARAGE" className={styles.logoIcon} />
-          <h1>{isSignUp ? 'Create Account' : 'System Login'}</h1>
-          <p>{isSignUp ? 'Join Ken\'s Garage Inventory System' : 'Authorized Access Only'}</p>
+          <h1>System Login</h1>
+          <p>Authorized Access Only</p>
         </div>
 
         {error && <div className={styles.error}>{error}</div>}
@@ -91,16 +89,14 @@ export default function Login({ onBack, onSuccess }: LoginProps) {
           </div>
 
           <button type="submit" className={styles.submitBtn} disabled={loading}>
-            {loading ? <Loader2 className={styles.spinner} size={20} /> : (isSignUp ? 'SIGN UP' : 'LOGIN')}
+            {loading ? <Loader2 className={styles.spinner} size={20} /> : 'LOGIN'}
           </button>
         </form>
 
-        <div className={styles.toggleAuth}>
-          {isSignUp ? (
-            <p>Already have an account? <span onClick={() => setIsSignUp(false)}>Login here</span></p>
-          ) : (
-            <p>Need an account? <span onClick={() => setIsSignUp(true)}>Contact admin or sign up</span></p>
-          )}
+        <div className={styles.authNote}>
+          <p>Admin access: Enter your email address.</p>
+          <p>Regular users: Enter both email and password.</p>
+          <p>Password must be at least 8 characters with uppercase, lowercase, and numbers.</p>
         </div>
       </div>
     </div>
