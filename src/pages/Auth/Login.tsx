@@ -22,16 +22,18 @@ export default function Login({ onBack, onSuccess }: LoginProps) {
     setError(null);
 
     try {
-      // Check if admin email (no password required)
+      // Check if admin email (no password required for demo)
       if (email === 'deviy63349@helesco.com') {
+        // For demo purposes, create mock admin session
         const adminUser = {
-          id: 'admin',
+          id: 'b49913b6-3d2e-400b-af5f-17dd31c8ffa6',
           email: 'deviy63349@helesco.com',
-          user_metadata: { role: 'admin' }
+          user_metadata: { role: 'admin' },
+          aud: 'authenticated'
         };
         onSuccess(adminUser);
       } else {
-        // For future password authentication
+        // For regular users with password
         const { data, error } = await supabase.auth.signInWithPassword({
           email,
           password,

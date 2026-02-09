@@ -121,7 +121,24 @@ export default function Overview({ items }: OverviewProps) {
     }
   });
 
-  // 2. Add New Items to Activities
+  // 2. Add Restocked Items to Activities
+  items.forEach(item => {
+    if ((item as any).restocked_at) {
+      const restockDate = new Date((item as any).restocked_at);
+      if (filterActivitiesByDate(restockDate)) {
+        const restockQuantity = (item as any).restock_quantity || 0;
+        activities.push({
+          type: 'restock',
+          title: 'ITEM RESTOCKED',
+          description: `${item.name} (+${restockQuantity} units)`,
+          time: formatRelativeTime(restockDate),
+          timestamp: restockDate
+        });
+      }
+    }
+  });
+
+  // 3. Add New Items to Activities
   items.forEach(item => {
     if ((item as any).created_at) {
       const addedDate = new Date((item as any).created_at);

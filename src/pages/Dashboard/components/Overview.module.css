@@ -200,6 +200,7 @@
 
 .activityDot.sale { background-color: var(--brand-neon); box-shadow: 0 0 10px var(--brand-neon-glow); }
 .activityDot.added { background-color: #3b82f6; }
+.activityDot.restock { background-color: #10b981; }
 .activityDot.alert { background-color: #ef4444; }
 
 .activityContent {
