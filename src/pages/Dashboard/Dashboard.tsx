@@ -286,7 +286,7 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
       {/* MOBILE HEADER */}
       <header className={styles.mobileHeader}>
         <div className={styles.mobileLogo} onClick={onGoToHome}>
-          <img src="/src/assets/kenslogo.jpg" alt="KEN'S GARAGE" className={styles.mobileLogoImage} />
+          <img src="/kenslogo.jpg" alt="KEN'S GARAGE" className={styles.mobileLogoImage} />
         </div>
         <button className={styles.menuBtn} onClick={() => setIsMobileMenuOpen(true)}>
           <Menu size={24} />

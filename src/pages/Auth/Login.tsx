@@ -58,7 +58,7 @@ export default function Login({ onBack, onSuccess }: LoginProps) {
 
       <div className={styles.authCard}>
         <div className={styles.header}>
-          <img src="/src/assets/kenslogo.jpg" alt="KEN'S GARAGE" className={styles.logoIcon} />
+          <img src="/kenslogo.jpg" alt="KEN'S GARAGE" className={styles.logoIcon} />
           <h1>System Login</h1>
           <p>Authorized Access Only</p>
         </div>
