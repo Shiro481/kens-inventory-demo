@@ -14,7 +14,7 @@ export default function Home({ onAccessDashboard }: HomeProps) {
       {/* Navigation / Header */}
       <nav className={styles.nav}>
         <div className={styles.logo}>
-          <img src="../src/assets/kenslogo.jpg" alt="KEN'S GARAGE" className={styles.logoImage} />
+          <img src="/src/assets/kenslogo.jpg" alt="KEN'S GARAGE" className={styles.logoImage} />
           <div className={styles.logoText}>
             <span className={styles.brandName}>KEN'S GARAGE</span>
             <span className={styles.version}>SYSTEM V2.0</span>

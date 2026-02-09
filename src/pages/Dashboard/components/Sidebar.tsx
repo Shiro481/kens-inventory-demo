@@ -32,7 +32,7 @@ export default function Sidebar({ activeView, onViewChange, onGoToHome, onLogout
       <aside className={`${styles.sidebar} ${isOpen ? styles.sidebarOpen : ''}`}>
         <div className={styles.sidebarHeader}>
           <div className={styles.logo} onClick={onGoToHome} style={{ cursor: onGoToHome ? 'pointer' : 'default' }}>
-            <img src="../src/assets/kenslogo.jpg" alt="KEN'S GARAGE" className={styles.logoImage} />
+            <img src="/src/assets/kenslogo.jpg" alt="KEN'S GARAGE" className={styles.logoImage} />
             <span className={styles.logoText}>{settings.store_name}</span>
           </div>
           <button className={styles.closeBtn} onClick={onClose}>
