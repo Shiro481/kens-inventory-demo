@@ -125,6 +125,7 @@ export default function Overview({ items }: OverviewProps) {
   items.forEach(item => {
     if ((item as any).restocked_at) {
       const restockDate = new Date((item as any).restocked_at);
+      console.log('Processing restock item:', item.name, 'Date:', restockDate, 'Filter:', filterActivitiesByDate(restockDate));
       if (filterActivitiesByDate(restockDate)) {
         const restockQuantity = (item as any).restock_quantity || 0;
         activities.push({

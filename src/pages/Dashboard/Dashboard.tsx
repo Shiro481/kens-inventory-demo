@@ -179,11 +179,6 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
       }
     } else {
       // HANDLE UPDATE
-      setItems(items.map(item => 
-        item.id === updatedItem.id ? updatedItem : item
-      ));
-
-      // Simplified: Check keys on the original item we are updating
       const original = items.find(i => i.id === updatedItem.id);
       const keys = original ? Object.keys(original) : [];
       const payload: any = {
@@ -199,6 +194,14 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
       if (keys.includes('minQuantity')) payload.minQuantity = minVal;
       else if (keys.includes('min_qty')) payload.min_qty = minVal;
 
+      // Check if quantity increased (restock) and update restock fields
+      const originalQty = original?.stock ?? original?.quantity ?? 0;
+      const newQty = stockVal ?? 0;
+      if (newQty > originalQty) {
+        payload.restocked_at = new Date().toISOString();
+        payload.restock_quantity = newQty - originalQty;
+      }
+
       const { error } = await supabase
         .from('Parts')
         .update(payload)
@@ -208,6 +211,9 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
         console.error('Error updating item:', error);
         alert(`Error saving: ${error.message}`);
         fetchParts(); // Revert on error
+      } else {
+        // Refetch data to get latest restock information
+        await fetchParts();
       }
     }
     
