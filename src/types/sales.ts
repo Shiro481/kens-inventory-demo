@@ -1,8 +1,10 @@
 export interface SaleItem {
   id: number;
   name: string;
+  sku?: string;
   price: number;
   quantity: number;
+  subtotal?: number;
 }
 
 export interface Sale {
@@ -13,4 +15,10 @@ export interface Sale {
   subtotal: number;
   tax: number;
   payment_method: string;
+  receipt_number?: string;
+  transaction_status?: string;
+  customer_name?: string;
+  customer_email?: string;
+  staff_id?: string;
+  notes?: string;
 }

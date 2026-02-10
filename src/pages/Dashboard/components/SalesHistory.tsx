@@ -4,11 +4,14 @@ import styles from './SalesHistory.module.css';
 import { supabase } from '../../../lib/supabase';
 import { useSettings } from '../../../context/SettingsContext';
 import type { Sale } from '../../../types/sales';
+import TransactionDetailModal from './TransactionDetailModal';
 
 export default function SalesHistory() {
   const [sales, setSales] = useState<Sale[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
+  const [selectedTransaction, setSelectedTransaction] = useState<Sale | null>(null);
+  const [isTransactionModalOpen, setIsTransactionModalOpen] = useState(false);
 
   useEffect(() => {
     fetchSales();
@@ -30,6 +33,16 @@ export default function SalesHistory() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleViewTransaction = (sale: Sale) => {
+    setSelectedTransaction(sale);
+    setIsTransactionModalOpen(true);
+  };
+
+  const handleCloseTransactionModal = () => {
+    setIsTransactionModalOpen(false);
+    setSelectedTransaction(null);
   };
 
   const filteredSales = sales.filter(sale => {
@@ -114,7 +127,11 @@ export default function SalesHistory() {
                 </span>
                 <span className={styles.payment}>{sale.payment_method.toUpperCase()}</span>
                 <span className={styles.total}>{settings.currency_symbol}{sale.total.toFixed(2)}</span>
-                <button className={styles.receiptBtn}>
+                <button 
+                  className={styles.receiptBtn}
+                  onClick={() => handleViewTransaction(sale)}
+                  title="View Transaction Details"
+                >
                   <FileText size={18} />
                 </button>
               </div>
@@ -122,6 +139,12 @@ export default function SalesHistory() {
           )}
         </div>
       </div>
+
+      <TransactionDetailModal
+        isOpen={isTransactionModalOpen}
+        transaction={selectedTransaction}
+        onClose={handleCloseTransactionModal}
+      />
     </div>
   );
 }
