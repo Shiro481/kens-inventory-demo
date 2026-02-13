@@ -15,6 +15,7 @@ import SalesHistory from './components/SalesHistory';
 import Analytics from './components/Analytics';
 import Suppliers from './components/Suppliers';
 import Settings from './components/Settings';
+import WorkOrders from './components/WorkOrders';
 import DeleteConfirmModal from './components/DeleteConfirmModal';
 
 interface DashboardProps {
@@ -22,6 +23,11 @@ interface DashboardProps {
   onLogout?: () => void;
 }
 
+/**
+ * Dashboard component - Main application dashboard with navigation and inventory management
+ * @param onGoToHome - Callback function to navigate back to home page
+ * @param onLogout - Callback function to handle user logout
+ */
 export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
   const [items, setItems] = useState<InventoryItem[]>([]);
   const [error, setError] = useState<string | null>(null);
@@ -53,19 +59,59 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
     fetchParts();
   }, []);
 
+  /**
+   * Fetch automotive lights data from Supabase database
+   * Updates the items state with fetched data or sets error state
+   */
   async function fetchParts() {
     if (!supabase) return;
 
     try {
-      const { data, error } = await supabase
-        .from('Parts')
-        .select('*');
+      const { data: rawData, error } = await supabase
+        .from('products')
+        .select(`
+          *,
+          product_categories(name),
+          bulb_type_display(display_name),
+          suppliers(name),
+          product_bulb_variants(count)
+        `);
       
       if (error) {
-        console.error('Error fetching parts:', error);
-        setError(`Error fetching parts: ${error.message}`);
+        console.error('Error fetching products:', error);
+        setError(`Error fetching products: ${error.message}`);
       } else {
-        setItems(data as unknown as InventoryItem[]);
+        // Transform the data to match InventoryItem interface
+        const transformedData = rawData.map((item: any) => ({
+          id: parseInt(item.id.toString().replace('-', '').substring(0, 8), 16) % 1000000,
+          uuid: item.id,
+          name: item.name,
+          sku: item.sku,
+          price: item.selling_price,
+          stock: item.stock_quantity,
+          quantity: item.stock_quantity,
+          minQuantity: item.min_stock_level,
+          min_qty: item.min_stock_level,
+          category: item.product_categories?.name,
+          brand: item.brand,
+          description: item.description,
+          image_url: item.image_url,
+          barcode: item.barcode,
+          cost_price: item.cost_price,
+          voltage: item.voltage,
+          wattage: item.wattage,
+          color_temperature: item.color_temperature,
+          lumens: item.lumens,
+          beam_type: item.beam_type,
+          bulb_type: item.bulb_type || item.specifications?.socket || item.bulb_type_display?.display_name, // Prefer column/specs
+          specifications: item.specifications,
+          supplier: item.suppliers?.name,
+          has_variants: item.has_variants,
+          variant_count: item.product_bulb_variants?.[0]?.count || 0,
+          created_at: item.created_at,
+          updated_at: item.updated_at
+        }));
+        setItems(transformedData);
       }
     } catch (err) {
       console.error('Unexpected error:', err);
@@ -73,6 +119,11 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
     }
   }
 
+  /**
+   * Handle delete operation for an inventory item
+   * Opens delete confirmation modal with the selected item
+   * @param id - The ID of the item to delete
+   */
   const handleDelete = (id: number) => {
     const item = items.find(i => i.id === id);
     if (item) {
@@ -81,25 +132,29 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
     }
   };
 
+  /**
+   * Confirm and execute the delete operation
+   * Removes product from database and updates local state
+   */
   const confirmDelete = async () => {
     if (!supabase || !itemToDelete) return;
 
     try {
       setIsDeleting(true);
       const { error } = await supabase
-        .from('Parts')
+        .from('products')
         .delete()
         .eq('id', itemToDelete.id);
 
       if (error) {
-        console.error('Error deleting item:', error);
-        alert(`Error deleting item: ${error.message}`);
-        fetchParts();
+        console.error('Error deleting product:', error);
+        alert(`Error deleting product: ${error.message}`);
       } else {
         setItems(items.filter(item => item.id !== itemToDelete.id));
       }
     } catch (err) {
       console.error('Unexpected error:', err);
+      alert('An unexpected error occurred while deleting.');
     } finally {
       setIsDeleting(false);
       setIsDeleteModalOpen(false);
@@ -107,6 +162,11 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
     }
   };
 
+  /**
+   * Handle edit click for an inventory item
+   * Opens edit modal with the selected item data
+   * @param id - The ID of the item to edit
+   */
   const handleEditClick = (id: number) => {
     const item = items.find(i => i.id === id);
     if (item) {
@@ -115,11 +175,19 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
     }
   };
 
+  /**
+   * Handle modal close operation
+   * Resets modal state and clears editing item
+   */
   const handleModalClose = () => {
     setIsEditModalOpen(false);
     setEditingItem(null);
   };
 
+  /**
+   * Handle add new item operation
+   * Opens edit modal with empty item template for creation
+   */
   const handleAddItem = () => {
     setEditingItem({
       id: 0, // 0 indicates a new item
@@ -134,6 +202,11 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
     setIsEditModalOpen(true);
   };
 
+  /**
+   * Handle save operation for create/update automotive lights
+   * Creates new items or updates existing ones in the database
+   * @param updatedItem - The item data to save (create or update)
+   */
   const handleSave = async (updatedItem: InventoryItem) => {
     if (!supabase) return;
 
@@ -142,85 +215,140 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
     const stockVal = updatedItem.stock ?? updatedItem.quantity;
 
     if (updatedItem.id === 0) {
-      // FOR CREATE: We don't know schema for sure if empty table, 
-      // but usually we can try to insert into both or just prefer new?
-      // Best bet: Check if items[0] exists to sniff schema, else assume 'minQuantity' is future.
-      // But safe approach: insert object, let Supabase ignore unknown columns? No, it errors.
-      // We will try to rely on 'items' having data. If empty, we might fail if we guess wrong column.
-      // Let's assume 'minQuantity' is the target as requested.
-      
+      // CREATE NEW PRODUCT
       const payload: any = {
         name: updatedItem.name,
         sku: updatedItem.sku,
-        category: updatedItem.category,
-        price: updatedItem.price,
+        barcode: updatedItem.barcode,
+        brand: updatedItem.brand || 'Aftermarket',
+        selling_price: updatedItem.price,
+        cost_price: updatedItem.cost_price || 0,
+        stock_quantity: stockVal,
+        reorder_level: minVal || 10,
+        min_stock_level: minVal || 5,
+        description: updatedItem.description,
+        image_url: updatedItem.image_url,
+        voltage: updatedItem.voltage,
+        wattage: updatedItem.wattage,
+        color_temperature: updatedItem.color_temperature,
+        lumens: updatedItem.lumens,
+        beam_type: updatedItem.beam_type,
+        specifications: { ...(updatedItem.specifications || {}), socket: updatedItem.bulb_type },
       };
 
-      // We can check columns from a previous fetch if items.length > 0
-      const sample = items[0];
-      const keys = sample ? Object.keys(sample) : [];
-      
-      if (keys.includes('stock')) payload.stock = stockVal;
-      else payload.quantity = stockVal;
+      // First, get the category_id
+      let categoryId = null;
+      if (updatedItem.category) {
+        const { data: categoryData } = await supabase
+          .from('product_categories')
+          .select('id')
+          .eq('name', updatedItem.category)
+          .single();
+        categoryId = categoryData?.id;
+      }
 
-      if (keys.includes('minQuantity')) payload.minQuantity = minVal;
-      else payload.min_qty = minVal;
+      if (categoryId) {
+        payload.category_id = categoryId;
+      }
 
       const { data, error } = await supabase
-        .from('Parts')
+        .from('products')
         .insert([payload])
-        .select();
+        .select(`
+          *,
+          product_categories(name),
+          bulb_types(code),
+          suppliers(name)
+        `);
 
       if (error) {
-        console.error('Error creating item:', error);
-        alert(`Error creating item: ${error.message}`);
-      } else if (data) {
-        setItems([...items, data[0] as unknown as InventoryItem]);
+        console.error('Error creating product:', error);
+        alert(`Error creating product: ${error.message}`);
+      } else if (data && data[0]) {
+        // Transform the new item to match InventoryItem interface
+        const newItem = {
+          id: parseInt(data[0].id.toString().replace('-', '').substring(0, 8), 16) % 1000000,
+          uuid: data[0].id, // Crucial: Store real UUID for future updates
+          name: data[0].name,
+          sku: data[0].sku,
+          price: data[0].selling_price,
+          stock: data[0].stock_quantity,
+          quantity: data[0].stock_quantity,
+          minQuantity: data[0].min_stock_level,
+          min_qty: data[0].min_stock_level,
+          category: data[0].product_categories?.name,
+          brand: data[0].brand,
+          description: data[0].description,
+          image_url: data[0].image_url,
+          barcode: data[0].barcode,
+          cost_price: data[0].cost_price,
+          voltage: data[0].voltage,
+          wattage: data[0].wattage,
+          color_temperature: data[0].color_temperature,
+          lumens: data[0].lumens,
+          beam_type: data[0].beam_type,
+          bulb_type: data[0].bulb_types?.code,
+          supplier: data[0].suppliers?.name,
+          created_at: data[0].created_at,
+          updated_at: data[0].updated_at
+        };
+        setItems([...items, newItem]);
       }
     } else {
-      // HANDLE UPDATE
-      const original = items.find(i => i.id === updatedItem.id);
-      const keys = original ? Object.keys(original) : [];
+      // UPDATE EXISTING PRODUCT
       const payload: any = {
         name: updatedItem.name,
         sku: updatedItem.sku,
-        category: updatedItem.category,
-        price: updatedItem.price,
+        barcode: updatedItem.barcode,
+        brand: updatedItem.brand,
+        selling_price: updatedItem.price,
+        cost_price: updatedItem.cost_price,
+        stock_quantity: stockVal,
+        reorder_level: minVal || 10,
+        min_stock_level: minVal || 5,
+        description: updatedItem.description,
+        image_url: updatedItem.image_url,
+        voltage: updatedItem.voltage,
+        wattage: updatedItem.wattage,
+        color_temperature: updatedItem.color_temperature,
+        lumens: updatedItem.lumens,
+        beam_type: updatedItem.beam_type,
+        specifications: { ...(updatedItem.specifications || {}), socket: updatedItem.bulb_type },
       };
 
-      if (keys.includes('stock')) payload.stock = stockVal;
-      else if (keys.includes('quantity')) payload.quantity = stockVal;
-
-      if (keys.includes('minQuantity')) payload.minQuantity = minVal;
-      else if (keys.includes('min_qty')) payload.min_qty = minVal;
-
-      // Check if quantity increased (restock) and update restock fields
-      const originalQty = original?.stock ?? original?.quantity ?? 0;
-      const newQty = stockVal ?? 0;
-      if (newQty > originalQty) {
-        payload.restocked_at = new Date().toISOString();
-        payload.restock_quantity = newQty - originalQty;
+      // Update category if provided
+      if (updatedItem.category) {
+        const { data: categoryData } = await supabase
+          .from('product_categories')
+          .select('id')
+          .eq('name', updatedItem.category)
+          .single();
+        if (categoryData) {
+          payload.category_id = categoryData.id;
+        }
       }
 
       const { error } = await supabase
-        .from('Parts')
+        .from('products')
         .update(payload)
-        .eq('id', updatedItem.id);
+        .eq('id', updatedItem.uuid || updatedItem.id);
       
       if (error) {
-        console.error('Error updating item:', error);
+        console.error('Error updating product:', error);
         alert(`Error saving: ${error.message}`);
-        fetchParts(); // Revert on error
       } else {
-        // Refetch data to get latest restock information
-        await fetchParts();
+        // Refresh the data to get updated values
+        fetchParts();
       }
     }
     
     handleModalClose();
   };
 
-  // Filter, search, and sort items
+  /**
+   * Filter, search, and sort inventory items based on current state
+   * Returns processed array of items for display
+   */
   const filteredItems = items
     .filter(item => {
       // Filter by status
@@ -432,6 +560,8 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
           
           {activeView === 'suppliers' && <Suppliers />}
           
+          {activeView === 'work-orders' && <WorkOrders />}
+          
           {activeView === 'settings' && <Settings />}
         </div>
       </main>
@@ -441,6 +571,15 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
         isOpen={isEditModalOpen}
         item={editingItem}
         categories={Array.from(new Set(items.map(i => i.category).filter(Boolean))) as string[]}
+        bulbTypes={Array.from(new Set([
+          'H1', 'H3', 'H4', 'H7', 'H8', 'H9', 'H11', 'H13', 'H15', 'H16',
+          '9005 (HB3)', '9006 (HB4)', '9012 (HIR2)', '880/881',
+          'D1S', 'D2S', 'D3S', 'D4S',
+          'T10 (W5W)', 'T15 (W16W)', 'T20 (7440/7443)', 'T25 (3156/3157)',
+          '1156 (BA15S)', '1157 (BAY15D)', 'BA9S',
+          'Festoon 31mm', 'Festoon 36mm', 'Festoon 39mm', 'Festoon 41mm',
+          ...items.map(i => i.bulb_type).filter(Boolean) as string[]
+        ])).sort()}
         onClose={handleModalClose}
         onSave={handleSave}
       />

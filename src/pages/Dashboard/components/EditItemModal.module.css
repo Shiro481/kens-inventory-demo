@@ -19,6 +19,10 @@
   position: relative;
   box-shadow: 0 40px 80px rgba(0, 0, 0, 0.8);
   animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  max-height: 85vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
 }
 
 .modalHeader {

@@ -9,6 +9,12 @@ interface InventoryTableProps {
   onDelete: (id: number) => void;
 }
 
+/**
+ * InventoryTable component - Displays inventory items in a table format with edit/delete actions
+ * @param items - Array of inventory items to display
+ * @param onEdit - Callback function to handle edit action for an item
+ * @param onDelete - Callback function to handle delete action for an item
+ */
 export default function InventoryTable({ items, onEdit, onDelete }: InventoryTableProps) {
   return (
     <>
@@ -26,7 +32,11 @@ export default function InventoryTable({ items, onEdit, onDelete }: InventoryTab
         const qty = item.stock ?? item.quantity ?? 0;
         const minQty = item.minQuantity ?? item.min_qty ?? settings.low_stock_threshold;
         
-        // Temporarily override getStatus logic manually to use settings
+        /**
+         * Get dynamic stock status based on quantity and minimum threshold
+         * Uses settings context for low stock threshold
+         * @returns Stock status string
+         */
         const getDynamicStatus = () => {
           if (qty === 0) return 'Out of Stock';
           return qty < minQty ? 'Low Stock' : 'In Stock';

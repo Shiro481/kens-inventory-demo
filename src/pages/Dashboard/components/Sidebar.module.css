@@ -1,21 +1,36 @@
 .sidebar {
-  width: 280px;
+  width: 256px;
   height: 100vh;
   background-color: #000;
-  border-right: 1px solid var(--border-dim);
+  border-right: 1px solid #27272a;
   display: flex;
   flex-direction: column;
-  position: sticky;
+  position: fixed;
   top: 0;
-  z-index: 1000;
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  left: 0;
+  z-index: 50;
+  transition: transform 0.2s ease-in-out;
+}
+
+@media (min-width: 1025px) {
+  .sidebar {
+    position: static;
+    transform: translateX(0) !important;
+  }
+}
+
+.sidebar:hover {
+  transform: translateX(0);
 }
 
 .sidebarHeader {
-  padding: 40px 32px;
+  height: 80px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 0 24px;
+  border-bottom: 1px solid #27272a;
+  gap: 12px;
 }
 
 .logo {
@@ -25,9 +40,10 @@
 }
 
 .logoImage {
-  width: 32px;
-  height: 32px;
+  height: 40px;
+  width: 40px;
   border-radius: 4px;
+  object-fit: contain;
   transition: transform 0.2s ease;
 }
 
@@ -37,112 +53,269 @@
 
 .logoText {
   font-weight: 900;
-  font-size: 14px;
-  letter-spacing: 2px;
+  font-size: 20px;
+  letter-spacing: -0.025em;
   color: #fff;
+  text-transform: uppercase;
 }
 
 .closeBtn {
   display: none; /* Desktop hidden */
+  background: transparent;
+  border: none;
+  color: #71717a;
+  font-size: 18px;
+  font-weight: 500;
+  padding: 8px;
+  border-radius: 0;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.closeBtn:hover {
+  color: #fff;
+  transform: scale(1.05);
 }
 
 .nav {
+  padding: 16px;
+  overflow-y: auto;
   flex: 1;
+  max-height: calc(100vh - 140px);
+}
+
+.navSection {
+  margin-bottom: 16px;
+}
+
+.sectionTitle {
+  margin-bottom: 8px;
   padding: 0 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #71717a;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .navItem {
   display: flex;
   align-items: center;
-  gap: 16px;
-  padding: 14px 16px;
-  color: #555;
-  text-decoration: none;
-  font-weight: 900;
-  font-size: 11px;
-  letter-spacing: 1.5px;
-  transition: all 0.2s;
-  border: none;
+  gap: 12px;
+  padding: 12px 16px;
+  border-radius: 0;
+  border-left: 2px solid transparent;
   background: transparent;
+  border: none;
+  color: #71717a;
+  text-decoration: none;
   cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
   width: 100%;
   text-align: left;
 }
 
+.navItem::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, transparent, rgba(16, 185, 129, 0.1));
+  transform: translateY(100%);
+  transition: transform 0.3s ease;
+  border-radius: 0;
+  z-index: -1;
+}
+
 .navItem:hover {
+  background: #111827;
   color: #fff;
-  background-color: #050505;
+  border-left: 2px solid transparent;
+}
+
+.navItem:hover::before {
+  transform: translateY(0);
 }
 
 .active {
-  color: var(--brand-neon);
-  background-color: #0a0a0a;
-  border-left: 2px solid var(--brand-neon);
+  background: #111827;
+  border-left: 2px solid #fff;
+  color: #fff;
 }
 
-.footer {
-  padding: 32px;
-  border-top: 1px solid var(--border-dim);
+.activeWorkOrders {
+  background: #111827;
+  border-left: 2px solid #10b981;
+  color: #10b981;
+}
+
+.navItem span {
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+  position: relative;
+  z-index: 1;
+}
+
+.navItem svg {
+  width: 20px;
+  height: 20px;
+  color: inherit;
+  transition: transform 0.2s ease;
+}
+
+.navItem:hover svg {
+  transform: scale(1.1);
 }
 
 .userSection {
   display: flex;
   align-items: center;
-  gap: 12px;
-}
-
-.userAvatar {
-  width: 36px;
-  height: 36px;
-  background-color: #111;
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 900;
-  font-size: 14px;
+  justify-content: space-between;
+  padding: 24px;
+  border-top: 1px solid #27272a;
+  background: #000;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 10;
 }
 
 .userInfo {
-  flex: 1;
+  overflow: hidden;
 }
 
 .userName {
-  font-weight: 900;
-  font-size: 12px;
+  font-size: 14px;
+  font-weight: 700;
   color: #fff;
-  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .userRole {
-  font-size: 9px;
-  color: #444;
-  text-transform: uppercase;
-  font-weight: 900;
-  letter-spacing: 1px;
+  font-size: 12px;
+  color: #71717a;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.logoutBtn {
-  background: transparent;
+.footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  border-top: 1px solid #27272a;
+  padding: 24px;
+  background: #000;
+  z-index: 10;
+}
+
+/* Mobile Menu Toggle */
+.mobileMenuToggle {
+  display: none;
+  background: none;
   border: none;
-  color: #444;
+  padding: 8px;
   cursor: pointer;
-  transition: color 0.2s;
+  z-index: 1001;
 }
 
-.logoutBtn:hover {
-  color: #ef4444;
+.hamburger {
+  width: 4px;
+  height: 2px;
+  background: #fff;
+  border-radius: 1px;
+  position: relative;
 }
 
-.logoutBtn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
+.hamburger::before,
+.hamburger::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 1px;
+  background: #fff;
+  transition: all 0.3s ease;
 }
 
-/* Logout Confirmation Modal */
+.hamburger::before {
+  top: 0;
+  left: 0;
+  transform: translateY(-6px);
+}
+
+.hamburger::after {
+  bottom: 0;
+  left: 0;
+  transform: translateY(6px);
+}
+
+.mobileMenuToggle:hover .hamburger::before {
+  transform: translateY(-8px);
+}
+
+.mobileMenuToggle:hover .hamburger::after {
+  transform: translateY(8px);
+}
+
+@media (max-width: 1024px) {
+  .sidebar {
+    transform: translateX(-100%);
+  }
+  
+  .sidebar:hover {
+    transform: translateX(-100%);
+  }
+  
+  .sidebarOpen {
+    transform: translateX(0);
+  }
+  
+  .closeBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    color: #71717a;
+    cursor: pointer;
+  }
+  
+  .sidebarHeader {
+    padding: 0 24px;
+  }
+  
+  .nav {
+    padding: 16px;
+  }
+  
+  .navItem {
+    padding: 12px 16px;
+  }
+  
+  .userSection {
+    padding: 24px;
+  }
+}
+
+@media (max-width: 768px) {
+  .mobileMenuToggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
 .logoutModalOverlay {
   position: fixed;
   inset: 0;

@@ -8,9 +8,21 @@ interface TransactionDetailModalProps {
   onClose: () => void;
 }
 
+/**
+ * TransactionDetailModal component - Modal for displaying detailed transaction information
+ * Shows comprehensive sale transaction details including items, pricing, and payment info
+ * @param isOpen - Whether the modal is open
+ * @param transaction - The sale transaction data to display
+ * @param onClose - Callback function to close the modal
+ */
 export default function TransactionDetailModal({ isOpen, transaction, onClose }: TransactionDetailModalProps) {
   if (!isOpen || !transaction) return null;
 
+  /**
+   * Format date string to localized date/time format
+   * @param dateString - ISO date string to format
+   * @returns Formatted date string
+   */
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleString('en-US', {
       year: 'numeric',
@@ -21,6 +33,11 @@ export default function TransactionDetailModal({ isOpen, transaction, onClose }:
     });
   };
 
+  /**
+   * Format number as currency string
+   * @param amount - Number to format as currency
+   * @returns Formatted currency string
+   */
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
@@ -28,6 +45,11 @@ export default function TransactionDetailModal({ isOpen, transaction, onClose }:
     }).format(amount);
   };
 
+  /**
+   * Get appropriate status icon based on transaction status
+   * @param status - Transaction status string
+   * @returns React icon component with appropriate styling
+   */
   const getStatusIcon = (status: string) => {
     switch (status.toLowerCase()) {
       case 'completed':

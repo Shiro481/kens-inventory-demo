@@ -4,6 +4,10 @@ import styles from './Suppliers.module.css';
 import { supabase } from '../../../lib/supabase';
 import type { Supplier } from '../../../types/inventory';
 
+/**
+ * Suppliers component - Supplier management interface
+ * Displays and manages supplier information with search capabilities
+ */
 export default function Suppliers() {
   const [suppliers, setSuppliers] = useState<Supplier[]>([]);
   const [loading, setLoading] = useState(true);
@@ -13,6 +17,10 @@ export default function Suppliers() {
     fetchSuppliers();
   }, []);
 
+  /**
+   * Fetch suppliers data from Supabase database
+   * Updates suppliers state and handles loading/error states
+   */
   async function fetchSuppliers() {
     if (!supabase) return;
     setLoading(true);
@@ -31,6 +39,10 @@ export default function Suppliers() {
     }
   }
 
+  /**
+   * Filter suppliers based on search query
+   * Searches in name, category, and contact person fields
+   */
   const filteredSuppliers = suppliers.filter(s => 
     (s.name || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
     (s.category || '').toLowerCase().includes(searchQuery.toLowerCase()) ||

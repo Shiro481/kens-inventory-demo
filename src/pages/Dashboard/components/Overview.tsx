@@ -20,6 +20,10 @@ interface ActivityItem {
 
 type ActivityFilter = 'today' | 'week' | 'month' | 'year' | 'all';
 
+/**
+ * Overview component - Dashboard overview with statistics, charts, and recent activity
+ * @param items - Array of inventory items for statistics calculation
+ */
 export default function Overview({ items }: OverviewProps) {
   const [sales, setSales] = useState<Sale[]>([]);
   const [loading, setLoading] = useState(true);
@@ -30,7 +34,12 @@ export default function Overview({ items }: OverviewProps) {
   // Let's use a local helper if needed or assume lines 15 in Pos.tsx works.
   const { settings } = useSettings();
 
-  // Inverted status check using settings
+  /**
+   * Get local stock status based on quantity and minimum threshold
+   * Uses settings context for low stock threshold
+   * @param item - Inventory item to check
+   * @returns Stock status string
+   */
   const getLocalStatus = (item: InventoryItem) => {
     const stock = item.stock ?? item.quantity ?? 0;
     const min = item.minQuantity ?? item.min_qty ?? settings.low_stock_threshold;
@@ -43,6 +52,10 @@ export default function Overview({ items }: OverviewProps) {
     fetchSales();
   }, []);
 
+  /**
+   * Fetch sales data from Supabase for overview statistics
+   * Updates sales state and handles loading/error states
+   */
   const fetchSales = async () => {
     if (!supabase) return;
     try {

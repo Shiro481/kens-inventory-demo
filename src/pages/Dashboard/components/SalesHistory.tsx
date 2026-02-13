@@ -6,6 +6,10 @@ import { useSettings } from '../../../context/SettingsContext';
 import type { Sale } from '../../../types/sales';
 import TransactionDetailModal from './TransactionDetailModal';
 
+/**
+ * SalesHistory component - Displays and manages sales transaction history
+ * Provides search, filtering, and detailed transaction viewing capabilities
+ */
 export default function SalesHistory() {
   const [sales, setSales] = useState<Sale[]>([]);
   const [loading, setLoading] = useState(true);
@@ -17,6 +21,10 @@ export default function SalesHistory() {
     fetchSales();
   }, []);
 
+  /**
+   * Fetch sales data from Supabase database
+   * Updates sales state and handles loading/error states
+   */
   const fetchSales = async () => {
     if (!supabase) return;
     try {
@@ -35,16 +43,29 @@ export default function SalesHistory() {
     }
   };
 
+  /**
+   * Handle viewing transaction details
+   * Opens transaction detail modal with selected sale data
+   * @param sale - The sale transaction to view
+   */
   const handleViewTransaction = (sale: Sale) => {
     setSelectedTransaction(sale);
     setIsTransactionModalOpen(true);
   };
 
+  /**
+   * Handle closing transaction detail modal
+   * Resets selected transaction and modal state
+   */
   const handleCloseTransactionModal = () => {
     setIsTransactionModalOpen(false);
     setSelectedTransaction(null);
   };
 
+  /**
+   * Filter sales based on search query
+   * Searches in transaction ID, customer name, and item names
+   */
   const filteredSales = sales.filter(sale => {
     const query = searchQuery.toLowerCase();
     return (

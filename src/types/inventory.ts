@@ -1,13 +1,32 @@
 export interface InventoryItem {
   id: number;
+  uuid?: string; // Original Supabase UUID
   name: string;
   sku?: string;
+  has_variants?: boolean;
+  variant_count?: number; // Number of variants available
   category?: string;
   price: number;
   stock?: number;
   quantity?: number;
   min_qty?: number;
   minQuantity?: number; // New column
+  
+  // Extended fields for automotive
+  brand?: string;
+  description?: string;
+  image_url?: string;
+  barcode?: string;
+  cost_price?: number;
+  voltage?: number;
+  wattage?: number;
+  color_temperature?: number | string; // Can be number (6000) or string ("6000K")
+  lumens?: number;
+  beam_type?: string;
+  bulb_type?: string;
+  supplier?: string;
+  specifications?: any;
+
   [key: string]: any;
 }
 

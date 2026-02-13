@@ -9,6 +9,14 @@ interface DeleteConfirmModalProps {
   loading?: boolean;
 }
 
+/**
+ * DeleteConfirmModal component - Confirmation modal for deleting inventory items
+ * @param isOpen - Whether the modal is open
+ * @param itemName - Name of the item to be deleted
+ * @param onClose - Callback function to close the modal
+ * @param onConfirm - Callback function to confirm deletion
+ * @param loading - Whether the delete operation is in progress
+ */
 export default function DeleteConfirmModal({ 
   isOpen, 
   itemName, 

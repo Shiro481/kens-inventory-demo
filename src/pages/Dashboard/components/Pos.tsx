@@ -4,9 +4,35 @@ import styles from './Pos.module.css';
 import type { InventoryItem } from '../../../types/inventory';
 import { supabase } from '../../../lib/supabase';
 import { useSettings } from '../../../context/SettingsContext';
+import ItemDetailModal from './ItemDetailModal';
+import VariantSelectionModal from './VariantSelectionModal';
 
 interface CartItem extends InventoryItem {
   cartQuantity: number;
+  variant_id?: string;
+  variant_display_name?: string;
+  variant_price?: number;
+}
+
+interface ProductVariant {
+  product_id: string;
+  sku: string;
+  base_name: string;
+  brand: string;
+  base_price: number;
+  category: string;
+  image_url: string;
+  color_temperature?: string | number;
+  variants: Array<{
+    variant_id: string;
+    display_name: string;
+    compatibility_list: string[];
+    final_price: number;
+    stock_quantity: number;
+    is_primary: boolean;
+    variant_description?: string;
+    color_temperature?: string;
+  }>;
 }
 
 interface PosProps {
@@ -14,6 +40,11 @@ interface PosProps {
   onSaleComplete?: () => void;
 }
 
+/**
+ * Pos component - Point of Sale interface for processing sales transactions
+ * @param items - Array of inventory items available for sale
+ * @param onSaleComplete - Callback function called after successful sale
+ */
 export default function Pos({ items, onSaleComplete }: PosProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const [cart, setCart] = useState<CartItem[]>([]);
@@ -22,7 +53,15 @@ export default function Pos({ items, onSaleComplete }: PosProps) {
   const [paymentSuccess, setPaymentSuccess] = useState(false);
   const [lastTotal, setLastTotal] = useState(0);
   const [paymentMethod, setPaymentMethod] = useState<'Cash' | 'Credit Card'>('Cash');
+  const [selectedItem, setSelectedItem] = useState<InventoryItem | null>(null);
+  const [showItemDetailModal, setShowItemDetailModal] = useState(false);
+  const [showVariantModal, setShowVariantModal] = useState(false);
+  const [selectedProductForVariant, setSelectedProductForVariant] = useState<ProductVariant | null>(null);
 
+  /**
+   * Filter inventory items based on search query
+   * Searches in name, SKU, and category fields
+   */
   const filteredItems = items.filter(item => {
     const query = searchQuery.toLowerCase();
     return (
@@ -32,20 +71,183 @@ export default function Pos({ items, onSaleComplete }: PosProps) {
     );
   });
 
-  const addToCart = (item: InventoryItem) => {
+  /**
+   * Add item to cart with stock validation
+   * @param item - Inventory item to add to cart
+   */
+  const addToCart = (item: InventoryItem, quantity: number = 1) => {
     const stock = item.stock ?? item.quantity ?? 0;
     if (stock <= 0) return;
 
     setCart(prev => {
       const existing = prev.find(i => i.id === item.id);
       if (existing) {
-        if (existing.cartQuantity >= stock) return prev;
-        return prev.map(i => i.id === item.id ? { ...i, cartQuantity: i.cartQuantity + 1 } : i);
+        if (existing.cartQuantity + quantity > stock) return prev;
+        return prev.map(i => i.id === item.id ? { ...i, cartQuantity: i.cartQuantity + quantity } : i);
       }
-      return [...prev, { ...item, cartQuantity: 1 }];
+      return [...prev, { ...item, cartQuantity: quantity }];
     });
   };
 
+  /**
+   * Handle item click - check for variants or show details
+   * @param item - Inventory item that was clicked
+   */
+  const handleItemClick = async (item: InventoryItem) => {
+    // Check if item has variants based on database flag
+    // (with fallback to previous logic if flag is missing for some reason)
+    const hasVariants = item.has_variants || 
+               item.name?.toLowerCase().includes('led') ||
+               item.name?.toLowerCase().includes('headlight') ||
+               item.name?.toLowerCase().includes('fog') ||
+               item.description?.includes('has_variants": true');
+
+    if (hasVariants && item.uuid) {
+      if (!supabase) {
+        console.error("Supabase client is not initialized");
+        setSelectedItem(item);
+        setShowItemDetailModal(true);
+        return;
+      }
+
+      try {
+        setLoading(true);
+        // Fetch variants from the database view
+        const { data: variants, error } = await supabase
+          .from('pos_product_variants')
+          .select('*')
+          .eq('product_id', item.uuid);
+
+        if (error) throw error;
+
+        if (variants && variants.length > 0) {
+          // If only 1 variant, we still want to show the modal so user can see details
+          // before adding to cart, per user request "make all items show full details when clicked"
+          
+          
+          // Map to ProductVariant structure for multiple variants (or single)
+          const productVariants: ProductVariant = {
+            product_id: item.uuid,
+            sku: item.sku || '',
+            base_name: item.name || '',
+            brand: item.brand || '',
+            base_price: item.price || 0,
+            category: item.category || '',
+            image_url: item.image_url || '',
+            color_temperature: item.color_temperature,
+            variants: variants.map(v => ({
+              variant_id: v.variant_id,
+              display_name: v.display_name,
+              compatibility_list: v.compatibility_list || [],
+              final_price: v.final_price,
+              stock_quantity: v.stock_quantity,
+              is_primary: v.is_primary,
+              variant_description: v.variant_description,
+              color_temperature: v.color_temperature
+            }))
+          };
+          
+          setSelectedProductForVariant(productVariants);
+          setShowVariantModal(true);
+        } else {
+          // No variants found in DB, fall back to standard modal
+           setSelectedItem(item);
+           setShowItemDetailModal(true);
+        }
+      } catch (err) {
+        console.error('Error fetching variants:', err);
+        // Fallback on error
+        setSelectedItem(item);
+        setShowItemDetailModal(true);
+      } finally {
+        setLoading(false);
+      }
+    } else {
+        // Simple add to cart - no variant selection
+        setSelectedItem(item);
+        setShowItemDetailModal(true);
+    }
+  };
+
+  /**
+   * Handle variant selection from modal with quantity
+   * @param variant - Selected variant with compatibility
+   * @param quantity - Selected quantity
+   */
+  const handleVariantSelect = (variant: any, quantity: number) => {
+    if (!selectedProductForVariant) return;
+
+    // Create a cart item with variant information
+    const variantCartItem: CartItem = {
+      id: parseInt(selectedProductForVariant.product_id.replace('-', '').substring(0, 8), 16) % 1000000,
+      name: selectedProductForVariant.base_name,
+      sku: selectedProductForVariant.sku,
+      price: variant.final_price,
+      stock: variant.stock_quantity,
+      quantity: variant.stock_quantity,
+      cartQuantity: quantity,
+      category: selectedProductForVariant.category,
+      brand: selectedProductForVariant.brand,
+      description: `${selectedProductForVariant.base_name} - ${variant.display_name}`,
+      image_url: selectedProductForVariant.image_url,
+      variant_id: variant.variant_id,
+      variant_display_name: variant.display_name,
+      variant_price: variant.final_price
+    };
+
+    setCart(prev => {
+      const existing = prev.find(i => 
+        i.id === variantCartItem.id && 
+        i.variant_id === variant.variant_id
+      );
+      
+      if (existing) {
+        const newQuantity = existing.cartQuantity + quantity;
+        if (newQuantity > variant.stock_quantity) return prev;
+        return prev.map(i => 
+          (i.id === variantCartItem.id && i.variant_id === variant.variant_id) 
+            ? { ...i, cartQuantity: newQuantity } 
+            : i
+        );
+      }
+      
+      return [...prev, variantCartItem];
+    });
+
+    setShowVariantModal(false);
+    setSelectedProductForVariant(null);
+  };
+
+  /**
+   * Close variant modal
+   */
+  const closeVariantModal = () => {
+    setShowVariantModal(false);
+    setSelectedProductForVariant(null);
+  };
+
+  /**
+   * Handle add to cart from modal
+   * @param item - Inventory item to add
+   * @param quantity - Quantity to add
+   */
+  const handleAddToCartFromModal = (item: InventoryItem, quantity: number) => {
+    addToCart(item, quantity);
+  };
+
+  /**
+   * Close item detail modal
+   */
+  const closeItemDetailModal = () => {
+    setShowItemDetailModal(false);
+    setSelectedItem(null);
+  };
+
+  /**
+   * Update cart item quantity with stock validation
+   * @param id - Item ID to update
+   * @param delta - Quantity change (positive or negative)
+   */
   const updateCartQuantity = (id: number, delta: number) => {
     setCart(prev => {
       return prev.map(item => {
@@ -61,16 +263,27 @@ export default function Pos({ items, onSaleComplete }: PosProps) {
     });
   };
 
+  /**
+   * Remove item from cart completely
+   * @param id - Item ID to remove
+   */
   const removeFromCart = (id: number) => {
     setCart(prev => prev.filter(i => i.id !== id));
   };
 
+  /**
+   * Handle payment button click - opens payment modal
+   */
   const handlePaymentClick = () => {
     if (cart.length === 0 || loading) return;
     setShowPaymentModal(true);
     setPaymentSuccess(false);
   };
 
+  /**
+   * Confirm and process payment transaction
+   * Updates stock levels and records sale in database
+   */
   const handleConfirmPayment = async () => {
     if (cart.length === 0 || !supabase || loading) return;
     
@@ -81,12 +294,12 @@ export default function Pos({ items, onSaleComplete }: PosProps) {
         const currentStock = item.stock ?? item.quantity ?? 0;
         const newStock = currentStock - item.cartQuantity;
         
-        const payload: any = {};
-        if (Object.keys(item).includes('stock')) payload.stock = newStock;
-        else payload.quantity = newStock;
+        const payload: any = {
+          stock_quantity: newStock
+        };
 
         const { error: updateError } = await supabase
-          .from('Parts')
+          .from('products')
           .update(payload)
           .eq('id', item.id);
 
@@ -168,18 +381,31 @@ export default function Pos({ items, onSaleComplete }: PosProps) {
             <div style={{ width: 4, height: 4, backgroundColor: '#666', borderRadius: '50%', margin: '0 auto' }}></div>
           </button>
         </div>
-
-        <div className={styles.productGrid}>
+          <div className={styles.productGrid}>
           {filteredItems.map(item => {
             const stock = item.stock ?? item.quantity ?? 0;
             const isOutOfStock = stock <= 0;
+            const hasVariants = item.name?.toLowerCase().includes('led') ||
+                       item.name?.toLowerCase().includes('headlight') ||
+                       item.name?.toLowerCase().includes('fog') ||
+                       item.name?.toLowerCase().includes('turn signal') ||
+                       item.name?.toLowerCase().includes('interior') ||
+                       item.name?.toLowerCase().includes('brake') ||
+                       item.description?.includes('has_variants": true') ||
+                       item.sku?.toLowerCase().includes('led') ||
+                       item.sku?.toLowerCase().includes('kit');
             
             return (
               <div 
                 key={item.id} 
-                className={`${styles.productCard} ${isOutOfStock || loading ? styles.outOfStock : ''}`}
-                onClick={() => !isOutOfStock && !loading && addToCart(item)}
+                className={`${styles.productCard} ${isOutOfStock || loading ? styles.outOfStock : ''} ${hasVariants && (item.variant_count || 0) > 1 ? styles.hasVariants : ''}`}
+                onClick={() => !isOutOfStock && !loading && handleItemClick(item)}
+                title={isOutOfStock ? "Out of Stock" : "Select Options"}
               >
+                {hasVariants && (item.variant_count || 0) > 1 && (
+                  <div className={styles.variantBadge}>MULTIPLE OPTIONS</div>
+                )}
+                
                 <div className={styles.sku}>{item.sku || 'NO SKU'}</div>
                 <div className={styles.productName}>{item.name}</div>
                 
@@ -189,15 +415,6 @@ export default function Pos({ items, onSaleComplete }: PosProps) {
                   </div>
                   <div className={styles.price}>{settings.currency_symbol}{(item.price || 0).toFixed(2)}</div>
                 </div>
-
-                {isOutOfStock && (
-                  <div className={styles.outOfStockBadge}>OUT OF STOCK</div>
-                )}
-                
-                {/* Visual indicator for items with low stock or specific status */}
-                {stock > 0 && stock < (item.minQuantity ?? settings.low_stock_threshold) && (
-                   <div style={{ position: 'absolute', top: 12, right: 12, width: 8, height: 8, backgroundColor: '#ff9800', borderRadius: '50%' }}></div>
-                )}
               </div>
             );
           })}
@@ -220,10 +437,17 @@ export default function Pos({ items, onSaleComplete }: PosProps) {
             </div>
           ) : (
             cart.map(item => (
-              <div key={item.id} className={styles.cartItem}>
+              <div key={`${item.id}-${item.variant_id || 'default'}`} className={styles.cartItem}>
                 <div className={styles.cartItemInfo}>
-                  <div className={styles.cartItemName}>{item.name}</div>
-                  <div className={styles.cartItemPrice}>{settings.currency_symbol}{(item.price || 0).toFixed(2)}</div>
+                  <div className={styles.cartItemName}>
+                    {item.name}
+                    {item.variant_display_name && (
+                      <div className={styles.variantInfo}>{item.variant_display_name}</div>
+                    )}
+                  </div>
+                  <div className={styles.cartItemPrice}>
+                    {settings.currency_symbol}{(item.variant_price || item.price || 0).toFixed(2)}
+                  </div>
                 </div>
                 <div className={styles.cartItemQtyControls}>
                   <button 
@@ -373,6 +597,22 @@ export default function Pos({ items, onSaleComplete }: PosProps) {
           </div>
         </div>
       )}
+
+      {/* ITEM DETAIL MODAL */}
+      <ItemDetailModal
+        isOpen={showItemDetailModal}
+        item={selectedItem}
+        onClose={closeItemDetailModal}
+        onAddToCart={handleAddToCartFromModal}
+      />
+
+      {/* VARIANT SELECTION MODAL */}
+      <VariantSelectionModal
+        isOpen={showVariantModal}
+        onClose={closeVariantModal}
+        product={selectedProductForVariant}
+        onVariantSelect={handleVariantSelect}
+      />
     </div>
   );
 }

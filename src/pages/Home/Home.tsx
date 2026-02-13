@@ -1,4 +1,5 @@
-import { ChevronRight, Database, RefreshCw, ShieldCheck } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { ArrowRight, ShieldCheck, Zap, Database } from 'lucide-react';
 import styles from './Home.module.css';
 
 interface HomeProps {
@@ -6,77 +7,108 @@ interface HomeProps {
 }
 
 export default function Home({ onAccessDashboard }: HomeProps) {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   return (
     <div className={styles.container}>
-      {/* Background Overlay */}
-      <div className={styles.overlay}></div>
-      
-      {/* Navigation / Header */}
-      <nav className={styles.nav}>
-        <div className={styles.logo}>
-          <img src="/kenslogo.jpg" alt="KEN'S GARAGE" className={styles.logoImage} />
-          <div className={styles.logoText}>
-            <span className={styles.brandName}>KEN'S GARAGE</span>
-            <span className={styles.version}>SYSTEM V2.0</span>
-          </div>
-        </div>
-        <div className={styles.statusIndicator}>
-          <span className={styles.pulseDot}></span>
-          <span className={styles.statusText}>SYSTEM ONLINE</span>
-          <span className={styles.est}>EST. 2024</span>
-        </div>
-      </nav>
+      {/* Background Image with Overlay */}
+      <div className={styles.backgroundContainer}>
+        <div className={styles.backgroundOverlay} />
+        <div className={styles.backgroundGradient} />
+        <img 
+          src="https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?q=80&w=2672&auto=format&fit=crop"
+          alt="Garage Background" 
+          className={styles.backgroundImage}
+        />
+      </div>
 
-      {/* Hero Section */}
-      <main className={styles.hero}>
-        <h1 className={styles.title}>
-          PRECISION<br />
-          <span className={styles.highlight}>PERFORMANCE</span><br />
-          PERFECTION
-        </h1>
-        
-        <p className={styles.description}>
-          Next-generation inventory management and point of sale<br />
-          system designed for automotive excellence. Streamline<br />
-          your workflow with military-grade precision.
-        </p>
+      {/* Grid Pattern Overlay */}
+      <div className={styles.gridPattern} />
 
-        <div className={styles.ctaGroup}>
-          <button className={styles.primaryBtn} onClick={onAccessDashboard}>
-            ACCESS DASHBOARD <ChevronRight size={20} />
-          </button>
-          <button className={styles.secondaryBtn}>
-            DOCUMENTATION
-          </button>
-        </div>
-      </main>
+      {/* Main Content */}
+      <div className={styles.content}>
+        {/* Header - Slides down and fades in */}
+        <header className={`${styles.header} ${mounted ? styles.headerMounted : ''}`}>
+          <div className={styles.logoSection}>
+            <img src="/kenslogo.jpg" alt="Logo" className={styles.logoImage} />
+            <div className={styles.logoText}>
+              <span className={styles.brandName}>Ken's Garage</span>
+              <span className={styles.version}>System v2.0</span>
+            </div>
+          </div>
+          <div className={styles.statusIndicator}>
+            <span className={styles.statusDot} />
+            <span>System Online</span>
+            <span>Est. 2024</span>
+          </div>
+        </header>
 
-      {/* Footer Features */}
-      <footer className={styles.footer}>
-        <div className={styles.feature}>
-          <ShieldCheck className={styles.featureIcon} size={24} />
-          <div className={styles.featureContent}>
-            <h3>SECURE DATABASE</h3>
-            <p>Enterprise-grade security for all inventory and transaction data.</p>
+        {/* Hero Section */}
+        <main className={styles.hero}>
+          {/* Title - Slides up, delay 300ms */}
+          <div className={`${styles.titleContainer} ${mounted ? styles.titleMounted : ''}`}>
+            <h1 className={styles.title}>
+              Precision <br />
+              <span className={styles.highlight}>Performance</span> <br />
+              Perfection
+            </h1>
           </div>
-        </div>
-        
-        <div className={styles.feature}>
-          <RefreshCw className={styles.featureIcon} size={24} />
-          <div className={styles.featureContent}>
-            <h3>REAL-TIME SYNC</h3>
-            <p>Instant updates across POS and inventory management systems.</p>
-          </div>
-        </div>
+          
+          {/* Subtitle - Slides up, delay 500ms */}
+          <p className={`${styles.description} ${mounted ? styles.descriptionMounted : ''}`}>
+            Next-generation inventory management and point of sale system designed for automotive excellence. Streamline your workflow with military-grade precision.
+          </p>
 
-        <div className={styles.feature}>
-          <Database className={styles.featureIcon} size={24} />
-          <div className={styles.featureContent}>
-            <h3>AUTO-BACKUP</h3>
-            <p>Daily automated backups ensure your business data is never lost.</p>
+          {/* Buttons - Slide up, delay 700ms */}
+          <div className={`${styles.ctaGroup} ${mounted ? styles.ctaMounted : ''}`}>
+            <button 
+              onClick={onAccessDashboard}
+              className={styles.primaryBtn}
+            >
+              <span className={styles.btnContent}>
+                Access Dashboard
+                <ArrowRight className={styles.btnIcon} />
+              </span>
+              <div className={styles.btnBorder} />
+            </button>
+            
+            <button className={styles.secondaryBtn}>
+              Documentation
+            </button>
           </div>
-        </div>
-      </footer>
+        </main>
+
+        {/* Footer / Stats - Slides up, delay 1000ms */}
+        <footer className={`${styles.footer} ${mounted ? styles.footerMounted : ''}`}>
+          <div className={styles.feature}>
+            <div className={styles.featureHeader}>
+              <ShieldCheck className={styles.featureIcon} />
+              <span className={styles.featureTitle}>Secure Database</span>
+            </div>
+            <p className={styles.featureDescription}>Enterprise-grade security for all inventory and transaction data.</p>
+          </div>
+          
+          <div className={styles.feature}>
+            <div className={styles.featureHeader}>
+              <Zap className={styles.featureIcon} />
+              <span className={styles.featureTitle}>Real-time Sync</span>
+            </div>
+            <p className={styles.featureDescription}>Instant updates across POS and inventory management systems.</p>
+          </div>
+
+          <div className={styles.feature}>
+            <div className={styles.featureHeader}>
+              <Database className={styles.featureIcon} />
+              <span className={styles.featureTitle}>Auto-Backup</span>
+            </div>
+            <p className={styles.featureDescription}>Daily automated backups ensure your business data is never lost.</p>
+          </div>
+        </footer>
+      </div>
     </div>
   );
 }

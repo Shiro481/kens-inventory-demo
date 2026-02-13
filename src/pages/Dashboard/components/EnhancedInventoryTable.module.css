@@ -1,0 +1,589 @@
+/* Enhanced Inventory Table Styles for Automotive Lights */
+
+/* Enhanced Table Header */
+.enhancedTableHeader {
+  display: flex;
+  background: #1f2937;
+  border-bottom: 2px solid #374151;
+  padding: 12px 16px;
+  font-weight: 600;
+  color: #e5e7eb;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.enhancedTableHeader span {
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
+}
+
+/* Enhanced Row Container */
+.enhancedRow {
+  background: #111827;
+  border-bottom: 1px solid #374151;
+  transition: all 0.2s ease;
+}
+
+.enhancedRow:hover {
+  background: #1f2937;
+}
+
+/* Main Product Row */
+.mainProductRow {
+  display: flex;
+  align-items: center;
+  padding: 16px;
+  min-height: 80px;
+}
+
+/* Product Column */
+.productColumn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.productHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.productInfo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+}
+
+.productImage {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.productDetails {
+  flex: 1;
+}
+
+.productNameRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.productName {
+  font-weight: 600;
+  color: #f9fafb;
+  font-size: 14px;
+}
+
+.brandBadge {
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: #000;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.productMeta {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 4px;
+}
+
+.skuLabel, .barcodeLabel {
+  color: #9ca3af;
+  font-size: 11px;
+  font-family: 'Courier New', monospace;
+}
+
+.categoryLabel {
+  color: #60a5fa;
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.expandButton {
+  background: none;
+  border: none;
+  color: #6b7280;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.expandButton:hover {
+  background: #374151;
+  color: #e5e7eb;
+}
+
+/* Technical Specs Column */
+.specsColumn {
+  padding: 0 8px;
+}
+
+.specsSummary {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.specItem {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.specLabel {
+  color: #9ca3af;
+  font-size: 11px;
+  min-width: 40px;
+}
+
+.specValue {
+  color: #e5e7eb;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.beamTypeBadge {
+  color: #fff;
+  padding: 2px 6px;
+  border-radius: 10px;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.viewSpecsButton {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: #374151;
+  border: none;
+  color: #e5e7eb;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-top: 4px;
+}
+
+.viewSpecsButton:hover {
+  background: #4b5563;
+}
+
+/* Pricing Column */
+.pricingColumn {
+  padding: 0 8px;
+}
+
+.pricingInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.priceRow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.priceLabel {
+  color: #9ca3af;
+  font-size: 11px;
+  min-width: 35px;
+}
+
+.sellingPrice {
+  color: #10b981;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.costLabel {
+  color: #9ca3af;
+  font-size: 11px;
+  min-width: 35px;
+}
+
+.costPrice {
+  color: #f59e0b;
+  font-size: 12px;
+}
+
+.profitMargin {
+  margin-top: 2px;
+}
+
+.positiveMargin {
+  color: #10b981;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.negativeMargin {
+  color: #ef4444;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+/* Stock Column */
+.stockColumn {
+  padding: 0 8px;
+}
+
+.stockInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.stockQuantity {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+
+.stockNumber {
+  font-size: 18px;
+  font-weight: 700;
+  color: #e5e7eb;
+}
+
+.stockLabel {
+  color: #9ca3af;
+  font-size: 11px;
+}
+
+.stockThreshold {
+  color: #6b7280;
+  font-size: 11px;
+}
+
+.reorderAlert {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #ef4444;
+  font-size: 11px;
+  font-weight: 500;
+  margin-top: 2px;
+}
+
+/* Status Column */
+.statusColumn {
+  padding: 0 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.statusBadge {
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  text-align: center;
+  width: fit-content;
+}
+
+.supplierInfo {
+  margin-top: auto;
+}
+
+.supplierLabel {
+  color: #9ca3af;
+  font-size: 10px;
+  text-align: center;
+}
+
+/* Actions Column */
+.actionsColumn {
+  padding: 0 8px;
+}
+
+.actionButtons {
+  display: flex;
+  gap: 4px;
+}
+
+.actionBtn {
+  background: #374151;
+  border: none;
+  color: #e5e7eb;
+  padding: 6px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.actionBtn:hover {
+  background: #4b5563;
+  color: #fff;
+}
+
+.deleteBtn:hover {
+  background: #dc2626;
+}
+
+/* Expanded Details Section */
+.expandedDetails {
+  background: #0f172a;
+  border-top: 1px solid #374151;
+  padding: 20px;
+}
+
+.detailsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+}
+
+.sectionTitle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #e5e7eb;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #374151;
+}
+
+/* Technical Specifications */
+.technicalSpecs {
+  background: #1f2937;
+  padding: 16px;
+  border-radius: 8px;
+  border: 1px solid #374151;
+}
+
+.specsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.specDetail {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid #374151;
+}
+
+.specDetail:last-child {
+  border-bottom: none;
+}
+
+.specDetailLabel {
+  color: #9ca3af;
+  font-size: 12px;
+}
+
+.specDetailValue {
+  color: #e5e7eb;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.additionalSpecs h5 {
+  color: #e5e7eb;
+  font-size: 12px;
+  margin-bottom: 8px;
+  margin-top: 16px;
+}
+
+/* Stock Details */
+.stockDetails {
+  background: #1f2937;
+  padding: 16px;
+  border-radius: 8px;
+  border: 1px solid #374151;
+}
+
+.stockMetrics {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.stockMetric {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+}
+
+.metricLabel {
+  color: #9ca3af;
+  font-size: 12px;
+}
+
+.metricValue {
+  color: #e5e7eb;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+/* Supplier Details */
+.supplierDetails {
+  background: #1f2937;
+  padding: 16px;
+  border-radius: 8px;
+  border: 1px solid #374151;
+}
+
+.supplierMetrics {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.supplierMetric {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+}
+
+/* Status Badge Colors */
+.inStock {
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: #000;
+}
+
+.lowStock {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  color: #000;
+}
+
+.outStock {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  color: #fff;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .enhancedTableHeader {
+    font-size: 11px;
+  }
+  
+  .detailsGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .enhancedTableHeader span:nth-child(2),
+  .enhancedTableHeader span:nth-child(3),
+  .specsColumn,
+  .pricingColumn {
+    display: none;
+  }
+  
+  .mainProductRow {
+    flex-wrap: wrap;
+  }
+  
+  .productColumn {
+    flex: 1 1 100%;
+  }
+  
+  .stockColumn {
+    flex: 1;
+  }
+  
+  .statusColumn {
+    flex: 1;
+  }
+  
+  .actionsColumn {
+    flex: 1;
+  }
+}
+
+/* Loading and Empty States */
+.loadingState {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  color: #9ca3af;
+}
+
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  color: #9ca3af;
+  text-align: center;
+}
+
+.emptyState svg {
+  margin-bottom: 16px;
+  opacity: 0.5;
+}
+
+/* Animation for expand/collapse */
+.expandedDetails {
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Hover effects for interactive elements */
+.specDetail:hover {
+  background: #374151;
+  margin: 0 -8px;
+  padding: 8px;
+  border-radius: 4px;
+}
+
+.stockMetric:hover {
+  background: #374151;
+  margin: 0 -8px;
+  padding: 8px;
+  border-radius: 4px;
+}
+
+.supplierMetric:hover {
+  background: #374151;
+  margin: 0 -8px;
+  padding: 8px;
+  border-radius: 4px;
+}

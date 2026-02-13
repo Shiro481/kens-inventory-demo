@@ -111,6 +111,68 @@
   transform: translateY(-4px);
 }
 
+/* View Details Button */
+.viewDetailsBtn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: rgba(16, 185, 129, 0.2);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  color: #10b981;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  z-index: 2;
+}
+
+.viewDetailsBtn:hover:not(:disabled) {
+  background: rgba(16, 185, 129, 0.3);
+  border-color: #10b981;
+  transform: scale(1.05);
+}
+
+.viewDetailsBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Quick Add Button */
+.quickAddBtn {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  background: linear-gradient(135deg, #10b981, #059669);
+  border: none;
+  color: #000;
+  width: 36px;
+  height: 36px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  z-index: 2;
+}
+
+.quickAddBtn:hover:not(:disabled) {
+  background: linear-gradient(135deg, #059669, #047857);
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.quickAddBtn:disabled {
+  background: #374151;
+  color: #9ca3af;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
 .sku {
   font-size: 10px;
   color: #444;
@@ -666,4 +728,52 @@
   .cancelModalBtn {
     width: 100%;
   }
+}
+
+/* Variant Info Styling */
+.variantInfo {
+  font-size: 11px;
+  color: #9ca3af;
+  margin-top: 2px;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Product Card Variant Indicator */
+.productCard.hasVariants {
+  border: 1px solid rgba(0, 255, 157, 0.3);
+  position: relative;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.productCard.hasVariants:hover {
+  border-color: var(--brand-neon);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 255, 157, 0.15);
+  background-color: rgba(0, 255, 157, 0.02);
+}
+
+.variantBadge {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: rgba(0, 255, 157, 0.15);
+  color: var(--brand-neon);
+  padding: 4px 8px;
+  border-radius: 2px;
+  font-size: 9px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  z-index: 2;
+  border: 1px solid rgba(0, 255, 157, 0.3);
+}
+
+/* Make product cards clickable */
+.productCard:not(.outOfStock):hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
 }

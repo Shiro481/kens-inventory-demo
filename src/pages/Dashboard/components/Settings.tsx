@@ -11,6 +11,10 @@ interface StoreSettings {
   currency: string;
 }
 
+/**
+ * Settings component - Application settings management interface
+ * Allows configuration of store settings, tax rates, and user preferences
+ */
 export default function Settings() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -32,12 +36,20 @@ export default function Settings() {
     fetchUser();
   }, []);
 
+  /**
+   * Fetch current authenticated user data from Supabase
+   * Updates user state with authentication information
+   */
   async function fetchUser() {
     if (!supabase) return;
     const { data: { user } } = await supabase.auth.getUser();
     setUser(user);
   }
 
+  /**
+   * Fetch store settings from Supabase database
+   * Updates settings state with current configuration
+   */
   async function fetchSettings() {
     if (!supabase) return;
     setLoading(true);

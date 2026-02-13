@@ -24,6 +24,10 @@ import type { Sale } from '../../../types/sales';
 
 type TimeRange = 'DAILY' | 'WEEKLY' | 'MONTHLY' | 'YEARLY';
 
+/**
+ * Analytics component - Dashboard analytics with sales charts and statistics
+ * Provides insights into sales performance, revenue trends, and inventory metrics
+ */
 export default function Analytics() {
   const [timeRange, setTimeRange] = useState<TimeRange>('DAILY');
   const [sales, setSales] = useState<Sale[]>([]);
@@ -33,6 +37,10 @@ export default function Analytics() {
     fetchSales();
   }, [timeRange]);
 
+  /**
+   * Fetch sales data from Supabase based on selected time range
+   * Updates sales state and handles loading/error states
+   */
   const fetchSales = async () => {
     if (!supabase) return;
     try {

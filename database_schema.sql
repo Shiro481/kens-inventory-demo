@@ -3,7 +3,6 @@
 -- =====================================================
 -- Designed for Supabase (PostgreSQL) with proper normalization
 -- UUID primary keys, foreign key constraints, and indexing
--- NOTE: Excludes suppliers table as it already exists
 
 -- Enable UUID extension (Supabase has this enabled by default)
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
@@ -37,6 +36,25 @@ CREATE TABLE bulb_types (
     description TEXT,
     base_type VARCHAR(50), -- PGJ19, P43T, etc.
     created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Suppliers Table
+CREATE TABLE suppliers (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    name VARCHAR(200) NOT NULL,
+    contact_person VARCHAR(100),
+    email VARCHAR(255),
+    phone VARCHAR(50),
+    address TEXT,
+    city VARCHAR(100),
+    country VARCHAR(50),
+    website VARCHAR(255),
+    tax_id VARCHAR(50),
+    payment_terms VARCHAR(100),
+    notes TEXT,
+    is_active BOOLEAN DEFAULT true,
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
 -- =====================================================
@@ -85,8 +103,8 @@ CREATE TABLE products (
     reorder_level INTEGER NOT NULL DEFAULT 10,
     min_stock_level INTEGER DEFAULT 5,
     
-    -- Supplier Information (references existing suppliers table)
-    supplier_id INTEGER REFERENCES suppliers(id),
+    -- Supplier Information
+    supplier_id UUID REFERENCES suppliers(id),
     supplier_sku VARCHAR(50),
     
     -- Media and Status
@@ -166,6 +184,10 @@ CREATE INDEX idx_product_categories_name ON product_categories(name);
 -- Bulb Types Indexes
 CREATE INDEX idx_bulb_types_code ON bulb_types(code);
 
+-- Suppliers Indexes
+CREATE INDEX idx_suppliers_name ON suppliers(name);
+CREATE INDEX idx_suppliers_active ON suppliers(is_active);
+
 -- Compatibility Table Indexes
 CREATE INDEX idx_compatibility_product_id ON product_car_compatibility(product_id);
 CREATE INDEX idx_compatibility_car_model_id ON product_car_compatibility(car_model_id);
@@ -194,6 +216,9 @@ CREATE TRIGGER update_car_models_updated_at BEFORE UPDATE ON car_models
     FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
 CREATE TRIGGER update_products_updated_at BEFORE UPDATE ON products 
+    FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+
+CREATE TRIGGER update_suppliers_updated_at BEFORE UPDATE ON suppliers 
     FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
 CREATE TRIGGER update_compatibility_updated_at BEFORE UPDATE ON product_car_compatibility 
@@ -273,6 +298,7 @@ GROUP BY cm.id, cb.name;
 -- Enable RLS on main tables (uncomment for production)
 -- ALTER TABLE products ENABLE ROW LEVEL SECURITY;
 -- ALTER TABLE car_models ENABLE ROW LEVEL SECURITY;
+-- ALTER TABLE suppliers ENABLE ROW LEVEL SECURITY;
 -- ALTER TABLE product_car_compatibility ENABLE ROW LEVEL SECURITY;
 
 -- Example RLS Policies (customize based on your needs)
