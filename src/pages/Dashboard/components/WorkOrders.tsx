@@ -1,9 +1,9 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import {
   Plus, Calendar, Clock, AlertTriangle, CheckCircle, Wrench,
   MoreHorizontal, User, Car, X, Trash2, Edit2, Search,
-  Filter, SortDesc, Grid3X3, List, BarChart3, Settings,
-  ArrowUpDown, ChevronDown, Eye, Archive, RefreshCw
+  Filter, Grid3X3, List, Settings,
+  ChevronDown, RefreshCw
 } from 'lucide-react';
 import styles from './WorkOrders.module.css';
 
