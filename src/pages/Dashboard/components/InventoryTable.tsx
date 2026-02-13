@@ -59,6 +59,11 @@ export default function InventoryTable({ items, onEdit, onDelete }: InventoryTab
                     SKU: {item.sku}
                   </div>
                 )}
+                {item.notes && (
+                  <div style={{ fontSize: '10px', color: '#888', marginTop: '4px', fontStyle: 'italic', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                    <span style={{ color: '#00ff9d' }}>⚠</span> {item.notes}
+                  </div>
+                )}
               </div>
             </div>
 

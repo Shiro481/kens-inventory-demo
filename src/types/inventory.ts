@@ -33,6 +33,7 @@ export interface InventoryItem {
   variant_price?: number;
   is_variant?: boolean; // Flag to identify if this is a variant row
   parent_product_id?: string; // UUID of the parent product
+  notes?: string; // Internal notes for specific item or variant
 
   [key: string]: any;
 }

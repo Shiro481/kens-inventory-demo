@@ -17,6 +17,7 @@ import Suppliers from './components/Suppliers';
 import Settings from './components/Settings';
 import WorkOrders from './components/WorkOrders';
 import DeleteConfirmModal from './components/DeleteConfirmModal';
+import AddVariantModal from './components/AddVariantModal';
 
 interface DashboardProps {
   onGoToHome?: () => void;
@@ -44,6 +45,9 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [itemToDelete, setItemToDelete] = useState<InventoryItem | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
+
+  // Add Variant Modal State
+  const [isAddVariantModalOpen, setIsAddVariantModalOpen] = useState(false);
 
   // Filter State
   const [filterStatus, setFilterStatus] = useState<'All' | 'In Stock' | 'Low Stock' | 'Out of Stock'>('All');
@@ -126,7 +130,11 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
           has_variants: item.has_variants,
           variant_count: 0,
           created_at: item.created_at,
-          updated_at: item.updated_at
+          updated_at: item.updated_at,
+          notes: item.specifications?.internal_notes || '', // Map internal notes
+          // Map restock data for activity feed
+          restocked_at: item.specifications?.last_restock?.date,
+          restock_quantity: item.specifications?.last_restock?.quantity
         };
         
         // Add ALL base products
@@ -171,7 +179,8 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
               is_variant: true,
               parent_product_id: variant.product_id,
               created_at: variant.created_at,
-              updated_at: variant.updated_at
+              updated_at: variant.updated_at,
+              notes: variant.variant_color || '' // Map variant color/note to notes field
             };
             
             allItems.push(variantItem);
@@ -362,7 +371,8 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
           bulb_type: data[0].bulb_types?.code,
           supplier: data[0].suppliers?.name,
           created_at: data[0].created_at,
-          updated_at: data[0].updated_at
+          updated_at: data[0].updated_at,
+          notes: data[0].specifications?.internal_notes || ''
         };
         setItems([...items, newItem]);
       }
@@ -386,7 +396,20 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
         lumens: updatedItem.lumens,
         beam_type: updatedItem.beam_type,
         has_variants: updatedItem.has_variants || false,
-        specifications: { ...(updatedItem.specifications || {}), socket: updatedItem.bulb_type },
+        specifications: { 
+          ...(updatedItem.specifications || {}), 
+          socket: updatedItem.bulb_type,
+          internal_notes: updatedItem.notes, // Save notes to specifications
+          // Check for restock and update last_restock if quantity increased
+          ...( (stockVal || 0) > (items.find(i => i.id === updatedItem.id)?.stock || 0) ? {
+             last_restock: {
+                date: new Date().toISOString(),
+                quantity: (stockVal || 0) - (items.find(i => i.id === updatedItem.id)?.stock || 0)
+             }
+          } : (items.find(i => i.id === updatedItem.id)?.specifications?.last_restock ? { 
+             last_restock: items.find(i => i.id === updatedItem.id)?.specifications?.last_restock 
+          } : {}))
+        },
       };
 
       // Update category if provided
@@ -416,6 +439,24 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
     }
     
     handleModalClose();
+  };
+
+  /**
+   * Open the modal to select a parent item for adding a variant
+   */
+  const handleAddVariantClick = () => {
+    setIsAddVariantModalOpen(true);
+  };
+
+  /**
+   * Handle selection of parent item for variant addition
+   * Opens the edit modal for that item with has_variants=true
+   */
+  const handleSelectParentItem = (item: InventoryItem) => {
+    setIsAddVariantModalOpen(false);
+    // Open edit modal for this item, forcing has_variants to true so the UI shows
+    setEditingItem({ ...item, has_variants: true });
+    setIsEditModalOpen(true);
   };
 
   /**
@@ -516,10 +557,20 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
                   <h1>Dashboard</h1>
                   <p>Welcome back, Ken. Here's what's happening efficiently.</p>
                 </div>
-                <button className={styles.addButton} onClick={handleAddItem}>
-                  <Plus size={18} />
-                  Add New Item
-                </button>
+                <div className={styles.buttonGroup} style={{ display: 'flex', gap: '8px' }}>
+                  <button 
+                    className={styles.addButton} 
+                    onClick={handleAddVariantClick}
+                    style={{ backgroundColor: 'transparent', border: '1px solid #333', color: '#888' }}
+                  >
+                    <Plus size={16} />
+                    Add Variant
+                  </button>
+                  <button className={styles.addButton} onClick={handleAddItem}>
+                    <Plus size={18} />
+                    Add New Item
+                  </button>
+                </div>
               </header>
 
               {/* TOOLBAR */}
@@ -670,6 +721,14 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
           setItemToDelete(null);
         }}
         onConfirm={confirmDelete}
+      />
+
+      {/* ADD VARIANT SELECTION MODAL */}
+      <AddVariantModal
+        isOpen={isAddVariantModalOpen}
+        onClose={() => setIsAddVariantModalOpen(false)}
+        onSelect={handleSelectParentItem}
+        items={items}
       />
     </div>
   );

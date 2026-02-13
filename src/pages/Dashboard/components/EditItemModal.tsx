@@ -40,6 +40,7 @@ export default function EditItemModal({ isOpen, item, categories, bulbTypes = []
     color: '',
     sku: ''
   });
+  const [isNewVariantBulbType, setIsNewVariantBulbType] = useState(false);
 
 
 
@@ -262,6 +263,18 @@ export default function EditItemModal({ isOpen, item, categories, bulbTypes = []
 
 
 
+          <div className={`${styles.formGroup} ${styles.fullWidth}`}>
+            <label>Internal Notes</label>
+            <textarea 
+              className={styles.formInput} 
+              rows={2}
+              value={editingItem.notes || ''}
+              onChange={(e) => handleInputChange('notes', e.target.value)}
+              placeholder="Private notes (supplier info, location...)"
+              style={{ resize: 'vertical', border: '1px dashed #333' }}
+            />
+          </div>
+
           {/* SECTION 2: PRICING & INVENTORY */}
           <div className={`${styles.formGroup} ${styles.fullWidth}`} style={{ marginTop: '16px' }}>
              <h3 style={{ borderBottom: '1px solid #333', paddingBottom: '8px', marginBottom: '8px', color: '#888', fontSize: '12px', letterSpacing: '1px' }}>PRICING & INVENTORY</h3>
@@ -418,19 +431,21 @@ export default function EditItemModal({ isOpen, item, categories, bulbTypes = []
             </select>
           </div>
           
-          <div className={`${styles.formGroup} ${styles.fullWidth}`} style={{ marginTop: '24px', display: 'flex', alignItems: 'center', gap: '12px', padding: '16px', border: '1px solid #222', background: '#0a0a0a' }}>
-             <input 
-               type="checkbox" 
-               checked={editingItem.has_variants || false}
-               onChange={(e) => handleInputChange('has_variants', e.target.checked)}
-               style={{ width: '16px', height: '16px', accentColor: '#00ff9d', cursor: 'pointer' }}
-               id="has_variants_check"
-             />
-             <label htmlFor="has_variants_check" style={{ cursor: 'pointer', fontSize: '11px', color: '#fff', margin: 0 }}>Has Variants? (Sizes / Colors / Types)</label>
-          </div>
+          {!editingItem.is_variant && (
+            <div className={`${styles.formGroup} ${styles.fullWidth}`} style={{ marginTop: '24px', display: 'flex', alignItems: 'center', gap: '12px', padding: '16px', border: '1px solid #222', background: '#0a0a0a' }}>
+               <input 
+                 type="checkbox" 
+                 checked={editingItem.has_variants || false}
+                 onChange={(e) => handleInputChange('has_variants', e.target.checked)}
+                 style={{ width: '16px', height: '16px', accentColor: '#00ff9d', cursor: 'pointer' }}
+                 id="has_variants_check"
+               />
+               <label htmlFor="has_variants_check" style={{ cursor: 'pointer', fontSize: '11px', color: '#fff', margin: 0 }}>Has Variants? (Sizes / Colors / Types)</label>
+            </div>
+          )}
 
           {/* VARIANT MANAGEMENT UI */}
-          {editingItem.has_variants && (
+          {editingItem.has_variants && !editingItem.is_variant && (
               <div className={styles.variantSection}>
                   <div className={styles.variantHeader}>
                       <h3>
@@ -453,8 +468,8 @@ export default function EditItemModal({ isOpen, item, categories, bulbTypes = []
                                         <div className={styles.variantInfo}>
                                             <div className={styles.variantInfoMain}>
                                                 {v.bulb_type || 'Unknown'}
-                                                {v.variant_color && <span className={styles.variantTag}>{v.variant_color}</span>}
                                                 {v.color_temperature && <span className={styles.variantTag}>{v.color_temperature}K</span>}
+                                                {v.variant_color && <span className={styles.variantTag} style={{ background: '#222', color: '#00ff9d', border: '1px solid #111' }}>Note: {v.variant_color}</span>}
                                             </div>
                                             <div className={styles.variantInfoSub}>
                                                 STOCK: <span style={{ color: v.stock_quantity < v.min_stock_level ? '#ff4444' : '#888' }}>{v.stock_quantity}</span>
@@ -487,14 +502,47 @@ export default function EditItemModal({ isOpen, item, categories, bulbTypes = []
                                   <div className={styles.formGrid}>
                                       <div className={styles.formGroup}>
                                           <label>Bulb Type / Socket *</label>
-                                          <input 
-                                              type="text"
-                                              className={styles.formInput}
-                                              value={newVariantData.bulb_type}
-                                              onChange={e => setNewVariantData({...newVariantData, bulb_type: e.target.value})}
-                                              placeholder="e.g. H4, H7"
-                                              autoFocus
-                                          />
+                                          {!isNewVariantBulbType ? (
+                                            <select 
+                                                className={styles.formInput}
+                                                value={bulbTypes?.includes(newVariantData.bulb_type) ? newVariantData.bulb_type : ''}
+                                                onChange={(e) => {
+                                                    const val = e.target.value;
+                                                    if (val === '__NEW__') {
+                                                        setIsNewVariantBulbType(true);
+                                                        setNewVariantData({...newVariantData, bulb_type: ''});
+                                                    } else {
+                                                        setIsNewVariantBulbType(false);
+                                                        setNewVariantData({...newVariantData, bulb_type: val});
+                                                    }
+                                                }}
+                                            >
+                                                <option value="">Select Socket</option>
+                                                {bulbTypes?.map(type => (
+                                                    <option key={type} value={type}>{type}</option>
+                                                ))}
+                                                <option value="__NEW__">+ Add New Socket</option>
+                                            </select>
+                                          ) : (
+                                            <div style={{ display: 'flex', gap: '8px' }}>
+                                                <input 
+                                                    type="text"
+                                                    className={styles.formInput}
+                                                    value={newVariantData.bulb_type}
+                                                    onChange={e => setNewVariantData({...newVariantData, bulb_type: e.target.value})}
+                                                    placeholder="e.g. H4, H7"
+                                                    autoFocus
+                                                    style={{ flex: 1 }}
+                                                />
+                                                <button 
+                                                    onClick={() => setIsNewVariantBulbType(false)}
+                                                    className={styles.cancelBtn}
+                                                    style={{ padding: '0 10px', border: '1px solid #333' }}
+                                                >
+                                                    Cancel
+                                                </button>
+                                            </div>
+                                          )}
                                       </div>
 
                                       <div className={styles.formGroup}>
@@ -566,13 +614,13 @@ export default function EditItemModal({ isOpen, item, categories, bulbTypes = []
                                       </div>
 
                                       <div className={styles.formGroup}>
-                                          <label>Color / Note</label>
+                                          <label>Variant Note / Color</label>
                                           <input 
                                               type="text"
                                               className={styles.formInput}
                                               value={newVariantData.color}
                                               onChange={e => setNewVariantData({...newVariantData, color: e.target.value})}
-                                              placeholder="e.g. White"
+                                              placeholder="e.g. White, or Damaged Box"
                                           />
                                       </div>
                                   </div>

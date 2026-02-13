@@ -244,10 +244,25 @@ export default function Pos({ items, onSaleComplete }: PosProps) {
           stock_quantity: newStock
         };
 
-        const { error: updateError } = await supabase
-          .from('products')
-          .update(payload)
-          .eq('id', item.id);
+        let updateError = null;
+
+        if (item.variant_id) {
+            // Update Variant Stock
+            const { error } = await supabase
+              .from('product_bulb_variants')
+              .update(payload)
+              .eq('id', item.variant_id);
+            updateError = error;
+        } else {
+            // Update Product Stock
+            // Ensure we use the correct UUID if available, otherwise numeric ID
+            const idToUse = item.uuid || item.id;
+            const { error } = await supabase
+              .from('products')
+              .update(payload)
+              .eq('id', idToUse);
+            updateError = error;
+        }
 
         if (updateError) throw updateError;
       }

@@ -281,6 +281,15 @@ export default function ItemDetailModal({ isOpen, item, onClose, onAddToCart, va
                   <span className={styles.detailValue} style={{ textTransform: 'none', lineHeight: '1.4' }}>{item.description}</span>
                 </div>
               )}
+              {/* Display Note - Prioritize variant color/note, fallback to item note */}
+              {(selectedVariant?.variant_color || item.notes) && (
+                <div className={styles.detailItem} style={{ gridColumn: '1 / -1', marginTop: '8px', borderTop: '1px dashed #333', paddingTop: '8px' }}>
+                  <span className={styles.detailLabel} style={{ color: '#00ff9d' }}>Note:</span>
+                  <span className={styles.detailValue} style={{ color: '#fff', fontStyle: 'italic' }}>
+                    {selectedVariant?.variant_color || item.notes}
+                  </span>
+                </div>
+              )}
             </div>
           </div>
 
