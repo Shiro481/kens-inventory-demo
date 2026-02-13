@@ -22,29 +22,21 @@ export default function Login({ onBack, onSuccess }: LoginProps) {
     setError(null);
 
     try {
-      // Check if admin email (no password required for demo)
-      if (email === 'deviy63349@helesco.com') {
-        // For demo purposes, create mock admin session
-        const adminUser = {
-          id: 'b49913b6-3d2e-400b-af5f-17dd31c8ffa6',
-          email: 'deviy63349@helesco.com',
-          user_metadata: { role: 'admin' },
-          aud: 'authenticated'
-        };
-        onSuccess(adminUser);
-      } else {
-        // For regular users with password
-        const { data, error } = await supabase.auth.signInWithPassword({
-          email,
-          password,
-        });
-        if (error) throw error;
-        if (data.user) {
-          onSuccess(data.user);
-        }
+      // Attempt Standard Supabase Login
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      if (error) throw error;
+
+      if (data.user) {
+        // Success! Proceed to dashboard immediately
+        onSuccess(data.user);
       }
     } catch (err: any) {
-      setError(err.message || 'Authentication failed. Please check your credentials.');
+      console.error('Login error:', err);
+      setError(err.message || 'Authentication failed.');
     } finally {
       setLoading(false);
     }

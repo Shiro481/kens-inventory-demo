@@ -62,27 +62,44 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
   /**
    * Fetch automotive lights data from Supabase database
    * Updates the items state with fetched data or sets error state
+   * Fetches both base products and all variants from product_bulb_variants
    */
   async function fetchParts() {
     if (!supabase) return;
 
     try {
+      // Fetch all products
       const { data: rawData, error } = await supabase
         .from('products')
         .select(`
           *,
           product_categories(name),
-          bulb_type_display(display_name),
-          suppliers(name),
-          product_bulb_variants(count)
+          bulb_types(code),
+          suppliers(name)
         `);
       
       if (error) {
         console.error('Error fetching products:', error);
         setError(`Error fetching products: ${error.message}`);
-      } else {
-        // Transform the data to match InventoryItem interface
-        const transformedData = rawData.map((item: any) => ({
+        return;
+      }
+
+      // Fetch ALL variants from product_bulb_variants table
+      const { data: allVariants, error: variantsError } = await supabase
+        .from('product_bulb_variants')
+        .select('*');
+      
+      if (variantsError) {
+        console.error('Error fetching variants:', variantsError);
+      }
+
+      console.log(`📦 [Dashboard] Fetched ${rawData.length} products and ${allVariants?.length || 0} variants`);
+
+      const allItems: InventoryItem[] = [];
+      
+      // Add ALL base products (including those with variants)
+      for (const item of rawData) {
+        const baseItem = {
           id: parseInt(item.id.toString().replace('-', '').substring(0, 8), 16) % 1000000,
           uuid: item.id,
           name: item.name,
@@ -103,16 +120,70 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
           color_temperature: item.color_temperature,
           lumens: item.lumens,
           beam_type: item.beam_type,
-          bulb_type: item.bulb_type || item.specifications?.socket || item.bulb_type_display?.display_name, // Prefer column/specs
+          bulb_type: item.bulb_type || item.specifications?.socket || item.bulb_types?.code,
           specifications: item.specifications,
           supplier: item.suppliers?.name,
           has_variants: item.has_variants,
-          variant_count: item.product_bulb_variants?.[0]?.count || 0,
+          variant_count: 0,
           created_at: item.created_at,
           updated_at: item.updated_at
-        }));
-        setItems(transformedData);
+        };
+        
+        // Add ALL base products
+        allItems.push(baseItem);
       }
+      
+      // Now add ALL variants as separate items
+      if (allVariants && allVariants.length > 0) {
+        for (const variant of allVariants) {
+          // Find the parent product
+          const parentProduct = rawData.find((p: any) => p.id === variant.product_id);
+          
+          if (parentProduct) {
+            const variantItem: InventoryItem = {
+              id: parseInt(variant.id.toString().replace('-', '').substring(0, 8), 16) % 1000000,
+              uuid: variant.id,
+              name: `${parentProduct.name} - ${variant.bulb_type}${variant.color_temperature ? ` (${variant.color_temperature}K)` : ''}`,
+              sku: variant.variant_sku || `${parentProduct.sku}-${variant.id}`,
+              price: variant.selling_price,
+              stock: variant.stock_quantity,
+              quantity: variant.stock_quantity,
+              minQuantity: variant.min_stock_level,
+              min_qty: variant.min_stock_level,
+              category: parentProduct.product_categories?.name,
+              brand: parentProduct.brand,
+              description: parentProduct.description,
+              image_url: parentProduct.image_url,
+              barcode: variant.variant_sku,
+              cost_price: variant.cost_price,
+              voltage: parentProduct.voltage,
+              wattage: parentProduct.wattage,
+              color_temperature: variant.color_temperature,
+              lumens: parentProduct.lumens,
+              beam_type: parentProduct.beam_type,
+              bulb_type: variant.bulb_type,
+              specifications: parentProduct.specifications,
+              supplier: parentProduct.suppliers?.name,
+              has_variants: false,
+              variant_count: 0,
+              variant_id: variant.id,
+              variant_display_name: `${variant.bulb_type}${variant.color_temperature ? ` (${variant.color_temperature}K)` : ''}`,
+              is_variant: true,
+              parent_product_id: variant.product_id,
+              created_at: variant.created_at,
+              updated_at: variant.updated_at
+            };
+            
+            allItems.push(variantItem);
+            console.log(`  ➕ [Dashboard] Added variant: ${variantItem.name}`);
+          } else {
+            console.warn(`⚠️ [Dashboard] Variant ${variant.id} has no parent product`);
+          }
+        }
+      }
+      
+      console.log(`📦 [Dashboard] Total items in inventory: ${allItems.length}`);
+      setItems(allItems);
     } catch (err) {
       console.error('Unexpected error:', err);
       setError('An unexpected error occurred while fetching data.');
@@ -218,7 +289,7 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
       // CREATE NEW PRODUCT
       const payload: any = {
         name: updatedItem.name,
-        sku: updatedItem.sku,
+        sku: updatedItem.sku || null,
         barcode: updatedItem.barcode,
         brand: updatedItem.brand || 'Aftermarket',
         selling_price: updatedItem.price,
@@ -233,6 +304,7 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
         color_temperature: updatedItem.color_temperature,
         lumens: updatedItem.lumens,
         beam_type: updatedItem.beam_type,
+        has_variants: updatedItem.has_variants || false,
         specifications: { ...(updatedItem.specifications || {}), socket: updatedItem.bulb_type },
       };
 
@@ -313,6 +385,7 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
         color_temperature: updatedItem.color_temperature,
         lumens: updatedItem.lumens,
         beam_type: updatedItem.beam_type,
+        has_variants: updatedItem.has_variants || false,
         specifications: { ...(updatedItem.specifications || {}), socket: updatedItem.bulb_type },
       };
 
@@ -570,7 +643,10 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
       <EditItemModal 
         isOpen={isEditModalOpen}
         item={editingItem}
-        categories={Array.from(new Set(items.map(i => i.category).filter(Boolean))) as string[]}
+        categories={Array.from(new Set([
+          'Headlight', 'Fog Light', 'Signal Light', 'Interior Light', 'Brake Light',
+          ...items.map(i => i.category).filter(Boolean) as string[]
+        ]))}
         bulbTypes={Array.from(new Set([
           'H1', 'H3', 'H4', 'H7', 'H8', 'H9', 'H11', 'H13', 'H15', 'H16',
           '9005 (HB3)', '9006 (HB4)', '9012 (HIR2)', '880/881',

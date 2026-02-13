@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import styles from './EditItemModal.module.css';
 import type { InventoryItem } from '../../../types/inventory';
+import { supabase } from '../../../lib/supabase';
+import { Trash2, Plus, Info } from 'lucide-react';
 
 interface EditItemModalProps {
   isOpen: boolean;
@@ -23,6 +25,100 @@ export default function EditItemModal({ isOpen, item, categories, bulbTypes = []
   const [editingItem, setEditingItem] = useState<InventoryItem | null>(null);
   const [isNewCategory, setIsNewCategory] = useState(false);
   const [isNewBulbType, setIsNewBulbType] = useState(false);
+
+  // --- VARIANT MANAGEMENT STATE ---
+
+  const [productVariants, setProductVariants] = useState<any[]>([]);
+  const [showVariantForm, setShowVariantForm] = useState(false);
+  const [newVariantData, setNewVariantData] = useState({ 
+    bulb_type: '', 
+    color_temperature: 0, 
+    cost_price: 0, 
+    selling_price: 0, 
+    stock: 0, 
+    min_stock_level: 5,
+    color: '',
+    sku: ''
+  });
+
+
+
+
+  useEffect(() => {
+    const pid = (editingItem as any)?.uuid;
+    if (pid && editingItem?.has_variants && editingItem?.id !== 0) {
+        if (!supabase) return;
+        supabase.from('product_bulb_variants')
+          .select('*')
+          .eq('product_id', pid)
+          .then(({ data }) => {
+             setProductVariants(data || []);
+          });
+    } else {
+        setProductVariants([]);
+    }
+  }, [(editingItem as any)?.uuid, editingItem?.has_variants, editingItem?.id]);
+
+  const handleAddVariant = async () => {
+    const pid = (editingItem as any)?.uuid;
+    if (!newVariantData.bulb_type || !pid) {
+        alert('Please fill in the Bulb Type field.');
+        return;
+    }
+
+    if (!supabase) {
+        console.error("Supabase client not initialized");
+        return;
+    }
+
+    const { error } = await supabase.from('product_bulb_variants').insert({
+        product_id: pid,
+        bulb_type: newVariantData.bulb_type,
+        color_temperature: newVariantData.color_temperature || null,
+        cost_price: newVariantData.cost_price,
+        selling_price: newVariantData.selling_price,
+        stock_quantity: newVariantData.stock,
+        min_stock_level: newVariantData.min_stock_level,
+        variant_color: newVariantData.color || null,
+        variant_sku: newVariantData.sku || null,
+        variant_id: null // No longer using pre-built variant types
+    });
+    
+    if (!error) {
+        // Refresh list
+        if (supabase) {
+          const { data } = await supabase.from('product_bulb_variants')
+            .select('*')
+            .eq('product_id', pid);
+          setProductVariants(data || []);
+        }
+        setNewVariantData({ 
+            bulb_type: '', 
+            color_temperature: 0, 
+            cost_price: 0, 
+            selling_price: 0, 
+            stock: 0, 
+            min_stock_level: 5,
+            color: '',
+            sku: ''
+        });
+        setShowVariantForm(false);
+    } else {
+        alert('Error adding variant: ' + error.message);
+    }
+  };
+
+  const handleDeleteVariant = async (id: number) => {
+      if (!confirm('Remove this variant?')) return;
+      if (!supabase) return;
+      const { error } = await supabase.from('product_bulb_variants').delete().eq('id', id);
+      if (!error) {
+          setProductVariants(prev => prev.filter(v => v.id !== id));
+      } else {
+          alert('Error: ' + error.message);
+      }
+  };
+  // -------------------------------
 
   useEffect(() => {
     if (item) {
@@ -322,15 +418,198 @@ export default function EditItemModal({ isOpen, item, categories, bulbTypes = []
             </select>
           </div>
           
-          <div className={`${styles.formGroup} ${styles.fullWidth}`} style={{ marginTop: '16px', display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+          <div className={`${styles.formGroup} ${styles.fullWidth}`} style={{ marginTop: '24px', display: 'flex', alignItems: 'center', gap: '12px', padding: '16px', border: '1px solid #222', background: '#0a0a0a' }}>
              <input 
                type="checkbox" 
                checked={editingItem.has_variants || false}
                onChange={(e) => handleInputChange('has_variants', e.target.checked)}
-               style={{ width: '20px', height: '20px', accentColor: '#00ff9d' }}
+               style={{ width: '16px', height: '16px', accentColor: '#00ff9d', cursor: 'pointer' }}
+               id="has_variants_check"
              />
-             <label style={{ cursor: 'pointer', fontSize: '14px', marginLeft: '8px', color: '#fff' }}>Has Variants? (Sizes/Colors)</label>
+             <label htmlFor="has_variants_check" style={{ cursor: 'pointer', fontSize: '11px', color: '#fff', margin: 0 }}>Has Variants? (Sizes / Colors / Types)</label>
           </div>
+
+          {/* VARIANT MANAGEMENT UI */}
+          {editingItem.has_variants && (
+              <div className={styles.variantSection}>
+                  <div className={styles.variantHeader}>
+                      <h3>
+                        MANAGE VARIANTS 
+                        <Info size={12} style={{ opacity: 0.3 }} />
+                      </h3>
+                  </div>
+                  
+                  {(!((editingItem as any)?.uuid) || editingItem.id === 0) ? (
+                      <div style={{ padding: '32px', border: '1px dashed #333', color: '#444', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '1px', textAlign: 'center' }}>
+                          Save Item First To Add Variants
+                      </div>
+                  ) : (
+                      <>
+                          {/* List Existing */}
+                          {productVariants.length > 0 && (
+                            <div className={styles.variantList}>
+                                {productVariants.map(v => (
+                                    <div key={v.id} className={styles.variantCard}>
+                                        <div className={styles.variantInfo}>
+                                            <div className={styles.variantInfoMain}>
+                                                {v.bulb_type || 'Unknown'}
+                                                {v.variant_color && <span className={styles.variantTag}>{v.variant_color}</span>}
+                                                {v.color_temperature && <span className={styles.variantTag}>{v.color_temperature}K</span>}
+                                            </div>
+                                            <div className={styles.variantInfoSub}>
+                                                STOCK: <span style={{ color: v.stock_quantity < v.min_stock_level ? '#ff4444' : '#888' }}>{v.stock_quantity}</span>
+                                                <span style={{ opacity: 0.3, margin: '0 6px' }}>|</span>
+                                                SELL: ${v.selling_price?.toFixed(2)}
+                                                <span style={{ opacity: 0.3, margin: '0 6px' }}>|</span>
+                                                SKU: {v.variant_sku || 'N/A'}
+                                            </div>
+                                        </div>
+                                        <button className={styles.deleteVariantBtn} onClick={() => handleDeleteVariant(v.id)} title="Remove Variant">
+                                            <Trash2 size={14} />
+                                        </button>
+                                    </div>
+                                ))}
+                            </div>
+                          )}
+
+                          {/* Add Variant Button or Form */}
+                          {!showVariantForm ? (
+                              <button 
+                                  className={styles.addVariantTrigger}
+                                  onClick={() => setShowVariantForm(true)}
+                              >
+                                  <Plus size={14} /> Add New Variant
+                              </button>
+                          ) : (
+                              <div className={styles.variantFormContainer}>
+                                  <h4 className={styles.variantFormHeader}>New Variant Details</h4>
+                                  
+                                  <div className={styles.formGrid}>
+                                      <div className={styles.formGroup}>
+                                          <label>Bulb Type / Socket *</label>
+                                          <input 
+                                              type="text"
+                                              className={styles.formInput}
+                                              value={newVariantData.bulb_type}
+                                              onChange={e => setNewVariantData({...newVariantData, bulb_type: e.target.value})}
+                                              placeholder="e.g. H4, H7"
+                                              autoFocus
+                                          />
+                                      </div>
+
+                                      <div className={styles.formGroup}>
+                                          <label>Color Temp (K)</label>
+                                          <input 
+                                              type="number"
+                                              className={styles.formInput}
+                                              value={newVariantData.color_temperature || ''}
+                                              onChange={e => setNewVariantData({...newVariantData, color_temperature: parseFloat(e.target.value) || 0})}
+                                              placeholder="e.g. 6000"
+                                          />
+                                      </div>
+
+                                      <div className={styles.formGroup}>
+                                          <label>Cost Price ($)</label>
+                                          <input 
+                                              type="number"
+                                              step="0.01"
+                                              className={styles.formInput}
+                                              value={newVariantData.cost_price || ''}
+                                              onChange={e => setNewVariantData({...newVariantData, cost_price: parseFloat(e.target.value) || 0})}
+                                              placeholder="0.00"
+                                          />
+                                      </div>
+
+                                      <div className={styles.formGroup}>
+                                          <label>Selling Price ($)</label>
+                                          <input 
+                                              type="number"
+                                              step="0.01"
+                                              className={styles.formInput}
+                                              value={newVariantData.selling_price || ''}
+                                              onChange={e => setNewVariantData({...newVariantData, selling_price: parseFloat(e.target.value) || 0})}
+                                              placeholder="0.00"
+                                          />
+                                      </div>
+
+                                      <div className={styles.formGroup}>
+                                          <label>Stock Qty</label>
+                                          <input 
+                                              type="number"
+                                              className={styles.formInput}
+                                              value={newVariantData.stock || ''}
+                                              onChange={e => setNewVariantData({...newVariantData, stock: parseInt(e.target.value) || 0})}
+                                              placeholder="0"
+                                          />
+                                      </div>
+
+                                      <div className={styles.formGroup}>
+                                          <label>Min Stock</label>
+                                          <input 
+                                              type="number"
+                                              className={styles.formInput}
+                                              value={newVariantData.min_stock_level || ''}
+                                              onChange={e => setNewVariantData({...newVariantData, min_stock_level: parseInt(e.target.value) || 5})}
+                                              placeholder="5"
+                                          />
+                                      </div>
+
+                                      <div className={styles.formGroup}>
+                                          <label>Variant SKU</label>
+                                          <input 
+                                              type="text"
+                                              className={styles.formInput}
+                                              value={newVariantData.sku}
+                                              onChange={e => setNewVariantData({...newVariantData, sku: e.target.value})}
+                                              placeholder="Optional"
+                                          />
+                                      </div>
+
+                                      <div className={styles.formGroup}>
+                                          <label>Color / Note</label>
+                                          <input 
+                                              type="text"
+                                              className={styles.formInput}
+                                              value={newVariantData.color}
+                                              onChange={e => setNewVariantData({...newVariantData, color: e.target.value})}
+                                              placeholder="e.g. White"
+                                          />
+                                      </div>
+                                  </div>
+
+                                  <div className={styles.variantFormActions}>
+                                      <button 
+                                          className={styles.variantCancelBtn}
+                                          onClick={() => {
+                                              setShowVariantForm(false);
+                                              setNewVariantData({ 
+                                                  bulb_type: '', 
+                                                  color_temperature: 0, 
+                                                  cost_price: 0, 
+                                                  selling_price: 0, 
+                                                  stock: 0, 
+                                                  min_stock_level: 5,
+                                                  color: '',
+                                                  sku: ''
+                                              });
+                                          }}
+                                      >
+                                          Cancel
+                                      </button>
+                                      <button 
+                                          className={styles.variantSaveBtn}
+                                          onClick={handleAddVariant}
+                                          disabled={!newVariantData.bulb_type}
+                                      >
+                                          Save Variant
+                                      </button>
+                                  </div>
+                              </div>
+                          )}
+                      </>
+                  )}
+              </div>
+          )}
           
         </div>
 

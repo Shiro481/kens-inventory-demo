@@ -1,4 +1,4 @@
-import { LayoutDashboard, BarChart3, Package, ShoppingCart, History, Users, Wrench, Settings, Home, LogOut } from 'lucide-react';
+import { LayoutDashboard, BarChart3, Package, ShoppingCart, History, Settings, Home, LogOut } from 'lucide-react';
 import styles from './Sidebar.module.css';
 import { useSettings } from '../../../context/SettingsContext';
 import { useState } from 'react';
@@ -118,6 +118,7 @@ export default function Sidebar({ activeView, onViewChange, onGoToHome, onLogout
           <div className={styles.navSection}>
             <div className={styles.sectionTitle}>Operations</div>
             
+{/* Work orders disabled for now
             <button 
               className={`${styles.navItem} ${activeView === 'work-orders' ? styles.activeWorkOrders : ''}`}
               onClick={() => handleViewChange('work-orders')}
@@ -125,6 +126,7 @@ export default function Sidebar({ activeView, onViewChange, onGoToHome, onLogout
               <Wrench size={20} />
               <span>Work Orders</span>
             </button>
+*/}
             
             <button 
               className={`${styles.navItem} ${activeView === 'inventory' ? styles.active : ''}`}
@@ -150,6 +152,7 @@ export default function Sidebar({ activeView, onViewChange, onGoToHome, onLogout
               <span>Sales History</span>
             </button>
             
+{/* Suppliers disabled for now
             <button 
               className={`${styles.navItem} ${activeView === 'suppliers' ? styles.active : ''}`}
               onClick={() => handleViewChange('suppliers')}
@@ -157,6 +160,7 @@ export default function Sidebar({ activeView, onViewChange, onGoToHome, onLogout
               <Users size={20} />
               <span>Suppliers</span>
             </button>
+*/}
             
             <button 
               className={`${styles.navItem} ${activeView === 'settings' ? styles.active : ''}`}

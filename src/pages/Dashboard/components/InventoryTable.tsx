@@ -23,6 +23,7 @@ export default function InventoryTable({ items, onEdit, onDelete }: InventoryTab
         <span>Category</span>
         <span>Price</span>
         <span>Stock Level</span>
+        <span>Variants</span>
         <span>Status</span>
         <span>Actions</span>
       </div>
@@ -50,7 +51,9 @@ export default function InventoryTable({ items, onEdit, onDelete }: InventoryTab
                 <Package size={20} />
               </div>
               <div>
-                <span className={styles.partName}>{item.name}</span>
+                <span className={styles.partName}>
+                  {item.name}
+                </span>
                 {item.sku && (
                   <div style={{ fontSize: '11px', color: '#666', marginTop: '2px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
                     SKU: {item.sku}
@@ -67,6 +70,10 @@ export default function InventoryTable({ items, onEdit, onDelete }: InventoryTab
             
             <div style={{ fontWeight: 'bold' }}>
               {qty} <span style={{ color: '#666', fontSize: '12px', fontWeight: 'normal' }}>/ {minQty} min</span>
+            </div>
+
+            <div>
+              <span style={{ color: '#444', fontSize: '12px' }}>-</span>
             </div>
 
             <div title={`Low Stock Threshold: ${minQty}`}>

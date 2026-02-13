@@ -163,3 +163,199 @@
     width: 100%;
   }
 }
+
+/* VARIANT MANAGEMENT STYLES */
+
+.variantSection {
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px dashed #222;
+  width: 100%;
+}
+
+.variantHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.variantHeader h3 {
+  font-size: 11px;
+  font-weight: 900;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.variantList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.variantCard {
+  background-color: #0a0a0a;
+  border: 1px solid #1a1a1a;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: all 0.2s;
+}
+
+.variantCard:hover {
+  border-color: #333;
+  background-color: #0f0f0f;
+}
+
+.variantInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.variantInfoMain {
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.variantTag {
+  font-size: 9px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: #222;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.variantInfoSub {
+  font-size: 11px;
+  color: #555;
+  font-family: 'JetBrains Mono', monospace; 
+}
+
+.deleteVariantBtn {
+  background: transparent;
+  border: none;
+  color: #333;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 4px;
+  transition: all 0.2s;
+  opacity: 0;
+}
+
+.variantCard:hover .deleteVariantBtn {
+  opacity: 1;
+}
+
+.deleteVariantBtn:hover {
+  background: #1a1a1a;
+  color: #ff4444;
+}
+
+.addVariantTrigger {
+  width: 100%;
+  padding: 20px;
+  background: transparent;
+  border: 1px dashed #333;
+  color: #555;
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.addVariantTrigger:hover {
+  border-color: var(--brand-neon);
+  color: var(--brand-neon);
+  background: rgba(0, 255, 157, 0.02);
+}
+
+.variantFormContainer {
+  background: #0a0a0a;
+  border: 1px solid #222;
+  padding: 24px;
+
+}
+
+.variantFormHeader {
+  color: var(--brand-neon);
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin: 0 0 24px 0;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #1a1a1a;
+}
+
+.variantFormActions {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 12px;
+  margin-top: 32px;
+}
+
+.variantCancelBtn {
+  padding: 14px;
+  background: transparent;
+  border: 1px solid #222;
+  color: #666;
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.variantCancelBtn:hover {
+  border-color: #444;
+  color: #fff;
+  background: #111;
+}
+
+.variantSaveBtn {
+  padding: 14px;
+  background: #fff;
+  border: 1px solid #fff;
+  color: #000;
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.variantSaveBtn:not(:disabled):hover {
+  background: var(--brand-neon);
+  border-color: var(--brand-neon);
+  color: #000;
+  box-shadow: 0 0 20px rgba(0, 255, 157, 0.2);
+}
+
+.variantSaveBtn:disabled {
+  background: #222;
+  border-color: #222;
+  color: #444;
+  cursor: not-allowed;
+}

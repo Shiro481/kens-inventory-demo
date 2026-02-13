@@ -27,6 +27,13 @@ export interface InventoryItem {
   supplier?: string;
   specifications?: any;
 
+  // Variant-related fields
+  variant_id?: number | string;
+  variant_display_name?: string;
+  variant_price?: number;
+  is_variant?: boolean; // Flag to identify if this is a variant row
+  parent_product_id?: string; // UUID of the parent product
+
   [key: string]: any;
 }
 

@@ -9,31 +9,12 @@ import VariantSelectionModal from './VariantSelectionModal';
 
 interface CartItem extends InventoryItem {
   cartQuantity: number;
-  variant_id?: string;
+  variant_id?: string | number;
   variant_display_name?: string;
   variant_price?: number;
 }
 
-interface ProductVariant {
-  product_id: string;
-  sku: string;
-  base_name: string;
-  brand: string;
-  base_price: number;
-  category: string;
-  image_url: string;
-  color_temperature?: string | number;
-  variants: Array<{
-    variant_id: string;
-    display_name: string;
-    compatibility_list: string[];
-    final_price: number;
-    stock_quantity: number;
-    is_primary: boolean;
-    variant_description?: string;
-    color_temperature?: string;
-  }>;
-}
+
 
 interface PosProps {
   items: InventoryItem[];
@@ -56,13 +37,20 @@ export default function Pos({ items, onSaleComplete }: PosProps) {
   const [selectedItem, setSelectedItem] = useState<InventoryItem | null>(null);
   const [showItemDetailModal, setShowItemDetailModal] = useState(false);
   const [showVariantModal, setShowVariantModal] = useState(false);
-  const [selectedProductForVariant, setSelectedProductForVariant] = useState<ProductVariant | null>(null);
+  const [selectedProductForVariant, setSelectedProductForVariant] = useState<InventoryItem | null>(null);
+  const [productVariants, setProductVariants] = useState<any[]>([]);
 
   /**
    * Filter inventory items based on search query
    * Searches in name, SKU, and category fields
+   * Excludes variant items - only shows parent products
    */
   const filteredItems = items.filter(item => {
+    // Hide variant items in POS - only show parent products
+    if ((item as any).is_variant === true) {
+      return false;
+    }
+    
     const query = searchQuery.toLowerCase();
     return (
       (item.name || '').toLowerCase().includes(query) ||
@@ -90,132 +78,89 @@ export default function Pos({ items, onSaleComplete }: PosProps) {
   };
 
   /**
-   * Handle item click - check for variants or show details
+   * Handle item click - show item detail modal
+   * Fetches variants if product has them
    * @param item - Inventory item that was clicked
    */
   const handleItemClick = async (item: InventoryItem) => {
-    // Check if item has variants based on database flag
-    // (with fallback to previous logic if flag is missing for some reason)
-    const hasVariants = item.has_variants || 
-               item.name?.toLowerCase().includes('led') ||
-               item.name?.toLowerCase().includes('headlight') ||
-               item.name?.toLowerCase().includes('fog') ||
-               item.description?.includes('has_variants": true');
+    console.log('🔍 [POS] Item clicked:', {
+      name: item.name,
+      has_variants: item.has_variants,
+      uuid: item.uuid
+    });
 
-    if (hasVariants && item.uuid) {
-      if (!supabase) {
-        console.error("Supabase client is not initialized");
-        setSelectedItem(item);
-        setShowItemDetailModal(true);
-        return;
-      }
-
+    // Fetch variants if product has them
+    if (item.has_variants && item.uuid && supabase) {
       try {
         setLoading(true);
-        // Fetch variants from the database view
         const { data: variants, error } = await supabase
-          .from('pos_product_variants')
+          .from('product_bulb_variants')
           .select('*')
           .eq('product_id', item.uuid);
 
-        if (error) throw error;
-
-        if (variants && variants.length > 0) {
-          // If only 1 variant, we still want to show the modal so user can see details
-          // before adding to cart, per user request "make all items show full details when clicked"
-          
-          
-          // Map to ProductVariant structure for multiple variants (or single)
-          const productVariants: ProductVariant = {
-            product_id: item.uuid,
-            sku: item.sku || '',
-            base_name: item.name || '',
-            brand: item.brand || '',
-            base_price: item.price || 0,
-            category: item.category || '',
-            image_url: item.image_url || '',
-            color_temperature: item.color_temperature,
-            variants: variants.map(v => ({
-              variant_id: v.variant_id,
-              display_name: v.display_name,
-              compatibility_list: v.compatibility_list || [],
-              final_price: v.final_price,
-              stock_quantity: v.stock_quantity,
-              is_primary: v.is_primary,
-              variant_description: v.variant_description,
-              color_temperature: v.color_temperature
-            }))
-          };
-          
-          setSelectedProductForVariant(productVariants);
-          setShowVariantModal(true);
+        if (!error && variants) {
+          setProductVariants(variants);
         } else {
-          // No variants found in DB, fall back to standard modal
-           setSelectedItem(item);
-           setShowItemDetailModal(true);
+          setProductVariants([]);
         }
       } catch (err) {
         console.error('Error fetching variants:', err);
-        // Fallback on error
-        setSelectedItem(item);
-        setShowItemDetailModal(true);
+        setProductVariants([]);
       } finally {
         setLoading(false);
       }
     } else {
-        // Simple add to cart - no variant selection
-        setSelectedItem(item);
-        setShowItemDetailModal(true);
+      setProductVariants([]);
     }
+
+    // Show item detail modal
+    setSelectedItem(item);
+    setShowItemDetailModal(true);
   };
 
   /**
    * Handle variant selection from modal with quantity
-   * @param variant - Selected variant with compatibility
+   * @param variant - Selected variant from product_bulb_variants
    * @param quantity - Selected quantity
    */
   const handleVariantSelect = (variant: any, quantity: number) => {
-    if (!selectedProductForVariant) return;
+    if (!selectedItem) return;
 
-    // Create a cart item with variant information
-    const variantCartItem: CartItem = {
-      id: parseInt(selectedProductForVariant.product_id.replace('-', '').substring(0, 8), 16) % 1000000,
-      name: selectedProductForVariant.base_name,
-      sku: selectedProductForVariant.sku,
-      price: variant.final_price,
+    // Create a cart item from the variant
+    const cartItem: CartItem = {
+      id: (selectedItem.id || 0) * 10000 + variant.id,
+      name: `${selectedItem.name} (${variant.bulb_type})`,
+      brand: selectedItem.brand || '',
+      category: selectedItem.category || '',
+      price: variant.selling_price,
       stock: variant.stock_quantity,
       quantity: variant.stock_quantity,
+      sku: variant.variant_sku || selectedItem.sku || '',
+      image_url: selectedItem.image_url,
       cartQuantity: quantity,
-      category: selectedProductForVariant.category,
-      brand: selectedProductForVariant.brand,
-      description: `${selectedProductForVariant.base_name} - ${variant.display_name}`,
-      image_url: selectedProductForVariant.image_url,
-      variant_id: variant.variant_id,
-      variant_display_name: variant.display_name,
-      variant_price: variant.final_price
+      variant_id: variant.id.toString(),
+      variant_display_name: variant.bulb_type + (variant.color_temperature ? ` (${variant.color_temperature}K)` : ''),
+      variant_price: variant.selling_price,
+      description: selectedItem.description || '',
+      color_temperature: variant.color_temperature,
+      has_variants: true,
+      uuid: selectedItem.uuid
     };
 
+    // Add to cart
     setCart(prev => {
-      const existing = prev.find(i => 
-        i.id === variantCartItem.id && 
-        i.variant_id === variant.variant_id
-      );
-      
+      const existing = prev.find(i => i.id === cartItem.id);
       if (existing) {
-        const newQuantity = existing.cartQuantity + quantity;
-        if (newQuantity > variant.stock_quantity) return prev;
-        return prev.map(i => 
-          (i.id === variantCartItem.id && i.variant_id === variant.variant_id) 
-            ? { ...i, cartQuantity: newQuantity } 
-            : i
-        );
+        if (existing.cartQuantity + quantity > variant.stock_quantity) return prev;
+        return prev.map(i => i.id === cartItem.id ? { ...i, cartQuantity: i.cartQuantity + quantity } : i);
       }
-      
-      return [...prev, variantCartItem];
+      return [...prev, cartItem];
     });
 
+    // Close modal
     setShowVariantModal(false);
     setSelectedProductForVariant(null);
+    setProductVariants([]);
   };
 
   /**
@@ -224,6 +169,7 @@ export default function Pos({ items, onSaleComplete }: PosProps) {
   const closeVariantModal = () => {
     setShowVariantModal(false);
     setSelectedProductForVariant(null);
+    setProductVariants([]);
   };
 
   /**
@@ -385,27 +331,30 @@ export default function Pos({ items, onSaleComplete }: PosProps) {
           {filteredItems.map(item => {
             const stock = item.stock ?? item.quantity ?? 0;
             const isOutOfStock = stock <= 0;
-            const hasVariants = item.name?.toLowerCase().includes('led') ||
-                       item.name?.toLowerCase().includes('headlight') ||
-                       item.name?.toLowerCase().includes('fog') ||
-                       item.name?.toLowerCase().includes('turn signal') ||
-                       item.name?.toLowerCase().includes('interior') ||
-                       item.name?.toLowerCase().includes('brake') ||
-                       item.description?.includes('has_variants": true') ||
-                       item.sku?.toLowerCase().includes('led') ||
-                       item.sku?.toLowerCase().includes('kit');
+            const hasVariants = item.has_variants === true;
             
+            // Simplified "Container Box" for items with variants
+            if (hasVariants) {
+              return (
+                <div 
+                  key={item.id} 
+                  className={`${styles.variantContainerBox} ${loading ? styles.loading : ''}`}
+                  onClick={() => !loading && handleItemClick(item)}
+                >
+                  <div className={styles.containerLabel}>MULTIPLE OPTIONS</div>
+                  <div className={styles.containerName}>{item.name}</div>
+                  <div className={styles.containerFooter}>Click to select variant</div>
+                </div>
+              );
+            }
+
             return (
               <div 
                 key={item.id} 
-                className={`${styles.productCard} ${isOutOfStock || loading ? styles.outOfStock : ''} ${hasVariants && (item.variant_count || 0) > 1 ? styles.hasVariants : ''}`}
+                className={`${styles.productCard} ${isOutOfStock || loading ? styles.outOfStock : ''}`}
                 onClick={() => !isOutOfStock && !loading && handleItemClick(item)}
-                title={isOutOfStock ? "Out of Stock" : "Select Options"}
+                title={isOutOfStock ? "Out of Stock" : "Add to Cart"}
               >
-                {hasVariants && (item.variant_count || 0) > 1 && (
-                  <div className={styles.variantBadge}>MULTIPLE OPTIONS</div>
-                )}
-                
                 <div className={styles.sku}>{item.sku || 'NO SKU'}</div>
                 <div className={styles.productName}>{item.name}</div>
                 
@@ -604,13 +553,22 @@ export default function Pos({ items, onSaleComplete }: PosProps) {
         item={selectedItem}
         onClose={closeItemDetailModal}
         onAddToCart={handleAddToCartFromModal}
+        variants={productVariants}
+        onVariantSelect={handleVariantSelect}
       />
 
       {/* VARIANT SELECTION MODAL */}
       <VariantSelectionModal
         isOpen={showVariantModal}
         onClose={closeVariantModal}
-        product={selectedProductForVariant}
+        product={selectedProductForVariant ? {
+          uuid: selectedProductForVariant.uuid || '',
+          name: selectedProductForVariant.name || '',
+          brand: selectedProductForVariant.brand || '',
+          category: selectedProductForVariant.category || '',
+          image_url: selectedProductForVariant.image_url
+        } : null}
+        variants={productVariants}
         onVariantSelect={handleVariantSelect}
       />
     </div>

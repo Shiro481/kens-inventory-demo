@@ -147,17 +147,42 @@
 }
 
 .stockNumber {
-  font-size: 24px;
+  font-size: 32px;
   font-weight: 900;
   color: #fff;
 }
 
 .stockUnit {
-  font-size: 11px;
-  font-weight: 700;
-  color: #555;
+  font-size: 14px;
+  color: #666;
   text-transform: uppercase;
   letter-spacing: 1px;
+}
+
+.minStockInfo {
+  font-size: 12px;
+  color: #444;
+  font-weight: bold;
+}
+
+.selectionSpecs {
+  display: flex;
+  gap: 16px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid #1a1a1a;
+}
+
+.specItem {
+  font-size: 13px;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.specItem strong {
+  color: var(--brand-neon, #00ff9d);
+  margin-left: 4px;
 }
 
 .lowStockWarning {
@@ -170,6 +195,62 @@
   text-transform: uppercase;
   letter-spacing: 0.5px;
   margin-top: 4px;
+}
+
+/* Variant Selection Section */
+.variantSection {
+  background-color: #0d0d0d;
+  border: 1px solid #222;
+  padding: 20px;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /* Increased gap for groups */
+}
+
+.dropdownGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.variantLabel {
+  font-size: 11px;
+  font-weight: 900;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+}
+
+.variantDropdown {
+  width: 100%;
+  padding: 12px 16px;
+  background-color: #111;
+  border: 1px solid #333;
+  border-radius: 4px;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.variantDropdown:hover {
+  border-color: var(--brand-neon, #00ff9d);
+  background-color: #1a1a1a;
+}
+
+.variantDropdown:focus {
+  outline: none;
+  border-color: var(--brand-neon, #00ff9d);
+  box-shadow: 0 0 0 2px rgba(0, 255, 157, 0.1);
+}
+
+.variantDropdown option {
+  background-color: #111;
+  color: #fff;
+  padding: 12px;
 }
 
 /* Price Section */

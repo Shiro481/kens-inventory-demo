@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { X, Plus, Minus, Package, ShoppingCart, Eye, Zap, Info } from 'lucide-react';
+import { X, Plus, Minus, Package, ShoppingCart, Eye, Info } from 'lucide-react';
 import styles from './ItemDetailModal.module.css';
 import type { InventoryItem } from '../../../types/inventory';
 import { useSettings } from '../../../context/SettingsContext';
@@ -9,6 +9,8 @@ interface ItemDetailModalProps {
   item: InventoryItem | null;
   onClose: () => void;
   onAddToCart: (item: InventoryItem, quantity: number) => void;
+  variants?: any[]; // Available variants for this product
+  onVariantSelect?: (variant: any, quantity: number) => void; // Callback when variant is selected
 }
 
 /**
@@ -18,14 +20,58 @@ interface ItemDetailModalProps {
  * @param item - The inventory item to display details for
  * @param onClose - Callback function to close the modal
  * @param onAddToCart - Callback function to add item to cart with specified quantity
+ * @param variants - Optional array of variants for this product
+ * @param onVariantSelect - Optional callback when a variant is selected
  */
-export default function ItemDetailModal({ isOpen, item, onClose, onAddToCart }: ItemDetailModalProps) {
+export default function ItemDetailModal({ isOpen, item, onClose, onAddToCart, variants, onVariantSelect }: ItemDetailModalProps) {
   const [quantity, setQuantity] = useState(1);
+  const [selectedVariant, setSelectedVariant] = useState<any | null>(null);
+  const [selectedBulbType, setSelectedBulbType] = useState<string>('');
   const { settings } = useSettings();
 
   if (!isOpen || !item) return null;
 
-  const stock = item.stock ?? item.quantity ?? 0;
+  const hasVariants = variants && variants.length > 0;
+
+  // Normalize parent as an "option" to include it in dropdowns
+  // Use actual product specs and only fallback if totally missing in DB
+  const parentOption = {
+    id: 'parent',
+    bulb_type: item.bulb_type || 'Base', 
+    color_temperature: item.color_temperature || 'Original',
+    selling_price: item.price,
+    stock_quantity: item.stock ?? item.quantity ?? 0,
+    min_stock_level: item.minQuantity,
+    isParent: true
+  };
+
+  // Combine parent and variants for the dropdown lists
+  const allAvailableOptions = [
+    ...(hasVariants ? variants : []),
+    parentOption // Always include parent as an option
+  ];
+
+  // Get unique bulb types from the combined list
+  // Ensure we don't filter out our fallbacks
+  const uniqueBulbTypes = Array.from(new Set(allAvailableOptions.map(v => v.bulb_type))).filter(Boolean);
+
+  // Get available temperatures for selected bulb type from the combined list
+  const availableTemperatures = selectedBulbType
+    ? allAvailableOptions
+        .filter(v => v.bulb_type === selectedBulbType)
+        .map(v => ({
+          value: v.color_temperature,
+          variant: v
+        }))
+    : [];
+
+  // Use selected variant's data if available, otherwise use parent product data
+  const currentPrice = selectedVariant ? selectedVariant.selling_price : (item.price || 0);
+  const stock = selectedVariant ? selectedVariant.stock_quantity : (item.stock ?? item.quantity ?? 0);
+  const currentMinStock = selectedVariant?.min_stock_level ?? item.minQuantity ?? settings.low_stock_threshold;
+  const currentTemperature = selectedVariant ? selectedVariant.color_temperature : item.color_temperature;
+  const currentBulbType = selectedVariant ? selectedVariant.bulb_type : item.bulb_type;
+  
   const isOutOfStock = stock <= 0;
   const maxQuantity = Math.min(stock, 99); // Limit to reasonable amount
 
@@ -38,9 +84,17 @@ export default function ItemDetailModal({ isOpen, item, onClose, onAddToCart }: 
 
   const handleAddToCart = () => {
     if (!isOutOfStock && quantity > 0) {
-      onAddToCart(item, quantity);
+      // If a real variant is selected (not the parent), use variant select
+      if (selectedVariant && !selectedVariant.isParent && onVariantSelect) {
+        onVariantSelect(selectedVariant, quantity);
+      } else {
+        // Otherwise add the base parent product
+        onAddToCart(item, quantity);
+      }
       onClose();
       setQuantity(1); // Reset quantity for next use
+      setSelectedVariant(null); // Reset variant selection
+      setSelectedBulbType(''); // Reset bulb type selection
     }
   };
 
@@ -53,13 +107,12 @@ export default function ItemDetailModal({ isOpen, item, onClose, onAddToCart }: 
   // Calculate stock status
   const getStockStatus = () => {
     if (stock === 0) return { status: 'Out of Stock', color: '#ef4444' };
-    const minStock = item.minQuantity ?? settings.low_stock_threshold;
-    if (stock < minStock) return { status: 'Low Stock', color: '#f59e0b' };
+    if (stock < currentMinStock) return { status: 'Low Stock', color: '#f59e0b' };
     return { status: 'In Stock', color: '#10b981' };
   };
 
   const stockStatus = getStockStatus();
-  const totalPrice = (item.price || 0) * quantity;
+  const totalPrice = currentPrice * quantity;
 
   return (
     <div className={styles.modalOverlay} onClick={onClose}>
@@ -100,8 +153,26 @@ export default function ItemDetailModal({ isOpen, item, onClose, onAddToCart }: 
             <div className={styles.stockQuantity}>
               <span className={styles.stockNumber}>{stock}</span>
               <span className={styles.stockUnit}>units available</span>
+              {currentMinStock > 0 && (
+                <span className={styles.minStockInfo}> (Min: {currentMinStock})</span>
+              )}
             </div>
-            {stock > 0 && stock < (item.minQuantity ?? settings.low_stock_threshold) && (
+
+            {/* Selection Specs */}
+            {(currentBulbType || currentTemperature) && (
+              <div className={styles.selectionSpecs}>
+                <span className={styles.specItem}>
+                  Type: <strong>{currentBulbType || 'Base'}</strong>
+                </span>
+                {currentTemperature && (
+                  <span className={styles.specItem}>
+                    Temp: <strong>{currentTemperature}{!isNaN(Number(currentTemperature)) ? 'K' : ''}</strong>
+                  </span>
+                )}
+              </div>
+            )}
+
+            {stock > 0 && stock < currentMinStock && (
               <div className={styles.lowStockWarning}>
                 <Info size={14} />
                 Low stock - reorder soon
@@ -109,12 +180,66 @@ export default function ItemDetailModal({ isOpen, item, onClose, onAddToCart }: 
             )}
           </div>
 
+          {/* Variant Selection Dropdowns */}
+          {hasVariants && (
+            <div className={styles.variantSection}>
+              {/* Bulb Type Dropdown */}
+              <div className={styles.dropdownGroup}>
+                <label className={styles.variantLabel}>
+                  Select Bulb Type:
+                </label>
+                <select 
+                  className={styles.variantDropdown}
+                  value={selectedBulbType}
+                  onChange={(e) => {
+                    const bulbType = e.target.value;
+                    setSelectedBulbType(bulbType);
+                    // Reset variant and temperature when bulb type changes
+                    setSelectedVariant(null);
+                  }}
+                >
+                  <option value="">-- Select bulb type --</option>
+                  {uniqueBulbTypes.map((bulbType) => (
+                    <option key={bulbType} value={bulbType}>
+                      {bulbType}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Color Temperature Dropdown (only show if bulb type is selected) */}
+              {selectedBulbType && availableTemperatures.length > 0 && (
+                <div className={styles.dropdownGroup}>
+                  <label className={styles.variantLabel}>
+                    Select Color Temperature:
+                  </label>
+                  <select 
+                    className={styles.variantDropdown}
+                    value={selectedVariant?.id || ''}
+                    onChange={(e) => {
+                      const variantId = e.target.value;
+                      const tempOption = availableTemperatures.find(t => t.variant.id.toString() === variantId);
+                      setSelectedVariant(tempOption?.variant || null);
+                    }}
+                  >
+                    <option value="">-- Select temperature --</option>
+                    {availableTemperatures.map(({ value, variant }) => (
+                      <option key={variant.id} value={variant.id}>
+                        {value}{!value || isNaN(Number(value)) ? '' : 'K'}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              )}
+            </div>
+          )}
+
           {/* Price Information */}
           <div className={styles.priceSection}>
             <div className={styles.priceRow}>
               <span className={styles.priceLabel}>Unit Price:</span>
               <span className={styles.unitPrice}>
-                {settings.currency_symbol}{(item.price || 0).toFixed(2)}
+                {settings.currency_symbol}{(currentPrice || 0).toFixed(2)}
               </span>
             </div>
             <div className={styles.priceRow}>
@@ -144,10 +269,10 @@ export default function ItemDetailModal({ isOpen, item, onClose, onAddToCart }: 
                   <span className={styles.detailValue}>{item.brand}</span>
                 </div>
               )}
-              {item.minQuantity && (
+              {currentMinStock !== undefined && (
                 <div className={styles.detailItem}>
                   <span className={styles.detailLabel}>Min Stock:</span>
-                  <span className={styles.detailValue}>{item.minQuantity} units</span>
+                  <span className={styles.detailValue}>{currentMinStock} units</span>
                 </div>
               )}
               {item.description && (
@@ -159,41 +284,7 @@ export default function ItemDetailModal({ isOpen, item, onClose, onAddToCart }: 
             </div>
           </div>
 
-          {/* Technical Specifications (if available) */}
-          {(item.voltage || item.wattage || item.color_temperature || item.bulb_type) && (
-            <div className={styles.specsSection}>
-              <h3 className={styles.sectionTitle}>
-                <Zap size={16} />
-                Technical Specifications
-              </h3>
-              <div className={styles.specsGrid}>
-                {item.voltage && (
-                  <div className={styles.specItem}>
-                    <span className={styles.specLabel}>Voltage:</span>
-                    <span className={styles.specValue}>{item.voltage}V</span>
-                  </div>
-                )}
-                {item.wattage && (
-                  <div className={styles.specItem}>
-                    <span className={styles.specLabel}>Wattage:</span>
-                    <span className={styles.specValue}>{item.wattage}W</span>
-                  </div>
-                )}
-                {item.color_temperature && (
-                  <div className={styles.specItem}>
-                    <span className={styles.specLabel}>Color Temp:</span>
-                    <span className={styles.specValue}>{item.color_temperature}K</span>
-                  </div>
-                )}
-                {item.bulb_type && (
-                  <div className={styles.specItem}>
-                    <span className={styles.specLabel}>Bulb Type:</span>
-                    <span className={styles.specValue}>{item.bulb_type}</span>
-                  </div>
-                )}
-              </div>
-            </div>
-          )}
+
 
           {/* Quantity Selector */}
           <div className={styles.quantitySection}>
