@@ -12,6 +12,7 @@ interface ProductVariant {
   min_stock_level: number;
   variant_color?: string;
   variant_sku?: string;
+  description?: string;
 }
 
 interface ProductInfo {

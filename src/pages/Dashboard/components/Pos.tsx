@@ -141,7 +141,7 @@ export default function Pos({ items, onSaleComplete }: PosProps) {
       variant_id: variant.id.toString(),
       variant_display_name: variant.bulb_type + (variant.color_temperature ? ` (${variant.color_temperature}K)` : ''),
       variant_price: variant.selling_price,
-      description: selectedItem.description || '',
+      description: variant.description || selectedItem.description || '',
       color_temperature: variant.color_temperature,
       has_variants: true,
       uuid: selectedItem.uuid

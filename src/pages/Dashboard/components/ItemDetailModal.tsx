@@ -290,6 +290,14 @@ export default function ItemDetailModal({ isOpen, item, onClose, onAddToCart, va
                   </span>
                 </div>
               )}
+              {selectedVariant?.description && (
+                <div className={styles.detailItem} style={{ gridColumn: '1 / -1', marginTop: '4px' }}>
+                  <span className={styles.detailLabel} style={{ color: '#00ff9d' }}>Desc:</span>
+                  <span className={styles.detailValue} style={{ color: '#fff' }}>
+                    {selectedVariant.description}
+                  </span>
+                </div>
+              )}
             </div>
           </div>
 

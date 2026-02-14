@@ -38,6 +38,7 @@ export default function EditItemModal({ isOpen, item, categories, bulbTypes = []
     stock: 0, 
     min_stock_level: 5,
     color: '',
+    description: '',
     sku: ''
   });
   const [isNewVariantBulbType, setIsNewVariantBulbType] = useState(false);
@@ -81,6 +82,7 @@ export default function EditItemModal({ isOpen, item, categories, bulbTypes = []
         stock_quantity: newVariantData.stock,
         min_stock_level: newVariantData.min_stock_level,
         variant_color: newVariantData.color || null,
+        description: newVariantData.description || null,
         variant_sku: newVariantData.sku || null,
         variant_id: null // No longer using pre-built variant types
     });
@@ -101,6 +103,7 @@ export default function EditItemModal({ isOpen, item, categories, bulbTypes = []
             stock: 0, 
             min_stock_level: 5,
             color: '',
+            description: '',
             sku: ''
         });
         setShowVariantForm(false);
@@ -478,6 +481,11 @@ export default function EditItemModal({ isOpen, item, categories, bulbTypes = []
                                                 <span style={{ opacity: 0.3, margin: '0 6px' }}>|</span>
                                                 SKU: {v.variant_sku || 'N/A'}
                                             </div>
+                                            {v.description && (
+                                              <div style={{ fontSize: '11px', color: '#888', marginTop: '4px', fontStyle: 'italic' }}>
+                                                "{v.description}"
+                                              </div>
+                                            )}
                                         </div>
                                         <button className={styles.deleteVariantBtn} onClick={() => handleDeleteVariant(v.id)} title="Remove Variant">
                                             <Trash2 size={14} />
@@ -623,6 +631,17 @@ export default function EditItemModal({ isOpen, item, categories, bulbTypes = []
                                               placeholder="e.g. White, or Damaged Box"
                                           />
                                       </div>
+
+                                      <div className={styles.formGroup} style={{ gridColumn: '1/-1' }}>
+                                          <label>Description (Optional)</label>
+                                          <input 
+                                              type="text"
+                                              className={styles.formInput}
+                                              value={newVariantData.description || ''}
+                                              onChange={e => setNewVariantData({...newVariantData, description: e.target.value})}
+                                              placeholder="Additional variant details..."
+                                          />
+                                      </div>
                                   </div>
 
                                   <div className={styles.variantFormActions}>
@@ -638,6 +657,7 @@ export default function EditItemModal({ isOpen, item, categories, bulbTypes = []
                                                   stock: 0, 
                                                   min_stock_level: 5,
                                                   color: '',
+                                                  description: '',
                                                   sku: ''
                                               });
                                           }}

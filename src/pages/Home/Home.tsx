@@ -52,9 +52,8 @@ export default function Home({ onAccessDashboard }: HomeProps) {
           {/* Title - Slides up, delay 300ms */}
           <div className={`${styles.titleContainer} ${mounted ? styles.titleMounted : ''}`}>
             <h1 className={styles.title}>
-              Precision <br />
-              <span className={styles.highlight}>Performance</span> <br />
-              Perfection
+              KENS <br />
+              <span className={styles.highlight}>TRADING</span> <br />
             </h1>
           </div>
           

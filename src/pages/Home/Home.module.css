@@ -224,9 +224,7 @@
 }
 
 .highlight {
-  color: transparent;
-  background-clip: text;
-  background-image: linear-gradient(to right, #10b981, #065f46);
+  color: #fff;
 }
 
 /* Description */
@@ -541,7 +539,7 @@
 }
 
 .highlight {
-  color: var(--brand-neon);
+  color: #fff;
 }
 
 .description {
