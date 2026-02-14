@@ -290,7 +290,7 @@ export default function EditItemModal({ isOpen, item, categories, bulbTypes = []
               type="text" 
               value={editingItem.sku || ''}
               onChange={(e) => handleInputChange('sku', e.target.value)}
-              placeholder="Auto-generated if empty"
+              placeholder="Optional"
             />
           </div>
 

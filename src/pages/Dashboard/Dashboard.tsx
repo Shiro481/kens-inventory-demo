@@ -390,9 +390,38 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
     } else {
       // --- UPDATE EXISTING ITEM FLOW ---
       
+      if (updatedItem.is_variant) {
+        // Handle Variant Update
+        const variantPayload: any = {
+           variant_sku: updatedItem.sku || null,
+           selling_price: updatedItem.price,
+           cost_price: updatedItem.cost_price,
+           stock_quantity: stockVal,
+           min_stock_level: minVal,
+           bulb_type: updatedItem.bulb_type,
+           color_temperature: updatedItem.color_temperature,
+           variant_color: updatedItem.notes || null,
+           description: updatedItem.description || null
+        };
+        
+        const { error } = await supabase
+          .from('product_bulb_variants')
+          .update(variantPayload)
+          .eq('id', updatedItem.variant_id || updatedItem.uuid); 
+
+        if (error) {
+            console.error('Error updating variant:', error);
+            alert(`Error saving variant: ${error.message}`);
+        } else {
+            fetchParts();
+        }
+        handleModalClose();
+        return;
+      }
+      
       const payload: any = {
         name: updatedItem.name,
-        sku: updatedItem.sku,
+        sku: updatedItem.sku || null,
         barcode: updatedItem.barcode,
         brand: updatedItem.brand,
         selling_price: updatedItem.price,
