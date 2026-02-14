@@ -229,13 +229,24 @@ export default function Pos({ items, onSaleComplete }: PosProps) {
   /**
    * Confirm and process payment transaction
    * Updates stock levels and records sale in database
+   * 
+   * Transaction Flow:
+   * 1. Validate cart and connection.
+   * 2. Iterate through cart items to deduct stock.
+   *    - Handle Product Stock update (if base item)
+   *    - Handle Variant Stock update (if variant item)
+   * 3. Insert record into 'sales' table with full breakdown.
+   * 4. Update UI state (success/failure).
+   * 
+   * Note:Ideally this should be a simplified RPC call to Supabase to ensure atomicity,
+   * but currently implemented client-side.
    */
   const handleConfirmPayment = async () => {
     if (cart.length === 0 || !supabase || loading) return;
     
     setLoading(true);
     try {
-      // 1. Update stock for each item in the cart
+      // --- 1. Deduct Stock for each item ---
       for (const item of cart) {
         const currentStock = item.stock ?? item.quantity ?? 0;
         const newStock = currentStock - item.cartQuantity;
@@ -247,15 +258,15 @@ export default function Pos({ items, onSaleComplete }: PosProps) {
         let updateError = null;
 
         if (item.variant_id) {
-            // Update Variant Stock
+            // CASE A: Update Variant Stock in 'product_bulb_variants'
             const { error } = await supabase
               .from('product_bulb_variants')
               .update(payload)
               .eq('id', item.variant_id);
             updateError = error;
         } else {
-            // Update Product Stock
-            // Ensure we use the correct UUID if available, otherwise numeric ID
+            // CASE B: Update Base Product Stock in 'products'
+            // Ensure we use the correct UUID if available, otherwise numeric ID fallback
             const idToUse = item.uuid || item.id;
             const { error } = await supabase
               .from('products')
@@ -267,7 +278,7 @@ export default function Pos({ items, onSaleComplete }: PosProps) {
         if (updateError) throw updateError;
       }
 
-      // 2. Record the Sale
+      // --- 2. Record the Sale Transaction ---
       const { error: saleError } = await supabase
         .from('sales')
         .insert([{
@@ -275,22 +286,25 @@ export default function Pos({ items, onSaleComplete }: PosProps) {
             id: i.id,
             name: i.name,
             price: i.price,
-            quantity: i.cartQuantity
+            quantity: i.cartQuantity,
+            is_variant: !!i.variant_id,
+            variant_id: i.variant_id
           })),
           subtotal: subtotal,
           tax: tax,
           total: total,
-          payment_method: paymentMethod
+          payment_method: paymentMethod,
+          created_at: new Date().toISOString()
         }]);
 
       if (saleError) throw saleError;
 
-      // 3. Set success state
+      // --- 3. Finalize Success State ---
       setLastTotal(total);
       setPaymentSuccess(true);
       setCart([]);
       
-      // 4. Refresh parent data
+      // Refresh parent data (inventory list)
       if (onSaleComplete) onSaleComplete();
       
     } catch (err: any) {

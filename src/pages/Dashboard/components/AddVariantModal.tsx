@@ -10,6 +10,11 @@ interface AddVariantModalProps {
   items: InventoryItem[];
 }
 
+/**
+ * Modal to select a parent product to add a variant to.
+ * Displays a searchable list of base products (excluding existing variants).
+ * When a product is selected, it triggers the callback to open the edit modal for that product.
+ */
 export default function AddVariantModal({ isOpen, onClose, onSelect, items }: AddVariantModalProps) {
   const [searchQuery, setSearchQuery] = useState('');
 

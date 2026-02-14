@@ -61,11 +61,21 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
    * Updates the items state with fetched data or sets error state
    * Fetches both base products and all variants from product_bulb_variants
    */
+  /**
+   * Helper to generate a numeric ID from a UUID for UI compatibility
+   * The current UI libraries/logic rely on numeric IDs, but Supabase uses UUIDs.
+   * This creates a consistent pseudo-random number from the UUID.
+   */
+  const generateNumericId = (uuid: string): number => {
+    return parseInt(uuid.toString().replace('-', '').substring(0, 8), 16) % 1000000;
+  };
+
   async function fetchParts() {
     if (!supabase) return;
 
     try {
-      // Fetch all products
+      // 1. Fetch all products (Base Parent Items) from the 'products' table
+      // relationships are joined: categories, bulb_types, suppliers
       const { data: rawData, error } = await supabase
         .from('products')
         .select(`
@@ -81,7 +91,8 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
         return;
       }
 
-      // Fetch ALL variants from product_bulb_variants table
+      // 2. Fetch ALL variants from 'product_bulb_variants' table
+      // These will be flattened into the main list for the UI
       const { data: allVariants, error: variantsError } = await supabase
         .from('product_bulb_variants')
         .select('*');
@@ -94,10 +105,11 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
 
       const allItems: InventoryItem[] = [];
       
-      // Add ALL base products (including those with variants)
+      // 3. Process Base Products
+      // Convert database schema to InventoryItem interface used by the frontend
       for (const item of rawData) {
         const baseItem = {
-          id: parseInt(item.id.toString().replace('-', '').substring(0, 8), 16) % 1000000,
+          id: generateNumericId(item.id),
           uuid: item.id,
           name: item.name,
           sku: item.sku,
@@ -130,20 +142,22 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
           restock_quantity: item.specifications?.last_restock?.quantity
         };
         
-        // Add ALL base products
         allItems.push(baseItem);
       }
       
-      // Now add ALL variants as separate items
+      // 4. Process Variants
+      // Flatten variants into the same list as base products
+      // They are linked via parent_product_id
       if (allVariants && allVariants.length > 0) {
         for (const variant of allVariants) {
-          // Find the parent product
+          // Find the parent product to inherit shared properties (image, brand, etc.)
           const parentProduct = rawData.find((p: any) => p.id === variant.product_id);
           
           if (parentProduct) {
             const variantItem: InventoryItem = {
-              id: parseInt(variant.id.toString().replace('-', '').substring(0, 8), 16) % 1000000,
+              id: generateNumericId(variant.id),
               uuid: variant.id,
+              // Composite name for clarity in list
               name: `${parentProduct.name} - ${variant.bulb_type}${variant.color_temperature ? ` (${variant.color_temperature}K)` : ''}`,
               sku: variant.variant_sku || `${parentProduct.sku}-${variant.id}`,
               price: variant.selling_price,
@@ -283,12 +297,13 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
   const handleSave = async (updatedItem: InventoryItem) => {
     if (!supabase) return;
 
-    // Use preferred min val
+    // Normalize field values (handle backward compatibility/legacy field names)
     const minVal = updatedItem.minQuantity ?? updatedItem.min_qty;
     const stockVal = updatedItem.stock ?? updatedItem.quantity;
 
+    // --- CREATE NEW ITEM FLOW ---
     if (updatedItem.id === 0) {
-      // CREATE NEW PRODUCT
+      // 1. Prepare payload for insertion
       const payload: any = {
         name: updatedItem.name,
         sku: updatedItem.sku || null,
@@ -310,7 +325,8 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
         specifications: { ...(updatedItem.specifications || {}), socket: updatedItem.bulb_type },
       };
 
-      // First, get the category_id
+      // 2. Resolve Category ID (Foreign Key)
+      // The UI uses category names, but DB requires IDs
       let categoryId = null;
       if (updatedItem.category) {
         const { data: categoryData } = await supabase
@@ -325,6 +341,7 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
         payload.category_id = categoryId;
       }
 
+      // 3. Insert into Database
       const { data, error } = await supabase
         .from('products')
         .insert([payload])
@@ -339,9 +356,10 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
         console.error('Error creating product:', error);
         alert(`Error creating product: ${error.message}`);
       } else if (data && data[0]) {
+        // 4. Update Local State
         // Transform the new item to match InventoryItem interface
         const newItem = {
-          id: parseInt(data[0].id.toString().replace('-', '').substring(0, 8), 16) % 1000000,
+          id: generateNumericId(data[0].id),
           uuid: data[0].id, // Crucial: Store real UUID for future updates
           name: data[0].name,
           sku: data[0].sku,
@@ -370,7 +388,8 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
         setItems([...items, newItem]);
       }
     } else {
-      // UPDATE EXISTING PRODUCT
+      // --- UPDATE EXISTING ITEM FLOW ---
+      
       const payload: any = {
         name: updatedItem.name,
         sku: updatedItem.sku,

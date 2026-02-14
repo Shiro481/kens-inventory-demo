@@ -28,16 +28,22 @@ export default function InventoryManager({
   /**
    * Filter, search, and sort inventory items based on current state
    * Returns processed array of items for display
+   * 
+   * Processing Pipeline:
+   * 1. Filter by Status (In Stock, Low Stock, Out of Stock)
+   * 2. Filter by Search Query (Name, SKU, Category)
+   * 3. Sort by criteria (Price, Newest, etc.)
    */
   const filteredItems = items
     .filter(item => {
-      // Filter by status
+      // --- 1. Filter by Status ---
       if (filterStatus !== 'All') {
         const status = getStatus(item);
         if (status !== filterStatus) return false;
       }
       
-      // Filter by search query
+      // --- 2. Filter by Search Query ---
+      // Checks name, sku, and category for partial matches
       if (searchQuery.trim() !== '') {
         const query = searchQuery.toLowerCase();
         const matchesName = (item.name || '').toLowerCase().includes(query);
@@ -52,26 +58,33 @@ export default function InventoryManager({
       return true;
     })
     .sort((a, b) => {
+      // --- 3. Sort Results ---
+      
+      // Price Sorting
       if (sortBy === 'price-asc') return (a.price || 0) - (b.price || 0);
       if (sortBy === 'price-desc') return (b.price || 0) - (a.price || 0);
+      
+      // Category Alphabetical Sorting
       if (sortBy === 'category') {
         const catA = (a.category || '').toLowerCase();
         const catB = (b.category || '').toLowerCase();
         return catA.localeCompare(catB);
       }
+      
+      // Date Sorting (Newest/Oldest)
+      // Falls back to ID if created_at is missing, assuming serial IDs or similar order
       if (sortBy === 'newest') {
-        // Sort by created_at if available, otherwise by id (descending = newest first)
         const timeA = (a as any).created_at ? new Date((a as any).created_at).getTime() : a.id;
         const timeB = (b as any).created_at ? new Date((b as any).created_at).getTime() : b.id;
         return timeB - timeA;
       }
       if (sortBy === 'oldest') {
-        // Sort by created_at if available, otherwise by id (ascending = oldest first)
         const timeA = (a as any).created_at ? new Date((a as any).created_at).getTime() : a.id;
         const timeB = (b as any).created_at ? new Date((b as any).created_at).getTime() : b.id;
         return timeA - timeB;
       }
-      return 0; // no sort
+      
+      return 0; // Default: no specific sort order
     });
 
   return (
