@@ -95,11 +95,16 @@ export default function Pos({ items, onSaleComplete }: PosProps) {
         setLoading(true);
         const { data: variants, error } = await supabase
           .from('product_bulb_variants')
-          .select('*')
+          .select('*, bulb_type_variants(variant_name)')
           .eq('product_id', item.uuid);
 
         if (!error && variants) {
-          setProductVariants(variants);
+            // Map the joined variant name to the 'bulb_type' property which is used downstream
+            const mappedVariants = variants.map((v: any) => ({
+                ...v,
+                bulb_type: v.bulb_type || v.bulb_type_variants?.variant_name || 'Unknown' 
+            }));
+            setProductVariants(mappedVariants);
         } else {
           setProductVariants([]);
         }
@@ -127,6 +132,7 @@ export default function Pos({ items, onSaleComplete }: PosProps) {
     if (!selectedItem) return;
 
     // Create a cart item from the variant
+    // Create a cart item from the variant
     const cartItem: CartItem = {
       id: (selectedItem.id || 0) * 10000 + variant.id,
       name: `${selectedItem.name} (${variant.bulb_type})`,
@@ -139,7 +145,7 @@ export default function Pos({ items, onSaleComplete }: PosProps) {
       image_url: selectedItem.image_url,
       cartQuantity: quantity,
       variant_id: variant.id.toString(),
-      variant_display_name: variant.bulb_type + (variant.color_temperature ? ` (${variant.color_temperature}K)` : ''),
+      variant_display_name: variant.bulb_type + (variant.variant_color ? ` (${variant.variant_color})` : (variant.color_temperature ? ` (${variant.color_temperature}K)` : '')),
       variant_price: variant.selling_price,
       description: variant.description || selectedItem.description || '',
       color_temperature: variant.color_temperature,

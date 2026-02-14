@@ -46,10 +46,10 @@ export default function ItemDetailModal({ isOpen, item, onClose, onAddToCart, va
   };
 
   // Combine parent and variants for the dropdown lists
-  const allAvailableOptions = [
-    ...(hasVariants ? variants : []),
-    parentOption // Always include parent as an option
-  ];
+  // If we have variants, use ONLY the variants (don't add synthetic parent "Base" option)
+  const allAvailableOptions = hasVariants && variants 
+    ? variants 
+    : [parentOption];
 
   // Get unique bulb types from the combined list
   // Ensure we don't filter out our fallbacks
@@ -60,7 +60,7 @@ export default function ItemDetailModal({ isOpen, item, onClose, onAddToCart, va
     ? allAvailableOptions
         .filter(v => v.bulb_type === selectedBulbType)
         .map(v => ({
-          value: v.color_temperature,
+          value: v.color_temperature || v.variant_color,
           variant: v
         }))
     : [];
@@ -225,7 +225,7 @@ export default function ItemDetailModal({ isOpen, item, onClose, onAddToCart, va
                     <option value="">-- Select temperature --</option>
                     {availableTemperatures.map(({ value, variant }) => (
                       <option key={variant.id} value={variant.id}>
-                        {value}{!value || isNaN(Number(value)) ? '' : 'K'}
+                        {value ? `${value}${!isNaN(Number(value)) ? 'K' : ''}` : 'Standard'}
                       </option>
                     ))}
                   </select>

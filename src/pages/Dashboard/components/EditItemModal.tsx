@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import styles from './EditItemModal.module.css';
 import type { InventoryItem } from '../../../types/inventory';
 import { supabase } from '../../../lib/supabase';
-import { Trash2, Plus, Info } from 'lucide-react';
+import { Trash2, Plus, Info, Pencil } from 'lucide-react';
 
 interface EditItemModalProps {
   isOpen: boolean;
@@ -32,7 +32,7 @@ export default function EditItemModal({ isOpen, item, categories, bulbTypes = []
   const [showVariantForm, setShowVariantForm] = useState(false);
   const [newVariantData, setNewVariantData] = useState({ 
     bulb_type: '', 
-    color_temperature: 0, 
+    color_temperature: 0,
     cost_price: 0, 
     selling_price: 0, 
     stock: 0, 
@@ -42,6 +42,7 @@ export default function EditItemModal({ isOpen, item, categories, bulbTypes = []
     sku: ''
   });
   const [isNewVariantBulbType, setIsNewVariantBulbType] = useState(false);
+  const [editingVariantId, setEditingVariantId] = useState<number | null>(null);
 
 
 
@@ -51,7 +52,7 @@ export default function EditItemModal({ isOpen, item, categories, bulbTypes = []
     if (pid && editingItem?.has_variants && editingItem?.id !== 0) {
         if (!supabase) return;
         supabase.from('product_bulb_variants')
-          .select('*')
+          .select('*, bulb_type_variants(variant_name)')
           .eq('product_id', pid)
           .then(({ data }) => {
              setProductVariants(data || []);
@@ -73,25 +74,131 @@ export default function EditItemModal({ isOpen, item, categories, bulbTypes = []
         return;
     }
 
-    const { error } = await supabase.from('product_bulb_variants').insert({
-        product_id: pid,
-        bulb_type: newVariantData.bulb_type,
-        color_temperature: newVariantData.color_temperature || null,
-        cost_price: newVariantData.cost_price,
-        selling_price: newVariantData.selling_price,
-        stock_quantity: newVariantData.stock,
-        min_stock_level: newVariantData.min_stock_level,
-        variant_color: newVariantData.color || null,
-        description: newVariantData.description || null,
-        variant_sku: newVariantData.sku || null,
-        variant_id: null // No longer using pre-built variant types
-    });
+    // 1. Resolve Variant ID (Find or Create in bulb_type_variants)
+    let variantId: number | null = null;
+    
+    // Check if exists
+    // Check if EXACT variant exists
+    // We fetch all matching the name to filter properly since unique constraint might not be purely on name
+    const { data: variants } = await supabase
+        .from('bulb_type_variants')
+        .select('*')
+        .eq('variant_name', newVariantData.bulb_type);
+
+    // Find exact match (case insensitive but exact string)
+    // trying to avoid "H4" matching "H4/Hb2" if using ilike with wildcard (though we used equal before)
+    // The main issue was previously we might have matched a "smart" variant.
+    const exactMatch = variants?.find(v => v.variant_name.toLowerCase() === newVariantData.bulb_type.toLowerCase());
+
+    if (exactMatch) {
+        variantId = exactMatch.id;
+    } else {
+        // Create new SIMPLE bulb type variant
+        const { data: newVariant, error: createError } = await supabase
+            .from('bulb_type_variants')
+            .insert({
+                base_name: 'Simple Bulb', 
+                variant_name: newVariantData.bulb_type,
+                display_name: newVariantData.bulb_type, // Use exact name
+                description: `Standard ${newVariantData.bulb_type}`,
+                compatibility_list: [newVariantData.bulb_type],
+                is_active: true
+            })
+            .select()
+            .single();
+        
+        if (createError) {
+            alert('Error creating new bulb type: ' + createError.message);
+            return;
+        }
+        variantId = newVariant.id;
+    }
+
+    // Check for existing variant
+    let existingProductVariant: any = null;
+
+    if (editingVariantId) {
+        // If explicitly editing an ID, use it
+        existingProductVariant = { id: editingVariantId };
+    } else {
+        // Search for duplicate if adding new
+        // Fetch potentially conflicting variants to check in JS (safer than complex OR queries)
+        const { data: potentialMatches } = await supabase
+            .from('product_bulb_variants')
+            .select('id, variant_color')
+            .eq('product_id', pid)
+            .eq('variant_id', variantId);
+
+        // Normalize comparison: treat null and '' as matching
+        const inputColor = newVariantData.color || '';
+        existingProductVariant = potentialMatches?.find((v: any) => {
+            const dbColor = v.variant_color || '';
+            return dbColor === inputColor;
+        });
+    }
+
+    let error;
+
+    if (existingProductVariant) {
+        // Update existing - Only update fields that are provided (allow partial updates to avoid wiping data)
+        const updates: any = {};
+        if (newVariantData.bulb_type) updates.bulb_type = newVariantData.bulb_type;
+        
+        // Safer numeric casting
+        const safeNum = (val: any) => {
+            const num = Number(val);
+            return isNaN(num) ? 0 : num;
+        };
+        const safeTemp = (val: any) => {
+            if (val === '' || val === null || val === undefined) return null;
+            const  n = Number(val);
+            return isNaN(n) ? null : n; 
+        };
+
+        // Only update if provided (truthy or 0? 0 is falsy, so be careful)
+        // newVariantData always initialized with 0 for numbers.
+        // But if user wants to set it to 6000, it's 6000.
+        // If user leaves it at 0, should we update it to 0? Or leave existing?
+        // Logic before was "if (newVariantData.color_temperature)". 0 is falsy.
+        // So we only update if non-zero.
+        if (newVariantData.color_temperature) updates.color_temperature = safeTemp(newVariantData.color_temperature);
+        if (newVariantData.cost_price) updates.cost_price = safeNum(newVariantData.cost_price);
+        if (newVariantData.selling_price) updates.selling_price = safeNum(newVariantData.selling_price);
+        if (newVariantData.stock) updates.stock_quantity = safeNum(newVariantData.stock);
+        if (newVariantData.min_stock_level) updates.min_stock_level = safeNum(newVariantData.min_stock_level);
+        
+        if (newVariantData.description) updates.description = newVariantData.description;
+        if (newVariantData.sku) updates.variant_sku = newVariantData.sku;
+        if (newVariantData.color) updates.variant_color = newVariantData.color;
+
+        const { error: updateError } = await supabase
+            .from('product_bulb_variants')
+            .update(updates)
+            .eq('id', existingProductVariant.id);
+        error = updateError;
+    } else {
+        // Insert new
+        const { error: insertError } = await supabase.from('product_bulb_variants').insert({
+            product_id: pid,
+            bulb_type: newVariantData.bulb_type,
+            variant_id: variantId,
+            color_temperature: typeof newVariantData.color_temperature === 'string' ? (parseFloat(newVariantData.color_temperature) || null) : (newVariantData.color_temperature || null),
+            cost_price: Number(newVariantData.cost_price) || 0,
+            selling_price: Number(newVariantData.selling_price) || 0,
+            stock_quantity: Number(newVariantData.stock) || 0,
+            min_stock_level: Number(newVariantData.min_stock_level) || 5,
+            variant_color: newVariantData.color || null,
+            description: newVariantData.description || null,
+            variant_sku: newVariantData.sku || null
+        });
+        error = insertError;
+    }
     
     if (!error) {
         // Refresh list
         if (supabase) {
           const { data } = await supabase.from('product_bulb_variants')
-            .select('*')
+            .select('*, bulb_type_variants(variant_name)')
             .eq('product_id', pid);
           setProductVariants(data || []);
         }
@@ -107,6 +214,7 @@ export default function EditItemModal({ isOpen, item, categories, bulbTypes = []
             sku: ''
         });
         setShowVariantForm(false);
+        setEditingVariantId(null);
     } else {
         alert('Error adding variant: ' + error.message);
     }
@@ -184,14 +292,157 @@ export default function EditItemModal({ isOpen, item, categories, bulbTypes = []
     <div className={styles.modalOverlay}>
       <div className={styles.modalContent}>
         <div className={styles.modalHeader}>
-          <h2>{item?.id === 0 ? 'Add New Item' : 'Edit Part'}</h2>
+          <h2>{item?.id === 0 ? 'Add New Item' : (editingItem.is_variant ? 'Edit Variant' : 'Edit Part')}</h2>
           <button className={styles.closeBtn} onClick={onClose}>X</button>
         </div>
         
         <div className={styles.formGrid}>
+          {editingItem.is_variant ? (
+              // --- VARIANT EDIT MODE: Simplified View ---
+              <>
+                 <div className={`${styles.formGroup} ${styles.fullWidth}`} style={{ marginBottom: '16px', padding: '12px', background: '#111', border: '1px solid #333', borderRadius: '4px' }}>
+                    <div style={{ fontSize: '11px', color: '#888', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '4px' }}>
+                        Parent Product
+                    </div>
+                    <div style={{ fontSize: '14px', fontWeight: 'bold', color: '#fff' }}>
+                        {editingItem.name.split(' - ')[0]} 
+                        <span style={{ fontWeight: 'normal', color: '#666', marginLeft: '8px' }}>({editingItem.brand})</span>
+                    </div>
+                 </div>
+
+                 {/* Variant Essentials */}
+                 <div className={styles.formGroup}>
+                    <label>Bulb Type / Socket</label>
+                    {!isNewBulbType ? (
+                      <select 
+                        className={styles.formInput}
+                        value={bulbTypes?.includes(editingItem.bulb_type || '') ? editingItem.bulb_type : ''}
+                        onChange={handleBulbTypeSelect}
+                      >
+                        <option value="">Select Socket</option>
+                        {bulbTypes?.map(type => (
+                          <option key={type} value={type}>{type}</option>
+                        ))}
+                        <option value="__NEW__">+ Add New Socket</option>
+                      </select>
+                    ) : (
+                      <div style={{ display: 'flex', gap: '8px' }}>
+                        <input 
+                          className={styles.formInput} 
+                          type="text" 
+                          autoFocus
+                          placeholder="Enter new socket type"
+                          value={editingItem.bulb_type || ''}
+                          onChange={(e) => handleInputChange('bulb_type', e.target.value)}
+                          style={{ flex: 1 }}
+                        />
+                        <button 
+                          onClick={() => setIsNewBulbType(false)}
+                          className={styles.cancelBtn}
+                          style={{ padding: '0 10px', border: '1px solid #333' }}
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    )}
+                 </div>
+
+                 <div className={styles.formGroup}>
+                    <label>Color Temp (Kelvin)</label>
+                    <input 
+                      className={styles.formInput} 
+                      type="number" 
+                      value={editingItem.color_temperature || ''}
+                      onChange={(e) => handleInputChange('color_temperature', parseFloat(e.target.value))}
+                      placeholder="e.g. 6000"
+                    />
+                 </div>
+
+                 <div className={styles.formGroup}>
+                    <label>Selling Price ($)</label>
+                    <input 
+                      className={styles.formInput} 
+                      type="number" 
+                      step="0.01"
+                      value={editingItem.price || ''}
+                      onChange={(e) => handleInputChange('price', parseFloat(e.target.value))}
+                    />
+                 </div>
+
+                 <div className={styles.formGroup}>
+                    <label>Cost Price ($)</label>
+                    <input 
+                      className={styles.formInput} 
+                      type="number" 
+                      step="0.01"
+                      value={editingItem.cost_price || ''}
+                      onChange={(e) => handleInputChange('cost_price', parseFloat(e.target.value))}
+                    />
+                 </div>
+
+                 <div className={styles.formGroup}>
+                     <label>Current Stock</label>
+                     <input 
+                       className={styles.formInput} 
+                       type="number" 
+                       value={editingItem.stock ?? editingItem.quantity ?? ''}
+                       onChange={(e) => handleInputChange('stock', parseInt(e.target.value))}
+                     />
+                 </div>
+
+                 <div className={styles.formGroup}>
+                    <label>Min Qty (Alert Level)</label>
+                    <input 
+                      className={styles.formInput} 
+                      type="number" 
+                      placeholder="Default: 10"
+                      value={editingItem.minQuantity ?? editingItem.min_qty ?? ''}
+                      onChange={(e) => {
+                        const val = e.target.value;
+                        if (val === '' || val === null) {
+                          handleInputChange('minQuantity', undefined);
+                          handleInputChange('min_qty', undefined);
+                        } else {
+                          const num = parseInt(val);
+                          const finalVal = isNaN(num) ? undefined : num;
+                          handleInputChange('minQuantity', finalVal);
+                          handleInputChange('min_qty', finalVal);
+                        }
+                      }}
+                    />
+                 </div>
+                 
+                 <div className={styles.formGroup}>
+                    <label>SKU</label>
+                    <input 
+                      className={styles.formInput} 
+                      type="text" 
+                      value={editingItem.sku || ''}
+                      onChange={(e) => handleInputChange('sku', e.target.value)}
+                      placeholder="Optional"
+                    />
+                 </div>
+                 
+                 <div className={`${styles.formGroup} ${styles.fullWidth}`}>
+                    <label>Internal Notes (Variant Color/Note)</label>
+                    <textarea 
+                      className={styles.formInput} 
+                      rows={2}
+                      value={editingItem.notes || ''}
+                      onChange={(e) => handleInputChange('notes', e.target.value)}
+                      placeholder="Private notes (supplier info, location...)"
+                      style={{ resize: 'vertical', border: '1px dashed #333' }}
+                    />
+                 </div>
+              </>
+          ) : (
+              // --- REGULAR PRODUCT EDIT MODE (Original Form) ---
+              <>
           {/* SECTION 1: BASIC INFO */}
           <div className={`${styles.formGroup} ${styles.fullWidth}`}>
-            <h3 style={{ borderBottom: '1px solid #333', paddingBottom: '8px', marginBottom: '8px', color: '#888', fontSize: '12px', letterSpacing: '1px' }}>BASIC INFORMATION</h3>
+            <h3 style={{ borderBottom: '1px solid #333', paddingBottom: '8px', marginBottom: '8px', color: '#888', fontSize: '12px', letterSpacing: '1px' }}>
+              BASIC INFORMATION
+            </h3>
           </div>
 
           <div className={styles.formGroup}>
@@ -267,7 +518,7 @@ export default function EditItemModal({ isOpen, item, categories, bulbTypes = []
 
 
           <div className={`${styles.formGroup} ${styles.fullWidth}`}>
-            <label>Internal Notes</label>
+            <label>Internal Notes (Variant Color/Note)</label>
             <textarea 
               className={styles.formInput} 
               rows={2}
@@ -470,9 +721,9 @@ export default function EditItemModal({ isOpen, item, categories, bulbTypes = []
                                     <div key={v.id} className={styles.variantCard}>
                                         <div className={styles.variantInfo}>
                                             <div className={styles.variantInfoMain}>
-                                                {v.bulb_type || 'Unknown'}
+                                                {v.bulb_type_variants?.variant_name || v.bulb_type || 'Unknown'}
                                                 {v.color_temperature && <span className={styles.variantTag}>{v.color_temperature}K</span>}
-                                                {v.variant_color && <span className={styles.variantTag} style={{ background: '#222', color: '#00ff9d', border: '1px solid #111' }}>Note: {v.variant_color}</span>}
+                                                {v.variant_color && <span className={styles.variantTag} style={{ background: '#222', color: '#00ff9d', border: '1px solid #111' }}>{v.variant_color}</span>}
                                             </div>
                                             <div className={styles.variantInfoSub}>
                                                 STOCK: <span style={{ color: v.stock_quantity < v.min_stock_level ? '#ff4444' : '#888' }}>{v.stock_quantity}</span>
@@ -487,9 +738,40 @@ export default function EditItemModal({ isOpen, item, categories, bulbTypes = []
                                               </div>
                                             )}
                                         </div>
-                                        <button className={styles.deleteVariantBtn} onClick={() => handleDeleteVariant(v.id)} title="Remove Variant">
-                                            <Trash2 size={14} />
-                                        </button>
+                                        <div style={{ display: 'flex', gap: '8px' }}>
+                                            <button 
+                                                className={styles.deleteVariantBtn} 
+                                                onClick={() => {
+                                                    // Edit Logic
+                                                    setEditingVariantId(v.id);
+                                                    setNewVariantData({
+                                                        bulb_type: v.bulb_type_variants?.variant_name || v.bulb_type,
+                                                        color_temperature: typeof v.color_temperature === 'string' ? parseFloat(v.color_temperature) || 0 : v.color_temperature || 0,
+                                                        cost_price: Number(v.cost_price) || 0,
+                                                        selling_price: Number(v.selling_price) || 0,
+                                                        stock: Number(v.stock_quantity) || 0,
+                                                        min_stock_level: Number(v.min_stock_level) || 5,
+                                                        color: v.variant_color || '',
+                                                        description: v.description || '',
+                                                        sku: v.variant_sku || ''
+                                                    });
+                                                    setIsNewVariantBulbType(false);
+                                                    setShowVariantForm(true);
+                                                    // Scroll to form
+                                                    setTimeout(() => {
+                                                        const form = document.querySelector(`.${styles.variantFormContainer}`);
+                                                        if (form) form.scrollIntoView({ behavior: 'smooth' });
+                                                    }, 100);
+                                                }} 
+                                                title="Edit Variant"
+                                                style={{ background: '#333', color: '#fff' }}
+                                            >
+                                                <Pencil size={14} />
+                                            </button>
+                                            <button className={styles.deleteVariantBtn} onClick={() => handleDeleteVariant(v.id)} title="Remove Variant">
+                                                <Trash2 size={14} />
+                                            </button>
+                                        </div>
                                     </div>
                                 ))}
                             </div>
@@ -518,10 +800,55 @@ export default function EditItemModal({ isOpen, item, categories, bulbTypes = []
                                                     const val = e.target.value;
                                                     if (val === '__NEW__') {
                                                         setIsNewVariantBulbType(true);
-                                                        setNewVariantData({...newVariantData, bulb_type: ''});
+                                                        setNewVariantData({
+                                                            ...newVariantData, 
+                                                            bulb_type: '',
+                                                            color_temperature: 0, 
+                                                            cost_price: 0, 
+                                                            selling_price: 0, 
+                                                            stock: 0, 
+                                                            min_stock_level: 5,
+                                                            color: '',
+                                                            description: '',
+                                                            sku: ''
+                                                        });
                                                     } else {
                                                         setIsNewVariantBulbType(false);
-                                                        setNewVariantData({...newVariantData, bulb_type: val});
+                                                        // Check if we have an existing variant with this bulb_type
+                                                        const existing = productVariants.find(pv => 
+                                                            (pv.bulb_type_variants?.variant_name === val) || (pv.bulb_type === val)
+                                                        );
+                                                        
+                                                        if (existing) {
+                                                            // Pre-fill form with existing data to allow editing
+                                                            setNewVariantData({
+                                                                bulb_type: val,
+                                                                // Strictly parse existing values to numbers to prevent strings from DB (if any)
+                                                                color_temperature: typeof existing.color_temperature === 'string' ? parseFloat(existing.color_temperature) || 0 : existing.color_temperature || 0,
+                                                                cost_price: Number(existing.cost_price) || 0,
+                                                                selling_price: Number(existing.selling_price) || 0,
+                                                                stock: Number(existing.stock_quantity) || 0,
+                                                                min_stock_level: Number(existing.min_stock_level) || 5,
+                                                                color: existing.variant_color || '',
+                                                                description: existing.description || '',
+                                                                sku: existing.variant_sku || ''
+                                                            });
+                                                        } else {
+                                                            // Reset for new entry of this type
+                                                            setNewVariantData({
+                                                                ...newVariantData, 
+                                                                bulb_type: val,
+                                                                // Keep defaults for others layout
+                                                                color_temperature: 0, 
+                                                                cost_price: 0, 
+                                                                selling_price: 0, 
+                                                                stock: 0, 
+                                                                min_stock_level: 5,
+                                                                color: '',
+                                                                description: '',
+                                                                sku: ''
+                                                            });
+                                                        }
                                                     }
                                                 }}
                                             >
@@ -649,6 +976,7 @@ export default function EditItemModal({ isOpen, item, categories, bulbTypes = []
                                           className={styles.variantCancelBtn}
                                           onClick={() => {
                                               setShowVariantForm(false);
+                                              setEditingVariantId(null);
                                               setNewVariantData({ 
                                                   bulb_type: '', 
                                                   color_temperature: 0, 
@@ -677,6 +1005,8 @@ export default function EditItemModal({ isOpen, item, categories, bulbTypes = []
                       </>
                   )}
               </div>
+          )}
+          </>
           )}
           
         </div>

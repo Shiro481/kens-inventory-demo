@@ -95,7 +95,12 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
       // These will be flattened into the main list for the UI
       const { data: allVariants, error: variantsError } = await supabase
         .from('product_bulb_variants')
-        .select('*');
+        .select(`
+            *,
+            bulb_type_variants (
+                variant_name
+            )
+        `);
       
       if (variantsError) {
         console.error('Error fetching variants:', variantsError);
@@ -154,13 +159,18 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
           const parentProduct = rawData.find((p: any) => p.id === variant.product_id);
           
           if (parentProduct) {
+            // Get the variant name from the joined relation
+            const variantName = variant.bulb_type || variant.bulb_type_variants?.variant_name || 'Unknown';
+            const temp = variant.color_temperature ? `${variant.color_temperature}K` : '';
+            const noteColor = variant.variant_color || ''; // This is the specific note/color
+
             const variantItem: InventoryItem = {
               id: generateNumericId(variant.id),
               uuid: variant.id,
-              // Composite name for clarity in list
-              name: `${parentProduct.name} - ${variant.bulb_type}${variant.color_temperature ? ` (${variant.color_temperature}K)` : ''}`,
+              // Name: "GPNE R6 - H1 6000K" (Clean, standard)
+              name: `${parentProduct.name} - ${variantName} ${temp}`.trim(),
               sku: variant.variant_sku || `${parentProduct.sku}-${variant.id}`,
-              price: variant.selling_price,
+              price: variant.selling_price || (variant.price_adjustment ? parentProduct.selling_price + variant.price_adjustment : parentProduct.selling_price),
               stock: variant.stock_quantity,
               quantity: variant.stock_quantity,
               minQuantity: variant.min_stock_level,
@@ -173,21 +183,21 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
               cost_price: variant.cost_price,
               voltage: parentProduct.voltage,
               wattage: parentProduct.wattage,
-              color_temperature: variant.color_temperature,
+              color_temperature: variant.color_temperature || parentProduct.color_temperature,
               lumens: parentProduct.lumens,
               beam_type: parentProduct.beam_type,
-              bulb_type: variant.bulb_type,
+              bulb_type: variantName,
               specifications: parentProduct.specifications,
               supplier: parentProduct.suppliers?.name,
               has_variants: false,
               variant_count: 0,
               variant_id: variant.id,
-              variant_display_name: `${variant.bulb_type}${variant.color_temperature ? ` (${variant.color_temperature}K)` : ''}`,
+              variant_display_name: `${variantName} ${temp}`.trim(),
               is_variant: true,
               parent_product_id: variant.product_id,
               created_at: variant.created_at,
               updated_at: variant.updated_at,
-              notes: variant.variant_color || '' // Map variant color/note to notes field
+              notes: noteColor // Display the specific note/color separately here
             };
             
             allItems.push(variantItem);
