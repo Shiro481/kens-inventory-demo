@@ -302,7 +302,7 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
    * Creates new items or updates existing ones in the database
    * @param updatedItem - The item data to save (create or update)
    */
-  const handleSave = async (updatedItem: InventoryItem) => {
+  const handleSave = async (updatedItem: InventoryItem, variants?: any[]) => {
     if (!supabase) return;
 
     // Normalize field values (handle backward compatibility/legacy field names)
@@ -419,7 +419,38 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
           updated_at: data[0].updated_at,
           notes: data[0].specifications?.internal_notes || ''
         };
-        setItems([...items, newItem]);
+        
+        // 5. Insert Variants (if any)
+        if (variants && variants.length > 0) {
+            const newProductId = data[0].id;
+            
+            const variantInserts = variants.map(v => ({
+                product_id: newProductId,
+                bulb_type: v.bulb_type,
+                variant_id: v.variant_id, 
+                color_temperature: v.color_temperature,
+                cost_price: v.cost_price,
+                selling_price: v.selling_price,
+                stock_quantity: v.stock_quantity,
+                min_stock_level: v.min_stock_level,
+                variant_color: v.variant_color,
+                description: v.description,
+                variant_sku: v.variant_sku
+            }));
+
+            const { error: varError } = await supabase
+                .from('product_bulb_variants')
+                .insert(variantInserts);
+            
+            if (varError) {
+                console.error('Error adding variants:', varError);
+                alert('Product created, but error adding variants: ' + varError.message);
+            }
+            // Always fetch parts to show new variants correctly
+            fetchParts();
+        } else {
+             setItems([...items, newItem]);
+        }
       }
     } else {
       // --- UPDATE EXISTING ITEM FLOW ---

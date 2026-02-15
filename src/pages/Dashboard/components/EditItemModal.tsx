@@ -10,7 +10,7 @@ interface EditItemModalProps {
   categories: string[];
   bulbTypes?: string[]; // New prop for existing bulb types
   onClose: () => void;
-  onSave: (updatedItem: InventoryItem) => void;
+  onSave: (updatedItem: InventoryItem, variants?: any[]) => void;
 }
 
 /**
@@ -48,8 +48,8 @@ export default function EditItemModal({ isOpen, item, categories, bulbTypes = []
 
 
   useEffect(() => {
-    const pid = (editingItem as any)?.uuid;
-    if (pid && editingItem?.has_variants && editingItem?.id !== 0) {
+    const pid = (item as any)?.uuid;
+    if (pid && item?.has_variants && item?.id !== 0) {
         if (!supabase) return;
         supabase.from('product_bulb_variants')
           .select('*, bulb_type_variants(variant_name)')
@@ -60,11 +60,11 @@ export default function EditItemModal({ isOpen, item, categories, bulbTypes = []
     } else {
         setProductVariants([]);
     }
-  }, [(editingItem as any)?.uuid, editingItem?.has_variants, editingItem?.id]);
+  }, [item]);
 
   const handleAddVariant = async () => {
     const pid = (editingItem as any)?.uuid;
-    if (!newVariantData.bulb_type || !pid) {
+    if (!newVariantData.bulb_type) {
         alert('Please fill in the Bulb Type field.');
         return;
     }
@@ -114,6 +114,43 @@ export default function EditItemModal({ isOpen, item, categories, bulbTypes = []
         variantId = newVariant.id;
     }
 
+    // CHECK FOR NEW ITEM MODE (Local State)
+    if (!pid || item?.id === 0) {
+         const tempId = Date.now();
+         const newVar = {
+             ...newVariantData,
+             id: tempId,
+             is_temp: true,
+             variant_id: variantId,
+             variant_color: newVariantData.color || (newVariantData.color_temperature ? `${newVariantData.color_temperature}K` : null),
+             variant_sku: newVariantData.sku || null,
+             stock_quantity: Number(newVariantData.stock) || 0,
+             min_stock_level: Number(newVariantData.min_stock_level) || 5, 
+             bulb_type: newVariantData.bulb_type,
+             bulb_type_variants: { variant_name: newVariantData.bulb_type },
+             color_temperature: newVariantData.color_temperature,
+             cost_price: Number(newVariantData.cost_price),
+             selling_price: Number(newVariantData.selling_price),
+             description: newVariantData.description
+         };
+         setProductVariants(prev => [...prev, newVar]);
+         
+         setNewVariantData({ 
+             bulb_type: '', 
+             color_temperature: 0, 
+             cost_price: 0, 
+             selling_price: 0, 
+             stock: 0, 
+             min_stock_level: 5,
+             color: '',
+             description: '',
+             sku: ''
+         });
+         setShowVariantForm(false);
+         setEditingVariantId(null);
+         return;
+    }
+
     // Check for existing variant
     let existingProductVariant: any = null;
 
@@ -129,10 +166,13 @@ export default function EditItemModal({ isOpen, item, categories, bulbTypes = []
             .eq('product_id', pid)
             .eq('variant_id', variantId);
 
-        // Normalize comparison: treat null and '' as matching
-        const inputColor = newVariantData.color || '';
+        // Computed color logic to match save logic and prevent treating specific variants as duplicates of generic ones
+        const computedColor = newVariantData.color || (newVariantData.color_temperature ? `${newVariantData.color_temperature}K` : null);
+        const inputColor = computedColor || '';
+
         existingProductVariant = potentialMatches?.find((v: any) => {
             const dbColor = v.variant_color || '';
+            // Match if colors are identical
             return dbColor === inputColor;
         });
     }
@@ -187,7 +227,7 @@ export default function EditItemModal({ isOpen, item, categories, bulbTypes = []
             selling_price: Number(newVariantData.selling_price) || 0,
             stock_quantity: Number(newVariantData.stock) || 0,
             min_stock_level: Number(newVariantData.min_stock_level) || 5,
-            variant_color: newVariantData.color || null,
+            variant_color: newVariantData.color || (newVariantData.color_temperature ? `${newVariantData.color_temperature}K` : null),
             description: newVariantData.description || null,
             variant_sku: newVariantData.sku || null
         });
@@ -222,6 +262,12 @@ export default function EditItemModal({ isOpen, item, categories, bulbTypes = []
 
   const handleDeleteVariant = async (id: number) => {
       if (!confirm('Remove this variant?')) return;
+      
+      if (id > 1000000000) {
+          setProductVariants(prev => prev.filter(v => v.id !== id));
+          return;
+      }
+
       if (!supabase) return;
       const { error } = await supabase.from('product_bulb_variants').delete().eq('id', id);
       if (!error) {
@@ -708,7 +754,7 @@ export default function EditItemModal({ isOpen, item, categories, bulbTypes = []
                       </h3>
                   </div>
                   
-                  {(!((editingItem as any)?.uuid) || editingItem.id === 0) ? (
+                  {(false) ? (
                       <div style={{ padding: '32px', border: '1px dashed #333', color: '#444', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '1px', textAlign: 'center' }}>
                           Save Item First To Add Variants
                       </div>
@@ -979,7 +1025,7 @@ export default function EditItemModal({ isOpen, item, categories, bulbTypes = []
 
         <div className={styles.modalFooter}>
           <button className={styles.cancelBtn} onClick={onClose}>Cancel</button>
-          <button className={styles.saveBtn} onClick={() => onSave(editingItem)}>Save Changes</button>
+          <button className={styles.saveBtn} onClick={() => onSave(editingItem, productVariants)}>Save Changes</button>
         </div>
       </div>
     </div>
