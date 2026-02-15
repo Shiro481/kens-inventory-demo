@@ -262,14 +262,11 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
   /**
    * Handle edit click for an inventory item
    * Opens edit modal with the selected item data
-   * @param id - The ID of the item to edit
+   * @param item - The item to edit (passed directly from table to avoid ID collisions)
    */
-  const handleEditClick = (id: number) => {
-    const item = items.find(i => i.id === id);
-    if (item) {
-      setEditingItem({ ...item }); // Clone to avoid direct mutation
-      setIsEditModalOpen(true);
-    }
+  const handleEditClick = (item: InventoryItem) => {
+    setEditingItem({ ...item }); // Clone to avoid direct mutation
+    setIsEditModalOpen(true);
   };
 
   /**

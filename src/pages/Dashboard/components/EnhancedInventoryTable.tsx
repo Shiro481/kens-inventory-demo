@@ -6,7 +6,7 @@ import type { InventoryItem } from '../../../types/inventory';
 
 interface InventoryTableProps {
   items: InventoryItem[];
-  onEdit: (id: number) => void;
+  onEdit: (item: InventoryItem) => void;
   onDelete: (id: number) => void;
 }
 
@@ -245,7 +245,7 @@ export default function EnhancedInventoryTable({ items, onEdit, onDelete }: Inve
                 <div className={styles.actionButtons}>
                   <button 
                     className={styles.actionBtn} 
-                    onClick={() => onEdit(light.id)}
+                    onClick={() => onEdit(light)}
                     title="Edit Item"
                   >
                     <Edit size={16} />

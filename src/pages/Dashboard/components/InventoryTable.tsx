@@ -5,7 +5,7 @@ import type { InventoryItem } from '../../../types/inventory';
 
 interface InventoryTableProps {
   items: InventoryItem[];
-  onEdit: (id: number) => void;
+  onEdit: (item: InventoryItem) => void;
   onDelete: (id: number) => void;
 }
 
@@ -54,6 +54,33 @@ export default function InventoryTable({ items, onEdit, onDelete }: InventoryTab
                 <span className={styles.partName}>
                   {item.name}
                 </span>
+                {/* Display Base Item Specs (Bulb Type & Color) */}
+                {(item.bulb_type || item.color_temperature) && !item.is_variant && (
+                  <div style={{ fontSize: '11px', color: '#aaa', marginTop: '2px', display: 'flex', gap: '8px', alignItems: 'center' }}>
+                    {item.bulb_type && (
+                      <span style={{ 
+                        background: '#222', 
+                        padding: '2px 6px', 
+                        borderRadius: '4px', 
+                        border: '1px solid #333',
+                        fontWeight: '700',
+                        color: '#ddd'
+                      }}>
+                        {item.bulb_type}
+                      </span>
+                    )}
+                    {item.color_temperature && (
+                      <span style={{ 
+                        color: '#00ff9d', 
+                        fontWeight: '700',
+                        letterSpacing: '0.5px'
+                      }}>
+                        {item.color_temperature}
+                        {typeof item.color_temperature === 'number' ? 'K' : ''}
+                      </span>
+                    )}
+                  </div>
+                )}
                 {item.sku && (
                   <div style={{ fontSize: '11px', color: '#666', marginTop: '2px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
                     SKU: {item.sku}
@@ -94,7 +121,7 @@ export default function InventoryTable({ items, onEdit, onDelete }: InventoryTab
             <div className={styles.actions}>
               <button 
                 className={styles.actionBtn} 
-                onClick={() => onEdit(item.id)}
+                onClick={() => onEdit(item)}
                 title="Edit Item"
               >
                 <Edit size={16} />

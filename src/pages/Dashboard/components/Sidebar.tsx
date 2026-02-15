@@ -64,16 +64,7 @@ export default function Sidebar({ activeView, onViewChange, onGoToHome, onLogout
   
   return (
     <>
-      {/* Mobile Menu Toggle */}
-      <button 
-        className={styles.mobileMenuToggle}
-        onClick={onClose}
-        aria-label="Toggle menu"
-      >
-        <div className={styles.hamburger}></div>
-        <div className={styles.hamburger}></div>
-        <div className={styles.hamburger}></div>
-      </button>
+
 
       {/* Overlay for mobile only */}
       <div 

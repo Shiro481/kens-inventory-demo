@@ -9,7 +9,7 @@ interface InventoryManagerProps {
   items: InventoryItem[];
   onAddItem: () => void;
   onAddVariant: () => void;
-  onEdit: (id: number) => void;
+  onEdit: (item: InventoryItem) => void;
   onDelete: (id: number) => void;
 }
 
@@ -49,8 +49,10 @@ export default function InventoryManager({
         const matchesName = (item.name || '').toLowerCase().includes(query);
         const matchesSku = (item.sku || '').toLowerCase().includes(query);
         const matchesCategory = (item.category || '').toLowerCase().includes(query);
+        const matchesBulbType = (item.bulb_type || '').toLowerCase().includes(query);
+        const matchesColorTemp = (item.color_temperature?.toString() || '').toLowerCase().includes(query);
         
-        if (!matchesName && !matchesSku && !matchesCategory) {
+        if (!matchesName && !matchesSku && !matchesCategory && !matchesBulbType && !matchesColorTemp) {
           return false;
         }
       }

@@ -557,4 +557,8 @@
     width: 95%;
     max-height: 95vh;
   }
+  
+  .quantityInput {
+    font-size: 16px; /* Prevent zoom on mobile */
+  }
 }

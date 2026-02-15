@@ -755,6 +755,10 @@
     padding: 10px;
   }
   
+  .searchInput {
+    font-size: 16px; /* Prevent zoom on mobile */
+  }
+  
   .modalContent {
     width: 95%;
     max-width: none;

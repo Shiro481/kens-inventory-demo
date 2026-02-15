@@ -19,9 +19,7 @@
   }
 }
 
-.sidebar:hover {
-  transform: translateX(0);
-}
+/* Hover effect removed */
 
 .sidebarHeader {
   height: 80px;
@@ -220,62 +218,14 @@
   z-index: 10;
 }
 
-/* Mobile Menu Toggle */
-.mobileMenuToggle {
-  display: none;
-  background: none;
-  border: none;
-  padding: 8px;
-  cursor: pointer;
-  z-index: 1001;
-}
 
-.hamburger {
-  width: 4px;
-  height: 2px;
-  background: #fff;
-  border-radius: 1px;
-  position: relative;
-}
-
-.hamburger::before,
-.hamburger::after {
-  content: '';
-  position: absolute;
-  width: 100%;
-  height: 1px;
-  background: #fff;
-  transition: all 0.3s ease;
-}
-
-.hamburger::before {
-  top: 0;
-  left: 0;
-  transform: translateY(-6px);
-}
-
-.hamburger::after {
-  bottom: 0;
-  left: 0;
-  transform: translateY(6px);
-}
-
-.mobileMenuToggle:hover .hamburger::before {
-  transform: translateY(-8px);
-}
-
-.mobileMenuToggle:hover .hamburger::after {
-  transform: translateY(8px);
-}
 
 @media (max-width: 1024px) {
   .sidebar {
     transform: translateX(-100%);
   }
   
-  .sidebar:hover {
-    transform: translateX(-100%);
-  }
+/* Mobile hover removed */
   
   .sidebarOpen {
     transform: translateX(0);
@@ -308,13 +258,6 @@
   }
 }
 
-@media (max-width: 768px) {
-  .mobileMenuToggle {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-}
 
 .logoutModalOverlay {
   position: fixed;
