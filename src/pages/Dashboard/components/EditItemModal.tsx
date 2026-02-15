@@ -814,41 +814,7 @@ export default function EditItemModal({ isOpen, item, categories, bulbTypes = []
                                                         });
                                                     } else {
                                                         setIsNewVariantBulbType(false);
-                                                        // Check if we have an existing variant with this bulb_type
-                                                        const existing = productVariants.find(pv => 
-                                                            (pv.bulb_type_variants?.variant_name === val) || (pv.bulb_type === val)
-                                                        );
-                                                        
-                                                        if (existing) {
-                                                            // Pre-fill form with existing data to allow editing
-                                                            setNewVariantData({
-                                                                bulb_type: val,
-                                                                // Strictly parse existing values to numbers to prevent strings from DB (if any)
-                                                                color_temperature: typeof existing.color_temperature === 'string' ? parseFloat(existing.color_temperature) || 0 : existing.color_temperature || 0,
-                                                                cost_price: Number(existing.cost_price) || 0,
-                                                                selling_price: Number(existing.selling_price) || 0,
-                                                                stock: Number(existing.stock_quantity) || 0,
-                                                                min_stock_level: Number(existing.min_stock_level) || 5,
-                                                                color: existing.variant_color || '',
-                                                                description: existing.description || '',
-                                                                sku: existing.variant_sku || ''
-                                                            });
-                                                        } else {
-                                                            // Reset for new entry of this type
-                                                            setNewVariantData({
-                                                                ...newVariantData, 
-                                                                bulb_type: val,
-                                                                // Keep defaults for others layout
-                                                                color_temperature: 0, 
-                                                                cost_price: 0, 
-                                                                selling_price: 0, 
-                                                                stock: 0, 
-                                                                min_stock_level: 5,
-                                                                color: '',
-                                                                description: '',
-                                                                sku: ''
-                                                            });
-                                                        }
+                                                        setNewVariantData(prev => ({ ...prev, bulb_type: val }));
                                                     }
                                                 }}
                                             >
