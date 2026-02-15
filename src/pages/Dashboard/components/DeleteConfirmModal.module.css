@@ -55,7 +55,7 @@
   font-weight: 900;
 }
 
-.modalFooter {
+.footer {
   display: flex;
   flex-direction: column;
   gap: 12px;

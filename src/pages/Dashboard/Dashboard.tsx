@@ -681,6 +681,7 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
           setItemToDelete(null);
         }}
         onConfirm={confirmDelete}
+        hasVariants={itemToDelete?.has_variants || false}
       />
 
       {/* ADD VARIANT SELECTION MODAL */}
