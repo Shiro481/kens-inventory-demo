@@ -169,6 +169,7 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
               uuid: variant.id,
               // Name: "GPNE R6 - H1 6000K" (Clean, standard)
               name: `${parentProduct.name} - ${variantName} ${temp}`.trim(),
+              base_name: parentProduct.name,
               sku: variant.variant_sku || `${parentProduct.sku}-${variant.id}`,
               price: variant.selling_price || (variant.price_adjustment ? parentProduct.selling_price + variant.price_adjustment : parentProduct.selling_price),
               stock: variant.stock_quantity,
@@ -348,6 +349,32 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
         payload.category_id = categoryId;
       }
 
+      // RESOLVE BULB TYPE ID
+      let bulbTypeId = null;
+      if (updatedItem.bulb_type) {
+        const { data: bulbData } = await supabase
+          .from('bulb_types')
+          .select('id')
+          .eq('code', updatedItem.bulb_type)
+          .single();
+          
+        if (bulbData) {
+            bulbTypeId = bulbData.id;
+        } else {
+            // Create if not exists (Auto-add new socket types)
+            const { data: newBulb } = await supabase
+                .from('bulb_types')
+                .insert({ code: updatedItem.bulb_type, description: 'Created via App' })
+                .select('id')
+                .single();
+            if (newBulb) bulbTypeId = newBulb.id;
+        }
+      }
+
+      if (bulbTypeId) {
+        payload.bulb_type_id = bulbTypeId;
+      }
+
       // 3. Insert into Database
       const { data, error } = await supabase
         .from('products')
@@ -467,8 +494,30 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
           .select('id')
           .eq('name', updatedItem.category)
           .single();
+        
         if (categoryData) {
           payload.category_id = categoryData.id;
+        }
+      }
+
+      // Resolve Bulb Type ID (Update)
+      if (updatedItem.bulb_type) {
+        const { data: bulbData } = await supabase
+          .from('bulb_types')
+          .select('id')
+          .eq('code', updatedItem.bulb_type)
+          .single();
+          
+        if (bulbData) {
+            payload.bulb_type_id = bulbData.id;
+        } else {
+             // Create if not exists
+            const { data: newBulb } = await supabase
+                .from('bulb_types')
+                .insert({ code: updatedItem.bulb_type, description: 'Created via App' })
+                .select('id')
+                .single();
+            if (newBulb) payload.bulb_type_id = newBulb.id;
         }
       }
 

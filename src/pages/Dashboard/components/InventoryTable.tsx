@@ -52,10 +52,10 @@ export default function InventoryTable({ items, onEdit, onDelete }: InventoryTab
               </div>
               <div>
                 <span className={styles.partName}>
-                  {item.name}
+                  {item.base_name || item.name}
                 </span>
                 {/* Display Base Item Specs (Bulb Type & Color) */}
-                {(item.bulb_type || item.color_temperature) && !item.is_variant && (
+                {(item.bulb_type || item.color_temperature) && (
                   <div style={{ fontSize: '11px', color: '#aaa', marginTop: '2px', display: 'flex', gap: '8px', alignItems: 'center' }}>
                     {item.bulb_type && (
                       <span style={{ 
