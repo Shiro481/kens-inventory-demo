@@ -393,3 +393,40 @@
   line-height: 1.5;
   margin: 0;
 }
+
+@media (max-width: 1024px) {
+  .hero {
+    align-items: center;
+    text-align: center;
+  }
+  
+  .title {
+    text-align: center;
+  }
+  
+  .description {
+    text-align: center;
+    border-left: none;
+    padding-left: 0;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .ctaGroup {
+    justify-content: center;
+    width: 100%;
+    align-items: center;
+    flex-direction: row;
+  }
+}
+
+@media (max-width: 640px) {
+  .ctaGroup {
+    flex-direction: column;
+  }
+  
+  .primaryBtn, .secondaryBtn {
+    width: 100%;
+    justify-content: center;
+  }
+}
