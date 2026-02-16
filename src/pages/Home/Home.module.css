@@ -197,22 +197,6 @@
   position: relative;
 }
 
-.highlight::after {
-  content: attr(data-text);
-  position: absolute;
-  left: 0;
-  top: 0;
-  color: var(--brand-neon);
-  opacity: 0; /* Default hidden */
-  transition: opacity 0.5s ease;
-  -webkit-text-stroke: 0;
-  filter: drop-shadow(0 0 20px rgba(0, 255, 157, 0.4));
-}
-
-.container:hover .highlight::after {
-  opacity: 1; /* Glow on hover container */
-}
-
 /* Description */
 .description {
   color: #a1a1aa;
