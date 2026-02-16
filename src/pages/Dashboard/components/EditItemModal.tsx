@@ -427,7 +427,7 @@ export default function EditItemModal({ isOpen, item, categories, bulbTypes = []
                       className={styles.formInput} 
                       type="number" 
                       step="0.01"
-                      value={editingItem.price || ''}
+                      value={editingItem.price !== undefined && editingItem.price !== null && !isNaN(editingItem.price) ? editingItem.price : ''}
                       onChange={(e) => handleInputChange('price', parseFloat(e.target.value))}
                     />
                  </div>
@@ -438,7 +438,7 @@ export default function EditItemModal({ isOpen, item, categories, bulbTypes = []
                       className={styles.formInput} 
                       type="number" 
                       step="0.01"
-                      value={editingItem.cost_price || ''}
+                      value={editingItem.cost_price !== undefined && editingItem.cost_price !== null && !isNaN(editingItem.cost_price) ? editingItem.cost_price : ''}
                       onChange={(e) => handleInputChange('cost_price', parseFloat(e.target.value))}
                     />
                  </div>
@@ -448,7 +448,7 @@ export default function EditItemModal({ isOpen, item, categories, bulbTypes = []
                      <input 
                        className={styles.formInput} 
                        type="number" 
-                       value={editingItem.stock ?? editingItem.quantity ?? ''}
+                       value={(editingItem.stock !== undefined && editingItem.stock !== null && !isNaN(editingItem.stock)) ? editingItem.stock : (editingItem.quantity !== undefined && !isNaN(editingItem.quantity) ? editingItem.quantity : '')}
                        onChange={(e) => handleInputChange('stock', parseInt(e.target.value))}
                      />
                  </div>
@@ -616,7 +616,7 @@ export default function EditItemModal({ isOpen, item, categories, bulbTypes = []
               className={styles.formInput} 
               type="number" 
               step="0.01"
-              value={editingItem.price || ''}
+              value={editingItem.price !== undefined && editingItem.price !== null && !isNaN(editingItem.price) ? editingItem.price : ''}
               onChange={(e) => handleInputChange('price', parseFloat(e.target.value))}
             />
           </div>
@@ -627,7 +627,7 @@ export default function EditItemModal({ isOpen, item, categories, bulbTypes = []
               className={styles.formInput} 
               type="number" 
               step="0.01"
-              value={editingItem.cost_price || ''}
+              value={editingItem.cost_price !== undefined && editingItem.cost_price !== null && !isNaN(editingItem.cost_price) ? editingItem.cost_price : ''}
               onChange={(e) => handleInputChange('cost_price', parseFloat(e.target.value))}
             />
           </div>
@@ -637,7 +637,7 @@ export default function EditItemModal({ isOpen, item, categories, bulbTypes = []
              <input 
                className={styles.formInput} 
                type="number" 
-               value={editingItem.stock ?? editingItem.quantity ?? ''}
+               value={(editingItem.stock !== undefined && editingItem.stock !== null && !isNaN(editingItem.stock)) ? editingItem.stock : (editingItem.quantity !== undefined && !isNaN(editingItem.quantity) ? editingItem.quantity : '')}
                onChange={(e) => handleInputChange('stock', parseInt(e.target.value))}
              />
           </div>
@@ -714,7 +714,7 @@ export default function EditItemModal({ isOpen, item, categories, bulbTypes = []
             <input 
               className={styles.formInput} 
               type="number" 
-              value={editingItem.color_temperature || ''}
+              value={editingItem.color_temperature !== undefined && editingItem.color_temperature !== null && !isNaN(Number(editingItem.color_temperature)) ? editingItem.color_temperature : ''}
               onChange={(e) => handleInputChange('color_temperature', parseFloat(e.target.value))}
               placeholder="e.g. 6000"
             />
@@ -729,7 +729,7 @@ export default function EditItemModal({ isOpen, item, categories, bulbTypes = []
             <input 
               className={styles.formInput} 
               type="number" 
-              value={editingItem.lumens || ''}
+              value={editingItem.lumens !== undefined && editingItem.lumens !== null && !isNaN(editingItem.lumens) ? editingItem.lumens : ''}
               onChange={(e) => handleInputChange('lumens', parseInt(e.target.value))}
               placeholder="e.g. 1500"
             />

@@ -295,20 +295,7 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
       } else {
         // This is a PARENT PRODUCT - delete from products table
         // Safety check: prevent deleting products with variants
-        if (itemToDelete.has_variants) {
-          const confirmDeleteParent = confirm(
-            `⚠️ This product has variants. Deleting it will also delete ALL its variants.\n\n` +
-            `Product: ${itemToDelete.name}\n\n` +
-            `Are you sure you want to continue?`
-          );
-          
-          if (!confirmDeleteParent) {
-            setIsDeleting(false);
-            setIsDeleteModalOpen(false);
-            setItemToDelete(null);
-            return;
-          }
-        }
+
         
         const productIdToDelete = itemToDelete.uuid || itemToDelete.id;
         
@@ -440,7 +427,7 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
           .from('bulb_types')
           .select('id')
           .eq('code', updatedItem.bulb_type)
-          .single();
+          .maybeSingle();
           
         if (bulbData) {
             bulbTypeId = bulbData.id;
@@ -450,7 +437,7 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
                 .from('bulb_types')
                 .insert({ code: updatedItem.bulb_type, description: 'Created via App' })
                 .select('id')
-                .single();
+                .maybeSingle();
             if (newBulb) bulbTypeId = newBulb.id;
         }
       }
@@ -608,7 +595,7 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
           .from('product_categories')
           .select('id')
           .eq('name', updatedItem.category)
-          .single();
+          .maybeSingle();
         
         if (categoryData) {
           payload.category_id = categoryData.id;
@@ -621,7 +608,7 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
           .from('bulb_types')
           .select('id')
           .eq('code', updatedItem.bulb_type)
-          .single();
+          .maybeSingle();
           
         if (bulbData) {
             payload.bulb_type_id = bulbData.id;
@@ -631,7 +618,7 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
                 .from('bulb_types')
                 .insert({ code: updatedItem.bulb_type, description: 'Created via App' })
                 .select('id')
-                .single();
+                .maybeSingle();
             if (newBulb) payload.bulb_type_id = newBulb.id;
         }
       }
