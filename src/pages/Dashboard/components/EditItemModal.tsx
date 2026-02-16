@@ -947,9 +947,17 @@ export default function EditItemModal({ isOpen, item, categories, bulbTypes = []
                                           <input 
                                               type="number"
                                               className={styles.formInput}
-                                              value={newVariantData.min_stock_level || ''}
-                                              onChange={e => setNewVariantData({...newVariantData, min_stock_level: parseInt(e.target.value) || 5})}
-                                              placeholder="5"
+                                              value={newVariantData.min_stock_level !== undefined && newVariantData.min_stock_level !== null ? newVariantData.min_stock_level : ''}
+                                              onChange={e => {
+                                                const val = e.target.value;
+                                                if (val === '' || val === null || val === undefined) {
+                                                  setNewVariantData({...newVariantData, min_stock_level: undefined});
+                                                } else {
+                                                  const num = parseInt(val, 10);
+                                                  setNewVariantData({...newVariantData, min_stock_level: isNaN(num) ? undefined : num});
+                                                }
+                                              }}
+                                              placeholder="Default: 5"
                                           />
                                       </div>
 
