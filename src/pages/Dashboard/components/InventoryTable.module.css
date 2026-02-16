@@ -170,28 +170,79 @@
   }
 
   .row {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 15px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas: 
+      "info info"
+      "price stock"
+      "category status"
+      "actions actions";
+    gap: 16px;
+    padding: 20px;
     border: 1px solid var(--border-dim);
     margin-bottom: 16px;
-    background-color: #050505;
+    background-color: #0a0a0a;
+    align-items: start;
+    border-radius: 8px;
   }
 
   .partInfo {
+    grid-area: info;
     width: 100%;
     border-bottom: 1px solid var(--border-dim);
-    padding-bottom: 15px;
+    padding-bottom: 16px;
+    margin-bottom: 4px;
+  }
+
+  /* Target specifically the category cell (2nd div) */
+  .row > div:nth-child(2) {
+    grid-area: category;
+    font-size: 11px;
+    text-transform: uppercase;
+    color: #666;
+    letter-spacing: 1px;
+    font-weight: 700;
+  }
+  
+  .price {
+    grid-area: price;
+    font-size: 18px;
+  }
+  
+  /* Target stock cell (4th div) */
+  .row > div:nth-child(4) {
+    grid-area: stock;
+    text-align: right;
+  }
+
+  /* Hide Variants count on mobile (5th div) or show if needed */
+  .row > div:nth-child(5) {
+    display: none;
+  }
+
+  /* Target status cell (6th div) */
+  .row > div:nth-child(6) {
+    grid-area: status;
+    text-align: right;
+    align-self: center;
   }
 
   .actions {
+    grid-area: actions;
     opacity: 1;
     width: 100%;
     justify-content: flex-end;
-    margin-top: 10px;
+    margin-top: 8px;
     border-top: 1px solid var(--border-dim);
-    padding-top: 15px;
+    padding-top: 16px;
+    gap: 16px;
+  }
+  
+  .actionBtn {
+    width: 100%;
+    height: 40px;
+    border-radius: 4px;
+    background: #111;
   }
 }
 

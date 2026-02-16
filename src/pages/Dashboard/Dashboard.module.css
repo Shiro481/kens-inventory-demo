@@ -231,7 +231,7 @@
     display: flex;
   }
   .main {
-    padding: 100px 20px 40px 20px;
+    padding: 85px 20px 40px 20px;
   }
   .header {
     flex-direction: column;
