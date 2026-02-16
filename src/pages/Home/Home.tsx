@@ -53,7 +53,7 @@ export default function Home({ onAccessDashboard }: HomeProps) {
           <div className={`${styles.titleContainer} ${mounted ? styles.titleMounted : ''}`}>
             <h1 className={styles.title}>
               KENS <br />
-              <span className={styles.highlight}>TRADING</span> <br />
+              <span className={styles.highlight} data-text="TRADING">TRADING</span> <br />
             </h1>
           </div>
           
