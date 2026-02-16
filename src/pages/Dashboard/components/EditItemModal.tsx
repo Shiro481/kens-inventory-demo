@@ -165,10 +165,13 @@ export default function EditItemModal({ isOpen, item, categories, bulbTypes = []
     let existingProductVariant: any = null;
 
     if (editingVariantId) {
-        // If explicitly editing an ID, use it
+        // EDITING MODE: Directly use the editing ID, don't search for duplicates
+        console.log('🔧 [Edit Mode] Updating variant ID:', editingVariantId);
         existingProductVariant = { id: editingVariantId };
     } else {
-        // Search for duplicate if adding new
+        // ADD MODE: Search for potential duplicates to prevent creating them
+        console.log('➕ [Add Mode] Checking for duplicates...');
+        
         // Fetch potentially conflicting variants to check in JS (safer than complex OR queries)
         const { data: potentialMatches } = await supabase
             .from('product_bulb_variants')
@@ -185,6 +188,10 @@ export default function EditItemModal({ isOpen, item, categories, bulbTypes = []
             // Match if colors are identical
             return dbColor === inputColor;
         });
+        
+        if (existingProductVariant) {
+            console.log('⚠️ [Add Mode] Found duplicate variant, will update instead of insert');
+        }
     }
 
     let error;
