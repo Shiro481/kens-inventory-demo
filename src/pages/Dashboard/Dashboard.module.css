@@ -215,8 +215,11 @@
 }
 
 @media (max-width: 1024px) {
+  .mobileHeader {
+    display: flex;
+  }
   .main {
-    padding: 40px;
+    padding: 85px 40px 40px 40px;
   }
   .statsGrid {
     grid-template-columns: repeat(2, 1fr);
@@ -227,9 +230,6 @@
 }
 
 @media (max-width: 768px) {
-  .mobileHeader {
-    display: flex;
-  }
   .main {
     padding: 85px 20px 40px 20px;
   }
