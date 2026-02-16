@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Plus, Search, Filter } from 'lucide-react';
+import { Plus, Search, Filter, Download } from 'lucide-react';
 import styles from '../Dashboard.module.css';
 import type { InventoryItem } from '../../../types/inventory';
 import { getStatus } from '../../../types/inventory';
@@ -89,6 +89,67 @@ export default function InventoryManager({
       return 0; // Default: no specific sort order
     });
 
+  /**
+   * Export the currently filtered and sorted items to a CSV file
+   */
+  const exportToCSV = () => {
+    // Define headers
+    const headers = [
+      'Name',
+      'SKU',
+      'Category',
+      'Brand',
+      'Price',
+      'Cost Price',
+      'Stock',
+      'Min Stock',
+      'Bulb Type',
+      'Color Temperature',
+      'Supplier',
+      'Status',
+      'Notes'
+    ];
+
+    // Map items to rows
+    const rows = filteredItems.map(item => [
+      `"${(item.name || '').replace(/"/g, '""')}"`,
+      `"${(item.sku || '').replace(/"/g, '""')}"`,
+      `"${(item.category || '').replace(/"/g, '""')}"`,
+      `"${(item.brand || '').replace(/"/g, '""')}"`,
+      item.price || 0,
+      item.cost_price || 0,
+      item.stock ?? item.quantity ?? 0,
+      item.minQuantity ?? item.min_qty ?? 10,
+      `"${(item.bulb_type || '').replace(/"/g, '""')}"`,
+      `"${(item.color_temperature || '').toString().replace(/"/g, '""')}"`,
+      `"${(item.supplier || '').replace(/"/g, '""')}"`,
+      `"${getStatus(item)}"`,
+      `"${(item.notes || '').replace(/"/g, '""')}"`
+    ]);
+
+    // Construct CSV content
+    const csvContent = [
+      headers.join(','),
+      ...rows.map(row => row.join(','))
+    ].join('\n');
+
+    // Create a blob and download link
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    
+    // Filename with timestamp
+    const date = new Date().toISOString().split('T')[0];
+    const filename = `inventory_export_${date}.csv`;
+    
+    link.setAttribute('href', url);
+    link.setAttribute('download', filename);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <>
       <header className={styles.header}>
@@ -124,88 +185,100 @@ export default function InventoryManager({
             onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
-        <div style={{ position: 'relative' }}>
+        <div style={{ display: 'flex', gap: '10px' }}>
           <button 
             className={styles.filterBtn}
-            onClick={() => setShowFilterMenu(!showFilterMenu)}
+            onClick={exportToCSV}
+            title="Export to CSV"
+            style={{ display: 'flex', alignItems: 'center', gap: '6px' }}
           >
-            <Filter size={18} />
-            {filterStatus === 'All' ? 'Filters' : filterStatus}
+            <Download size={18} />
+            Export
           </button>
-          
-          {showFilterMenu && (
-            <div className={styles.filterMenu}>
-              <div style={{ padding: '8px 16px', fontSize: '11px', color: '#666', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '1px' }}>
-                Filter by Status
+
+          <div style={{ position: 'relative' }}>
+            <button 
+              className={styles.filterBtn}
+              onClick={() => setShowFilterMenu(!showFilterMenu)}
+            >
+              <Filter size={18} />
+              {filterStatus === 'All' ? 'Filters' : filterStatus}
+            </button>
+            
+            {showFilterMenu && (
+              <div className={styles.filterMenu}>
+                <div style={{ padding: '8px 16px', fontSize: '11px', color: '#666', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '1px' }}>
+                  Filter by Status
+                </div>
+                <div 
+                  className={`${styles.filterOption} ${filterStatus === 'All' ? styles.activeFilter : ''}`}
+                  onClick={() => { setFilterStatus('All'); setShowFilterMenu(false); }}
+                >
+                  All Items
+                </div>
+                <div 
+                  className={`${styles.filterOption} ${filterStatus === 'In Stock' ? styles.activeFilter : ''}`}
+                  onClick={() => { setFilterStatus('In Stock'); setShowFilterMenu(false); }}
+                >
+                  In Stock
+                </div>
+                <div 
+                  className={`${styles.filterOption} ${filterStatus === 'Low Stock' ? styles.activeFilter : ''}`}
+                  onClick={() => { setFilterStatus('Low Stock'); setShowFilterMenu(false); }}
+                >
+                  Low Stock
+                </div>
+                <div 
+                  className={`${styles.filterOption} ${filterStatus === 'Out of Stock' ? styles.activeFilter : ''}`}
+                  onClick={() => { setFilterStatus('Out of Stock'); setShowFilterMenu(false); }}
+                >
+                  Out of Stock
+                </div>
+                
+                <div style={{ borderTop: '1px solid #333', margin: '8px 0' }}></div>
+                
+                <div style={{ padding: '8px 16px', fontSize: '11px', color: '#666', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '1px' }}>
+                  Sort by
+                </div>
+                <div 
+                  className={`${styles.filterOption} ${sortBy === 'none' ? styles.activeFilter : ''}`}
+                  onClick={() => { setSortBy('none'); setShowFilterMenu(false); }}
+                >
+                  Default Order
+                </div>
+                <div 
+                  className={`${styles.filterOption} ${sortBy === 'price-asc' ? styles.activeFilter : ''}`}
+                  onClick={() => { setSortBy('price-asc'); setShowFilterMenu(false); }}
+                >
+                  Price: Low to High
+                </div>
+                <div 
+                  className={`${styles.filterOption} ${sortBy === 'price-desc' ? styles.activeFilter : ''}`}
+                  onClick={() => { setSortBy('price-desc'); setShowFilterMenu(false); }}
+                >
+                  Price: High to Low
+                </div>
+                <div 
+                  className={`${styles.filterOption} ${sortBy === 'category' ? styles.activeFilter : ''}`}
+                  onClick={() => { setSortBy('category'); setShowFilterMenu(false); }}
+                >
+                  Category (A-Z)
+                </div>
+                <div 
+                  className={`${styles.filterOption} ${sortBy === 'newest' ? styles.activeFilter : ''}`}
+                  onClick={() => { setSortBy('newest'); setShowFilterMenu(false); }}
+                >
+                  Newest First
+                </div>
+                <div 
+                  className={`${styles.filterOption} ${sortBy === 'oldest' ? styles.activeFilter : ''}`}
+                  onClick={() => { setSortBy('oldest'); setShowFilterMenu(false); }}
+                >
+                  Oldest First
+                </div>
               </div>
-              <div 
-                className={`${styles.filterOption} ${filterStatus === 'All' ? styles.activeFilter : ''}`}
-                onClick={() => { setFilterStatus('All'); setShowFilterMenu(false); }}
-              >
-                All Items
-              </div>
-              <div 
-                className={`${styles.filterOption} ${filterStatus === 'In Stock' ? styles.activeFilter : ''}`}
-                onClick={() => { setFilterStatus('In Stock'); setShowFilterMenu(false); }}
-              >
-                In Stock
-              </div>
-              <div 
-                className={`${styles.filterOption} ${filterStatus === 'Low Stock' ? styles.activeFilter : ''}`}
-                onClick={() => { setFilterStatus('Low Stock'); setShowFilterMenu(false); }}
-              >
-                Low Stock
-              </div>
-              <div 
-                className={`${styles.filterOption} ${filterStatus === 'Out of Stock' ? styles.activeFilter : ''}`}
-                onClick={() => { setFilterStatus('Out of Stock'); setShowFilterMenu(false); }}
-              >
-                Out of Stock
-              </div>
-              
-              <div style={{ borderTop: '1px solid #333', margin: '8px 0' }}></div>
-              
-              <div style={{ padding: '8px 16px', fontSize: '11px', color: '#666', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '1px' }}>
-                Sort by
-              </div>
-              <div 
-                className={`${styles.filterOption} ${sortBy === 'none' ? styles.activeFilter : ''}`}
-                onClick={() => { setSortBy('none'); setShowFilterMenu(false); }}
-              >
-                Default Order
-              </div>
-              <div 
-                className={`${styles.filterOption} ${sortBy === 'price-asc' ? styles.activeFilter : ''}`}
-                onClick={() => { setSortBy('price-asc'); setShowFilterMenu(false); }}
-              >
-                Price: Low to High
-              </div>
-              <div 
-                className={`${styles.filterOption} ${sortBy === 'price-desc' ? styles.activeFilter : ''}`}
-                onClick={() => { setSortBy('price-desc'); setShowFilterMenu(false); }}
-              >
-                Price: High to Low
-              </div>
-              <div 
-                className={`${styles.filterOption} ${sortBy === 'category' ? styles.activeFilter : ''}`}
-                onClick={() => { setSortBy('category'); setShowFilterMenu(false); }}
-              >
-                Category (A-Z)
-              </div>
-              <div 
-                className={`${styles.filterOption} ${sortBy === 'newest' ? styles.activeFilter : ''}`}
-                onClick={() => { setSortBy('newest'); setShowFilterMenu(false); }}
-              >
-                Newest First
-              </div>
-              <div 
-                className={`${styles.filterOption} ${sortBy === 'oldest' ? styles.activeFilter : ''}`}
-                onClick={() => { setSortBy('oldest'); setShowFilterMenu(false); }}
-              >
-                Oldest First
-              </div>
-            </div>
-          )}
+            )}
+          </div>
         </div>
       </div>
 
