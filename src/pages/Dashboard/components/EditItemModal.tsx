@@ -30,7 +30,17 @@ export default function EditItemModal({ isOpen, item, categories, bulbTypes = []
 
   const [productVariants, setProductVariants] = useState<any[]>([]);
   const [showVariantForm, setShowVariantForm] = useState(false);
-  const [newVariantData, setNewVariantData] = useState({ 
+  const [newVariantData, setNewVariantData] = useState<{ 
+    bulb_type: string;
+    color_temperature: number;
+    cost_price: number;
+    selling_price: number;
+    stock: number;
+    min_stock_level?: number; // Made optional
+    color: string;
+    description: string;
+    sku: string;
+  }>({ 
     bulb_type: '', 
     color_temperature: 0,
     cost_price: 0, 
