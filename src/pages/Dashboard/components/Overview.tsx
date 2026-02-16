@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { TrendingUp, AlertTriangle, AlertCircle, Package, DollarSign, Activity, Wrench } from 'lucide-react';
+import { TrendingUp, AlertCircle, Package, DollarSign, Activity, Wrench } from 'lucide-react';
 import styles from './Overview.module.css';
 import type { InventoryItem } from '../../../types/inventory';
 import { supabase } from '../../../lib/supabase';
@@ -73,10 +73,35 @@ export default function Overview({ items }: OverviewProps) {
   };
 
   // Calculate stats
-  const totalParts = items.length;
-  const totalValue = items.reduce((sum, item) => sum + (item.price || 0) * (item.stock ?? item.quantity ?? 0), 0);
   const lowStockItems = items.filter(item => getLocalStatus(item) === 'Low Stock').length;
   const outOfStockItems = items.filter(item => getLocalStatus(item) === 'Out of Stock').length;
+
+  // Calculate Sales Statistics
+  const now = new Date();
+  const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const startOfWeek = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+  const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+  const startOfLastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+  const endOfLastMonth = new Date(now.getFullYear(), now.getMonth(), 0);
+
+  const todaysSales = sales.filter(sale => new Date(sale.created_at) >= startOfToday);
+  const weekSales = sales.filter(sale => new Date(sale.created_at) >= startOfWeek);
+  const monthSales = sales.filter(sale => new Date(sale.created_at) >= startOfMonth);
+  const lastMonthSales = sales.filter(sale => {
+    const saleDate = new Date(sale.created_at);
+    return saleDate >= startOfLastMonth && saleDate <= endOfLastMonth;
+  });
+
+  const todaysRevenue = todaysSales.reduce((sum, sale) => sum + sale.total, 0);
+  const weekRevenue = weekSales.reduce((sum, sale) => sum + sale.total, 0);
+  const monthRevenue = monthSales.reduce((sum, sale) => sum + sale.total, 0);
+  const lastMonthRevenue = lastMonthSales.reduce((sum, sale) => sum + sale.total, 0);
+
+  // Calculate growth percentage
+  const revenueGrowth = lastMonthRevenue > 0 
+    ? ((monthRevenue - lastMonthRevenue) / lastMonthRevenue * 100).toFixed(1)
+    : '0.0';
+  const isGrowthPositive = parseFloat(revenueGrowth) >= 0;
 
   // Calculate Popular Parts based on Sales History
   const itemSalesCount: Record<number, number> = {};
@@ -205,47 +230,48 @@ export default function Overview({ items }: OverviewProps) {
       <div className={styles.statsGrid}>
         <div className={styles.statCard}>
           <div className={styles.statHeader}>
-            <span className={styles.statLabel}>TOTAL PARTS</span>
-            <Package size={18} color="#666" />
+            <span className={styles.statLabel}>TODAY'S SALES</span>
+            <DollarSign size={18} color="#666" />
           </div>
-          <div className={styles.statValue}>{totalParts}</div>
+          <div className={styles.statValue}>{settings.currency_symbol}{todaysRevenue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
           <div className={styles.statChange}>
-            <TrendingUp size={12} />
-            LIVE UPDATE
+            <Activity size={12} />
+            {todaysSales.length} TRANSACTION{todaysSales.length !== 1 ? 'S' : ''}
           </div>
         </div>
 
         <div className={styles.statCard}>
           <div className={styles.statHeader}>
-            <span className={styles.statLabel}>TOTAL VALUE</span>
+            <span className={styles.statLabel}>THIS WEEK</span>
+            <TrendingUp size={18} color="#666" />
+          </div>
+          <div className={styles.statValue}>{settings.currency_symbol}{weekRevenue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
+          <div className={styles.statChange}>
+            <Package size={12} />
+            {weekSales.length} SALES
+          </div>
+        </div>
+
+        <div className={styles.statCard}>
+          <div className={styles.statHeader}>
+            <span className={styles.statLabel}>THIS MONTH</span>
             <DollarSign size={18} color="#666" />
           </div>
-          <div className={styles.statValue}>{settings.currency_symbol}{totalValue.toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 })}</div>
-          <div className={styles.statChange}>
+          <div className={styles.statValue}>{settings.currency_symbol}{monthRevenue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
+          <div className={isGrowthPositive ? styles.statChange : styles.statChangeWarning}>
             <TrendingUp size={12} />
-            VALUATION
+            {isGrowthPositive ? '+' : ''}{revenueGrowth}% vs LAST MONTH
           </div>
         </div>
 
-        <div className={`${styles.statCard} ${styles.warning}`}>
+        <div className={`${styles.statCard} ${outOfStockItems > 0 ? styles.critical : styles.warning}`}>
           <div className={styles.statHeader}>
-            <span className={styles.statLabel}>LOW STOCK</span>
-            <AlertTriangle size={18} color="#ff9800" />
+            <span className={styles.statLabel}>INVENTORY ALERTS</span>
+            <AlertCircle size={18} color={outOfStockItems > 0 ? "#ef4444" : "#ff9800"} />
           </div>
-          <div className={styles.statValue}>{lowStockItems}</div>
-          <div className={styles.statChangeWarning}>
-            REORDER NEEDED
-          </div>
-        </div>
-
-        <div className={`${styles.statCard} ${styles.critical}`}>
-          <div className={styles.statHeader}>
-            <span className={styles.statLabel}>OUT OF STOCK</span>
-            <AlertCircle size={18} color="#ef4444" />
-          </div>
-          <div className={styles.statValue}>{outOfStockItems}</div>
-          <div className={styles.statChangeCritical}>
-            ⚠ CRITICAL
+          <div className={styles.statValue}>{lowStockItems + outOfStockItems}</div>
+          <div className={outOfStockItems > 0 ? styles.statChangeCritical : styles.statChangeWarning}>
+            {outOfStockItems > 0 ? `⚠ ${outOfStockItems} OUT OF STOCK` : `${lowStockItems} LOW STOCK`}
           </div>
         </div>
       </div>
