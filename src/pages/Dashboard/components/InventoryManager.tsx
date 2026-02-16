@@ -43,16 +43,25 @@ export default function InventoryManager({
       }
       
       // --- 2. Filter by Search Query ---
-      // Checks name, sku, and category for partial matches
+      // Supports multi-word searching across multiple fields
       if (searchQuery.trim() !== '') {
-        const query = searchQuery.toLowerCase();
-        const matchesName = (item.name || '').toLowerCase().includes(query);
-        const matchesSku = (item.sku || '').toLowerCase().includes(query);
-        const matchesCategory = (item.category || '').toLowerCase().includes(query);
-        const matchesBulbType = (item.bulb_type || '').toLowerCase().includes(query);
-        const matchesColorTemp = (item.color_temperature?.toString() || '').toLowerCase().includes(query);
+        const queryWords = searchQuery.toLowerCase().split(/\s+/).filter(word => word.length > 0);
         
-        if (!matchesName && !matchesSku && !matchesCategory && !matchesBulbType && !matchesColorTemp) {
+        // Create a single searchable string for the item
+        const searchableString = [
+          item.name,
+          item.sku,
+          item.category,
+          item.brand,
+          item.bulb_type,
+          item.color_temperature?.toString(),
+          item.notes
+        ].join(' ').toLowerCase();
+
+        // Check if EVERY word in the search query matches SOMETHING in the searchable string
+        const allWordsMatch = queryWords.every(word => searchableString.includes(word));
+        
+        if (!allWordsMatch) {
           return false;
         }
       }
