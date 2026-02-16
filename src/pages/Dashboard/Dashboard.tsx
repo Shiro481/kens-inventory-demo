@@ -62,12 +62,14 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
    * Fetches both base products and all variants from product_bulb_variants
    */
   /**
-   * Helper to generate a numeric ID from a UUID for UI compatibility
-   * The current UI libraries/logic rely on numeric IDs, but Supabase uses UUIDs.
-   * This creates a consistent pseudo-random number from the UUID.
+   * Helper to convert database ID to numeric ID for UI compatibility
+   * Database uses bigint IDs (not UUIDs as originally assumed)
+   * For variants, we add a large offset to ensure they don't collide with parent products
    */
-  const generateNumericId = (uuid: string): number => {
-    return parseInt(uuid.toString().replace('-', '').substring(0, 8), 16) % 1000000;
+  const generateNumericId = (dbId: any, isVariant: boolean = false): number => {
+    const baseId = typeof dbId === 'number' ? dbId : parseInt(dbId);
+    // For variants, add 10,000,000 to ensure no collision with parent products
+    return isVariant ? baseId + 10000000 : baseId;
   };
 
   async function fetchParts() {
@@ -114,7 +116,7 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
       // Convert database schema to InventoryItem interface used by the frontend
       for (const item of rawData) {
         const baseItem = {
-          id: generateNumericId(item.id),
+          id: generateNumericId(item.id, false),
           uuid: item.id,
           name: item.name,
           sku: item.sku,
@@ -144,7 +146,8 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
           notes: item.specifications?.internal_notes || '', // Map internal notes
           // Map restock data for activity feed
           restocked_at: item.specifications?.last_restock?.date,
-          restock_quantity: item.specifications?.last_restock?.quantity
+          restock_quantity: item.specifications?.last_restock?.quantity,
+          is_variant: false  // Explicitly mark as NOT a variant
         };
         
         allItems.push(baseItem);
@@ -165,8 +168,8 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
             const noteColor = variant.variant_color || ''; // This is the specific note/color
 
             const variantItem: InventoryItem = {
-              id: generateNumericId(variant.id),
-              uuid: variant.id,
+              id: generateNumericId(variant.id, true),  // Use TRUE for variants - ensures unique ID
+              uuid: variant.id,  // Store the actual variant DB ID
               // Name: "GPNE R6 - H1 6000K" (Clean, standard)
               name: `${parentProduct.name} - ${variantName} ${temp}`.trim(),
               base_name: parentProduct.name,
@@ -194,7 +197,7 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
               variant_count: 0,
               variant_id: variant.id,
               variant_display_name: `${variantName} ${temp}`.trim(),
-              is_variant: true,
+              is_variant: true,  // CRITICAL: Mark as variant
               parent_product_id: variant.product_id,
               created_at: variant.created_at,
               updated_at: variant.updated_at,
@@ -202,7 +205,7 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
             };
             
             allItems.push(variantItem);
-            console.log(`  ➕ [Dashboard] Added variant: ${variantItem.name}`);
+            console.log(`  ➕ [Dashboard] Added variant ID=${variantItem.id}, is_variant=${variantItem.is_variant}, name=${variantItem.name}`);
           } else {
             console.warn(`⚠️ [Dashboard] Variant ${variant.id} has no parent product`);
           }
@@ -210,6 +213,7 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
       }
       
       console.log(`📦 [Dashboard] Total items in inventory: ${allItems.length}`);
+      console.log(`📊 [Dashboard] Breakdown - Products: ${allItems.filter(i => !i.is_variant).length}, Variants: ${allItems.filter(i => i.is_variant).length}`);
       setItems(allItems);
     } catch (err) {
       console.error('Unexpected error:', err);
@@ -225,8 +229,19 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
   const handleDelete = (id: number) => {
     const item = items.find(i => i.id === id);
     if (item) {
+      console.log('🔍 [handleDelete] Found item to delete:', {
+        name: item.name,
+        id: item.id,
+        uuid: item.uuid,
+        is_variant: item.is_variant,
+        variant_id: item.variant_id,
+        parent_product_id: item.parent_product_id,
+        has_variants: item.has_variants
+      });
       setItemToDelete(item);
       setIsDeleteModalOpen(true);
+    } else {
+      console.error('❌ [handleDelete] Item not found with id:', id);
     }
   };
 
@@ -234,24 +249,93 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
    * Confirm and execute the delete operation
    * Removes product from database and updates local state
    */
+  /**
+   * Confirm and execute the delete operation
+   * Removes product or variant from database and updates local state
+   */
   const confirmDelete = async () => {
     if (!supabase || !itemToDelete) return;
 
     try {
       setIsDeleting(true);
-      const { error } = await supabase
-        .from('products')
-        .delete()
-        .eq('id', itemToDelete.id);
+      
+      console.log('🗑️ [Delete] Attempting to delete:', {
+        name: itemToDelete.name,
+        id: itemToDelete.id,
+        uuid: itemToDelete.uuid,
+        is_variant: itemToDelete.is_variant,
+        variant_id: itemToDelete.variant_id,
+        parent_product_id: itemToDelete.parent_product_id
+      });
+
+      let error;
+
+      // Multiple checks to determine if this is a variant (defensive programming)
+      const isVariantItem = !!(
+        itemToDelete.is_variant || 
+        itemToDelete.variant_id || 
+        itemToDelete.parent_product_id
+      );
+
+      if (isVariantItem) {
+        // This is a VARIANT - delete from product_bulb_variants table
+        const variantIdToDelete = itemToDelete.uuid || itemToDelete.variant_id;
+        
+        console.log('🔹 [Delete] Deleting VARIANT from product_bulb_variants, ID:', variantIdToDelete);
+        
+        const { error: variantError } = await supabase
+          .from('product_bulb_variants')
+          .delete()
+          .eq('id', variantIdToDelete);
+        error = variantError;
+        
+        if (!variantError) {
+          console.log('✅ [Delete] Variant deleted successfully');
+        }
+      } else {
+        // This is a PARENT PRODUCT - delete from products table
+        // Safety check: prevent deleting products with variants
+        if (itemToDelete.has_variants) {
+          const confirmDeleteParent = confirm(
+            `⚠️ This product has variants. Deleting it will also delete ALL its variants.\n\n` +
+            `Product: ${itemToDelete.name}\n\n` +
+            `Are you sure you want to continue?`
+          );
+          
+          if (!confirmDeleteParent) {
+            setIsDeleting(false);
+            setIsDeleteModalOpen(false);
+            setItemToDelete(null);
+            return;
+          }
+        }
+        
+        const productIdToDelete = itemToDelete.uuid || itemToDelete.id;
+        
+        console.log('🔸 [Delete] Deleting PARENT PRODUCT from products, ID:', productIdToDelete);
+        
+        const { error: productError } = await supabase
+          .from('products')
+          .delete()
+          .eq('id', productIdToDelete);
+        error = productError;
+        
+        if (!productError) {
+          console.log('✅ [Delete] Product deleted successfully');
+        }
+      }
 
       if (error) {
-        console.error('Error deleting product:', error);
-        alert(`Error deleting product: ${error.message}`);
+        console.error('❌ [Delete] Error deleting item:', error);
+        alert(`Error deleting item: ${error.message}`);
       } else {
+        // Optimistic update
         setItems(items.filter(item => item.id !== itemToDelete.id));
+        // Refresh all data to ensure consistency across POS and Edit modals
+        fetchParts();
       }
-    } catch (err) {
-      console.error('Unexpected error:', err);
+    } catch (err: any) {
+      console.error('❌ [Delete] Unexpected error:', err);
       alert('An unexpected error occurred while deleting.');
     } finally {
       setIsDeleting(false);

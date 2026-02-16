@@ -16,6 +16,9 @@ interface InventoryTableProps {
  * @param onDelete - Callback function to handle delete action for an item
  */
 export default function InventoryTable({ items, onEdit, onDelete }: InventoryTableProps) {
+  // IMPORTANT: Call hooks at the top level, not inside loops or conditions
+  const { settings } = useSettings();
+  
   return (
     <>
       <div className={styles.tableHeader}>
@@ -29,7 +32,6 @@ export default function InventoryTable({ items, onEdit, onDelete }: InventoryTab
       </div>
 
       {items.map((item) => {
-        const { settings } = useSettings();
         const qty = item.stock ?? item.quantity ?? 0;
         const minQty = item.minQuantity ?? item.min_qty ?? settings.low_stock_threshold;
         
