@@ -631,14 +631,18 @@ export default function EditItemModal({ isOpen, item, categories, bulbTypes = []
               className={styles.formInput} 
               type="number" 
               placeholder="Default: 10"
-              value={editingItem.minQuantity ?? editingItem.min_qty ?? ''}
+              value={
+                editingItem.minQuantity !== undefined ? editingItem.minQuantity :
+                editingItem.min_qty !== undefined ? editingItem.min_qty :
+                ''
+              }
               onChange={(e) => {
                 const val = e.target.value;
-                if (val === '' || val === null) {
+                if (val === '' || val === null || val === undefined) {
                   handleInputChange('minQuantity', undefined);
                   handleInputChange('min_qty', undefined);
                 } else {
-                  const num = parseInt(val);
+                  const num = parseInt(val, 10);
                   const finalVal = isNaN(num) ? undefined : num;
                   handleInputChange('minQuantity', finalVal);
                   handleInputChange('min_qty', finalVal);
