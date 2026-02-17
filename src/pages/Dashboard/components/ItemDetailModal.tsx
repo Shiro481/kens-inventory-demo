@@ -321,7 +321,7 @@ export default function ItemDetailModal({ isOpen, item, onClose, onAddToCart, va
                   val = (source as any)[field.key];
                 }
 
-                if (val === undefined || val === null || val === '' || val === 0) return null;
+                if (val === undefined || val === null || val === '' || Number(val) === 0) return null;
 
                 return (
                   <div key={field.key} className={styles.detailItem}>
