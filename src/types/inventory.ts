@@ -1,6 +1,6 @@
 /**
  * Core interface representing an item in the inventory system.
- * This interface normalizes data from the 'products' and 'product_bulb_variants' tables.
+ * This interface normalizes data from the 'products' and 'product_variants' tables.
  */
 export interface InventoryItem {
   /** Numeric ID generated from UUID for UI compatibility */
@@ -40,8 +40,8 @@ export interface InventoryItem {
   color_temperature?: number | string; 
   lumens?: number;
   beam_type?: string;
-  /** Socket type (H1, H4, etc.) */
-  bulb_type?: string;
+  /** Socket type, Size, or specific model variant (H1, 22-inch, etc.) */
+  variant_type?: string;
   supplier?: string;
   /** JSONB specifications blob from database */
   specifications?: any;
@@ -58,6 +58,8 @@ export interface InventoryItem {
   parent_product_id?: string; 
   /** Internal notes for specific item or variant */
   notes?: string; 
+  /** Custom tags for filtering and categorization */
+  tags?: string[];
 
   // Allow for other dynamic fields
   [key: string]: any;

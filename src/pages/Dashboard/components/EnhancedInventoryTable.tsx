@@ -13,7 +13,7 @@ interface InventoryTableProps {
 // Extended interface for automotive lights with additional specifications
 interface AutomotiveLight extends InventoryItem {
   brand?: string;
-  bulb_type?: string;
+  variant_type?: string;
   voltage?: number;
   wattage?: number;
   color_temperature?: number;
@@ -159,10 +159,10 @@ export default function EnhancedInventoryTable({ items, onEdit, onDelete }: Inve
               {/* Technical Specs Column */}
               <div style={{ flex: '1' }} className={styles.specsColumn}>
                 <div className={styles.specsSummary}>
-                  {light.bulb_type && (
+                  {light.variant_type && (
                     <div className={styles.specItem}>
-                      <span className={styles.specLabel}>Bulb:</span>
-                      <span className={styles.specValue}>{light.bulb_type}</span>
+                      <span className={styles.specLabel}>Type:</span>
+                      <span className={styles.specValue}>{light.variant_type}</span>
                     </div>
                   )}
                   {light.beam_type && (

@@ -4,6 +4,7 @@ import styles from './Pos.module.css';
 import type { InventoryItem } from '../../../types/inventory';
 import { supabase } from '../../../lib/supabase';
 import { useSettings } from '../../../context/SettingsContext';
+import { getCategoryConfig } from '../../../constants/categoryConfig';
 import ItemDetailModal from './ItemDetailModal';
 import VariantSelectionModal from './VariantSelectionModal';
 
@@ -94,15 +95,15 @@ export default function Pos({ items, onSaleComplete }: PosProps) {
       try {
         setLoading(true);
         const { data: variants, error } = await supabase
-          .from('product_bulb_variants')
-          .select('*, bulb_type_variants(variant_name)')
+          .from('product_variants')
+          .select('*, variant_definitions(variant_name)')
           .eq('product_id', item.uuid);
 
         if (!error && variants) {
-            // Map the joined variant name to the 'bulb_type' property which is used downstream
+            // Map the joined variant name to the 'variant_type' property which is used downstream
             const mappedVariants = variants.map((v: any) => ({
                 ...v,
-                bulb_type: v.bulb_type || v.bulb_type_variants?.variant_name || 'Unknown' 
+                variant_type: v.variant_type || v.variant_definitions?.variant_name || 'Unknown' 
             }));
             setProductVariants(mappedVariants);
         } else {
@@ -125,17 +126,38 @@ export default function Pos({ items, onSaleComplete }: PosProps) {
 
   /**
    * Handle variant selection from modal with quantity
-   * @param variant - Selected variant from product_bulb_variants
+   * @param variant - Selected variant from product_variants
    * @param quantity - Selected quantity
    */
   const handleVariantSelect = (variant: any, quantity: number) => {
     if (!selectedItem) return;
 
-    // Create a cart item from the variant
-    // Create a cart item from the variant
+    const config = getCategoryConfig(selectedItem.category);
+    
+    // Create a dynamic display name based on fields available in config
+    const specs: string[] = [];
+    config.fields.forEach(field => {
+      let val = '';
+      if (field.key.includes('.')) {
+        const [parent, child] = field.key.split('.');
+        val = (variant as any)[parent]?.[child];
+      } else {
+        val = (variant as any)[field.key];
+      }
+      
+      if (val && val !== '0') {
+        specs.push(`${val}${field.suffix || ''}`);
+      }
+    });
+
+    // Special fallback for variant_color if not in fields
+    if (variant.variant_color && !config.fields.some(f => f.key === 'variant_color')) {
+      specs.push(variant.variant_color);
+    }
+
     const cartItem: CartItem = {
       id: (selectedItem.id || 0) * 10000 + variant.id,
-      name: `${selectedItem.name} (${variant.bulb_type})`,
+      name: `${selectedItem.name} (${variant.variant_type})`,
       brand: selectedItem.brand || '',
       category: selectedItem.category || '',
       price: variant.selling_price,
@@ -145,7 +167,7 @@ export default function Pos({ items, onSaleComplete }: PosProps) {
       image_url: selectedItem.image_url,
       cartQuantity: quantity,
       variant_id: variant.id.toString(),
-      variant_display_name: variant.bulb_type + (variant.variant_color ? ` (${variant.variant_color})` : (variant.color_temperature ? ` (${variant.color_temperature}K)` : '')),
+      variant_display_name: variant.variant_type + (specs.length > 0 ? ` (${specs.join(', ')})` : ''),
       variant_price: variant.selling_price,
       description: variant.description || selectedItem.description || '',
       color_temperature: variant.color_temperature,
@@ -264,9 +286,9 @@ export default function Pos({ items, onSaleComplete }: PosProps) {
         let updateError = null;
 
         if (item.variant_id) {
-            // CASE A: Update Variant Stock in 'product_bulb_variants'
+            // CASE A: Update Variant Stock in 'product_variants'
             const { error } = await supabase
-              .from('product_bulb_variants')
+              .from('product_variants')
               .update(payload)
               .eq('id', item.variant_id);
             updateError = error;
@@ -370,15 +392,16 @@ export default function Pos({ items, onSaleComplete }: PosProps) {
             
             // Simplified "Container Box" for items with variants
             if (hasVariants) {
+              const config = getCategoryConfig(item.category);
               return (
                 <div 
                   key={item.id} 
                   className={`${styles.variantContainerBox} ${loading ? styles.loading : ''}`}
                   onClick={() => !loading && handleItemClick(item)}
                 >
-                  <div className={styles.containerLabel}>MULTIPLE OPTIONS</div>
+                  <div className={styles.containerLabel}>MULTIPLE {config.variantTypeLabel.toUpperCase()}S</div>
                   <div className={styles.containerName}>{item.name}</div>
-                  <div className={styles.containerFooter}>Click to select variant</div>
+                  <div className={styles.containerFooter}>Select {config.variantTypeLabel}</div>
                 </div>
               );
             }

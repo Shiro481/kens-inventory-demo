@@ -24,6 +24,10 @@ export default function InventoryManager({
   const [showFilterMenu, setShowFilterMenu] = useState(false);
   const [sortBy, setSortBy] = useState<'none' | 'price-asc' | 'price-desc' | 'category' | 'newest' | 'oldest'>('none');
   const [searchQuery, setSearchQuery] = useState('');
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+
+  // Get all unique tags from items
+  const allAvailableTags = Array.from(new Set(items.flatMap(item => item.tags || []))).sort();
 
   /**
    * Filter, search, and sort inventory items based on current state
@@ -53,9 +57,11 @@ export default function InventoryManager({
           item.sku,
           item.category,
           item.brand,
-          item.bulb_type,
+          item.variant_type,
           item.color_temperature?.toString(),
-          item.notes
+          item.notes,
+          item.tags?.join(' '),
+          item.specifications ? JSON.stringify(item.specifications) : ''
         ].join(' ').toLowerCase();
 
         // Check if EVERY word in the search query matches SOMETHING in the searchable string
@@ -64,6 +70,13 @@ export default function InventoryManager({
         if (!allWordsMatch) {
           return false;
         }
+      }
+
+      // --- 3. Filter by Tags ---
+      if (selectedTags.length > 0) {
+        const itemTags = item.tags || [];
+        const hasAllTags = selectedTags.every(tag => itemTags.includes(tag));
+        if (!hasAllTags) return false;
       }
       
       return true;
@@ -112,7 +125,7 @@ export default function InventoryManager({
       'Cost Price',
       'Stock',
       'Min Stock',
-      'Bulb Type',
+      'Type / Size',
       'Color Temperature',
       'Supplier',
       'Status',
@@ -129,7 +142,7 @@ export default function InventoryManager({
       item.cost_price || 0,
       item.stock ?? item.quantity ?? 0,
       item.minQuantity ?? item.min_qty ?? 10,
-      `"${(item.bulb_type || '').replace(/"/g, '""')}"`,
+      `"${(item.variant_type || '').replace(/"/g, '""')}"`,
       `"${(item.color_temperature || '').toString().replace(/"/g, '""')}"`,
       `"${(item.supplier || '').replace(/"/g, '""')}"`,
       `"${getStatus(item)}"`,
@@ -244,6 +257,42 @@ export default function InventoryManager({
                   Out of Stock
                 </div>
                 
+                <div style={{ borderTop: '1px solid #333', margin: '8px 0' }}></div>
+                <div style={{ padding: '8px 16px', fontSize: '11px', color: '#666', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '1px' }}>
+                  Filter by Tags
+                </div>
+                {allAvailableTags.length > 0 ? (
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', padding: '8px 16px' }}>
+                    {allAvailableTags.map(tag => (
+                      <button
+                        key={tag}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSelectedTags(prev => 
+                            prev.includes(tag) ? prev.filter(t => t !== tag) : [...prev, tag]
+                          );
+                        }}
+                        style={{
+                          fontSize: '10px',
+                          padding: '4px 8px',
+                          borderRadius: '12px',
+                          border: '1px solid #333',
+                          background: selectedTags.includes(tag) ? '#00ff9d' : 'transparent',
+                          color: selectedTags.includes(tag) ? '#000' : '#888',
+                          cursor: 'pointer',
+                          transition: 'all 0.2s'
+                        }}
+                      >
+                        {tag.toUpperCase()}
+                      </button>
+                    ))}
+                  </div>
+                ) : (
+                  <div style={{ padding: '8px 16px', fontSize: '10px', color: '#444', fontStyle: 'italic' }}>
+                    No tags found. Add tags by editing an item.
+                  </div>
+                )}
+
                 <div style={{ borderTop: '1px solid #333', margin: '8px 0' }}></div>
                 
                 <div style={{ padding: '8px 16px', fontSize: '11px', color: '#666', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '1px' }}>

@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
 import { X, Package, ShoppingCart, Plus, Minus, Zap } from 'lucide-react';
 import styles from './VariantSelectionModal.module.css';
+import { getCategoryConfig } from '../../../constants/categoryConfig';
 
 interface ProductVariant {
   id: number;
-  bulb_type: string;
+  variant_type: string;
   color_temperature?: number;
   cost_price: number;
   selling_price: number;
@@ -40,6 +41,7 @@ export default function VariantSelectionModal({
 }: VariantSelectionModalProps) {
   const [selectedVariantId, setSelectedVariantId] = useState<number | null>(null);
   const [quantity, setQuantity] = useState(1);
+  const config = getCategoryConfig(product?.category);
 
   // Reset state when modal opens/closes
   useEffect(() => {
@@ -81,7 +83,7 @@ export default function VariantSelectionModal({
       <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
         <div className={styles.modalHeader}>
           <div className={styles.productInfo}>
-            <h2>Select Variant</h2>
+            <h2>Select {config.variantTypeLabel}</h2>
             <div className={styles.productDetails}>
               <span className={styles.productName}>{product.name}</span>
               <span className={styles.brand}>{product.brand}</span>
@@ -116,7 +118,7 @@ export default function VariantSelectionModal({
                       <div className={styles.variantHeader}>
                         <div className={styles.variantTitle}>
                           <Zap size={16} style={{ opacity: 0.7 }} />
-                          <span>{variant.bulb_type}</span>
+                          <span>{variant.variant_type}</span>
                         </div>
                         {isSelected && (
                           <div className={styles.selectedBadge}>SELECTED</div>
@@ -124,15 +126,32 @@ export default function VariantSelectionModal({
                       </div>
 
                       <div className={styles.variantInfo}>
-                        {variant.color_temperature && (
+                        {/* Dynamic fields from config */}
+                        {config.fields.map(field => {
+                          let val = '';
+                          if (field.key.includes('.')) {
+                            const [parent, child] = field.key.split('.');
+                            val = (variant as any)[parent]?.[child];
+                          } else {
+                            val = (variant as any)[field.key];
+                          }
+
+                          if (val === undefined || val === null || val === '' || Number(val) === 0) return null;
+
+                          return (
+                            <div key={field.key} className={styles.infoRow}>
+                              <span className={styles.infoLabel}>{field.label}:</span>
+                              <span className={styles.infoValue}>
+                                {val}{field.suffix ? `${field.suffix}` : ''}
+                              </span>
+                            </div>
+                          );
+                        })}
+
+                        {/* Fallback for color/note if not in fields */}
+                        {variant.variant_color && !config.fields.some(f => f.key === 'variant_color') && (
                           <div className={styles.infoRow}>
-                            <span className={styles.infoLabel}>Color Temp:</span>
-                            <span className={styles.infoValue}>{variant.color_temperature}K</span>
-                          </div>
-                        )}
-                        {variant.variant_color && (
-                          <div className={styles.infoRow}>
-                            <span className={styles.infoLabel}>Color:</span>
+                            <span className={styles.infoLabel}>Note:</span>
                             <span className={styles.infoValue}>{variant.variant_color}</span>
                           </div>
                         )}
@@ -195,7 +214,7 @@ export default function VariantSelectionModal({
             disabled={!canAddToCart}
           >
              <ShoppingCart size={18} />
-             {selectedVariant ? `ADD ${quantity} TO CART - $${(selectedVariant.selling_price * quantity).toFixed(2)}` : 'SELECT A VARIANT'}
+             {selectedVariant ? `ADD ${quantity} TO CART - $${(selectedVariant.selling_price * quantity).toFixed(2)}` : `SELECT A ${config.variantTypeLabel.toUpperCase()}`}
           </button>
         </div>
       </div>

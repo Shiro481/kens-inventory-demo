@@ -12,7 +12,7 @@ INSERT INTO public.product_categories (name, description) VALUES
 ON CONFLICT (name) DO NOTHING;
 
 -- 2. Insert Core Bulb Types (For reference)
-INSERT INTO public.bulb_types (code, description) VALUES
+INSERT INTO public.variant_categories (code, description) VALUES
 ('H1', 'Single filament'),
 ('H3', 'Fog light type'),
 ('H4', 'Dual filament Hi/Lo'),
@@ -40,7 +40,7 @@ ON CONFLICT (code) DO NOTHING;
 
 -- 3. Insert Smart Bulb Variants ( The "Menu" Options )
 -- These act as the "Variant Types" you select when creating products
-INSERT INTO public.bulb_type_variants (base_name, variant_name, compatibility_list, display_name, description) VALUES
+INSERT INTO public.variant_definitions (base_name, variant_name, compatibility_list, display_name, description) VALUES
 -- Headlights
 ('LED Headlight Kit', 'H4/H7/9005/9006', ARRAY['H4', 'H7', '9005', '9006'], 'Universal Kit (H4/H7/9005/9006)', 'Fits multiple sockets with adapters'),
 ('LED Headlight Kit', 'H4/Hb2/9003', ARRAY['H4', 'Hb2', '9003'], 'Hi/Lo Beam (H4)', 'Standard high/low beam'),

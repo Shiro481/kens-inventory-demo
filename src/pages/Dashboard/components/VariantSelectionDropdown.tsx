@@ -77,7 +77,7 @@ export default function VariantSelectionDropdown({
                        selectedVariant.stock_quantity > 0;
 
   const getDisplayText = () => {
-    if (!selectedVariant) return 'Select Socket / Bulb Type';
+    if (!selectedVariant) return 'Select Type / Size';
     return selectedVariant.display_name;
   };
 
@@ -86,7 +86,7 @@ export default function VariantSelectionDropdown({
       <div className={styles.modalContent}>
         <div className={styles.modalHeader}>
           <div className={styles.productInfo}>
-            <h2>Select Socket / Bulb Type</h2>
+            <h2>Select Type / Size</h2>
             <div className={styles.productDetails}>
               <span className={styles.productName}>{product.base_name}</span>
               <span className={styles.brand}>{product.brand}</span>
@@ -99,11 +99,11 @@ export default function VariantSelectionDropdown({
         </div>
 
         <div className={styles.modalBody}>
-          {/* Socket/Bulb Type Dropdown */}
+          {/* Type / Size Dropdown */}
           <div className={styles.dropdownSection}>
             <label className={styles.dropdownLabel}>
               <Package size={16} />
-              Socket / Bulb Type
+              Type / Size
             </label>
             <div className={styles.dropdownContainer}>
               <button 
@@ -230,7 +230,7 @@ export default function VariantSelectionDropdown({
             disabled={!canAddToCart}
           >
             <ShoppingCart size={16} />
-            {selectedVariant ? `Add ${quantity} to Cart - $${(selectedVariant.final_price * quantity).toFixed(2)}` : 'Select Socket Type'}
+            {selectedVariant ? `Add ${quantity} to Cart - $${(selectedVariant.final_price * quantity).toFixed(2)}` : 'Select Type / Size'}
           </button>
         </div>
       </div>

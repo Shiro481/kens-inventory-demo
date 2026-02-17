@@ -57,9 +57,9 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
   }, []);
 
   /**
-   * Fetch automotive lights data from Supabase database
+   * Fetch inventory data from Supabase database
    * Updates the items state with fetched data or sets error state
-   * Fetches both base products and all variants from product_bulb_variants
+   * Fetches both base products and all variants from product_variants
    */
   /**
    * Helper to convert database ID to numeric ID for UI compatibility
@@ -77,13 +77,13 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
 
     try {
       // 1. Fetch all products (Base Parent Items) from the 'products' table
-      // relationships are joined: categories, bulb_types, suppliers
+      // relationships are joined: categories, variant_categories, suppliers
       const { data: rawData, error } = await supabase
         .from('products')
         .select(`
           *,
           product_categories(name),
-          bulb_types(code),
+          variant_categories(code),
           suppliers(name)
         `);
       
@@ -93,13 +93,13 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
         return;
       }
 
-      // 2. Fetch ALL variants from 'product_bulb_variants' table
+      // 2. Fetch ALL variants from 'product_variants' table
       // These will be flattened into the main list for the UI
       const { data: allVariants, error: variantsError } = await supabase
-        .from('product_bulb_variants')
+        .from('product_variants')
         .select(`
             *,
-            bulb_type_variants (
+            variant_definitions (
                 variant_name
             )
         `);
@@ -136,14 +136,15 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
           color_temperature: item.color_temperature,
           lumens: item.lumens,
           beam_type: item.beam_type,
-          bulb_type: item.bulb_type || item.specifications?.socket || item.bulb_types?.code,
+          variant_type: item.variant_type || item.specifications?.socket || item.variant_categories?.code,
           specifications: item.specifications,
           supplier: item.suppliers?.name,
-          has_variants: item.has_variants,
-          variant_count: 0,
+          has_variants: item.has_variants || allVariants?.some((v: any) => v.product_id === item.id),
+          variant_count: allVariants?.filter((v: any) => v.product_id === item.id).length || 0,
           created_at: item.created_at,
           updated_at: item.updated_at,
           notes: item.specifications?.internal_notes || '', // Map internal notes
+          tags: item.specifications?.tags || [], // Extract tags from specifications
           // Map restock data for activity feed
           restocked_at: item.specifications?.last_restock?.date,
           restock_quantity: item.specifications?.last_restock?.quantity,
@@ -163,7 +164,7 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
           
           if (parentProduct) {
             // Get the variant name from the joined relation
-            const variantName = variant.bulb_type || variant.bulb_type_variants?.variant_name || 'Unknown';
+            const variantName = variant.variant_type || variant.variant_definitions?.variant_name || 'Unknown';
             const temp = variant.color_temperature ? `${variant.color_temperature}K` : '';
             const noteColor = variant.variant_color || ''; // This is the specific note/color
 
@@ -190,7 +191,7 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
               color_temperature: variant.color_temperature || parentProduct.color_temperature,
               lumens: parentProduct.lumens,
               beam_type: parentProduct.beam_type,
-              bulb_type: variantName,
+              variant_type: variantName,
               specifications: parentProduct.specifications,
               supplier: parentProduct.suppliers?.name,
               has_variants: false,
@@ -201,7 +202,8 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
               parent_product_id: variant.product_id,
               created_at: variant.created_at,
               updated_at: variant.updated_at,
-              notes: noteColor // Display the specific note/color separately here
+              notes: noteColor, // Display the specific note/color separately here
+              tags: parentProduct.specifications?.tags || [] // Inherit tags from parent
             };
             
             allItems.push(variantItem);
@@ -278,13 +280,13 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
       );
 
       if (isVariantItem) {
-        // This is a VARIANT - delete from product_bulb_variants table
+        // This is a VARIANT - delete from product_variants table
         const variantIdToDelete = itemToDelete.uuid || itemToDelete.variant_id;
         
-        console.log('🔹 [Delete] Deleting VARIANT from product_bulb_variants, ID:', variantIdToDelete);
+        console.log('🔹 [Delete] Deleting VARIANT from product_variants, ID:', variantIdToDelete);
         
         const { error: variantError } = await supabase
-          .from('product_bulb_variants')
+          .from('product_variants')
           .delete()
           .eq('id', variantIdToDelete);
         error = variantError;
@@ -401,7 +403,7 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
         lumens: updatedItem.lumens,
         beam_type: updatedItem.beam_type,
         has_variants: updatedItem.has_variants || false,
-        specifications: { ...(updatedItem.specifications || {}), socket: updatedItem.bulb_type },
+        specifications: { ...(updatedItem.specifications || {}), socket: updatedItem.variant_type },
       };
 
       // 2. Resolve Category ID (Foreign Key)
@@ -420,30 +422,30 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
         payload.category_id = categoryId;
       }
 
-      // RESOLVE BULB TYPE ID
-      let bulbTypeId = null;
-      if (updatedItem.bulb_type) {
-        const { data: bulbData } = await supabase
-          .from('bulb_types')
+      // RESOLVE VARIANT TYPE ID
+      let variantTypeId = null;
+      if (updatedItem.variant_type) {
+        const { data: variantTypeData } = await supabase
+          .from('variant_categories')
           .select('id')
-          .eq('code', updatedItem.bulb_type)
+          .eq('code', updatedItem.variant_type)
           .maybeSingle();
           
-        if (bulbData) {
-            bulbTypeId = bulbData.id;
+        if (variantTypeData) {
+            variantTypeId = variantTypeData.id;
         } else {
-            // Create if not exists (Auto-add new socket types)
-            const { data: newBulb } = await supabase
-                .from('bulb_types')
-                .insert({ code: updatedItem.bulb_type, description: 'Created via App' })
+            // Create if not exists (Auto-add new variant types)
+            const { data: newType } = await supabase
+                .from('variant_categories')
+                .insert({ code: updatedItem.variant_type, description: 'Created via App' })
                 .select('id')
                 .maybeSingle();
-            if (newBulb) bulbTypeId = newBulb.id;
+            if (newType) variantTypeId = newType.id;
         }
       }
 
-      if (bulbTypeId) {
-        payload.bulb_type_id = bulbTypeId;
+      if (variantTypeId) {
+        payload.variant_type_id = variantTypeId;
       }
 
       // 3. Insert into Database
@@ -453,7 +455,7 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
         .select(`
           *,
           product_categories(name),
-          bulb_types(code),
+          variant_categories(code),
           suppliers(name)
         `);
 
@@ -484,10 +486,12 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
           color_temperature: data[0].color_temperature,
           lumens: data[0].lumens,
           beam_type: data[0].beam_type,
-          bulb_type: data[0].bulb_types?.code,
+          variant_type: data[0].variant_categories?.code,
           supplier: data[0].suppliers?.name,
           created_at: data[0].created_at,
           updated_at: data[0].updated_at,
+          variant_count: 0,
+          is_variant: false,
           notes: data[0].specifications?.internal_notes || ''
         };
         
@@ -497,7 +501,7 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
             
             const variantInserts = variants.map(v => ({
                 product_id: newProductId,
-                bulb_type: v.bulb_type,
+                variant_type: v.variant_type || v.variant_type,
                 variant_id: v.variant_id, 
                 color_temperature: v.color_temperature,
                 cost_price: v.cost_price,
@@ -510,7 +514,7 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
             }));
 
             const { error: varError } = await supabase
-                .from('product_bulb_variants')
+                .from('product_variants')
                 .insert(variantInserts);
             
             if (varError) {
@@ -528,20 +532,48 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
       
       if (updatedItem.is_variant) {
         // Handle Variant Update
+        // Resolve Variant ID (to keep definition link and dropdowns in sync)
+        let variantId = updatedItem.variant_id;
+        if (updatedItem.variant_type) {
+            const { data: vDef } = await supabase
+                .from('variant_definitions')
+                .select('id')
+                .eq('variant_name', updatedItem.variant_type)
+                .maybeSingle();
+            
+            if (vDef) {
+                variantId = vDef.id;
+            } else {
+                // Create definition if missing
+                const { data: newDef } = await supabase
+                    .from('variant_definitions')
+                    .insert({
+                        base_name: 'Simple Bulb',
+                        variant_name: updatedItem.variant_type,
+                        display_name: updatedItem.variant_type,
+                        is_active: true
+                    })
+                    .select('id')
+                    .single();
+                if (newDef) variantId = newDef.id;
+            }
+        }
+
         const variantPayload: any = {
            variant_sku: updatedItem.sku || null,
            selling_price: updatedItem.price,
            cost_price: updatedItem.cost_price,
            stock_quantity: stockVal,
            min_stock_level: minVal,
-           bulb_type: updatedItem.bulb_type,
+           variant_type: updatedItem.variant_type,
+           variant_id: variantId,
            color_temperature: updatedItem.color_temperature,
            variant_color: updatedItem.notes || null,
            description: updatedItem.description || null
         };
         
         const { error } = await supabase
-          .from('product_bulb_variants')
+          .from('product_variants')
           .update(variantPayload)
           .eq('id', updatedItem.variant_id || updatedItem.uuid); 
 
@@ -575,8 +607,9 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
         has_variants: updatedItem.has_variants || false,
         specifications: { 
           ...(updatedItem.specifications || {}), 
-          socket: updatedItem.bulb_type,
+          socket: updatedItem.variant_type,
           internal_notes: updatedItem.notes, // Save notes to specifications
+          tags: updatedItem.tags || [], // Save tags to specifications
           // Check for restock and update last_restock if quantity increased
           ...( (stockVal || 0) > (items.find(i => i.id === updatedItem.id)?.stock || 0) ? {
              last_restock: {
@@ -602,24 +635,24 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
         }
       }
 
-      // Resolve Bulb Type ID (Update)
-      if (updatedItem.bulb_type) {
-        const { data: bulbData } = await supabase
-          .from('bulb_types')
+      // Resolve Type ID (Update)
+      if (updatedItem.variant_type) {
+        const { data: variantTypeData } = await supabase
+          .from('variant_categories')
           .select('id')
-          .eq('code', updatedItem.bulb_type)
+          .eq('code', updatedItem.variant_type)
           .maybeSingle();
           
-        if (bulbData) {
-            payload.bulb_type_id = bulbData.id;
+        if (variantTypeData) {
+            payload.variant_type_id = variantTypeData.id;
         } else {
              // Create if not exists
-            const { data: newBulb } = await supabase
-                .from('bulb_types')
-                .insert({ code: updatedItem.bulb_type, description: 'Created via App' })
+            const { data: newType } = await supabase
+                .from('variant_categories')
+                .insert({ code: updatedItem.variant_type, description: 'Created via App' })
                 .select('id')
                 .maybeSingle();
-            if (newBulb) payload.bulb_type_id = newBulb.id;
+            if (newType) payload.variant_type_id = newType.id;
         }
       }
 
@@ -726,18 +759,13 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
         isOpen={isEditModalOpen}
         item={editingItem}
         categories={Array.from(new Set([
-          'Headlight', 'Fog Light', 'Signal Light', 'Interior Light', 'Brake Light',
+          'Headlight', 'Fog Light', 'Signal Light', 'Interior Light', 'Brake Light', 'Wiper', 'Horn', 'Accessories',
           ...items.map(i => i.category).filter(Boolean) as string[]
         ]))}
-        bulbTypes={Array.from(new Set([
-          'H1', 'H3', 'H4', 'H7', 'H8', 'H9', 'H11', 'H13', 'H15', 'H16',
-          '9005 (HB3)', '9006 (HB4)', '9012 (HIR2)', '880/881',
-          'D1S', 'D2S', 'D3S', 'D4S',
-          'T10 (W5W)', 'T15 (W16W)', 'T20 (7440/7443)', 'T25 (3156/3157)',
-          '1156 (BA15S)', '1157 (BAY15D)', 'BA9S',
-          'Festoon 31mm', 'Festoon 36mm', 'Festoon 39mm', 'Festoon 41mm',
-          ...items.map(i => i.bulb_type).filter(Boolean) as string[]
+        variantTypes={Array.from(new Set([
+          ...items.map(i => i.variant_type).filter(Boolean) as string[]
         ])).sort()}
+        allItems={items}
         onClose={handleModalClose}
         onSave={handleSave}
       />

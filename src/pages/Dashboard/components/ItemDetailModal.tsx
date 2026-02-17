@@ -3,6 +3,7 @@ import { X, Plus, Minus, Package, ShoppingCart, Eye, Info } from 'lucide-react';
 import styles from './ItemDetailModal.module.css';
 import type { InventoryItem } from '../../../types/inventory';
 import { useSettings } from '../../../context/SettingsContext';
+import { getCategoryConfig } from '../../../constants/categoryConfig';
 
 interface ItemDetailModalProps {
   isOpen: boolean;
@@ -26,10 +27,12 @@ interface ItemDetailModalProps {
 export default function ItemDetailModal({ isOpen, item, onClose, onAddToCart, variants, onVariantSelect }: ItemDetailModalProps) {
   const [quantity, setQuantity] = useState(1);
   const [selectedVariant, setSelectedVariant] = useState<any | null>(null);
-  const [selectedBulbType, setSelectedBulbType] = useState<string>('');
+  const [selectedVariantType, setSelectedVariantType] = useState<string>('');
   const { settings } = useSettings();
-
+  
   if (!isOpen || !item) return null;
+
+  const config = getCategoryConfig(item.category);
 
   const hasVariants = variants && variants.length > 0;
 
@@ -37,7 +40,7 @@ export default function ItemDetailModal({ isOpen, item, onClose, onAddToCart, va
   // Use actual product specs and only fallback if totally missing in DB
   const parentOption = {
     id: 'parent',
-    bulb_type: item.bulb_type || 'Base', 
+    variant_type: item.variant_type || 'Base', 
     color_temperature: item.color_temperature || 'Original',
     selling_price: item.price,
     stock_quantity: item.stock ?? item.quantity ?? 0,
@@ -51,14 +54,14 @@ export default function ItemDetailModal({ isOpen, item, onClose, onAddToCart, va
     ? variants 
     : [parentOption];
 
-  // Get unique bulb types from the combined list
+  // Get unique variant types from the combined list
   // Ensure we don't filter out our fallbacks
-  const uniqueBulbTypes = Array.from(new Set(allAvailableOptions.map(v => v.bulb_type))).filter(Boolean);
+  const uniqueVariantTypes = Array.from(new Set(allAvailableOptions.map(v => v.variant_type))).filter(Boolean);
 
-  // Get available temperatures for selected bulb type from the combined list
-  const availableTemperatures = selectedBulbType
+  // Get available temperatures for selected variant type from the combined list
+  const availableTemperatures = selectedVariantType
     ? allAvailableOptions
-        .filter(v => v.bulb_type === selectedBulbType)
+        .filter(v => v.variant_type === selectedVariantType)
         .map(v => ({
           value: v.color_temperature || v.variant_color,
           variant: v
@@ -70,7 +73,7 @@ export default function ItemDetailModal({ isOpen, item, onClose, onAddToCart, va
   const stock = selectedVariant ? selectedVariant.stock_quantity : (item.stock ?? item.quantity ?? 0);
   const currentMinStock = selectedVariant?.min_stock_level ?? item.minQuantity ?? settings.low_stock_threshold;
   const currentTemperature = selectedVariant ? selectedVariant.color_temperature : item.color_temperature;
-  const currentBulbType = selectedVariant ? selectedVariant.bulb_type : item.bulb_type;
+  const currentVariantType = selectedVariant ? selectedVariant.variant_type : item.variant_type;
   
   const isOutOfStock = stock <= 0;
   const maxQuantity = Math.min(stock, 99); // Limit to reasonable amount
@@ -94,7 +97,7 @@ export default function ItemDetailModal({ isOpen, item, onClose, onAddToCart, va
       onClose();
       setQuantity(1); // Reset quantity for next use
       setSelectedVariant(null); // Reset variant selection
-      setSelectedBulbType(''); // Reset bulb type selection
+      setSelectedVariantType(''); // Reset variant type selection
     }
   };
 
@@ -159,10 +162,10 @@ export default function ItemDetailModal({ isOpen, item, onClose, onAddToCart, va
             </div>
 
             {/* Selection Specs */}
-            {(currentBulbType || currentTemperature) && (
+            {(currentVariantType || currentTemperature) && (
               <div className={styles.selectionSpecs}>
                 <span className={styles.specItem}>
-                  Type: <strong>{currentBulbType || 'Base'}</strong>
+                  {config.variantTypeLabel}: <strong>{currentVariantType || 'Base'}</strong>
                 </span>
                 {currentTemperature && (
                   <span className={styles.specItem}>
@@ -183,32 +186,38 @@ export default function ItemDetailModal({ isOpen, item, onClose, onAddToCart, va
           {/* Variant Selection Dropdowns */}
           {hasVariants && (
             <div className={styles.variantSection}>
-              {/* Bulb Type Dropdown */}
+              {/* Type / Size Dropdown */}
               <div className={styles.dropdownGroup}>
                 <label className={styles.variantLabel}>
-                  Select Bulb Type:
+                  Select {config.variantTypeLabel}:
                 </label>
                 <select 
                   className={styles.variantDropdown}
-                  value={selectedBulbType}
+                  value={selectedVariantType}
                   onChange={(e) => {
-                    const bulbType = e.target.value;
-                    setSelectedBulbType(bulbType);
-                    // Reset variant and temperature when bulb type changes
+                    const variantType = e.target.value;
+                    setSelectedVariantType(variantType);
+                    // Reset variant and temperature when variant type changes
                     setSelectedVariant(null);
+                    
+                    // Auto-select if only one temperature/color option for this type
+                    const firstMatch = allAvailableOptions.filter(v => v.variant_type === variantType);
+                    if (firstMatch.length === 1) {
+                      setSelectedVariant(firstMatch[0]);
+                    }
                   }}
                 >
-                  <option value="">-- Select bulb type --</option>
-                  {uniqueBulbTypes.map((bulbType) => (
-                    <option key={bulbType} value={bulbType}>
-                      {bulbType}
+                  <option value="">-- Select type / size --</option>
+                  {uniqueVariantTypes.map((variantType) => (
+                    <option key={variantType} value={variantType}>
+                      {variantType}
                     </option>
                   ))}
                 </select>
               </div>
 
-              {/* Color Temperature Dropdown (only show if bulb type is selected) */}
-              {selectedBulbType && availableTemperatures.length > 0 && (
+              {/* Color Temperature Dropdown (only show if variant type is selected) */}
+              {selectedVariantType && availableTemperatures.length > 0 && (
                 <div className={styles.dropdownGroup}>
                   <label className={styles.variantLabel}>
                     Select Color Temperature:
@@ -298,6 +307,39 @@ export default function ItemDetailModal({ isOpen, item, onClose, onAddToCart, va
                   </span>
                 </div>
               )}
+
+              {/* Dynamic Technical Specifications based on Category */}
+              {config.fields.map(field => {
+                let val = '';
+                // First check in selected variant, then fallback to parent item
+                const source = selectedVariant || item;
+                
+                if (field.key.includes('.')) {
+                  const [parent, child] = field.key.split('.');
+                  val = (source as any)[parent]?.[child];
+                } else {
+                  val = (source as any)[field.key];
+                }
+
+                if (val === undefined || val === null || val === '' || val === 0) return null;
+
+                return (
+                  <div key={field.key} className={styles.detailItem}>
+                    <span className={styles.detailLabel}>{field.label}:</span>
+                    <span className={styles.detailValue}>
+                      {val}{field.suffix ? `${field.suffix}` : ''}
+                    </span>
+                  </div>
+                );
+              })}
+
+              {/* Special Beam Type field for lights */}
+              {item.beam_type && (
+                <div className={styles.detailItem}>
+                  <span className={styles.detailLabel}>Beam Type:</span>
+                  <span className={styles.detailValue}>{item.beam_type}</span>
+                </div>
+              )}
             </div>
           </div>
 
@@ -312,7 +354,7 @@ export default function ItemDetailModal({ isOpen, item, onClose, onAddToCart, va
               {[1, 2, 5, 10].map(qty => (
                 <button
                   key={qty}
-                  className={`${styles.quickQtyBtn} ${quantity === qty ? styles.quickQtyActive : ''}`}
+                  className={`${styles.quickQtyBtn} ${Number(quantity) === qty ? styles.quickQtyActive : ''}`}
                   onClick={() => handleQuickAdd(qty)}
                   disabled={qty > maxQuantity}
                 >
