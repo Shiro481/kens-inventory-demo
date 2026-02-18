@@ -111,6 +111,21 @@
   transform: translateY(-4px);
 }
 
+.productCard, .variantContainerBox {
+  animation: cardEntrance 0.3s ease-out backwards;
+}
+
+@keyframes cardEntrance {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* Variant Container Box - Simplified card for items with variants */
 .variantContainerBox {
   background: linear-gradient(135deg, #0a0a0a, #111);

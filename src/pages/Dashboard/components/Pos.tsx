@@ -395,11 +395,13 @@ export default function Pos({ items, onSaleComplete }: PosProps) {
             <div style={{ width: 4, height: 4, backgroundColor: '#666', borderRadius: '50%', margin: '0 auto' }}></div>
           </button>
         </div>
-          <div className={styles.productGrid}>
-          {filteredItems.map(item => {
+          <div className={styles.productGrid} key={searchQuery}>
+          {filteredItems.map((item, index) => {
             const stock = item.stock ?? item.quantity ?? 0;
             const isOutOfStock = stock <= 0;
             const hasVariants = item.has_variants === true;
+            
+            const animationStyle = { animationDelay: `${Math.min(index * 0.05, 0.5)}s` };
             
             // Simplified "Container Box" for items with variants
             if (hasVariants) {
@@ -409,6 +411,7 @@ export default function Pos({ items, onSaleComplete }: PosProps) {
                   key={item.id} 
                   className={`${styles.variantContainerBox} ${loading ? styles.loading : ''}`}
                   onClick={() => !loading && handleItemClick(item)}
+                  style={animationStyle}
                 >
                   {(item.stock ?? 0) > 0 && (item.stock ?? 0) < (item.minQuantity ?? 10) && (
                     <div className={styles.lowStockBadge}>LOW STOCK</div>
@@ -427,6 +430,7 @@ export default function Pos({ items, onSaleComplete }: PosProps) {
                 className={`${styles.productCard} ${isOutOfStock || loading ? styles.outOfStock : ''}`}
                 onClick={() => !isOutOfStock && !loading && handleItemClick(item)}
                 title={isOutOfStock ? "Out of Stock" : "Add to Cart"}
+                style={animationStyle}
               >
                 {!isOutOfStock && stock < (item.minQuantity ?? 10) && (
                   <div className={styles.lowStockBadge}>LOW STOCK</div>
