@@ -413,7 +413,7 @@ export default function Pos({ items, onSaleComplete }: PosProps) {
                   onClick={() => !loading && handleItemClick(item)}
                   style={animationStyle}
                 >
-                  {(item.stock ?? 0) > 0 && (item.stock ?? 0) < (item.minQuantity ?? 10) && (
+                  {(item.stock ?? 0) > 0 && (item.stock ?? 0) < (item.minQuantity ?? settings.low_stock_threshold ?? 5) && (
                     <div className={styles.lowStockBadge}>LOW STOCK</div>
                   )}
                   <div className={styles.containerLabel}>MULTIPLE {config.variantTypeLabel.toUpperCase()}S</div>
@@ -432,7 +432,7 @@ export default function Pos({ items, onSaleComplete }: PosProps) {
                 title={isOutOfStock ? "Out of Stock" : "Add to Cart"}
                 style={animationStyle}
               >
-                {!isOutOfStock && stock < (item.minQuantity ?? 10) && (
+                {!isOutOfStock && stock < (item.minQuantity ?? settings.low_stock_threshold ?? 5) && (
                   <div className={styles.lowStockBadge}>LOW STOCK</div>
                 )}
                 <div className={styles.sku}>{item.sku || 'NO SKU'}</div>
