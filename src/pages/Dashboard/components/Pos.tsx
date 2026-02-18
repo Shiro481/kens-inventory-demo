@@ -41,23 +41,34 @@ export default function Pos({ items, onSaleComplete }: PosProps) {
   const [selectedProductForVariant, setSelectedProductForVariant] = useState<InventoryItem | null>(null);
   const [productVariants, setProductVariants] = useState<any[]>([]);
 
-  /**
-   * Filter inventory items based on search query
-   * Searches in name, SKU, and category fields
-   * Excludes variant items - only shows parent products
-   */
   const filteredItems = items.filter(item => {
-    // Hide variant items in POS - only show parent products
-    if ((item as any).is_variant === true) {
-      return false;
-    }
+    const query = searchQuery.trim().toLowerCase();
     
-    const query = searchQuery.toLowerCase();
-    return (
-      (item.name || '').toLowerCase().includes(query) ||
-      (item.sku || '').toLowerCase().includes(query) ||
-      (item.category || '').toLowerCase().includes(query)
-    );
+    // If no search query, only show parent products to keep the grid clean
+    if (!query) {
+      return (item as any).is_variant !== true;
+    }
+
+    const tokens = query.split(/\s+/); // Split by whitespace
+    
+    // Every token must match at least one searchable field
+    return tokens.every(token => {
+      const searchFields = [
+        item.name || '',
+        item.sku || '',
+        item.category || '',
+        item.brand || '',
+        item.variant_type || '',
+        item.barcode || '',
+        item.description || '',
+        item.notes || ''
+      ];
+      
+      const inFields = searchFields.some(field => field.toLowerCase().includes(token));
+      const inTags = (item.tags || []).some((tag: string) => tag.toLowerCase().includes(token));
+      
+      return inFields || inTags;
+    });
   });
 
   /**
@@ -399,7 +410,11 @@ export default function Pos({ items, onSaleComplete }: PosProps) {
                   className={`${styles.variantContainerBox} ${loading ? styles.loading : ''}`}
                   onClick={() => !loading && handleItemClick(item)}
                 >
+                  {(item.stock ?? 0) > 0 && (item.stock ?? 0) < (item.minQuantity ?? 10) && (
+                    <div className={styles.lowStockBadge}>LOW STOCK</div>
+                  )}
                   <div className={styles.containerLabel}>MULTIPLE {config.variantTypeLabel.toUpperCase()}S</div>
+                  {item.brand && <div className={styles.brand}>{item.brand}</div>}
                   <div className={styles.containerName}>{item.name}</div>
                   <div className={styles.containerFooter}>Select {config.variantTypeLabel}</div>
                 </div>
@@ -413,8 +428,15 @@ export default function Pos({ items, onSaleComplete }: PosProps) {
                 onClick={() => !isOutOfStock && !loading && handleItemClick(item)}
                 title={isOutOfStock ? "Out of Stock" : "Add to Cart"}
               >
+                {!isOutOfStock && stock < (item.minQuantity ?? 10) && (
+                  <div className={styles.lowStockBadge}>LOW STOCK</div>
+                )}
                 <div className={styles.sku}>{item.sku || 'NO SKU'}</div>
-                <div className={styles.productName}>{item.name}</div>
+                {item.brand && <div className={styles.brand}>{item.brand}</div>}
+                <div className={styles.productName}>
+                  {item.name}
+                  {item.is_variant && <span className={styles.isVariantTag}>VARIANT</span>}
+                </div>
                 
                 <div className={styles.productFooter}>
                   <div className={styles.qtyInfo}>

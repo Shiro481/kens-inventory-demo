@@ -238,6 +238,15 @@
   text-transform: uppercase;
 }
 
+.brand {
+  font-size: 9px;
+  font-weight: 900;
+  color: #444;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
 .productName {
   font-size: 15px;
   font-weight: 900;
@@ -245,6 +254,20 @@
   min-height: 40px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+}
+
+.isVariantTag {
+  display: inline-block;
+  background-color: var(--brand-neon);
+  color: #000;
+  font-size: 9px;
+  font-weight: 900;
+  padding: 1px 6px;
+  border-radius: 2px;
+  margin-left: 8px;
+  vertical-align: middle;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 .productFooter {
@@ -276,6 +299,25 @@
 .outOfStock {
   opacity: 0.4;
   cursor: not-allowed;
+}
+
+.lowStockBadge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background-color: #f59e0b;
+  color: #000;
+  padding: 2px 8px;
+  font-weight: 900;
+  font-size: 9px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  border-radius: 2px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 
 .outOfStockBadge {
