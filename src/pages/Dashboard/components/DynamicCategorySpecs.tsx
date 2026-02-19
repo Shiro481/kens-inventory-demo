@@ -21,26 +21,49 @@ export default function DynamicCategorySpecs({
   valueStyle 
 }: DynamicCategorySpecsProps) {
   const { config } = useCategoryMetadata(item.category);
+  const displayedValues = new Set<string>();
 
   return (
-    <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', alignItems: 'center', ...style }}>
+    <div style={{ 
+      display: 'flex', 
+      flexDirection: 'column', 
+      gap: '4px', 
+      marginTop: '6px',
+      ...style 
+    }}>
       {/* Variant Dimensions (Multi-Dimension Support) */}
       {config.variantDimensions?.filter(d => d.active).map(dim => {
-        const val = dim.column === 'variant_type' ? item.variant_type :
-                    dim.column === 'variant_color' ? item.variant_color :
-                    dim.column === 'color_temperature' ? item.color_temperature : 
-                    null;
-        if (!val) return null;
+        let val = null;
+        if (dim.column === 'variant_type') val = item.variant_type;
+        else if (dim.column === 'variant_color') val = item.variant_color;
+        else if (dim.column === 'color_temperature') val = item.color_temperature;
+        else val = (item as any).specifications?.[dim.column];
+        
+        if (!val || val === 0) return null;
+        const valStr = String(val).trim();
+        if (!valStr || displayedValues.has(valStr.toLowerCase())) return null;
+        displayedValues.add(valStr.toLowerCase());
+
         return (
-          <span key={dim.column} style={valueStyle}>
-            <span style={{ color: '#666', marginRight: '4px', textTransform: 'uppercase', fontSize: '0.8em', ...labelStyle }}>{dim.label}:</span>
-            {val}
-          </span>
+          <div key={dim.column} style={{ ...valueStyle, display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <span style={{ 
+              color: '#555', 
+              textTransform: 'uppercase', 
+              fontSize: '9px', 
+              fontWeight: 'bold',
+              minWidth: '70px',
+              ...labelStyle 
+            }}>{dim.label}:</span>
+            <span style={{ fontWeight: '600' }}>{val}</span>
+          </div>
         );
       })}
 
-      {/* Legacy Fields */}
-      {!config.variantDimensions && config.fields.map(field => {
+      {/* Technical Fields (Attributes that are NOT dimensions) */}
+      {config.fields.filter(field => {
+        // Skip rendering if this field is already handled as an active dimension
+        return !config.variantDimensions?.some(d => d.active && (d.column === field.key || (field.key === 'color_temperature' && (d.column === 'variant_color' || d.column === 'color_temperature' || d.column === 'variant_type'))));
+      }).map(field => {
         let val = '';
         if (field.key.includes('.')) {
           const [parent, child] = field.key.split('.');
@@ -50,21 +73,27 @@ export default function DynamicCategorySpecs({
         }
 
         if (val === undefined || val === null || val === '') return null;
+        if (typeof val === 'number' && val === 0) return null;
+        
+        const valStr = String(val).trim();
+        // Avoid duplicates and avoid showing values that are already part of the name
+        if (!valStr || displayedValues.has(valStr.toLowerCase()) || item.name.toLowerCase().includes(valStr.toLowerCase())) return null;
+        displayedValues.add(valStr.toLowerCase());
 
         return (
-          <span key={field.key} style={valueStyle}>
-            <span style={{ color: '#666', marginRight: '4px', ...labelStyle }}>{field.label}:</span>
-            {val}{field.suffix ? `${field.suffix}` : ''}
-          </span>
+          <div key={field.key} style={{ ...valueStyle, display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <span style={{ 
+              color: '#555', 
+              textTransform: 'uppercase', 
+              fontSize: '9px', 
+              fontWeight: 'bold',
+              minWidth: '70px',
+              ...labelStyle 
+            }}>{field.label}:</span>
+            <span style={{ fontWeight: '600' }}>{val}{field.suffix ? `${field.suffix}` : ''}</span>
+          </div>
         );
       })}
-
-      {/* Legacy Fallback for color temperature if not defined in fields */}
-      {item.color_temperature && !config.fields.some(f => f.key === 'color_temperature') && (
-        <span style={{ color: '#00ff9d', fontWeight: '700', ...valueStyle }}>
-          {item.color_temperature}{typeof item.color_temperature === 'number' ? 'K' : ''}
-        </span>
-      )}
     </div>
   );
 }

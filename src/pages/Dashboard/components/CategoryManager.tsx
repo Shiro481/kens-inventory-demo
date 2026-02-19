@@ -14,7 +14,7 @@ interface CategoryField {
 
 interface VariantDimension {
   label: string;
-  column: 'variant_type' | 'variant_color' | 'color_temperature';
+  column: string;
   active: boolean;
 }
 
@@ -185,6 +185,30 @@ export default function CategoryManager({ onCategoryAdded }: CategoryManagerProp
     });
   };
 
+  const addDimension = () => {
+    if (!metadata) return;
+    const newDim: VariantDimension = {
+      label: 'New Dimension',
+      column: `spec_${Date.now()}`,
+      active: true
+    };
+    setMetadata({
+      ...metadata,
+      variant_dimensions: [...(metadata.variant_dimensions || []), newDim]
+    });
+  };
+
+  const removeDimension = (index: number) => {
+    if (!metadata || !metadata.variant_dimensions) return;
+    if (index === 0) {
+      alert("The primary dimension cannot be removed.");
+      return;
+    }
+    const newDims = [...metadata.variant_dimensions];
+    newDims.splice(index, 1);
+    setMetadata({ ...metadata, variant_dimensions: newDims });
+  };
+
   const removeVariantType = (type: string) => {
     if (!metadata) return;
     setMetadata({
@@ -266,8 +290,9 @@ export default function CategoryManager({ onCategoryAdded }: CategoryManagerProp
           <div className={styles.variantSection} style={{ marginBottom: '24px' }}>
             <div className={styles.fieldHeader}>
               <h3><Tag size={16} /> Multi-Variant Dimensions</h3>
+              <button onClick={addDimension} className={styles.addBtn}><Plus size={14} /> Add Dimension</button>
             </div>
-            <p className={styles.hint}>Enable and label up to 3 dimensions for products in this category (e.g., Size, Color, Voltage).</p>
+            <p className={styles.hint}>Enable and label dimensions for products in this category (e.g., Size, Color, Voltage).</p>
             
             <div className={styles.dimensionList}>
               {metadata.variant_dimensions?.map((dim, idx) => (
@@ -302,6 +327,11 @@ export default function CategoryManager({ onCategoryAdded }: CategoryManagerProp
                     style={{ flex: 1 }}
                   />
                   <div className={styles.columnBadge}>{dim.column}</div>
+                  {idx > 0 && (
+                    <button onClick={() => removeDimension(idx)} className={styles.removeBtn} style={{ marginLeft: '8px' }}>
+                      <Trash2 size={14} />
+                    </button>
+                  )}
                 </div>
               ))}
             </div>

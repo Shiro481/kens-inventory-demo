@@ -160,9 +160,12 @@ export default function Pos({ items, onSaleComplete }: PosProps) {
     
     if (config.variantDimensions) {
       config.variantDimensions.filter((d: any) => d.active).forEach((dim: any) => {
-        const val = dim.column === 'variant_type' ? variant.variant_type :
-                    dim.column === 'variant_color' ? variant.variant_color :
-                    dim.column === 'color_temperature' ? variant.color_temperature : null;
+        let val = null;
+        if (dim.column === 'variant_type') val = variant.variant_type;
+        else if (dim.column === 'variant_color') val = variant.variant_color;
+        else if (dim.column === 'color_temperature') val = variant.color_temperature;
+        else val = variant.specifications?.[dim.column];
+        
         if (val) specs.push(`${dim.label}: ${val}`);
       });
     } else {

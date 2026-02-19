@@ -152,6 +152,7 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
           voltage: item.voltage,
           wattage: item.wattage,
           color_temperature: item.color_temperature,
+          variant_color: item.variant_color || item.specifications?.color,
           lumens: item.lumens,
           beam_type: item.beam_type,
           variant_type: item.variant_type || item.specifications?.socket || item.variant_categories?.code,
@@ -184,7 +185,7 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
             // Get the variant name from the joined relation
             const variantName = variant.variant_type || variant.variant_definitions?.variant_name || 'Unknown';
             const temp = variant.color_temperature ? `${variant.color_temperature}K` : '';
-            const noteColor = variant.variant_color || ''; // This is the specific note/color
+             // Process variant attributes
 
             const variantItem: InventoryItem = {
               id: generateNumericId(variant.id, true),  // Use TRUE for variants - ensures unique ID
@@ -209,10 +210,11 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
               voltage: parentProduct.voltage,
               wattage: parentProduct.wattage,
               color_temperature: variant.color_temperature || parentProduct.color_temperature,
+              variant_color: variant.variant_color,
               lumens: parentProduct.lumens,
               beam_type: parentProduct.beam_type,
               variant_type: variantName,
-              specifications: parentProduct.specifications,
+              specifications: variant.specifications || parentProduct.specifications,
               supplier: parentProduct.suppliers?.name,
               has_variants: false,
               variant_count: 0,
@@ -222,7 +224,7 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
               parent_product_id: variant.product_id,
               created_at: variant.created_at,
               updated_at: variant.updated_at,
-              notes: noteColor, // Display the specific note/color separately here
+              notes: (variant.specifications?.internal_notes || ''), // Use actual internal notes if they exist
               tags: parentProduct.specifications?.tags || [] // Inherit tags from parent
             };
             
@@ -234,9 +236,17 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
         }
       }
       
-      console.log(`📦 [Dashboard] Total items in inventory: ${allItems.length}`);
-      console.log(`📊 [Dashboard] Breakdown - Products: ${allItems.filter(i => !i.is_variant).length}, Variants: ${allItems.filter(i => i.is_variant).length}`);
-      setItems(allItems);
+      // 5. Build final list, filtering out parent products that have variants
+      // This removes "duplication" where both the parent and its variants appear in the list.
+      const filteredItems = allItems.filter(item => {
+        // If it's a variant, always show it
+        if (item.is_variant) return true;
+        // If it's a parent, only show it if it DOES NOT have variants
+        return !item.has_variants;
+      });
+
+      console.log(`📦 [Dashboard] Total items in inventory: ${filteredItems.length} (Filtered ${allItems.length - filteredItems.length} parents)`);
+      setItems(filteredItems);
     } catch (err) {
       console.error('Unexpected error:', err);
       setError('An unexpected error occurred while fetching data.');
@@ -599,10 +609,11 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
            min_stock_level: minVal,
            variant_type: updatedItem.variant_type,
            variant_id: variantId,
-           color_temperature: updatedItem.color_temperature,
-            variant_color: updatedItem.notes || null,
+           color_temperature: updatedItem.color_temperature ? String(updatedItem.color_temperature) : null,
+            variant_color: updatedItem.variant_color || updatedItem.notes || null,
             variant_barcode: updatedItem.barcode || null,
-            description: updatedItem.description || null
+            description: updatedItem.description || null,
+            specifications: updatedItem.specifications || {}
         };
         
         const { data: updatedVariant, error } = await supabase

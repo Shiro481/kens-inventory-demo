@@ -44,12 +44,20 @@ export default function VariantManager({
               <div className={styles.variantInfo}>
                 <div className={styles.variantInfoMain} style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', alignItems: 'center' }}>
                   {config.variantDimensions?.filter((d: any) => d.active).map((dim: any) => {
-                    const val = dim.column === 'variant_type' ? (v.variant_type || v.variant_definitions?.variant_name) :
-                                dim.column === 'variant_color' ? v.variant_color :
-                                dim.column === 'color_temperature' ? v.color_temperature : null;
+                    let val = null;
+                    if (dim.column === 'variant_type') {
+                      val = v.variant_type || v.variant_definitions?.variant_name;
+                    } else if (dim.column === 'variant_color') {
+                      val = v.variant_color;
+                    } else if (dim.column === 'color_temperature') {
+                      val = v.color_temperature;
+                    } else {
+                      val = v.specifications?.[dim.column];
+                    }
+                    
                     if (!val) return null;
                     return (
-                      <span key={dim.column} className={styles.variantTag} style={dim.column !== 'variant_type' ? { background: '#222', color: '#00ff9d', border: '1px solid #111' } : {}}>
+                      <span key={dim.column} className={styles.variantTag} style={!['variant_type'].includes(dim.column) ? { background: '#222', color: '#00ff9d', border: '1px solid #111' } : {}}>
                         <span style={{ opacity: 0.5, fontSize: '9px', marginRight: '4px' }}>{dim.label.toUpperCase()}:</span>
                         {dim.column === 'color_temperature' && !val.toString().endsWith('K') && !isNaN(Number(val)) ? `${val}K` : val}
                       </span>
@@ -86,7 +94,8 @@ export default function VariantManager({
                       color: v.variant_color || '',
                       color_temperature: v.color_temperature || '',
                       description: v.description || '',
-                      sku: v.variant_sku || ''
+                      sku: v.variant_sku || '',
+                      specifications: v.specifications || {}
                     });
                     onSetIsAddingNewType(false);
                     onSetShowVariantForm(true);
@@ -118,12 +127,15 @@ export default function VariantManager({
           <h4 className={styles.variantFormHeader}>Variant Details</h4>
             {/* Dynamic Dimensions */}
             {config.variantDimensions?.filter((d: any) => d.active).map((dim: any) => {
-              const val = dim.column === 'variant_color' ? newVariantData.color : 
-                          dim.column === 'color_temperature' ? newVariantData.color_temperature : '';
+              let val = '';
+              if (dim.column === 'variant_color') val = newVariantData.color || '';
+              else if (dim.column === 'color_temperature') val = newVariantData.color_temperature || '';
+              else if (dim.column === 'variant_type') val = newVariantData.variant_type || '';
+              else val = newVariantData.specifications?.[dim.column] || '';
               
               return (
                 <div key={dim.column} className={styles.formGroup}>
-                  <label>{dim.label} *</label>
+                  <label>{dim.label} {dim.column === 'variant_type' ? '*' : ''}</label>
                   {dim.column === 'variant_type' ? (
                     !isAddingNewTypeInVariantForm ? (
                       <select 
@@ -164,8 +176,20 @@ export default function VariantManager({
                       className={styles.formInput} 
                       value={val} 
                       onChange={e => {
-                        const field = dim.column === 'variant_color' ? 'color' : 'color_temperature';
-                        onSetNewVariantData({...newVariantData, [field]: e.target.value});
+                        const newVal = e.target.value;
+                        if (dim.column === 'variant_color') {
+                          onSetNewVariantData({...newVariantData, color: newVal});
+                        } else if (dim.column === 'color_temperature') {
+                          onSetNewVariantData({...newVariantData, color_temperature: newVal});
+                        } else {
+                          onSetNewVariantData({
+                            ...newVariantData, 
+                            specifications: { 
+                              ...(newVariantData.specifications || {}), 
+                              [dim.column]: newVal 
+                            }
+                          });
+                        }
                       }} 
                       placeholder={`e.g. ${dim.label}`} 
                     />
@@ -246,7 +270,7 @@ export default function VariantManager({
               <input type="text" className={styles.formInput} value={newVariantData.description || ''} onChange={e => onSetNewVariantData({...newVariantData, description: e.target.value})} placeholder="Additional details..." />
             </div>
           <div className={styles.variantFormActions}>
-            <button className={styles.variantCancelBtn} onClick={() => { onSetShowVariantForm(false); onSetEditingVariantId(null); onSetNewVariantData({ variant_type: '', cost_price: 0, selling_price: 0, stock: 0, min_stock_level: 5, color: '', color_temperature: '', description: '', sku: '' }); }}>Cancel</button>
+            <button className={styles.variantCancelBtn} onClick={() => { onSetShowVariantForm(false); onSetEditingVariantId(null); onSetNewVariantData({ variant_type: '', cost_price: 0, selling_price: 0, stock: 0, min_stock_level: 5, color: '', color_temperature: '', description: '', sku: '', specifications: {} }); }}>Cancel</button>
             <button className={styles.variantSaveBtn} onClick={onAddVariant} disabled={!newVariantData.variant_type}>Save Variant</button>
           </div>
         </div>

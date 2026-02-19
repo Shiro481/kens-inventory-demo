@@ -37,7 +37,8 @@ export default function EditItemModal({
   const [showVariantForm, setShowVariantForm] = useState(false);
   const [newVariantData, setNewVariantData] = useState<any>({ 
     variant_type: '', cost_price: 0, selling_price: 0, stock: 0, 
-    min_stock_level: 5, color: '', color_temperature: '', description: '', sku: '' 
+    min_stock_level: 5, color: '', color_temperature: '', description: '', sku: '',
+    specifications: {}
   });
   const [isAddingNewTypeInVariantForm, setIsAddingNewTypeInVariantForm] = useState(false);
   const [editingVariantId, setEditingVariantId] = useState<number | null>(null);
@@ -135,7 +136,8 @@ export default function EditItemModal({
              color_temperature: newVariantData.color_temperature,
              cost_price: Number(newVariantData.cost_price),
              selling_price: Number(newVariantData.selling_price),
-             description: newVariantData.description
+             description: newVariantData.description,
+             specifications: newVariantData.specifications || {}
          };
 
          if (editingVariantId) {
@@ -177,7 +179,8 @@ export default function EditItemModal({
       min_stock_level: Number(newVariantData.min_stock_level) || 5,
       variant_color: newVariantData.color || null,
       description: newVariantData.description || null,
-      variant_sku: newVariantData.sku || null
+      variant_sku: newVariantData.sku || null,
+      specifications: newVariantData.specifications || {}
     };
 
     let error;
@@ -196,7 +199,8 @@ export default function EditItemModal({
         setEditingVariantId(null);
         setNewVariantData({ 
             variant_type: '', cost_price: 0, selling_price: 0, stock: 0, min_stock_level: 5, 
-            color: '', color_temperature: '', description: '', sku: '' 
+            color: '', color_temperature: '', description: '', sku: '', 
+            specifications: {} 
         });
     } else {
         alert('Error saving variant: ' + error.message);

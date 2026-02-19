@@ -9,7 +9,7 @@ export interface CategoryField {
 
 export interface VariantDimension {
   label: string;
-  column: 'variant_type' | 'variant_color' | 'color_temperature';
+  column: string;
   active: boolean;
 }
 

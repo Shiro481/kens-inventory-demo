@@ -126,14 +126,17 @@ export default function ItemDetailModal({ isOpen, item, onClose, onAddToCart, va
             {config.variantDimensions?.filter((d: any) => d.active).some((d: any) => {
               const val = d.column === 'variant_type' ? item.variant_type :
                           d.column === 'variant_color' ? item.variant_color :
-                          d.column === 'color_temperature' ? item.color_temperature : null;
+                          d.column === 'color_temperature' ? item.color_temperature : 
+                          (item as any).specifications?.[d.column];
               return !!val;
             }) && (
               <div className={styles.selectionSpecs}>
                 {config.variantDimensions?.filter((d: any) => d.active).map((dim: any) => {
-                  const val = dim.column === 'variant_type' ? (selectedVariant?.variant_type || item.variant_type) :
-                              dim.column === 'variant_color' ? (selectedVariant?.variant_color || item.variant_color) :
-                              dim.column === 'color_temperature' ? (selectedVariant?.color_temperature || item.color_temperature) : null;
+                  const target = selectedVariant || item;
+                  const val = dim.column === 'variant_type' ? target.variant_type :
+                              dim.column === 'variant_color' ? target.variant_color :
+                              dim.column === 'color_temperature' ? target.color_temperature :
+                              (target as any).specifications?.[dim.column];
                   if (!val) return null;
                   return (
                     <div key={dim.column} className={styles.selectionSpecItem}>
@@ -156,6 +159,8 @@ export default function ItemDetailModal({ isOpen, item, onClose, onAddToCart, va
             <div className={styles.variantSection}>
               <h3 className={styles.sectionTitle}>Select Variants</h3>
               {config.variantDimensions?.filter((d: any) => d.active).map((dim: any, idx: number) => {
+                // For now, we only support cascading selection for the first two dimensions 
+                // in this specific UI layout. Others will display as specs once selected.
                 if (dim.column === 'variant_type') {
                   return (
                     <div key={dim.column} className={styles.dropdownGroup}>
@@ -167,7 +172,7 @@ export default function ItemDetailModal({ isOpen, item, onClose, onAddToCart, va
                           const val = e.target.value;
                           setSelectedVariantType(val);
                           setSelectedVariant(null);
-                          const matches = allAvailableOptions.filter(v => v.variant_type === val);
+                          const matches = allAvailableOptions.filter(v => (v.variant_type || v.variant_definitions?.variant_name) === val);
                           if (matches.length === 1) setSelectedVariant(matches[0]);
                         }}
                       >
@@ -177,7 +182,11 @@ export default function ItemDetailModal({ isOpen, item, onClose, onAddToCart, va
                     </div>
                   );
                 }
+                
+                // Second dimension (Color, Temp, or Custom)
                 if (selectedVariantType && idx === 1) {
+                  const availableOptionsForType = allAvailableOptions.filter(v => (v.variant_type || v.variant_definitions?.variant_name) === selectedVariantType);
+                  
                   return (
                     <div key={dim.column} className={styles.dropdownGroup}>
                       <label className={styles.variantLabel}>Select {dim.label}:</label>
@@ -186,16 +195,23 @@ export default function ItemDetailModal({ isOpen, item, onClose, onAddToCart, va
                         value={selectedVariant?.id || ''}
                         onChange={(e) => {
                           const vId = e.target.value;
-                          const v = availableTemperatures.find(opt => String(opt.variant.id) === vId)?.variant;
+                          const v = availableOptionsForType.find(opt => String(opt.id) === vId);
                           setSelectedVariant(v || null);
                         }}
                       >
                         <option value="">-- Select {dim.label.toLowerCase()} --</option>
-                        {availableTemperatures.map(({ value, variant }) => (
-                          <option key={variant.id} value={variant.id}>
-                            {value}{dim.column === 'color_temperature' && !isNaN(Number(value)) ? 'K' : ''}
-                          </option>
-                        ))}
+                        {availableOptionsForType.map((v) => {
+                          let displayVal = null;
+                          if (dim.column === 'variant_color') displayVal = v.variant_color;
+                          else if (dim.column === 'color_temperature') displayVal = v.color_temperature;
+                          else displayVal = v.specifications?.[dim.column];
+
+                          return (
+                            <option key={v.id} value={v.id}>
+                              {displayVal || 'Default'}{dim.column === 'color_temperature' && !isNaN(Number(displayVal)) ? 'K' : ''}
+                            </option>
+                          );
+                        })}
                       </select>
                     </div>
                   );

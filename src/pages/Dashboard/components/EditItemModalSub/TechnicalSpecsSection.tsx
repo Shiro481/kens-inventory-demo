@@ -71,7 +71,10 @@ export default function TechnicalSpecsSection({
         />
       </div>
 
-      {config.fields.map((field: any) => (
+      {config.fields.filter((field: any) => {
+        // Skip fields that are already handled as active dimensions to avoid duplication
+        return !config.variantDimensions?.some((d: any) => d.active && (d.column === field.key || (field.key === 'color_temperature' && d.column === 'variant_color')));
+      }).map((field: any) => (
         <div key={field.key} className={styles.formGroup}>
           <label>{field.label} {field.suffix ? `(${field.suffix})` : ''}</label>
           {field.type === 'select' ? (
@@ -87,7 +90,7 @@ export default function TechnicalSpecsSection({
             <input
               className={styles.formInput} 
               type={field.type} 
-              placeholder={field.placeholder}
+              placeholder={field.placeholder || `Enter ${field.label.toLowerCase()}`}
               value={(field.key.includes('.') ? (editingItem as any)[field.key.split('.')[0]]?.[field.key.split('.')[1]] : (editingItem as any)[field.key]) || ''}
               onChange={(e) => {
                 const val = e.target.value;
@@ -97,6 +100,45 @@ export default function TechnicalSpecsSection({
           )}
         </div>
       ))}
+
+      {/* Dynamic Variant Dimensions (Custom Dimensions) */}
+      {config.variantDimensions?.filter((d: any) => d.active).map((dim: any) => {
+        // Skip legacy columns if they are already rendered or handled specifically
+        if (dim.column === 'variant_type' || dim.column === 'variant_color' || dim.column === 'color_temperature') {
+            // These are already rendered above if they are part of legacy UI
+            // But we should render them here if they are active but not "variant_type"
+            if (dim.column === 'variant_type') return null;
+        }
+
+        const value = dim.column === 'variant_color' ? editingItem.variant_color :
+                    dim.column === 'color_temperature' ? editingItem.color_temperature :
+                    (editingItem.specifications?.[dim.column] || '');
+
+        return (
+          <div key={dim.column} className={styles.formGroup}>
+            <label>{dim.label}</label>
+            <input 
+              type="text" 
+              className={styles.formInput} 
+              value={value}
+              onChange={(e) => {
+                const newVal = e.target.value;
+                if (dim.column === 'variant_color') onInputChange('variant_color', newVal);
+                else if (dim.column === 'color_temperature') onInputChange('color_temperature', newVal);
+                else {
+                  onInputChange('specifications', {
+                    ...(editingItem.specifications || {}),
+                    [dim.column]: newVal
+                  });
+                }
+              }}
+              placeholder={dim.column === 'variant_color' ? 'e.g. Black, Red, etc.' : 
+                           dim.column === 'color_temperature' ? 'e.g. 6000K' : 
+                           `Enter ${dim.label.toLowerCase()}`}
+            />
+          </div>
+        );
+      })}
 
       {(!editingItem.category || editingItem.category === 'Headlight' || editingItem.category === 'Fog Light') && (
         <div className={styles.formGroup}>
