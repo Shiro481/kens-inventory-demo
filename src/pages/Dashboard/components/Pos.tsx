@@ -4,7 +4,8 @@ import styles from './Pos.module.css';
 import type { InventoryItem } from '../../../types/inventory';
 import { supabase } from '../../../lib/supabase';
 import { useSettings } from '../../../context/SettingsContext';
-import { getCategoryConfig } from '../../../constants/categoryConfig';
+import { useCategoryMetadata } from '../../../hooks/useCategoryMetadata';
+import VariantContainerBox from './VariantContainerBox';
 import ItemDetailModal from './ItemDetailModal';
 import VariantSelectionModal from './VariantSelectionModal';
 
@@ -40,6 +41,9 @@ export default function Pos({ items, onSaleComplete }: PosProps) {
   const [showVariantModal, setShowVariantModal] = useState(false);
   const [selectedProductForVariant, setSelectedProductForVariant] = useState<InventoryItem | null>(null);
   const [productVariants, setProductVariants] = useState<any[]>([]);
+  
+  // Dynamic metadata for the currently selected item (used in handleVariantSelect)
+  const { config: selectedConfig } = useCategoryMetadata(selectedItem?.category);
 
   const filteredItems = items.filter(item => {
     const query = searchQuery.trim().toLowerCase();
@@ -54,14 +58,20 @@ export default function Pos({ items, onSaleComplete }: PosProps) {
     // Every token must match at least one searchable field
     return tokens.every(token => {
       const searchFields = [
-        item.name || '',
-        item.sku || '',
-        item.category || '',
-        item.brand || '',
-        item.variant_type || '',
-        item.barcode || '',
-        item.description || '',
-        item.notes || ''
+        (item.name || ''),
+        (item.sku || ''),
+        (item.category || ''),
+        (item.brand || ''),
+        (item.variant_type || ''),
+        (item.barcode || ''),
+        (item.description || ''),
+        (item.notes || ''),
+        (item.color_temperature?.toString() || ''),
+        (item.voltage?.toString() || ''),
+        (item.wattage?.toString() || ''),
+        (item.lumens?.toString() || ''),
+        (item.beam_type || ''),
+        (item.specifications ? JSON.stringify(item.specifications) : '')
       ];
       
       const inFields = searchFields.some(field => field.toLowerCase().includes(token));
@@ -143,27 +153,37 @@ export default function Pos({ items, onSaleComplete }: PosProps) {
   const handleVariantSelect = (variant: any, quantity: number) => {
     if (!selectedItem) return;
 
-    const config = getCategoryConfig(selectedItem.category);
+    const config = selectedConfig;
     
-    // Create a dynamic display name based on fields available in config
+    // Create a dynamic display name based on multi-dimensions or legacy fields
     const specs: string[] = [];
-    config.fields.forEach(field => {
-      let val = '';
-      if (field.key.includes('.')) {
-        const [parent, child] = field.key.split('.');
-        val = (variant as any)[parent]?.[child];
-      } else {
-        val = (variant as any)[field.key];
-      }
-      
-      if (val && val !== '0') {
-        specs.push(`${val}${field.suffix || ''}`);
-      }
-    });
+    
+    if (config.variantDimensions) {
+      config.variantDimensions.filter((d: any) => d.active).forEach((dim: any) => {
+        const val = dim.column === 'variant_type' ? variant.variant_type :
+                    dim.column === 'variant_color' ? variant.variant_color :
+                    dim.column === 'color_temperature' ? variant.color_temperature : null;
+        if (val) specs.push(`${dim.label}: ${val}`);
+      });
+    } else {
+      config.fields.forEach(field => {
+        let val = '';
+        if (field.key.includes('.')) {
+          const [parent, child] = field.key.split('.');
+          val = (variant as any)[parent]?.[child];
+        } else {
+          val = (variant as any)[field.key];
+        }
+        
+        if (val && String(val) !== '0') {
+          specs.push(`${val}${field.suffix || ''}`);
+        }
+      });
 
-    // Special fallback for variant_color if not in fields
-    if (variant.variant_color && !config.fields.some(f => f.key === 'variant_color')) {
-      specs.push(variant.variant_color);
+      // legacy fallback
+      if (variant.variant_color && !config.fields.some(f => f.key === 'variant_color')) {
+        specs.push(variant.variant_color);
+      }
     }
 
     const cartItem: CartItem = {
@@ -178,7 +198,7 @@ export default function Pos({ items, onSaleComplete }: PosProps) {
       image_url: selectedItem.image_url,
       cartQuantity: quantity,
       variant_id: variant.id.toString(),
-      variant_display_name: variant.variant_type + (specs.length > 0 ? ` (${specs.join(', ')})` : ''),
+      variant_display_name: specs.join(', ') || variant.variant_type,
       variant_price: variant.selling_price,
       description: variant.description || selectedItem.description || '',
       color_temperature: variant.color_temperature,
@@ -285,60 +305,26 @@ export default function Pos({ items, onSaleComplete }: PosProps) {
     
     setLoading(true);
     try {
-      // --- 1. Deduct Stock for each item ---
-      for (const item of cart) {
-        const currentStock = item.stock ?? item.quantity ?? 0;
-        const newStock = currentStock - item.cartQuantity;
-        
-        const payload: any = {
-          stock_quantity: newStock
-        };
+      // --- 1. Process Sale Atomically via RPC ---
+      // This call handles BOTH stock deduction and sale recording in one transaction.
+      const { error: rpcError } = await supabase.rpc('process_sale', {
+        p_items: cart.map(i => ({
+          id: i.id,
+          name: i.name,
+          price: i.variant_price || i.price || 0,
+          quantity: i.cartQuantity,
+          variant_id: i.variant_id || null
+        })),
+        p_subtotal: subtotal,
+        p_tax: tax,
+        p_total: total,
+        p_payment_method: paymentMethod,
+        p_notes: `Processed via POS v2 (Atomic)`
+      });
 
-        let updateError = null;
+      if (rpcError) throw rpcError;
 
-        if (item.variant_id) {
-            // CASE A: Update Variant Stock in 'product_variants'
-            const { error } = await supabase
-              .from('product_variants')
-              .update(payload)
-              .eq('id', item.variant_id);
-            updateError = error;
-        } else {
-            // CASE B: Update Base Product Stock in 'products'
-            // Ensure we use the correct UUID if available, otherwise numeric ID fallback
-            const idToUse = item.uuid || item.id;
-            const { error } = await supabase
-              .from('products')
-              .update(payload)
-              .eq('id', idToUse);
-            updateError = error;
-        }
-
-        if (updateError) throw updateError;
-      }
-
-      // --- 2. Record the Sale Transaction ---
-      const { error: saleError } = await supabase
-        .from('sales')
-        .insert([{
-          items: cart.map(i => ({
-            id: i.id,
-            name: i.name,
-            price: i.price,
-            quantity: i.cartQuantity,
-            is_variant: !!i.variant_id,
-            variant_id: i.variant_id
-          })),
-          subtotal: subtotal,
-          tax: tax,
-          total: total,
-          payment_method: paymentMethod,
-          created_at: new Date().toISOString()
-        }]);
-
-      if (saleError) throw saleError;
-
-      // --- 3. Finalize Success State ---
+      // --- 2. Finalize Success State ---
       setLastTotal(total);
       setPaymentSuccess(true);
       setCart([]);
@@ -397,30 +383,22 @@ export default function Pos({ items, onSaleComplete }: PosProps) {
         </div>
           <div className={styles.productGrid} key={searchQuery}>
           {filteredItems.map((item, index) => {
+            const hasVariants = !!item.has_variants;
             const stock = item.stock ?? item.quantity ?? 0;
-            const isOutOfStock = stock <= 0;
-            const hasVariants = item.has_variants === true;
+            const isOutOfStock = stock <= 0 && !hasVariants;
             
             const animationStyle = { animationDelay: `${Math.min(index * 0.05, 0.5)}s` };
             
             // Simplified "Container Box" for items with variants
             if (hasVariants) {
-              const config = getCategoryConfig(item.category);
               return (
-                <div 
-                  key={item.id} 
-                  className={`${styles.variantContainerBox} ${loading ? styles.loading : ''}`}
-                  onClick={() => !loading && handleItemClick(item)}
-                  style={animationStyle}
-                >
-                  {(item.stock ?? 0) > 0 && (item.stock ?? 0) < (item.minQuantity ?? settings.low_stock_threshold ?? 5) && (
-                    <div className={styles.lowStockBadge}>LOW STOCK</div>
-                  )}
-                  <div className={styles.containerLabel}>MULTIPLE {config.variantTypeLabel.toUpperCase()}S</div>
-                  {item.brand && <div className={styles.brand}>{item.brand}</div>}
-                  <div className={styles.containerName}>{item.name}</div>
-                  <div className={styles.containerFooter}>Select {config.variantTypeLabel}</div>
-                </div>
+                <VariantContainerBox 
+                  key={item.id}
+                  item={item}
+                  loading={loading}
+                  onClick={handleItemClick}
+                  animationStyle={animationStyle}
+                />
               );
             }
 
@@ -439,7 +417,17 @@ export default function Pos({ items, onSaleComplete }: PosProps) {
                 {item.brand && <div className={styles.brand}>{item.brand}</div>}
                 <div className={styles.productName}>
                   {item.name}
-                  {item.is_variant && <span className={styles.isVariantTag}>VARIANT</span>}
+                  {item.is_variant && <span className={styles.isVariantTag}>{item.variant_type}</span>}
+                </div>
+                <div className={styles.productSubInfo}>
+                  {item.color_temperature && (
+                    <span className={styles.specTag}>
+                      {item.color_temperature}{!isNaN(Number(item.color_temperature)) ? 'K' : ''}
+                    </span>
+                  )}
+                  {item.notes && (
+                    <span className={styles.noteTag}>{item.notes}</span>
+                  )}
                 </div>
                 
                 <div className={styles.productFooter}>

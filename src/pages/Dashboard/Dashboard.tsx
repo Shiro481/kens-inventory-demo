@@ -32,6 +32,8 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
   const [items, setItems] = useState<InventoryItem[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [suppliers, setSuppliers] = useState<any[]>([]);
+  const [categories, setCategories] = useState<string[]>([]);
   
   // View State
   const [activeView, setActiveView] = useState<DashboardView>('overview');
@@ -54,7 +56,23 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
       return;
     }
     fetchParts();
+    fetchSuppliers();
+    fetchCategories();
   }, []);
+
+  async function fetchCategories() {
+    if (!supabase) return;
+    const { data } = await supabase.from('product_categories').select('name').order('name');
+    if (data) {
+      setCategories(data.map(c => c.name));
+    }
+  }
+
+  async function fetchSuppliers() {
+    if (!supabase) return;
+    const { data } = await supabase.from('suppliers').select('*').order('name');
+    if (data) setSuppliers(data);
+  }
 
   /**
    * Fetch inventory data from Supabase database
@@ -171,20 +189,22 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
             const variantItem: InventoryItem = {
               id: generateNumericId(variant.id, true),  // Use TRUE for variants - ensures unique ID
               uuid: variant.id,  // Store the actual variant DB ID
-              // Name: "GPNE R6 - H1 6000K" (Clean, standard)
-              name: `${parentProduct.name} - ${variantName} ${temp}`.trim(),
+              // Name: "GPNE R6" (Clean, avoids redundancy with attributes)
+              name: parentProduct.name,
               base_name: parentProduct.name,
               sku: variant.variant_sku || `${parentProduct.sku}-${variant.id}`,
-              price: variant.selling_price || (variant.price_adjustment ? parentProduct.selling_price + variant.price_adjustment : parentProduct.selling_price),
-              stock: variant.stock_quantity,
+              price: (variant.selling_price !== null && variant.selling_price !== undefined && variant.selling_price !== 0) 
+                 ? variant.selling_price 
+                 : (variant.price_adjustment ? parentProduct.selling_price + variant.price_adjustment : parentProduct.selling_price),
+              stock: variant.stock_quantity ?? 0,
               quantity: variant.stock_quantity,
               minQuantity: variant.min_stock_level,
               min_qty: variant.min_stock_level,
               category: parentProduct.product_categories?.name,
               brand: parentProduct.brand,
-              description: parentProduct.description,
+              description: variant.description || parentProduct.description,
               image_url: parentProduct.image_url,
-              barcode: variant.variant_sku,
+              barcode: variant.variant_barcode || variant.variant_sku,
               cost_price: variant.cost_price,
               voltage: parentProduct.voltage,
               wattage: parentProduct.wattage,
@@ -196,7 +216,7 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
               supplier: parentProduct.suppliers?.name,
               has_variants: false,
               variant_count: 0,
-              variant_id: variant.id,
+              variant_id: variant.variant_id, // FIX: Use the actual variant_id (FK to definitions)
               variant_display_name: `${variantName} ${temp}`.trim(),
               is_variant: true,  // CRITICAL: Mark as variant
               parent_product_id: variant.product_id,
@@ -281,7 +301,7 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
 
       if (isVariantItem) {
         // This is a VARIANT - delete from product_variants table
-        const variantIdToDelete = itemToDelete.uuid || itemToDelete.variant_id;
+        const variantIdToDelete = itemToDelete.uuid;
         
         console.log('🔹 [Delete] Deleting VARIANT from product_variants, ID:', variantIdToDelete);
         
@@ -382,6 +402,13 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
     const minVal = updatedItem.minQuantity ?? updatedItem.min_qty;
     const stockVal = updatedItem.stock ?? updatedItem.quantity;
 
+    // Resolve Supplier ID if name is provided
+    let supplierId = null;
+    if (updatedItem.supplier) {
+        const s = suppliers.find(s => s.name === updatedItem.supplier);
+        if (s) supplierId = s.id;
+    }
+
     // --- CREATE NEW ITEM FLOW ---
     if (updatedItem.id === 0) {
       // 1. Prepare payload for insertion
@@ -390,11 +417,11 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
         sku: updatedItem.sku || null,
         barcode: updatedItem.barcode,
         brand: updatedItem.brand || 'Aftermarket',
-        selling_price: updatedItem.price,
-        cost_price: updatedItem.cost_price || 0,
-        stock_quantity: stockVal,
-        reorder_level: minVal || 10,
-        min_stock_level: minVal || 5,
+        selling_price: updatedItem.has_variants ? 0 : updatedItem.price,
+        cost_price: updatedItem.has_variants ? 0 : (updatedItem.cost_price || 0),
+        stock_quantity: updatedItem.has_variants ? 0 : stockVal,
+        reorder_level: updatedItem.has_variants ? 0 : (minVal || 10),
+        min_stock_level: updatedItem.has_variants ? 0 : (minVal || 5),
         description: updatedItem.description,
         image_url: updatedItem.image_url,
         voltage: updatedItem.voltage,
@@ -404,6 +431,7 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
         beam_type: updatedItem.beam_type,
         has_variants: updatedItem.has_variants || false,
         specifications: { ...(updatedItem.specifications || {}), socket: updatedItem.variant_type },
+        supplier_id: supplierId
       };
 
       // 2. Resolve Category ID (Foreign Key)
@@ -530,8 +558,12 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
     } else {
       // --- UPDATE EXISTING ITEM FLOW ---
       
-      if (updatedItem.is_variant) {
+      // Determine if this is a variant update (robust check)
+      const isVariantUpdate = !!(updatedItem.is_variant || updatedItem.parent_product_id || updatedItem.variant_id);
+      
+      if (isVariantUpdate) {
         // Handle Variant Update
+        console.log('📝 [Save] Variant Flow detected for ID:', updatedItem.uuid || updatedItem.id);
         // Resolve Variant ID (to keep definition link and dropdowns in sync)
         let variantId = updatedItem.variant_id;
         if (updatedItem.variant_type) {
@@ -568,21 +600,58 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
            variant_type: updatedItem.variant_type,
            variant_id: variantId,
            color_temperature: updatedItem.color_temperature,
-           variant_color: updatedItem.notes || null,
-           description: updatedItem.description || null
+            variant_color: updatedItem.notes || null,
+            variant_barcode: updatedItem.barcode || null,
+            description: updatedItem.description || null
         };
         
-        const { error } = await supabase
+        const { data: updatedVariant, error } = await supabase
           .from('product_variants')
           .update(variantPayload)
-          .eq('id', updatedItem.variant_id || updatedItem.uuid); 
+          .eq('id', updatedItem.uuid)
+          .select(); 
 
         if (error) {
-            console.error('Error updating variant:', error);
+            console.error('❌ [Save] Variant Update Error:', error);
             alert(`Error saving variant: ${error.message}`);
+        } else if (!updatedVariant || updatedVariant.length === 0) {
+            console.warn('⚠️ [Save] No variant rows were updated. Check if ID exists:', updatedItem.uuid);
         } else {
-            fetchParts();
+            console.log('✅ [Save] Variant updated successfully:', updatedVariant[0]);
         }
+
+        // ALSO update parent product for shared technical details
+        const parentId = updatedItem.parent_product_id;
+        if (parentId) {
+            const sharedPayload: any = {
+                brand: updatedItem.brand,
+                voltage: updatedItem.voltage,
+                wattage: updatedItem.wattage,
+                lumens: updatedItem.lumens,
+                beam_type: updatedItem.beam_type,
+                color_temperature: updatedItem.color_temperature,
+                specifications: { 
+                    ...(updatedItem.specifications || {}), 
+                    internal_notes: updatedItem.notes,
+                    tags: updatedItem.tags || []
+                }
+            };
+            
+            // Add name if it was somehow changed (though variant view doesn't have it)
+            if (updatedItem.name && updatedItem.name.includes(' - ')) {
+               // Only update if name looks like a parent name candidate
+               // But usually we don't allow changing parent name from variant
+            }
+
+            const { data: updatedParent, error: parentError } = await supabase.from('products').update(sharedPayload).eq('id', parentId).select();
+            if (parentError) {
+                console.error('❌ [Save] Parent Sync Error:', parentError);
+            } else if (!updatedParent || updatedParent.length === 0) {
+                console.warn('⚠️ [Save] No parent row found for sync, ID:', parentId);
+            }
+        }
+
+        await fetchParts();
         handleModalClose();
         return;
       }
@@ -592,11 +661,11 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
         sku: updatedItem.sku || null,
         barcode: updatedItem.barcode,
         brand: updatedItem.brand,
-        selling_price: updatedItem.price,
-        cost_price: updatedItem.cost_price,
-        stock_quantity: stockVal,
-        reorder_level: minVal || 10,
-        min_stock_level: minVal || 5,
+        selling_price: updatedItem.has_variants ? 0 : updatedItem.price,
+        cost_price: updatedItem.has_variants ? 0 : updatedItem.cost_price,
+        stock_quantity: updatedItem.has_variants ? 0 : stockVal,
+        reorder_level: updatedItem.has_variants ? 0 : (minVal || 10),
+        min_stock_level: updatedItem.has_variants ? 0 : (minVal || 5),
         description: updatedItem.description,
         image_url: updatedItem.image_url,
         voltage: updatedItem.voltage,
@@ -605,6 +674,7 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
         lumens: updatedItem.lumens,
         beam_type: updatedItem.beam_type,
         has_variants: updatedItem.has_variants || false,
+        supplier_id: supplierId,
         specifications: { 
           ...(updatedItem.specifications || {}), 
           socket: updatedItem.variant_type,
@@ -656,17 +726,25 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
         }
       }
 
-      const { error } = await supabase
+      const targetId = updatedItem.uuid || updatedItem.id;
+      const targetIdNum = Number(targetId);
+      console.log(`📝 [Save] Product Flow detected. Updating 'products' table: ID=${targetIdNum} (original: ${targetId}, type: ${typeof targetId})`, { payload });
+
+      const { data: updatedProd, error } = await supabase
         .from('products')
         .update(payload)
-        .eq('id', updatedItem.uuid || updatedItem.id);
+        .eq('id', targetIdNum)
+        .select();
       
       if (error) {
-        console.error('Error updating product:', error);
+        console.error('❌ [Save] Product Update Error:', error);
         alert(`Error saving: ${error.message}`);
+      } else if (!updatedProd || updatedProd.length === 0) {
+        console.warn('⚠️ [Save] No product rows were updated. Check if ID exists:', targetId);
       } else {
+        console.log('✅ [Save] Product updated successfully:', updatedProd[0]);
         // Refresh the data to get updated values
-        fetchParts();
+        await fetchParts();
       }
     }
     
@@ -750,7 +828,7 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
           
           {activeView === 'work-orders' && <WorkOrders />}
           
-          {activeView === 'settings' && <Settings />}
+          {activeView === 'settings' && <Settings items={items} onEdit={handleEditClick} onDelete={handleDelete} onCategoryAdded={fetchCategories} />}
         </div>
       </main>
 
@@ -758,14 +836,12 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
       <EditItemModal 
         isOpen={isEditModalOpen}
         item={editingItem}
-        categories={Array.from(new Set([
-          'Headlight', 'Fog Light', 'Signal Light', 'Interior Light', 'Brake Light', 'Wiper', 'Horn', 'Accessories',
-          ...items.map(i => i.category).filter(Boolean) as string[]
-        ]))}
+        categories={categories}
         variantTypes={Array.from(new Set([
           ...items.map(i => i.variant_type).filter(Boolean) as string[]
         ])).sort()}
         allItems={items}
+        suppliers={suppliers.map(s => s.name)}
         onClose={handleModalClose}
         onSave={handleSave}
       />

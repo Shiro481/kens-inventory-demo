@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
-import { Save, Store, Calculator, User, Loader2 } from 'lucide-react';
+import { Save, Calculator, User, Loader2, Layers, Edit2, Search, Trash2, Settings as SettingsIcon } from 'lucide-react';
 import styles from './Settings.module.css';
 import { supabase } from '../../../lib/supabase';
 import { useSettings as useGlobalSettings } from '../../../context/SettingsContext';
+import CategoryManager from './CategoryManager';
+import type { InventoryItem } from '../../../types/inventory';
 
 interface StoreSettings {
   store_name: string;
@@ -11,15 +13,23 @@ interface StoreSettings {
   currency: string;
 }
 
+interface SettingsProps {
+  items: InventoryItem[];
+  onEdit: (item: InventoryItem) => void;
+  onDelete: (id: number) => void;
+  onCategoryAdded?: () => void;
+}
+
 /**
  * Settings component - Application settings management interface
  * Allows configuration of store settings, tax rates, and user preferences
  */
-export default function Settings() {
+export default function Settings({ items, onEdit, onDelete, onCategoryAdded }: SettingsProps) {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [success, setSuccess] = useState(false);
   const [user, setUser] = useState<any>(null);
+  const [familySearch, setFamilySearch] = useState('');
   
   const [settings, setSettings] = useState<StoreSettings>({
     store_name: "KEN'S GARAGE",
@@ -137,7 +147,7 @@ export default function Settings() {
         {/* Store Profile */}
         <section className={styles.section}>
           <div className={styles.sectionHeader}>
-            <Store className={styles.iconWrapper} size={20} />
+            <SettingsIcon className={styles.iconWrapper} size={20} />
             <h2>STORE IDENTITY</h2>
           </div>
           
@@ -272,6 +282,95 @@ export default function Settings() {
             To change password or security settings, please contact the system proprietor.
           </p>
         </section>
+
+        {/* Product Family Management */}
+        <section className={styles.section}>
+          <div className={styles.sectionHeader}>
+            <Layers className={styles.iconWrapper} size={20} />
+            <h2>PRODUCT FAMILIES</h2>
+          </div>
+          
+          <p style={{ fontSize: '11px', color: '#666', marginTop: '-16px', lineHeight: '1.4' }}>
+            Manage parent products and their variant configurations. Product families are hidden from the main inventory list to reduce clutter.
+          </p>
+
+          <div className={styles.familyToolbar}>
+            <div className={styles.familySearch}>
+              <Search size={14} color="#666" />
+              <input 
+                type="text" 
+                placeholder="Search families..." 
+                className={styles.familyInput}
+                value={familySearch}
+                onChange={(e) => setFamilySearch(e.target.value)}
+              />
+            </div>
+            <div className={styles.familyCount}>
+              {items.filter(item => 
+                item.has_variants && 
+                !item.is_variant && 
+                (item.name.toLowerCase().includes(familySearch.toLowerCase()) || 
+                 item.brand?.toLowerCase().includes(familySearch.toLowerCase()) ||
+                 item.sku?.toLowerCase().includes(familySearch.toLowerCase()))
+              ).length} Families
+            </div>
+          </div>
+
+          <div className={styles.familyList}>
+            {items.filter(item => item.has_variants && !item.is_variant).length === 0 ? (
+              <div className={styles.emptyList}>No product families found.</div>
+            ) : (
+              items
+                .filter(item => 
+                  item.has_variants && 
+                  !item.is_variant &&
+                  (item.name.toLowerCase().includes(familySearch.toLowerCase()) || 
+                   item.brand?.toLowerCase().includes(familySearch.toLowerCase()) ||
+                   item.sku?.toLowerCase().includes(familySearch.toLowerCase()))
+                )
+                .sort((a, b) => a.name.localeCompare(b.name))
+                .map(product => (
+                  <div key={product.id} className={styles.familyItem}>
+                    <div className={styles.familyInfo}>
+                      <span className={styles.familyName}>{product.name}</span>
+                      <span className={styles.familyMeta}>
+                        {product.brand} • {product.variant_count || 0} Variants • {product.sku || 'No SKU'}
+                      </span>
+                    </div>
+                    <div className={styles.familyActions}>
+                      <button 
+                        className={styles.editFamilyBtn}
+                        onClick={() => onEdit(product)}
+                        title="Edit Family"
+                      >
+                        <Edit2 size={14} />
+                      </button>
+                      <button 
+                        className={`${styles.editFamilyBtn} ${styles.deleteFamilyBtn}`}
+                        onClick={() => onDelete(product.id)}
+                        title="Delete Family"
+                      >
+                        <Trash2 size={14} />
+                      </button>
+                    </div>
+                  </div>
+                ))
+            )}
+            {familySearch && items.filter(item => 
+              item.has_variants && 
+              !item.is_variant &&
+              (item.name.toLowerCase().includes(familySearch.toLowerCase()) || 
+               item.brand?.toLowerCase().includes(familySearch.toLowerCase()))
+            ).length === 0 && (
+              <div className={styles.emptyList}>No families match your search.</div>
+            )}
+          </div>
+        </section>
+        
+        {/* Category Metadata Manager */}
+        <div style={{ padding: '0 4px' }}>
+          <CategoryManager onCategoryAdded={onCategoryAdded} />
+        </div>
       </div>
     </div>
   );

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { X, Package, ShoppingCart, Plus, Minus, Zap } from 'lucide-react';
 import styles from './VariantSelectionModal.module.css';
-import { getCategoryConfig } from '../../../constants/categoryConfig';
+import { useCategoryMetadata } from '../../../hooks/useCategoryMetadata';
 
 interface ProductVariant {
   id: number;
@@ -41,7 +41,7 @@ export default function VariantSelectionModal({
 }: VariantSelectionModalProps) {
   const [selectedVariantId, setSelectedVariantId] = useState<number | null>(null);
   const [quantity, setQuantity] = useState(1);
-  const config = getCategoryConfig(product?.category);
+  const { config } = useCategoryMetadata(product?.category);
 
   // Reset state when modal opens/closes
   useEffect(() => {
@@ -83,7 +83,7 @@ export default function VariantSelectionModal({
       <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
         <div className={styles.modalHeader}>
           <div className={styles.productInfo}>
-            <h2>Select {config.variantTypeLabel}</h2>
+            <h2>{config.variantDimensions?.filter((d: any) => d.active).map((d: any) => d.label).join(' & ') || config.variantTypeLabel}</h2>
             <div className={styles.productDetails}>
               <span className={styles.productName}>{product.name}</span>
               <span className={styles.brand}>{product.brand}</span>
@@ -118,7 +118,21 @@ export default function VariantSelectionModal({
                       <div className={styles.variantHeader}>
                         <div className={styles.variantTitle}>
                           <Zap size={16} style={{ opacity: 0.7 }} />
-                          <span>{variant.variant_type}</span>
+                          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px' }}>
+                            {config.variantDimensions?.filter((d: any) => d.active).map((dim: any) => {
+                              const val = dim.column === 'variant_type' ? variant.variant_type :
+                                          dim.column === 'variant_color' ? variant.variant_color :
+                                          dim.column === 'color_temperature' ? variant.color_temperature : null;
+                              if (!val) return null;
+                              return (
+                                <span key={dim.column} className={styles.variantTag}>
+                                  <span style={{ opacity: 0.6, fontSize: '0.7em', marginRight: '4px' }}>{dim.label}:</span>
+                                  {val}
+                                </span>
+                              );
+                            })}
+                            {!config.variantDimensions && <span>{variant.variant_type}</span>}
+                          </div>
                         </div>
                         {isSelected && (
                           <div className={styles.selectedBadge}>SELECTED</div>
@@ -127,7 +141,7 @@ export default function VariantSelectionModal({
 
                       <div className={styles.variantInfo}>
                         {/* Dynamic fields from config */}
-                        {config.fields.map(field => {
+                        {config.fields.map((field: any) => {
                           let val = '';
                           if (field.key.includes('.')) {
                             const [parent, child] = field.key.split('.');
@@ -148,8 +162,10 @@ export default function VariantSelectionModal({
                           );
                         })}
 
-                        {/* Fallback for color/note if not in fields */}
-                        {variant.variant_color && !config.fields.some(f => f.key === 'variant_color') && (
+                        {/* Fallback for color/note if not in fields and not in dimensions */}
+                        {variant.variant_color && 
+                         !config.fields.some((f: any) => f.key === 'variant_color') && 
+                         !config.variantDimensions?.some((d: any) => d.column === 'variant_color' && d.active) && (
                           <div className={styles.infoRow}>
                             <span className={styles.infoLabel}>Note:</span>
                             <span className={styles.infoValue}>{variant.variant_color}</span>
@@ -214,7 +230,7 @@ export default function VariantSelectionModal({
             disabled={!canAddToCart}
           >
              <ShoppingCart size={18} />
-             {selectedVariant ? `ADD ${quantity} TO CART - $${(selectedVariant.selling_price * quantity).toFixed(2)}` : `SELECT A ${config.variantTypeLabel.toUpperCase()}`}
+             {selectedVariant ? `ADD ${quantity} TO CART - ₱${(selectedVariant.selling_price * quantity).toLocaleString()}` : `SELECT ${config.variantDimensions?.filter((d: any) => d.active).map((d: any) => d.label).join('/') || config.variantTypeLabel}`}
           </button>
         </div>
       </div>

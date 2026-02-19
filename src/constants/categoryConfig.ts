@@ -7,10 +7,17 @@ export interface CategoryField {
   suffix?: string;
 }
 
+export interface VariantDimension {
+  label: string;
+  column: 'variant_type' | 'variant_color' | 'color_temperature';
+  active: boolean;
+}
+
 export interface CategoryConfig {
-  variantTypeLabel: string; // Dynamic label for 'variant_type' (e.g., "Socket", "Size", "Type")
+  variantTypeLabel: string; // Primary dimension (legacy support)
+  variantDimensions?: VariantDimension[];
   fields: CategoryField[];
-  suggestedVariantTypes?: string[]; // List of common values for this category (e.g., ["H1", "H4"] or ["22-inch"])
+  suggestedVariantTypes?: string[]; 
 }
 
 export const CATEGORY_CONFIG: Record<string, CategoryConfig> = {

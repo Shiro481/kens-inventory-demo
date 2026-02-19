@@ -271,6 +271,38 @@
   letter-spacing: 0.5px;
 }
 
+.productSubInfo {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: -8px;
+  min-height: 20px;
+}
+
+.specTag {
+  font-size: 10px;
+  color: var(--brand-neon);
+  font-weight: 800;
+  background: rgba(0, 255, 157, 0.05);
+  padding: 2px 6px;
+  border-radius: 2px;
+  border: 1px solid rgba(0, 255, 157, 0.1);
+}
+
+.noteTag {
+  font-size: 10px;
+  color: #666;
+  font-style: italic;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.noteTag::before {
+  content: '▪';
+  color: #333;
+}
+
 .isVariantTag {
   display: inline-block;
   background-color: var(--brand-neon);

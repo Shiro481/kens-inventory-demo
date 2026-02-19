@@ -1,7 +1,7 @@
 import { Package, Edit, Trash2 } from 'lucide-react';
 import styles from './InventoryTable.module.css';
 import { useSettings } from '../../../context/SettingsContext';
-import { getCategoryConfig } from '../../../constants/categoryConfig';
+import DynamicCategorySpecs from './DynamicCategorySpecs';
 import type { InventoryItem } from '../../../types/inventory';
 
 interface InventoryTableProps {
@@ -55,52 +55,15 @@ export default function InventoryTable({ items, onEdit, onDelete }: InventoryTab
               </div>
               <div>
                 <span className={styles.partName}>
-                  {item.base_name || item.name}
+                  {item.name}
                 </span>
                 {/* Dynamic Attributes based on Category */}
-                <div style={{ fontSize: '11px', color: '#aaa', marginTop: '2px', display: 'flex', gap: '8px', flexWrap: 'wrap', alignItems: 'center' }}>
-                    {/* Primary Variant/Type Label */}
-                    <span style={{ 
-                      background: '#222', 
-                      padding: '2px 6px', 
-                      borderRadius: '4px', 
-                      border: '1px solid #333',
-                      fontWeight: '700',
-                      color: '#ddd'
-                    }}>
-                      {item.variant_type || 'Standard'}
-                    </span>
-
-                    {/* Dynamic Fields from Specifications */}
-                    {(() => {
-                        const config = getCategoryConfig(item.category);
-                        return config.fields.map(field => {
-                            let val = '';
-                            if (field.key.includes('.')) {
-                                const [parent, child] = field.key.split('.');
-                                val = item[parent]?.[child];
-                            } else {
-                                val = item[field.key];
-                            }
-                            
-                            if (val === undefined || val === null || val === '') return null;
-                            
-                            return (
-                                <span key={field.key} style={{ color: '#00ff9d', fontSize: '10px' }}>
-                                    <span style={{ color: '#666', marginRight: '4px' }}>{field.label}:</span>
-                                    {val}{field.suffix ? `${field.suffix}` : ''}
-                                </span>
-                            );
-                        });
-                    })()}
-
-                    {/* Legacy Color Temp Display (for automotive safety/fallback) */}
-                    {item.color_temperature && !getCategoryConfig(item.category).fields.some(f => f.key === 'color_temperature') && (
-                      <span style={{ color: '#00ff9d', fontWeight: '700' }}>
-                        {item.color_temperature}{typeof item.color_temperature === 'number' ? 'K' : ''}
-                      </span>
-                    )}
-                </div>
+                <DynamicCategorySpecs 
+                  item={item}
+                  style={{ fontSize: '11px', color: '#aaa', marginTop: '2px' }}
+                  labelStyle={{ color: '#666' }}
+                  valueStyle={{ color: '#00ff9d', fontSize: '10px' }}
+                />
                 {item.sku && (
                   <div style={{ fontSize: '11px', color: '#666', marginTop: '2px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
                     SKU: {item.sku}

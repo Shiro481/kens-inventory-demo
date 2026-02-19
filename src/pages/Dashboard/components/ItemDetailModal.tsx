@@ -3,27 +3,17 @@ import { X, Plus, Minus, Package, ShoppingCart, Eye, Info } from 'lucide-react';
 import styles from './ItemDetailModal.module.css';
 import type { InventoryItem } from '../../../types/inventory';
 import { useSettings } from '../../../context/SettingsContext';
-import { getCategoryConfig } from '../../../constants/categoryConfig';
+import { useCategoryMetadata } from '../../../hooks/useCategoryMetadata';
 
 interface ItemDetailModalProps {
   isOpen: boolean;
   item: InventoryItem | null;
   onClose: () => void;
   onAddToCart: (item: InventoryItem, quantity: number) => void;
-  variants?: any[]; // Available variants for this product
-  onVariantSelect?: (variant: any, quantity: number) => void; // Callback when variant is selected
+  variants?: any[];
+  onVariantSelect?: (variant: any, quantity: number) => void;
 }
 
-/**
- * ItemDetailModal component - Modal for displaying detailed item information in POS
- * Shows comprehensive product details with add to cart functionality
- * @param isOpen - Whether the modal is open
- * @param item - The inventory item to display details for
- * @param onClose - Callback function to close the modal
- * @param onAddToCart - Callback function to add item to cart with specified quantity
- * @param variants - Optional array of variants for this product
- * @param onVariantSelect - Optional callback when a variant is selected
- */
 export default function ItemDetailModal({ isOpen, item, onClose, onAddToCart, variants, onVariantSelect }: ItemDetailModalProps) {
   const [quantity, setQuantity] = useState(1);
   const [selectedVariant, setSelectedVariant] = useState<any | null>(null);
@@ -32,12 +22,9 @@ export default function ItemDetailModal({ isOpen, item, onClose, onAddToCart, va
   
   if (!isOpen || !item) return null;
 
-  const config = getCategoryConfig(item.category);
-
+  const { config } = useCategoryMetadata(item.category);
   const hasVariants = variants && variants.length > 0;
 
-  // Normalize parent as an "option" to include it in dropdowns
-  // Use actual product specs and only fallback if totally missing in DB
   const parentOption = {
     id: 'parent',
     variant_type: item.variant_type || 'Base', 
@@ -48,17 +35,9 @@ export default function ItemDetailModal({ isOpen, item, onClose, onAddToCart, va
     isParent: true
   };
 
-  // Combine parent and variants for the dropdown lists
-  // If we have variants, use ONLY the variants (don't add synthetic parent "Base" option)
-  const allAvailableOptions = hasVariants && variants 
-    ? variants 
-    : [parentOption];
-
-  // Get unique variant types from the combined list
-  // Ensure we don't filter out our fallbacks
+  const allAvailableOptions = hasVariants && variants ? variants : [parentOption];
   const uniqueVariantTypes = Array.from(new Set(allAvailableOptions.map(v => v.variant_type))).filter(Boolean);
 
-  // Get available temperatures for selected variant type from the combined list
   const availableTemperatures = selectedVariantType
     ? allAvailableOptions
         .filter(v => v.variant_type === selectedVariantType)
@@ -68,15 +47,12 @@ export default function ItemDetailModal({ isOpen, item, onClose, onAddToCart, va
         }))
     : [];
 
-  // Use selected variant's data if available, otherwise use parent product data
   const currentPrice = selectedVariant ? selectedVariant.selling_price : (item.price || 0);
   const stock = selectedVariant ? selectedVariant.stock_quantity : (item.stock ?? item.quantity ?? 0);
   const currentMinStock = selectedVariant?.min_stock_level ?? item.minQuantity ?? settings.low_stock_threshold;
-  const currentTemperature = selectedVariant ? selectedVariant.color_temperature : item.color_temperature;
-  const currentVariantType = selectedVariant ? selectedVariant.variant_type : item.variant_type;
   
   const isOutOfStock = stock <= 0;
-  const maxQuantity = Math.min(stock, 99); // Limit to reasonable amount
+  const maxQuantity = Math.min(stock, 99);
 
   const handleQuantityChange = (delta: number) => {
     const newQuantity = quantity + delta;
@@ -87,17 +63,15 @@ export default function ItemDetailModal({ isOpen, item, onClose, onAddToCart, va
 
   const handleAddToCart = () => {
     if (!isOutOfStock && quantity > 0) {
-      // If a real variant is selected (not the parent), use variant select
       if (selectedVariant && !selectedVariant.isParent && onVariantSelect) {
         onVariantSelect(selectedVariant, quantity);
       } else {
-        // Otherwise add the base parent product
         onAddToCart(item, quantity);
       }
       onClose();
-      setQuantity(1); // Reset quantity for next use
-      setSelectedVariant(null); // Reset variant selection
-      setSelectedVariantType(''); // Reset variant type selection
+      setQuantity(1);
+      setSelectedVariant(null);
+      setSelectedVariantType('');
     }
   };
 
@@ -107,7 +81,6 @@ export default function ItemDetailModal({ isOpen, item, onClose, onAddToCart, va
     }
   };
 
-  // Calculate stock status
   const getStockStatus = () => {
     if (stock === 0) return { status: 'Out of Stock', color: '#ef4444' };
     if (stock < currentMinStock) return { status: 'Low Stock', color: '#f59e0b' };
@@ -120,7 +93,6 @@ export default function ItemDetailModal({ isOpen, item, onClose, onAddToCart, va
   return (
     <div className={styles.modalOverlay} onClick={onClose}>
       <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
-        {/* Modal Header */}
         <div className={styles.modalHeader}>
           <div className={styles.itemHeader}>
             <div className={styles.itemIcon}>
@@ -140,110 +112,137 @@ export default function ItemDetailModal({ isOpen, item, onClose, onAddToCart, va
           </button>
         </div>
 
-        {/* Modal Body */}
         <div className={styles.modalBody}>
-          {/* Stock Status */}
           <div className={styles.stockSection}>
             <div className={styles.stockInfo}>
               <span className={styles.stockLabel}>Stock Status:</span>
-              <span 
-                className={styles.stockStatus}
-                style={{ color: stockStatus.color }}
-              >
-                {stockStatus.status}
+              <span className={styles.stockStatus} style={{ color: stockStatus.color }}>
+                {stockStatus.status} ({stock} units)
               </span>
             </div>
-            <div className={styles.stockQuantity}>
-              <span className={styles.stockNumber}>{stock}</span>
-              <span className={styles.stockUnit}>units available</span>
-              {currentMinStock > 0 && (
-                <span className={styles.minStockInfo}> (Min: {currentMinStock})</span>
-              )}
-            </div>
+          </div>
 
-            {/* Selection Specs */}
-            {(currentVariantType || currentTemperature) && (
+          <div className={styles.specsContainer}>
+            {config.variantDimensions?.filter((d: any) => d.active).some((d: any) => {
+              const val = d.column === 'variant_type' ? item.variant_type :
+                          d.column === 'variant_color' ? item.variant_color :
+                          d.column === 'color_temperature' ? item.color_temperature : null;
+              return !!val;
+            }) && (
               <div className={styles.selectionSpecs}>
-                <span className={styles.specItem}>
-                  {config.variantTypeLabel}: <strong>{currentVariantType || 'Base'}</strong>
-                </span>
-                {currentTemperature && (
-                  <span className={styles.specItem}>
-                    Temp: <strong>{currentTemperature}{!isNaN(Number(currentTemperature)) ? 'K' : ''}</strong>
-                  </span>
-                )}
+                {config.variantDimensions?.filter((d: any) => d.active).map((dim: any) => {
+                  const val = dim.column === 'variant_type' ? (selectedVariant?.variant_type || item.variant_type) :
+                              dim.column === 'variant_color' ? (selectedVariant?.variant_color || item.variant_color) :
+                              dim.column === 'color_temperature' ? (selectedVariant?.color_temperature || item.color_temperature) : null;
+                  if (!val) return null;
+                  return (
+                    <div key={dim.column} className={styles.selectionSpecItem}>
+                      <span className={styles.specLabel}>{dim.label}:</span>
+                      <span className={styles.specValue}>{val}{dim.column === 'color_temperature' && !isNaN(Number(val)) ? 'K' : ''}</span>
+                    </div>
+                  );
+                })}
               </div>
             )}
 
             {stock > 0 && stock < currentMinStock && (
               <div className={styles.lowStockWarning}>
-                <Info size={14} />
-                Low stock - reorder soon
+                 <Info size={14} /> Attention: This item is below minimum stock level.
               </div>
             )}
           </div>
 
-          {/* Variant Selection Dropdowns */}
           {hasVariants && (
             <div className={styles.variantSection}>
-              {/* Type / Size Dropdown */}
-              <div className={styles.dropdownGroup}>
-                <label className={styles.variantLabel}>
-                  Select {config.variantTypeLabel}:
-                </label>
-                <select 
-                  className={styles.variantDropdown}
-                  value={selectedVariantType}
-                  onChange={(e) => {
-                    const variantType = e.target.value;
-                    setSelectedVariantType(variantType);
-                    // Reset variant and temperature when variant type changes
-                    setSelectedVariant(null);
-                    
-                    // Auto-select if only one temperature/color option for this type
-                    const firstMatch = allAvailableOptions.filter(v => v.variant_type === variantType);
-                    if (firstMatch.length === 1) {
-                      setSelectedVariant(firstMatch[0]);
-                    }
-                  }}
-                >
-                  <option value="">-- Select type / size --</option>
-                  {uniqueVariantTypes.map((variantType) => (
-                    <option key={variantType} value={variantType}>
-                      {variantType}
-                    </option>
-                  ))}
-                </select>
-              </div>
+              <h3 className={styles.sectionTitle}>Select Variants</h3>
+              {config.variantDimensions?.filter((d: any) => d.active).map((dim: any, idx: number) => {
+                if (dim.column === 'variant_type') {
+                  return (
+                    <div key={dim.column} className={styles.dropdownGroup}>
+                      <label className={styles.variantLabel}>Select {dim.label}:</label>
+                      <select 
+                        className={styles.variantDropdown}
+                        value={selectedVariantType}
+                        onChange={(e) => {
+                          const val = e.target.value;
+                          setSelectedVariantType(val);
+                          setSelectedVariant(null);
+                          const matches = allAvailableOptions.filter(v => v.variant_type === val);
+                          if (matches.length === 1) setSelectedVariant(matches[0]);
+                        }}
+                      >
+                        <option value="">-- Select {dim.label.toLowerCase()} --</option>
+                        {uniqueVariantTypes.map((t) => <option key={t} value={t}>{t}</option>)}
+                      </select>
+                    </div>
+                  );
+                }
+                if (selectedVariantType && idx === 1) {
+                  return (
+                    <div key={dim.column} className={styles.dropdownGroup}>
+                      <label className={styles.variantLabel}>Select {dim.label}:</label>
+                      <select 
+                        className={styles.variantDropdown}
+                        value={selectedVariant?.id || ''}
+                        onChange={(e) => {
+                          const vId = e.target.value;
+                          const v = availableTemperatures.find(opt => String(opt.variant.id) === vId)?.variant;
+                          setSelectedVariant(v || null);
+                        }}
+                      >
+                        <option value="">-- Select {dim.label.toLowerCase()} --</option>
+                        {availableTemperatures.map(({ value, variant }) => (
+                          <option key={variant.id} value={variant.id}>
+                            {value}{dim.column === 'color_temperature' && !isNaN(Number(value)) ? 'K' : ''}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  );
+                }
+                return null;
+              })}
 
-              {/* Color Temperature Dropdown (only show if variant type is selected) */}
-              {selectedVariantType && availableTemperatures.length > 0 && (
-                <div className={styles.dropdownGroup}>
-                  <label className={styles.variantLabel}>
-                    Select Color Temperature:
-                  </label>
-                  <select 
-                    className={styles.variantDropdown}
-                    value={selectedVariant?.id || ''}
-                    onChange={(e) => {
-                      const variantId = e.target.value;
-                      const tempOption = availableTemperatures.find(t => t.variant.id.toString() === variantId);
-                      setSelectedVariant(tempOption?.variant || null);
-                    }}
-                  >
-                    <option value="">-- Select temperature --</option>
-                    {availableTemperatures.map(({ value, variant }) => (
-                      <option key={variant.id} value={variant.id}>
-                        {value ? `${value}${!isNaN(Number(value)) ? 'K' : ''}` : 'Standard'}
-                      </option>
-                    ))}
-                  </select>
-                </div>
+              {!config.variantDimensions && (
+                <>
+                  <div className={styles.dropdownGroup}>
+                    <label className={styles.variantLabel}>Select {config.variantTypeLabel || 'Type'}:</label>
+                    <select 
+                      className={styles.variantDropdown}
+                      value={selectedVariantType}
+                      onChange={(e) => {
+                        setSelectedVariantType(e.target.value);
+                        setSelectedVariant(null);
+                      }}
+                    >
+                      <option value="">-- Select --</option>
+                      {uniqueVariantTypes.map((t) => <option key={t} value={t}>{t}</option>)}
+                    </select>
+                  </div>
+                  {selectedVariantType && (
+                    <div className={styles.dropdownGroup}>
+                      <label className={styles.variantLabel}>Options:</label>
+                      <select 
+                        className={styles.variantDropdown}
+                        value={selectedVariant?.id || ''}
+                        onChange={(e) => {
+                          const vId = e.target.value;
+                          const v = availableTemperatures.find(opt => String(opt.variant.id) === vId)?.variant;
+                          setSelectedVariant(v || null);
+                        }}
+                      >
+                        <option value="">-- Select --</option>
+                        {availableTemperatures.map(({ value, variant }) => (
+                          <option key={variant.id} value={variant.id}>{value}</option>
+                        ))}
+                      </select>
+                    </div>
+                  )}
+                </>
               )}
             </div>
           )}
 
-          {/* Price Information */}
           <div className={styles.priceSection}>
             <div className={styles.priceRow}>
               <span className={styles.priceLabel}>Unit Price:</span>
@@ -259,7 +258,6 @@ export default function ItemDetailModal({ isOpen, item, onClose, onAddToCart, va
             </div>
           </div>
 
-          {/* Item Details */}
           <div className={styles.detailsSection}>
             <h3 className={styles.sectionTitle}>
               <Eye size={16} />
@@ -272,84 +270,28 @@ export default function ItemDetailModal({ isOpen, item, onClose, onAddToCart, va
                   <span className={styles.detailValue}>{item.category}</span>
                 </div>
               )}
-              {item.brand && (
-                <div className={styles.detailItem}>
-                  <span className={styles.detailLabel}>Brand:</span>
-                  <span className={styles.detailValue}>{item.brand}</span>
-                </div>
-              )}
-              {currentMinStock !== undefined && (
-                <div className={styles.detailItem}>
-                  <span className={styles.detailLabel}>Min Stock:</span>
-                  <span className={styles.detailValue}>{currentMinStock} units</span>
-                </div>
-              )}
-              {item.description && (
-                <div className={styles.detailItem} style={{ gridColumn: '1 / -1', marginTop: '8px' }}>
-                  <span className={styles.detailLabel}>Description:</span>
-                  <span className={styles.detailValue} style={{ textTransform: 'none', lineHeight: '1.4' }}>{item.description}</span>
-                </div>
-              )}
-              {/* Display Note - Prioritize variant color/note, fallback to item note */}
-              {(selectedVariant?.variant_color || item.notes) && (
-                <div className={styles.detailItem} style={{ gridColumn: '1 / -1', marginTop: '8px', borderTop: '1px dashed #333', paddingTop: '8px' }}>
-                  <span className={styles.detailLabel} style={{ color: '#00ff9d' }}>Note:</span>
-                  <span className={styles.detailValue} style={{ color: '#fff', fontStyle: 'italic' }}>
-                    {selectedVariant?.variant_color || item.notes}
-                  </span>
-                </div>
-              )}
-              {selectedVariant?.description && (
-                <div className={styles.detailItem} style={{ gridColumn: '1 / -1', marginTop: '4px' }}>
-                  <span className={styles.detailLabel} style={{ color: '#00ff9d' }}>Desc:</span>
-                  <span className={styles.detailValue} style={{ color: '#fff' }}>
-                    {selectedVariant.description}
-                  </span>
-                </div>
-              )}
-
-              {/* Dynamic Technical Specifications based on Category */}
-              {config.fields.map(field => {
-                let val = '';
-                // First check in selected variant, then fallback to parent item
+              {config.fields.map((field: any) => {
                 const source = selectedVariant || item;
-                
+                let val = '';
                 if (field.key.includes('.')) {
                   const [parent, child] = field.key.split('.');
                   val = (source as any)[parent]?.[child];
                 } else {
                   val = (source as any)[field.key];
                 }
-
                 if (val === undefined || val === null || val === '' || Number(val) === 0) return null;
-
                 return (
                   <div key={field.key} className={styles.detailItem}>
                     <span className={styles.detailLabel}>{field.label}:</span>
-                    <span className={styles.detailValue}>
-                      {val}{field.suffix ? `${field.suffix}` : ''}
-                    </span>
+                    <span className={styles.detailValue}>{val}{field.suffix || ''}</span>
                   </div>
                 );
               })}
-
-              {/* Special Beam Type field for lights */}
-              {item.beam_type && (
-                <div className={styles.detailItem}>
-                  <span className={styles.detailLabel}>Beam Type:</span>
-                  <span className={styles.detailValue}>{item.beam_type}</span>
-                </div>
-              )}
             </div>
           </div>
 
-
-
-          {/* Quantity Selector */}
           <div className={styles.quantitySection}>
             <h3 className={styles.sectionTitle}>Select Quantity</h3>
-            
-            {/* Quick Quantity Buttons */}
             <div className={styles.quickQuantityButtons}>
               {[1, 2, 5, 10].map(qty => (
                 <button
@@ -362,51 +304,30 @@ export default function ItemDetailModal({ isOpen, item, onClose, onAddToCart, va
                 </button>
               ))}
             </div>
-
-            {/* Manual Quantity Input */}
             <div className={styles.quantityControls}>
-              <button 
-                className={styles.quantityBtn}
-                onClick={() => handleQuantityChange(-1)}
-                disabled={quantity <= 1}
-              >
+              <button className={styles.quantityBtn} onClick={() => handleQuantityChange(-1)} disabled={quantity <= 1}>
                 <Minus size={16} />
               </button>
               <div className={styles.quantityDisplay}>
                 <input
-                  type="number"
-                  min="1"
-                  max={maxQuantity}
-                  value={quantity}
+                  type="number" min="1" max={maxQuantity} value={quantity}
                   onChange={(e) => {
                     const val = parseInt(e.target.value) || 1;
-                    if (val >= 1 && val <= maxQuantity) {
-                      setQuantity(val);
-                    }
+                    if (val >= 1 && val <= maxQuantity) setQuantity(val);
                   }}
                   className={styles.quantityInput}
                 />
                 <span className={styles.quantityLabel}>units</span>
               </div>
-              <button 
-                className={styles.quantityBtn}
-                onClick={() => handleQuantityChange(1)}
-                disabled={quantity >= maxQuantity}
-              >
+              <button className={styles.quantityBtn} onClick={() => handleQuantityChange(1)} disabled={quantity >= maxQuantity}>
                 <Plus size={16} />
               </button>
             </div>
           </div>
         </div>
 
-        {/* Modal Footer */}
         <div className={styles.modalFooter}>
-          <button 
-            className={styles.cancelBtn}
-            onClick={onClose}
-          >
-            Cancel
-          </button>
+          <button className={styles.cancelBtn} onClick={onClose}>Cancel</button>
           <button 
             className={`${styles.addToCartBtn} ${isOutOfStock ? styles.disabled : ''}`}
             onClick={handleAddToCart}
