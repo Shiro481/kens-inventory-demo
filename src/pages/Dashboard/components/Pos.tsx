@@ -23,6 +23,7 @@ interface CartItem extends InventoryItem {
 
 interface PosProps {
   items: InventoryItem[];
+  isLoading?: boolean;
   onSaleComplete?: () => void;
 }
 
@@ -31,7 +32,7 @@ interface PosProps {
  * @param items - Array of inventory items available for sale
  * @param onSaleComplete - Callback function called after successful sale
  */
-export default function Pos({ items, onSaleComplete }: PosProps) {
+export default function Pos({ items, isLoading: globalLoading = false, onSaleComplete }: PosProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const [cart, setCart] = useState<CartItem[]>([]);
   const [loading, setLoading] = useState(false);
@@ -430,13 +431,20 @@ export default function Pos({ items, onSaleComplete }: PosProps) {
               className={styles.searchInput}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              disabled={loading}
+              disabled={loading || globalLoading}
             />
           </div>
-          <button className={styles.filterBtn} disabled={loading}>
+          <button className={styles.filterBtn} disabled={loading || globalLoading}>
             <div style={{ width: 4, height: 4, backgroundColor: '#666', borderRadius: '50%', margin: '0 auto' }}></div>
           </button>
         </div>
+          
+        {globalLoading ? (
+           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '400px', color: '#666' }}>
+             <Loader2 style={{ animation: 'spin 2s linear infinite', marginBottom: '16px' }} size={48} color="#00ff9d" />
+             <p style={{ letterSpacing: '2px', fontSize: '12px' }}>LOADING CATALOG...</p>
+           </div>
+        ) : (
           <div className={styles.productGrid} key={searchQuery}>
           {filteredItems.map((item, index) => {
             const hasVariants = !!item.has_variants;
@@ -493,7 +501,8 @@ export default function Pos({ items, onSaleComplete }: PosProps) {
               </div>
             );
           })}
-        </div>
+          </div>
+        )}
       </div>
 
       {/* Right Order Sidebar */}

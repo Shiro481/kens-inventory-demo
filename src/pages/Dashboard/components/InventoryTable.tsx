@@ -6,6 +6,7 @@ import type { InventoryItem } from '../../../types/inventory';
 
 interface InventoryTableProps {
   items: InventoryItem[];
+  isLoading?: boolean;
   onEdit: (item: InventoryItem) => void;
   onDelete: (id: number) => void;
 }
@@ -13,10 +14,11 @@ interface InventoryTableProps {
 /**
  * InventoryTable component - Displays inventory items in a table format with edit/delete actions
  * @param items - Array of inventory items to display
+ * @param isLoading - Optional loading state boolean
  * @param onEdit - Callback function to handle edit action for an item
  * @param onDelete - Callback function to handle delete action for an item
  */
-export default function InventoryTable({ items, onEdit, onDelete }: InventoryTableProps) {
+export default function InventoryTable({ items, isLoading = false, onEdit, onDelete }: InventoryTableProps) {
   // IMPORTANT: Call hooks at the top level, not inside loops or conditions
   const { settings } = useSettings();
   
@@ -32,9 +34,35 @@ export default function InventoryTable({ items, onEdit, onDelete }: InventoryTab
         <span>Actions</span>
       </div>
 
-      {items.map((item) => {
-        const qty = item.stock ?? item.quantity ?? 0;
-        const minQty = item.minQuantity ?? item.min_qty ?? settings.low_stock_threshold;
+      {isLoading ? (
+        Array.from({ length: 5 }).map((_, i) => (
+          <div key={`skeleton-${i}`} className={`${styles.row} ${styles.skeletonRow}`}>
+            <div className={styles.partInfo}>
+               <div className={styles.iconBox} style={{ background: 'transparent' }} />
+               <div style={{ flex: 1 }}>
+                  <div className={styles.skeletonBox} style={{ width: '60%', marginBottom: '8px' }} />
+                  <div className={styles.skeletonBox} style={{ width: '40%', height: '12px' }} />
+               </div>
+            </div>
+            <div className={styles.skeletonBox} style={{ width: '70%' }} />
+            <div className={styles.skeletonBox} style={{ width: '50%' }} />
+            <div className={styles.skeletonBox} style={{ width: '40%' }} />
+            <div className={styles.skeletonBox} style={{ width: '60%' }} />
+            <div className={styles.skeletonBox} style={{ width: '50%' }} />
+            <div className={styles.actions}>
+               <div className={styles.skeletonBox} style={{ width: '32px', height: '32px' }} />
+               <div className={styles.skeletonBox} style={{ width: '32px', height: '32px' }} />
+            </div>
+          </div>
+        ))
+      ) : items.length === 0 ? (
+        <div style={{ padding: '40px', textAlign: 'center', color: '#666' }}>
+          No items found. Adjust your search or filters.
+        </div>
+      ) : (
+        items.map((item) => {
+          const qty = item.stock ?? item.quantity ?? 0;
+          const minQty = item.minQuantity ?? item.min_qty ?? settings.low_stock_threshold;
         
         const getDynamicStatus = () => {
           if (qty === 0) return 'Out of Stock';
@@ -140,7 +168,8 @@ export default function InventoryTable({ items, onEdit, onDelete }: InventoryTab
             </div>
           </div>
         );
-      })}
+        })
+      )}
     </>
   );
 }

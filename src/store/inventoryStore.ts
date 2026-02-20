@@ -2,24 +2,15 @@ import { create } from 'zustand';
 import { supabase } from '../lib/supabase';
 import type { InventoryItem } from '../types/inventory';
 
-// ─── Helper ───────────────────────────────────────────────────────────────────
-/**
- * Converts a database bigint ID to a UI-safe numeric ID.
- * Variants get +10,000,000 offset to avoid collisions with parent product IDs.
- */
-const generateNumericId = (dbId: any, isVariant = false): number => {
-  const baseId = typeof dbId === 'number' ? dbId : parseInt(dbId);
-  return isVariant ? baseId + 10_000_000 : baseId;
-};
-
 // ─── Store Shape ──────────────────────────────────────────────────────────────
 interface InventoryStore {
   items: InventoryItem[];
   isLoading: boolean;
   error: string | null;
+  lastFetched: number | null;
 
-  /** Full re-fetch from Supabase. Call after any create/update/delete. */
-  fetchInventory: () => Promise<void>;
+  /** Full re-fetch from Supabase. Use force=true to bypass cache. */
+  fetchInventory: (force?: boolean) => Promise<void>;
 
   /**
    * Immediately patches a single item in local state before the DB round-trip
@@ -39,12 +30,22 @@ export const useInventoryStore = create<InventoryStore>((set, get) => ({
   items: [],
   isLoading: false,
   error: null,
+  lastFetched: null,
 
   // ── fetchInventory ──────────────────────────────────────────────────────────
-  fetchInventory: async () => {
+  fetchInventory: async (force = false) => {
     if (!supabase) {
       set({ error: 'Supabase client not initialized. Check your .env file.' });
       return;
+    }
+
+    const CACHE_DURATION_MS = 5 * 60 * 1000; // 5 minutes
+    const now = Date.now();
+    const { lastFetched, items } = get();
+
+    // Check cache
+    if (!force && lastFetched && (now - lastFetched < CACHE_DURATION_MS) && items.length > 0) {
+      return; // Return cached items
     }
 
     set({ isLoading: true, error: null });
@@ -87,16 +88,15 @@ export const useInventoryStore = create<InventoryStore>((set, get) => ({
             : (item.specifications || {});
 
         allItems.push({
-          id: generateNumericId(item.id, false),
+          // Use the raw DB integer ID — no offset needed since UUIDs handle uniqueness
+          id: typeof item.id === 'number' ? item.id : parseInt(item.id),
           uuid: item.id,
           name: item.name,
           base_name: item.name,
           sku: item.sku,
           price: item.selling_price,
           stock: item.stock_quantity,
-          quantity: item.stock_quantity,
           minQuantity: item.min_stock_level,
-          min_qty: item.min_stock_level,
           category: item.product_categories?.name,
           brand: item.brand,
           description: item.description,
@@ -144,7 +144,10 @@ export const useInventoryStore = create<InventoryStore>((set, get) => ({
             : (variant.specifications || {});
 
         allItems.push({
-          id: generateNumericId(variant.id, true),
+          // Use the raw DB integer ID for variants — parent IDs and variant IDs
+          // live in separate tables so collision in the flat UI list is handled
+          // by uuid being the actual PK used for all DB operations.
+          id: typeof variant.id === 'number' ? variant.id : parseInt(variant.id),
           uuid: variant.id,
           name: parentProduct.name,
           base_name: parentProduct.name,
@@ -156,9 +159,7 @@ export const useInventoryStore = create<InventoryStore>((set, get) => ({
               ? parentProduct.selling_price + variant.price_adjustment
               : parentProduct.selling_price,
           stock: variant.stock_quantity ?? 0,
-          quantity: variant.stock_quantity,
           minQuantity: variant.min_stock_level,
-          min_qty: variant.min_stock_level,
           category: parentProduct.product_categories?.name,
           brand: parentProduct.brand,
           description: variant.description || parentProduct.description,
@@ -187,7 +188,7 @@ export const useInventoryStore = create<InventoryStore>((set, get) => ({
         });
       }
 
-      set({ items: allItems, isLoading: false });
+      set({ items: allItems, isLoading: false, lastFetched: Date.now() });
     } catch (err: any) {
       console.error('[inventoryStore] Unexpected error:', err);
       set({ error: 'An unexpected error occurred while fetching inventory.', isLoading: false });

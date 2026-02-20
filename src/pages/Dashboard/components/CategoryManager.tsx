@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Settings, Plus, Trash2, Save, X, List, Tag, AlertCircle, Loader2 } from 'lucide-react';
 import styles from './CategoryManager.module.css';
 import { supabase } from '../../../lib/supabase';
@@ -159,11 +159,7 @@ export default function CategoryManager({ onCategoryAdded }: CategoryManagerProp
     }
   }
 
-  const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const id = Number(e.target.value);
-    setSelectedCategoryId(id);
-    fetchMetadata(id);
-  };
+
 
   const addField = () => {
     if (!metadata) return;
@@ -329,11 +325,6 @@ export default function CategoryManager({ onCategoryAdded }: CategoryManagerProp
             </div>
           ))}
         </div>
-        <select value={selectedCategoryId || ''} onChange={handleCategoryChange} className={styles.catSelect}>
-          {categories.map(cat => (
-            <option key={cat.id} value={cat.id}>{cat.name}</option>
-          ))}
-        </select>
       </div>
 
       {metadata && (

@@ -98,47 +98,41 @@ export default function EditItemModal({
 
     if (!supabase) return;
 
-    console.log('🔍 [AddVariant] Saving variant type:', normalizedType);
-
-    // 1. Resolve Variant Definition (The Type: H1, H4, etc.)
+    // Resolve Variant Definition
     let variantId: number | null = null;
     const { data: variants, error: fetchDefError } = await supabase
         .from('variant_definitions')
         .select('*')
-        .ilike('variant_name', normalizedType); // Case-insensitive search
+        .ilike('variant_name', normalizedType);
 
     if (fetchDefError) {
-        console.error('❌ [AddVariant] Definition fetch error:', fetchDefError);
+        console.error('[EditItemModal] Definition fetch error:', fetchDefError);
     }
 
     const matchedDef = variants?.find(v => v.variant_name.toLowerCase() === normalizedType.toLowerCase());
 
     if (matchedDef) {
         variantId = matchedDef.id;
-        console.log('✅ [AddVariant] Found existing definition:', variantId);
     } else {
-        console.log('➕ [AddVariant] Creating new definition for:', normalizedType);
         const { data: newVariant, error: createError } = await supabase
             .from('variant_definitions')
             .insert({
-                base_name: editingItem?.name || 'Simple Variant', 
+                base_name: editingItem?.name || 'Variant',
                 variant_name: normalizedType,
-                display_name: normalizedType, 
+                display_name: normalizedType,
                 description: `Standard ${normalizedType}`,
                 compatibility_list: [normalizedType],
                 is_active: true
             })
             .select()
-            .maybeSingle(); // Better than single() if multiple exist somehow
-        
+            .maybeSingle();
+
         if (createError) {
-            console.error('❌ [AddVariant] Definition creation failed:', createError);
             return alert('Error creating new type: ' + createError.message);
         }
         if (newVariant) {
             variantId = newVariant.id;
         } else {
-            // Fallback: search again in case of race condition
             const { data: retryData } = await supabase.from('variant_definitions').select('id').eq('variant_name', normalizedType).single();
             variantId = retryData?.id || null;
         }
@@ -264,7 +258,9 @@ export default function EditItemModal({
 
   const handleDeleteVariant = async (id: number) => {
       if (!confirm('Remove this variant?')) return;
-      if (id > 1000000000) {
+      // Use is_temp flag to detect unsaved local variants — avoids magic-number guard
+      const isTemp = productVariants.find(v => v.id === id)?.is_temp === true;
+      if (isTemp) {
           setProductVariants(prev => prev.filter(v => v.id !== id));
           return;
       }

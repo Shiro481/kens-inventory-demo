@@ -12,6 +12,7 @@ import FilterMenu from './FilterMenu';
 
 interface InventoryManagerProps {
   items: InventoryItem[];
+  isLoading?: boolean;
   onAddItem: () => void;
   onAddVariant: () => void;
   onEdit: (item: InventoryItem) => void;
@@ -20,6 +21,7 @@ interface InventoryManagerProps {
 
 export default function InventoryManager({ 
   items, 
+  isLoading = false,
   onAddItem, 
   onAddVariant, 
   onEdit, 
@@ -129,10 +131,10 @@ export default function InventoryManager({
         </div>
       )}
 
-      {/* INVENTORY TABLE */}
-      <InventoryTable 
-        key={`${searchQuery}-${filterStatus}-${sortBy}-${selectedCategories.join(',')}-${selectedTags.join(',')}`}
+      <InventoryTable
+        key="inventory-table"
         items={filteredItems}
+        isLoading={isLoading}
         onEdit={onEdit}
         onDelete={onDelete}
       />
