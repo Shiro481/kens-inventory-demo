@@ -12,7 +12,8 @@ export const filterAndSortItems = (
   filterStatus: FilterStatus,
   searchQuery: string,
   selectedTags: string[],
-  sortBy: SortBy
+  sortBy: SortBy,
+  selectedCategories: string[] = []
 ): InventoryItem[] => {
   return items
     .filter(item => {
@@ -47,8 +48,14 @@ export const filterAndSortItems = (
         const itemTags = item.tags || [];
         if (!selectedTags.every(tag => itemTags.includes(tag))) return false;
       }
+
+      // 4. Filter by Category
+      if (selectedCategories.length > 0) {
+        const itemCategory = (item.category || '').toLowerCase();
+        if (!selectedCategories.some(cat => cat.toLowerCase() === itemCategory)) return false;
+      }
       
-      // 4. Exclude Parent Containers (Product Families)
+      // 5. Exclude Parent Containers (Product Families)
       // Only show Single Products or specific Variants in the main list
       if (item.has_variants && !item.is_variant) return false;
       

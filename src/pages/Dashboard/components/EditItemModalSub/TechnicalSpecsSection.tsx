@@ -71,35 +71,65 @@ export default function TechnicalSpecsSection({
         />
       </div>
 
-      {config.fields.filter((field: any) => {
-        // Skip fields that are already handled as active dimensions to avoid duplication
-        return !config.variantDimensions?.some((d: any) => d.active && (d.column === field.key || (field.key === 'color_temperature' && d.column === 'variant_color')));
-      }).map((field: any) => (
-        <div key={field.key} className={styles.formGroup}>
-          <label>{field.label} {field.suffix ? `(${field.suffix})` : ''}</label>
-          {field.type === 'select' ? (
-            <select
-              className={styles.formInput}
-              value={(field.key.includes('.') ? (editingItem as any)[field.key.split('.')[0]]?.[field.key.split('.')[1]] : (editingItem as any)[field.key]) || ''}
-              onChange={(e) => onInputChange(field.key, e.target.value)}
-            >
-              <option value="">Select {field.label}</option>
-              {field.options?.map((opt: string) => <option key={opt} value={opt}>{opt}</option>)}
-            </select>
-          ) : (
-            <input
-              className={styles.formInput} 
-              type={field.type} 
-              placeholder={field.placeholder || `Enter ${field.label.toLowerCase()}`}
-              value={(field.key.includes('.') ? (editingItem as any)[field.key.split('.')[0]]?.[field.key.split('.')[1]] : (editingItem as any)[field.key]) || ''}
-              onChange={(e) => {
-                const val = e.target.value;
-                onInputChange(field.key, field.type === 'number' ? (val === '' ? 0 : parseFloat(val)) : val);
-              }}
-            />
-          )}
-        </div>
-      ))}
+      {/* Top Level Columns for Products in database */}
+      {(() => {
+        const topLevelColumns = ['name', 'sku', 'barcode', 'brand', 'price', 'stock', 'cost_price', 'voltage', 'wattage', 'color_temperature', 'lumens', 'beam_type', 'description', 'image_url', 'supplier_id'];
+        
+        return config.fields.filter((field: any) => {
+          // Skip fields that are already handled as active dimensions to avoid duplication
+          return !config.variantDimensions?.some((d: any) => d.active && (d.column === field.key || (field.key === 'color_temperature' && d.column === 'variant_color')));
+        }).map((field: any) => {
+          const isStandard = topLevelColumns.includes(field.key);
+          const value = field.key.includes('.') 
+            ? (editingItem as any)[field.key.split('.')[0]]?.[field.key.split('.')[1]] 
+            : (isStandard ? (editingItem as any)[field.key] : editingItem.specifications?.[field.key]);
+
+          return (
+            <div key={field.key} className={styles.formGroup}>
+              <label>{field.label} {field.suffix ? `(${field.suffix})` : ''}</label>
+              {field.type === 'select' ? (
+                <select
+                  className={styles.formInput}
+                  value={value || ''}
+                  onChange={(e) => {
+                    const val = e.target.value;
+                    if (isStandard || field.key.includes('.')) {
+                      onInputChange(field.key, val);
+                    } else {
+                      onInputChange('specifications', {
+                        ...(editingItem.specifications || {}),
+                        [field.key]: val
+                      });
+                    }
+                  }}
+                >
+                  <option value="">Select {field.label}</option>
+                  {field.options?.map((opt: string) => <option key={opt} value={opt}>{opt}</option>)}
+                </select>
+              ) : (
+                <input
+                  className={styles.formInput} 
+                  type={field.type} 
+                  placeholder={field.placeholder || `Enter ${field.label.toLowerCase()}`}
+                  value={value || ''}
+                  onChange={(e) => {
+                    const rawVal = e.target.value;
+                    const val = field.type === 'number' ? (rawVal === '' ? 0 : parseFloat(rawVal)) : rawVal;
+                    if (isStandard || field.key.includes('.')) {
+                      onInputChange(field.key, val);
+                    } else {
+                      onInputChange('specifications', {
+                        ...(editingItem.specifications || {}),
+                        [field.key]: val
+                      });
+                    }
+                  }}
+                />
+              )}
+            </div>
+          );
+        });
+      })()}
 
       {/* Dynamic Variant Dimensions (Custom Dimensions) */}
       {config.variantDimensions?.filter((d: any) => d.active).map((dim: any) => {

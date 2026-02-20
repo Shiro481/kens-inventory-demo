@@ -8,13 +8,16 @@ import { useCategoryMetadata } from '../../../hooks/useCategoryMetadata';
 import VariantContainerBox from './VariantContainerBox';
 import ItemDetailModal from './ItemDetailModal';
 import VariantSelectionModal from './VariantSelectionModal';
+import DynamicCategorySpecs from './DynamicCategorySpecs';
 
 interface CartItem extends InventoryItem {
+  cartKey: string;        // Stable composite key: "parentId:variantId" or "itemId"
   cartQuantity: number;
   variant_id?: string | number;
   variant_display_name?: string;
   variant_price?: number;
 }
+
 
 
 
@@ -89,13 +92,15 @@ export default function Pos({ items, onSaleComplete }: PosProps) {
     const stock = item.stock ?? item.quantity ?? 0;
     if (stock <= 0) return;
 
+    const cartKey = `${item.id}`;
+
     setCart(prev => {
-      const existing = prev.find(i => i.id === item.id);
+      const existing = prev.find(i => i.cartKey === cartKey);
       if (existing) {
         if (existing.cartQuantity + quantity > stock) return prev;
-        return prev.map(i => i.id === item.id ? { ...i, cartQuantity: i.cartQuantity + quantity } : i);
+        return prev.map(i => i.cartKey === cartKey ? { ...i, cartQuantity: i.cartQuantity + quantity } : i);
       }
-      return [...prev, { ...item, cartQuantity: quantity }];
+      return [...prev, { ...item, cartKey, cartQuantity: quantity }];
     });
   };
 
@@ -156,41 +161,89 @@ export default function Pos({ items, onSaleComplete }: PosProps) {
     const config = selectedConfig;
     
     // Create a dynamic display name based on multi-dimensions or legacy fields
-    const specs: string[] = [];
-    
+    const specParts: string[] = [];
+    const displayedKeys = new Set<string>();
+    const displayedValues = new Set<string>();
+
+    const getSafeVal = (obj: any, key: string) => {
+        if (!obj) return null;
+        if (obj[key] !== undefined && obj[key] !== null) return obj[key];
+        const lowerKey = key.toLowerCase();
+        const foundKey = Object.keys(obj).find(k => k.toLowerCase() === lowerKey);
+        return foundKey ? obj[foundKey] : null;
+    };
+
     if (config.variantDimensions) {
       config.variantDimensions.filter((d: any) => d.active).forEach((dim: any) => {
         let val = null;
-        if (dim.column === 'variant_type') val = variant.variant_type;
-        else if (dim.column === 'variant_color') val = variant.variant_color;
-        else if (dim.column === 'color_temperature') val = variant.color_temperature;
-        else val = variant.specifications?.[dim.column];
-        
-        if (val) specs.push(`${dim.label}: ${val}`);
-      });
-    } else {
-      config.fields.forEach(field => {
-        let val = '';
-        if (field.key.includes('.')) {
-          const [parent, child] = field.key.split('.');
-          val = (variant as any)[parent]?.[child];
+        if (dim.column === 'variant_type') {
+            val = variant.variant_type;
+            displayedKeys.add('variant_type');
+            displayedKeys.add('socket');
+        } else if (dim.column === 'variant_color') {
+            val = variant.variant_color;
+            displayedKeys.add('variant_color');
+            displayedKeys.add('color');
+        } else if (dim.column === 'color_temperature') {
+            val = variant.color_temperature;
+            displayedKeys.add('color_temperature');
+            if (val && !isNaN(Number(val)) && !val.toString().endsWith('K')) val = `${val}K`;
         } else {
-          val = (variant as any)[field.key];
+            val = (variant as any)[dim.column] ?? getSafeVal(variant.specifications || {}, dim.column);
+            displayedKeys.add(dim.column.toLowerCase());
         }
         
-        if (val && String(val) !== '0') {
-          specs.push(`${val}${field.suffix || ''}`);
+        if (val && String(val).trim() !== '' && String(val) !== '0') {
+          specParts.push(`${dim.label}: ${val}`);
+          displayedValues.add(String(val).toLowerCase());
         }
       });
-
-      // legacy fallback
-      if (variant.variant_color && !config.fields.some(f => f.key === 'variant_color')) {
-        specs.push(variant.variant_color);
-      }
     }
 
+    // Add other fields that are not in dimensions
+    config.fields.forEach(field => {
+      if (displayedKeys.has(field.key.toLowerCase())) return;
+      
+      let val = '';
+      if (field.key.includes('.')) {
+        const [parent, child] = field.key.split('.');
+        val = (variant as any)[parent]?.[child];
+      } else {
+        val = (variant as any)[field.key] ?? getSafeVal(variant.specifications || {}, field.key);
+      }
+      
+      if (val && String(val).trim() !== '' && String(val) !== '0') {
+        const valStr = String(val).trim();
+        if (!displayedValues.has(valStr.toLowerCase())) {
+          specParts.push(`${field.label}: ${val}${field.suffix || ''}`);
+          displayedValues.add(valStr.toLowerCase());
+          displayedKeys.add(field.key.toLowerCase());
+        }
+      }
+    });
+
+    // Catch-all for other specifications
+    const allSpecs = { ...(variant.specifications || {}), ...(variant.specifications?.specs || {}) };
+    const internalFields = ['tags', 'last_restock', 'internal_notes', 'color', 'socket', 'specs', 'variant_type', 'variant_color', 'color_temperature'];
+    
+    Object.entries(allSpecs).forEach(([key, val]) => {
+        if (internalFields.includes(key) || displayedKeys.has(key.toLowerCase())) return;
+        if (val && String(val).trim() !== '' && String(val) !== '0') {
+            const valStr = String(val).trim();
+            if (!displayedValues.has(valStr.toLowerCase())) {
+                const label = key.replace(/_/g, ' ').toUpperCase();
+                specParts.push(`${label}: ${valStr}`);
+                displayedValues.add(valStr.toLowerCase());
+                displayedKeys.add(key.toLowerCase());
+            }
+        }
+    });
+
+    const cartKey = `${selectedItem.id}:${variant.id}`;
+
     const cartItem: CartItem = {
-      id: (selectedItem.id || 0) * 10000 + variant.id,
+      cartKey,
+      id: (selectedItem.id || 0) * 10000 + variant.id,  // kept for RPC payload compatibility
       name: `${selectedItem.name} (${variant.variant_type})`,
       brand: selectedItem.brand || '',
       category: selectedItem.category || '',
@@ -201,7 +254,7 @@ export default function Pos({ items, onSaleComplete }: PosProps) {
       image_url: selectedItem.image_url,
       cartQuantity: quantity,
       variant_id: variant.id.toString(),
-      variant_display_name: specs.join(', ') || variant.variant_type,
+      variant_display_name: specParts.join(' | '),
       variant_price: variant.selling_price,
       description: variant.description || selectedItem.description || '',
       color_temperature: variant.color_temperature,
@@ -209,12 +262,12 @@ export default function Pos({ items, onSaleComplete }: PosProps) {
       uuid: selectedItem.uuid
     };
 
-    // Add to cart
+    // Add to cart — use cartKey to prevent collisions across variant combinations
     setCart(prev => {
-      const existing = prev.find(i => i.id === cartItem.id);
+      const existing = prev.find(i => i.cartKey === cartItem.cartKey);
       if (existing) {
         if (existing.cartQuantity + quantity > variant.stock_quantity) return prev;
-        return prev.map(i => i.id === cartItem.id ? { ...i, cartQuantity: i.cartQuantity + quantity } : i);
+        return prev.map(i => i.cartKey === cartItem.cartKey ? { ...i, cartQuantity: i.cartQuantity + quantity } : i);
       }
       return [...prev, cartItem];
     });
@@ -253,16 +306,16 @@ export default function Pos({ items, onSaleComplete }: PosProps) {
 
   /**
    * Update cart item quantity with stock validation
-   * @param id - Item ID to update
+   * @param cartKey - Composite cart key of item to update
    * @param delta - Quantity change (positive or negative)
    */
-  const updateCartQuantity = (id: number, delta: number) => {
+  const updateCartQuantity = (cartKey: string, delta: number) => {
     setCart(prev => {
       return prev.map(item => {
-        if (item.id === id) {
+        if (item.cartKey === cartKey) {
           const newQty = item.cartQuantity + delta;
           const stock = item.stock ?? item.quantity ?? 0;
-          if (newQty <= 0) return item; // Handled by removal usually, but safe
+          if (newQty <= 0) return item;
           if (newQty > stock) return item;
           return { ...item, cartQuantity: newQty };
         }
@@ -273,10 +326,10 @@ export default function Pos({ items, onSaleComplete }: PosProps) {
 
   /**
    * Remove item from cart completely
-   * @param id - Item ID to remove
+   * @param cartKey - Composite cart key of item to remove
    */
-  const removeFromCart = (id: number) => {
-    setCart(prev => prev.filter(i => i.id !== id));
+  const removeFromCart = (cartKey: string) => {
+    setCart(prev => prev.filter(i => i.cartKey !== cartKey));
   };
 
   /**
@@ -423,14 +476,12 @@ export default function Pos({ items, onSaleComplete }: PosProps) {
                   {item.is_variant && <span className={styles.isVariantTag}>{item.variant_type}</span>}
                 </div>
                 <div className={styles.productSubInfo}>
-                  {item.color_temperature && (
-                    <span className={styles.specTag}>
-                      {item.color_temperature}{!isNaN(Number(item.color_temperature)) ? 'K' : ''}
-                    </span>
-                  )}
-                  {item.notes && (
-                    <span className={styles.noteTag}>{item.notes}</span>
-                  )}
+                  <DynamicCategorySpecs 
+                    item={item} 
+                    style={{ gap: '2px' }}
+                    labelStyle={{ minWidth: '45px', fontSize: '8px' }}
+                    valueStyle={{ fontSize: '10px' }}
+                  />
                 </div>
                 
                 <div className={styles.productFooter}>
@@ -476,15 +527,15 @@ export default function Pos({ items, onSaleComplete }: PosProps) {
                 <div className={styles.cartItemQtyControls}>
                   <button 
                     className={styles.qtyBtn} 
-                    onClick={() => updateCartQuantity(item.id, -1)}
+                    onClick={() => updateCartQuantity(item.cartKey, -1)}
                     disabled={loading}
                   >
-                    {item.cartQuantity === 1 ? <Box size={14} onClick={() => removeFromCart(item.id)} /> : <Minus size={14} />}
+                    {item.cartQuantity === 1 ? <Box size={14} onClick={() => removeFromCart(item.cartKey)} /> : <Minus size={14} />}
                   </button>
                   <span style={{ minWidth: 20, textAlign: 'center', fontSize: 12, fontWeight: 'bold' }}>{item.cartQuantity}</span>
                   <button 
                     className={styles.qtyBtn} 
-                    onClick={() => updateCartQuantity(item.id, 1)}
+                    onClick={() => updateCartQuantity(item.cartKey, 1)}
                     disabled={loading}
                   >
                     <Plus size={14} />

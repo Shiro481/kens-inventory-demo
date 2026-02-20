@@ -38,6 +38,7 @@ export default function EditItemModal({
   const [newVariantData, setNewVariantData] = useState<any>({ 
     variant_type: '', cost_price: 0, selling_price: 0, stock: 0, 
     min_stock_level: 5, color: '', color_temperature: '', description: '', sku: '',
+    notes: '',
     specifications: {}
   });
   const [isAddingNewTypeInVariantForm, setIsAddingNewTypeInVariantForm] = useState(false);
@@ -65,7 +66,7 @@ export default function EditItemModal({
     }
   }, [item, categories, variantTypes]);
 
-  const { config } = useCategoryMetadata(editingItem?.category);
+  const { config, isFallback } = useCategoryMetadata(editingItem?.category);
 
   const filteredVariantTypes = Array.from(new Set([
     ...(config.suggestedVariantTypes || []),
@@ -90,38 +91,78 @@ export default function EditItemModal({
   };
 
   const handleAddVariant = async () => {
-    const pid = (editingItem as any)?.uuid;
-    if (!newVariantData.variant_type || !supabase) return;
+    const normalizedType = String(newVariantData.variant_type || '').trim();
+    if (!normalizedType) {
+        return alert(`Please enter a "${config.variantTypeLabel || 'Variant Type'}" before saving.`);
+    }
 
+    if (!supabase) return;
+
+    console.log('🔍 [AddVariant] Saving variant type:', normalizedType);
+
+    // 1. Resolve Variant Definition (The Type: H1, H4, etc.)
     let variantId: number | null = null;
-    const { data: variants } = await supabase
+    const { data: variants, error: fetchDefError } = await supabase
         .from('variant_definitions')
         .select('*')
-        .eq('variant_name', newVariantData.variant_type);
+        .ilike('variant_name', normalizedType); // Case-insensitive search
 
-    const exactMatch = variants?.find(v => v.variant_name.toLowerCase() === newVariantData.variant_type.toLowerCase());
+    if (fetchDefError) {
+        console.error('❌ [AddVariant] Definition fetch error:', fetchDefError);
+    }
 
-    if (exactMatch) {
-        variantId = exactMatch.id;
+    const matchedDef = variants?.find(v => v.variant_name.toLowerCase() === normalizedType.toLowerCase());
+
+    if (matchedDef) {
+        variantId = matchedDef.id;
+        console.log('✅ [AddVariant] Found existing definition:', variantId);
     } else {
+        console.log('➕ [AddVariant] Creating new definition for:', normalizedType);
         const { data: newVariant, error: createError } = await supabase
             .from('variant_definitions')
             .insert({
-                base_name: 'Simple Variant', 
-                variant_name: newVariantData.variant_type,
-                display_name: newVariantData.variant_type, 
-                description: `Standard ${newVariantData.variant_type}`,
-                compatibility_list: [newVariantData.variant_type],
+                base_name: editingItem?.name || 'Simple Variant', 
+                variant_name: normalizedType,
+                display_name: normalizedType, 
+                description: `Standard ${normalizedType}`,
+                compatibility_list: [normalizedType],
                 is_active: true
             })
             .select()
-            .single();
+            .maybeSingle(); // Better than single() if multiple exist somehow
         
-        if (createError) return alert('Error creating new type: ' + createError.message);
-        variantId = newVariant.id;
+        if (createError) {
+            console.error('❌ [AddVariant] Definition creation failed:', createError);
+            return alert('Error creating new type: ' + createError.message);
+        }
+        if (newVariant) {
+            variantId = newVariant.id;
+        } else {
+            // Fallback: search again in case of race condition
+            const { data: retryData } = await supabase.from('variant_definitions').select('id').eq('variant_name', normalizedType).single();
+            variantId = retryData?.id || null;
+        }
     }
 
+    if (!variantId) {
+        return alert('Could not resolve variant type ID. Please try again.');
+    }
+
+    const pid = (editingItem as any)?.uuid;
     if (!pid || item?.id === 0) {
+         // --- LOCAL FLOW (New Product) ---
+         // Check for local duplicates before adding
+         const isDuplicate = productVariants.some(v => 
+            v.variant_id === variantId && 
+            (v.variant_color || '') === (newVariantData.color || '') &&
+            (v.color_temperature || '') === (newVariantData.color_temperature || '') &&
+            v.id !== editingVariantId // Allow editing the current variant
+         );
+
+         if (isDuplicate && !editingVariantId) {
+            return alert(`This variant (${normalizedType}) already exists in your list.`);
+         }
+
          const newVar = {
              ...newVariantData,
              id: editingVariantId || Date.now(),
@@ -131,14 +172,17 @@ export default function EditItemModal({
              variant_sku: newVariantData.sku || null,
              stock_quantity: Number(newVariantData.stock) || 0,
              min_stock_level: Number(newVariantData.min_stock_level) || 5, 
-             variant_type: newVariantData.variant_type,
-             variant_definitions: { variant_name: newVariantData.variant_type },
+             variant_type: normalizedType,
+             variant_definitions: { variant_name: normalizedType },
              color_temperature: newVariantData.color_temperature,
              cost_price: Number(newVariantData.cost_price),
              selling_price: Number(newVariantData.selling_price),
              description: newVariantData.description,
-             specifications: newVariantData.specifications || {}
-         };
+             specifications: { 
+                ...(newVariantData.specifications || {}),
+                internal_notes: newVariantData.notes
+              }
+          };
 
          if (editingVariantId) {
              setProductVariants(prev => prev.map(v => v.id === editingVariantId ? newVar : v));
@@ -148,29 +192,36 @@ export default function EditItemModal({
 
          setNewVariantData({ 
             variant_type: '', color_temperature: '', cost_price: 0, 
-            selling_price: 0, stock: 0, min_stock_level: 5, color: '', description: '', sku: '' 
+            selling_price: 0, stock: 0, min_stock_level: 5, color: '', description: '', sku: '',
+            notes: '', specifications: {} 
          });
          setShowVariantForm(false);
          setEditingVariantId(null);
          return;
     }
 
+    // --- DATABASE FLOW (Existing Product) ---
     let existingProductVariant: any = null;
     if (editingVariantId) {
         existingProductVariant = { id: editingVariantId };
     } else {
         const { data: potentialMatches } = await supabase
             .from('product_variants')
-            .select('id, variant_color')
+            .select('id, variant_color, color_temperature')
             .eq('product_id', pid)
             .eq('variant_id', variantId);
 
-        const computedColor = newVariantData.color || (newVariantData.color_temperature ? `${newVariantData.color_temperature}K` : null);
-        existingProductVariant = potentialMatches?.find((v: any) => (v.variant_color || '') === (computedColor || ''));
+        const targetColor = newVariantData.color || null;
+        const targetTemp = newVariantData.color_temperature || null;
+
+        existingProductVariant = potentialMatches?.find((v: any) => 
+            (v.variant_color || null) === targetColor && 
+            (v.color_temperature || null) === (targetTemp ? String(targetTemp) : null)
+        );
     }
 
     const updates: any = {
-      variant_type: newVariantData.variant_type,
+      variant_type: normalizedType,
       variant_id: variantId,
       color_temperature: String(newVariantData.color_temperature) || null,
       cost_price: Number(newVariantData.cost_price) || 0,
@@ -180,7 +231,10 @@ export default function EditItemModal({
       variant_color: newVariantData.color || null,
       description: newVariantData.description || null,
       variant_sku: newVariantData.sku || null,
-      specifications: newVariantData.specifications || {}
+      specifications: {
+          ...(newVariantData.specifications || {}),
+          internal_notes: newVariantData.notes
+      }
     };
 
     let error;
@@ -200,6 +254,7 @@ export default function EditItemModal({
         setNewVariantData({ 
             variant_type: '', cost_price: 0, selling_price: 0, stock: 0, min_stock_level: 5, 
             color: '', color_temperature: '', description: '', sku: '', 
+            notes: '',
             specifications: {} 
         });
     } else {
@@ -249,6 +304,25 @@ export default function EditItemModal({
           <h2>{item?.id === 0 ? 'Add New Item' : (editingItem.is_variant ? `Edit Variant: ${editingItem.variant_type}` : 'Edit Part')}</h2>
           <button className={styles.closeBtn} onClick={onClose}><X size={20} /></button>
         </div>
+
+        {/* Fallback config notice */}
+        {isFallback && editingItem.category && (
+          <div style={{
+            margin: '0 0 12px',
+            padding: '7px 12px',
+            background: 'rgba(255,152,0,0.07)',
+            border: '1px solid rgba(255,152,0,0.25)',
+            borderRadius: '4px',
+            fontSize: '10px',
+            color: '#ff9800',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '6px'
+          }}>
+            <span style={{ fontSize: '13px' }}>⚙</span>
+            <span>Category <strong>"{editingItem.category}"</strong> is using default field config — go to <strong>Settings → Categories</strong> to customize it.</span>
+          </div>
+        )}
         
         <div className={styles.formGrid}>
           {editingItem.is_variant ? (

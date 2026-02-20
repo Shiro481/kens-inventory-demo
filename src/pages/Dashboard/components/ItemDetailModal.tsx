@@ -4,6 +4,7 @@ import styles from './ItemDetailModal.module.css';
 import type { InventoryItem } from '../../../types/inventory';
 import { useSettings } from '../../../context/SettingsContext';
 import { useCategoryMetadata } from '../../../hooks/useCategoryMetadata';
+import DynamicCategorySpecs from './DynamicCategorySpecs';
 
 interface ItemDetailModalProps {
   isOpen: boolean;
@@ -19,10 +20,10 @@ export default function ItemDetailModal({ isOpen, item, onClose, onAddToCart, va
   const [selectedVariant, setSelectedVariant] = useState<any | null>(null);
   const [selectedVariantType, setSelectedVariantType] = useState<string>('');
   const { settings } = useSettings();
+  const { config } = useCategoryMetadata(item?.category);
   
   if (!isOpen || !item) return null;
 
-  const { config } = useCategoryMetadata(item.category);
   const hasVariants = variants && variants.length > 0;
 
   const parentOption = {
@@ -123,35 +124,16 @@ export default function ItemDetailModal({ isOpen, item, onClose, onAddToCart, va
           </div>
 
           <div className={styles.specsContainer}>
-            {config.variantDimensions?.filter((d: any) => d.active).some((d: any) => {
-              const val = d.column === 'variant_type' ? item.variant_type :
-                          d.column === 'variant_color' ? item.variant_color :
-                          d.column === 'color_temperature' ? item.color_temperature : 
-                          (item as any).specifications?.[d.column];
-              return !!val;
-            }) && (
-              <div className={styles.selectionSpecs}>
-                {config.variantDimensions?.filter((d: any) => d.active).map((dim: any) => {
-                  const target = selectedVariant || item;
-                  const val = dim.column === 'variant_type' ? target.variant_type :
-                              dim.column === 'variant_color' ? target.variant_color :
-                              dim.column === 'color_temperature' ? target.color_temperature :
-                              (target as any).specifications?.[dim.column];
-                  if (!val) return null;
-                  return (
-                    <div key={dim.column} className={styles.selectionSpecItem}>
-                      <span className={styles.specLabel}>{dim.label}:</span>
-                      <span className={styles.specValue}>{val}{dim.column === 'color_temperature' && !isNaN(Number(val)) ? 'K' : ''}</span>
-                    </div>
-                  );
-                })}
-              </div>
-            )}
+            <DynamicCategorySpecs 
+              item={selectedVariant ? { ...item, ...selectedVariant } : item} 
+              labelStyle={{ color: '#aaa', minWidth: '80px' }}
+              valueStyle={{ color: '#fff' }}
+            />
 
             {stock > 0 && stock < currentMinStock && (
               <div className={styles.lowStockWarning}>
                  <Info size={14} /> Attention: This item is below minimum stock level.
-              </div>
+               </div>
             )}
           </div>
 
@@ -277,32 +259,14 @@ export default function ItemDetailModal({ isOpen, item, onClose, onAddToCart, va
           <div className={styles.detailsSection}>
             <h3 className={styles.sectionTitle}>
               <Eye size={16} />
-              Item Details
+              Item Technical Specifications
             </h3>
-            <div className={styles.detailsGrid}>
-              {item.category && (
-                <div className={styles.detailItem}>
-                  <span className={styles.detailLabel}>Category:</span>
-                  <span className={styles.detailValue}>{item.category}</span>
-                </div>
-              )}
-              {config.fields.map((field: any) => {
-                const source = selectedVariant || item;
-                let val = '';
-                if (field.key.includes('.')) {
-                  const [parent, child] = field.key.split('.');
-                  val = (source as any)[parent]?.[child];
-                } else {
-                  val = (source as any)[field.key];
-                }
-                if (val === undefined || val === null || val === '' || Number(val) === 0) return null;
-                return (
-                  <div key={field.key} className={styles.detailItem}>
-                    <span className={styles.detailLabel}>{field.label}:</span>
-                    <span className={styles.detailValue}>{val}{field.suffix || ''}</span>
-                  </div>
-                );
-              })}
+            <div className={styles.detailsGrid} style={{ display: 'block' }}>
+               <DynamicCategorySpecs 
+                 item={selectedVariant ? { ...item, ...selectedVariant } : item} 
+                 labelStyle={{ color: '#888', minWidth: '100px', fontSize: '10px' }}
+                 valueStyle={{ color: '#fff', fontSize: '12px', borderBottom: '1px solid #333', padding: '4px 0' }}
+               />
             </div>
           </div>
 

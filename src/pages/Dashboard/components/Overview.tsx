@@ -72,9 +72,10 @@ export default function Overview({ items }: OverviewProps) {
     }
   };
 
-  // Calculate stats
-  const lowStockItems = items.filter(item => getLocalStatus(item) === 'Low Stock').length;
-  const outOfStockItems = items.filter(item => getLocalStatus(item) === 'Out of Stock').length;
+  // Calculate stats - only for sellable units (variants or single products)
+  const sellableItems = items.filter(item => !item.has_variants || item.is_variant);
+  const lowStockItems = sellableItems.filter(item => getLocalStatus(item) === 'Low Stock').length;
+  const outOfStockItems = sellableItems.filter(item => getLocalStatus(item) === 'Out of Stock').length;
 
   // Calculate Sales Statistics
   const now = new Date();

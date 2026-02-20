@@ -36,11 +36,6 @@ export default function InventoryTable({ items, onEdit, onDelete }: InventoryTab
         const qty = item.stock ?? item.quantity ?? 0;
         const minQty = item.minQuantity ?? item.min_qty ?? settings.low_stock_threshold;
         
-        /**
-         * Get dynamic stock status based on quantity and minimum threshold
-         * Uses settings context for low stock threshold
-         * @returns Stock status string
-         */
         const getDynamicStatus = () => {
           if (qty === 0) return 'Out of Stock';
           return qty < minQty ? 'Low Stock' : 'In Stock';
@@ -57,13 +52,15 @@ export default function InventoryTable({ items, onEdit, onDelete }: InventoryTab
                 <span className={styles.partName}>
                   {item.name}
                 </span>
-                {/* Dynamic Attributes based on Category */}
+                
+                {/* Dynamic Attributes based on Category Metadata */}
                 <DynamicCategorySpecs 
                   item={item}
                   style={{ fontSize: '11px', color: '#aaa', marginTop: '2px' }}
                   labelStyle={{ color: '#666' }}
                   valueStyle={{ color: '#00ff9d', fontSize: '10px' }}
                 />
+
                 {item.sku && (
                   <div style={{ fontSize: '11px', color: '#666', marginTop: '2px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
                     SKU: {item.sku}

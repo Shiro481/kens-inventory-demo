@@ -1,71 +1,79 @@
-
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
-import { getCategoryConfig, DEFAULT_CONFIG, type CategoryConfig } from '../constants/categoryConfig';
+import { getCategoryConfig, DEFAULT_CONFIG } from '../constants/categoryConfig';
+import type { CategoryConfig } from '../constants/categoryConfig';
 
-export function useCategoryMetadata(categoryName?: string) {
-  const [dynamicConfig, setDynamicConfig] = useState<CategoryConfig | null>(null);
+interface CategoryMetadataResult {
+  config: CategoryConfig;
+  loading: boolean;
+  isFallback: boolean;
+}
+
+export function useCategoryMetadata(categoryName?: string): CategoryMetadataResult {
+  const [config, setConfig] = useState<CategoryConfig>(DEFAULT_CONFIG);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<any>(null);
+  const [isFallback, setIsFallback] = useState(true);
 
   useEffect(() => {
-    async function fetchMetadata() {
-      if (!categoryName) {
-        setDynamicConfig(DEFAULT_CONFIG);
-        return;
-      }
+    const trimmedName = categoryName?.trim();
+    if (!trimmedName || !supabase) {
+      setConfig(getCategoryConfig(trimmedName));
+      setIsFallback(true);
+      return;
+    }
 
-      setLoading(true);
+    setLoading(true);
+    setIsFallback(true);
+
+    const fetchMetadata = async () => {
       try {
-        if (!supabase) throw new Error('Supabase client not initialized');
-
-        // 1. Get the category ID first
-        const { data: catData, error: catError } = await supabase
+        // Step 1: Look up the category ID by name (case-insensitive)
+        const { data: catData, error: catError } = await supabase!
           .from('product_categories')
           .select('id')
-          .eq('name', categoryName)
-          .single();
+          .ilike('name', trimmedName)
+          .maybeSingle();
 
         if (catError || !catData) {
-          // Fallback to hardcoded if category not found in DB
-          setDynamicConfig(getCategoryConfig(categoryName));
+          setConfig(getCategoryConfig(trimmedName));
+          setIsFallback(true);
           return;
         }
 
-        // 2. Fetch metadata for this category
-        const { data: metaData, error: metaError } = await supabase
+        // Step 2: Load category-specific metadata
+        const { data: metaData, error: metaError } = await supabase!
           .from('category_metadata')
           .select('*')
           .eq('category_id', catData.id)
           .eq('is_active', true)
-          .single();
+          .maybeSingle();
 
         if (metaError || !metaData) {
-          // Fallback to hardcoded if no metadata found
-          setDynamicConfig(getCategoryConfig(categoryName));
-        } else {
-          // Success: Use Dynamic Data
-          setDynamicConfig({
-            variantTypeLabel: metaData.variant_type_label,
-            variantDimensions: metaData.variant_dimensions || [
-              { label: metaData.variant_type_label, column: 'variant_type', active: true }
-            ],
-            fields: metaData.fields,
-            suggestedVariantTypes: metaData.suggested_variant_types
-          });
+          setConfig(getCategoryConfig(trimmedName));
+          setIsFallback(true);
+          return;
         }
+
+        // Step 3: Build config from DB data — real metadata, not a fallback
+        const dbConfig: CategoryConfig = {
+          variantTypeLabel: metaData.variant_type_label || DEFAULT_CONFIG.variantTypeLabel,
+          variantDimensions: metaData.variant_dimensions || DEFAULT_CONFIG.variantDimensions,
+          fields: metaData.fields || DEFAULT_CONFIG.fields,
+          suggestedVariantTypes: metaData.suggested_variant_types || DEFAULT_CONFIG.suggestedVariantTypes,
+        };
+        setConfig(dbConfig);
+        setIsFallback(false);
       } catch (err) {
-        console.error('Error fetching category metadata:', err);
-        setError(err);
-        // Fallback on error
-        setDynamicConfig(getCategoryConfig(categoryName));
+        console.error('[useCategoryMetadata] Unexpected error:', err);
+        setConfig(getCategoryConfig(trimmedName));
+        setIsFallback(true);
       } finally {
         setLoading(false);
       }
-    }
+    };
 
     fetchMetadata();
   }, [categoryName]);
 
-  return { config: dynamicConfig || DEFAULT_CONFIG, loading, error };
+  return { config, loading, isFallback };
 }

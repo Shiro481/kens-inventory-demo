@@ -45,7 +45,8 @@ export default function VariantManager({
                 <div className={styles.variantInfoMain} style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', alignItems: 'center' }}>
                   {config.variantDimensions?.filter((d: any) => d.active).map((dim: any) => {
                     let val = null;
-                    if (dim.column === 'variant_type') {
+                    const isTypeColumn = dim.column === 'variant_type';
+                    if (isTypeColumn) {
                       val = v.variant_type || v.variant_definitions?.variant_name;
                     } else if (dim.column === 'variant_color') {
                       val = v.variant_color;
@@ -57,7 +58,7 @@ export default function VariantManager({
                     
                     if (!val) return null;
                     return (
-                      <span key={dim.column} className={styles.variantTag} style={!['variant_type'].includes(dim.column) ? { background: '#222', color: '#00ff9d', border: '1px solid #111' } : {}}>
+                      <span key={dim.column} className={styles.variantTag} style={!isTypeColumn ? { background: '#222', color: '#00ff9d', border: '1px solid #111' } : {}}>
                         <span style={{ opacity: 0.5, fontSize: '9px', marginRight: '4px' }}>{dim.label.toUpperCase()}:</span>
                         {dim.column === 'color_temperature' && !val.toString().endsWith('K') && !isNaN(Number(val)) ? `${val}K` : val}
                       </span>
@@ -95,6 +96,7 @@ export default function VariantManager({
                       color_temperature: v.color_temperature || '',
                       description: v.description || '',
                       sku: v.variant_sku || '',
+                      notes: v.specifications?.internal_notes || '',
                       specifications: v.specifications || {}
                     });
                     onSetIsAddingNewType(false);
@@ -126,92 +128,129 @@ export default function VariantManager({
         <div className={styles.variantFormContainer}>
           <h4 className={styles.variantFormHeader}>Variant Details</h4>
             {/* Dynamic Dimensions */}
-            {config.variantDimensions?.filter((d: any) => d.active).map((dim: any) => {
-              let val = '';
-              if (dim.column === 'variant_color') val = newVariantData.color || '';
-              else if (dim.column === 'color_temperature') val = newVariantData.color_temperature || '';
-              else if (dim.column === 'variant_type') val = newVariantData.variant_type || '';
-              else val = newVariantData.specifications?.[dim.column] || '';
-              
-              return (
-                <div key={dim.column} className={styles.formGroup}>
-                  <label>{dim.label} {dim.column === 'variant_type' ? '*' : ''}</label>
-                  {dim.column === 'variant_type' ? (
-                    !isAddingNewTypeInVariantForm ? (
-                      <select 
-                        className={styles.formInput} 
-                        value={filteredVariantTypes?.includes(newVariantData.variant_type) ? newVariantData.variant_type : ''} 
-                        onChange={(e) => {
-                          const valStr = e.target.value;
-                          if (valStr === '__NEW__') {
-                            onSetIsAddingNewType(true);
-                            onSetNewVariantData({ ...newVariantData, variant_type: '' });
-                          } else {
-                            onSetIsAddingNewType(false);
-                            onSetNewVariantData((prev: any) => ({ ...prev, variant_type: valStr }));
-                          }
-                        }}
-                      >
-                        <option value="">Select {dim.label}</option>
-                        {filteredVariantTypes?.map(type => <option key={type} value={type}>{type}</option>)}
-                        <option value="__NEW__">+ Add New {dim.label}</option>
-                      </select>
-                    ) : (
-                      <div style={{ display: 'flex', gap: '8px' }}>
+            {(config.variantDimensions && config.variantDimensions.length > 0) ? (
+              <>
+                {/* Dimensions Loop */}
+                {config.variantDimensions.filter((d: any) => d.active).map((dim: any) => {
+                  const normalizedDimLabel = dim.label.toLowerCase().replace(':', '').trim();
+                  const normalizedTypeLabel = (config.variantTypeLabel || 'Variant Type').toLowerCase().replace(':', '').trim();
+                  const isPrimaryType = dim.column === 'variant_type' || normalizedDimLabel === normalizedTypeLabel;
+                  
+                  let val = '';
+                  if (dim.column === 'variant_color') val = newVariantData.color || '';
+                  else if (dim.column === 'color_temperature') val = newVariantData.color_temperature || '';
+                  else if (isPrimaryType) val = newVariantData.variant_type || '';
+                  else val = newVariantData.specifications?.[dim.column] || '';
+                  
+                  return (
+                    <div key={dim.column} className={styles.formGroup}>
+                      <label>
+                        {dim.label} 
+                        {isPrimaryType && <span style={{ color: 'var(--brand-neon)', marginLeft: '4px' }}>*</span>}
+                      </label>
+                      {isPrimaryType ? (
+                        !isAddingNewTypeInVariantForm ? (
+                          <select 
+                            className={styles.formInput} 
+                            value={newVariantData.variant_type || ''} 
+                            onChange={(e) => {
+                              const valStr = e.target.value;
+                              if (valStr === '__NEW__') {
+                                onSetIsAddingNewType(true);
+                                onSetNewVariantData((prev: any) => ({ ...prev, variant_type: '' }));
+                              } else {
+                                onSetIsAddingNewType(false);
+                                onSetNewVariantData((prev: any) => ({ ...prev, variant_type: valStr }));
+                              }
+                            }}
+                          >
+                            <option value="">Select {dim.label}</option>
+                            {newVariantData.variant_type && !filteredVariantTypes.includes(newVariantData.variant_type) && (
+                               <option value={newVariantData.variant_type}>{newVariantData.variant_type}</option>
+                            )}
+                            {filteredVariantTypes?.map(type => <option key={type} value={type}>{type}</option>)}
+                            <option value="__NEW__">+ Add New {dim.label}</option>
+                          </select>
+                        ) : (
+                          <div style={{ display: 'flex', gap: '8px' }}>
+                            <input 
+                              type="text" 
+                              className={styles.formInput} 
+                              value={newVariantData.variant_type} 
+                              onChange={e => {
+                                const newVal = e.target.value;
+                                onSetNewVariantData((prev: any) => ({...prev, variant_type: newVal}));
+                              }} 
+                              placeholder={`Enter ${dim.label.toLowerCase()}`}
+                              autoFocus 
+                              style={{ flex: 1 }} 
+                            />
+                            <button onClick={() => onSetIsAddingNewType(false)} className={styles.cancelBtn} style={{ padding: '0 10px', border: '1px solid #333' }}>Cancel</button>
+                          </div>
+                        )
+                      ) : (
                         <input 
                           type="text" 
                           className={styles.formInput} 
-                          value={newVariantData.variant_type} 
-                          onChange={e => onSetNewVariantData({...newVariantData, variant_type: e.target.value})} 
-                          placeholder={`Enter ${dim.label.toLowerCase()}`}
-                          autoFocus 
-                          style={{ flex: 1 }} 
-                        />
-                        <button onClick={() => onSetIsAddingNewType(false)} className={styles.cancelBtn} style={{ padding: '0 10px', border: '1px solid #333' }}>Cancel</button>
-                      </div>
-                    )
-                  ) : (
-                    <input 
-                      type="text" 
-                      className={styles.formInput} 
-                      value={val} 
-                      onChange={e => {
-                        const newVal = e.target.value;
-                        if (dim.column === 'variant_color') {
-                          onSetNewVariantData({...newVariantData, color: newVal});
-                        } else if (dim.column === 'color_temperature') {
-                          onSetNewVariantData({...newVariantData, color_temperature: newVal});
-                        } else {
-                          onSetNewVariantData({
-                            ...newVariantData, 
-                            specifications: { 
-                              ...(newVariantData.specifications || {}), 
-                              [dim.column]: newVal 
+                          value={val} 
+                          onChange={e => {
+                            const newVal = e.target.value;
+                            if (dim.column === 'variant_color') {
+                              onSetNewVariantData((prev: any) => ({...prev, color: newVal}));
+                            } else if (dim.column === 'color_temperature') {
+                              onSetNewVariantData((prev: any) => ({...prev, color_temperature: newVal}));
+                            } else {
+                              onSetNewVariantData((prev: any) => ({
+                                ...prev, 
+                                specifications: { 
+                                  ...(prev.specifications || {}), 
+                                  [dim.column]: newVal 
+                                }
+                              }));
                             }
-                          });
-                        }
-                      }} 
-                      placeholder={`e.g. ${dim.label}`} 
-                    />
-                  )}
-                </div>
-              );
-            })}
+                          }} 
+                          placeholder={`e.g. ${dim.label}`} 
+                        />
+                      )}
+                    </div>
+                  );
+                })}
 
-            {/* Fallback for legacy categories without dimension metadata */}
-            {!config.variantDimensions && (
+                {/* Secondary safety check: Only show if NO dimension matches the primary type by column OR relaxed label match */}
+                {!config.variantDimensions.some((d: any) => {
+                   if (!d.active) return false;
+                   const normalizedDLabel = d.label.toLowerCase().replace(':', '').trim();
+                   const normalizedTLabel = (config.variantTypeLabel || 'Variant Type').toLowerCase().replace(':', '').trim();
+                   return d.column === 'variant_type' || normalizedDLabel === normalizedTLabel;
+                 }) && (
+                   <div className={styles.formGroup}>
+                      <label>{config.variantTypeLabel || 'Variant Type'} <span style={{ color: 'var(--brand-neon)' }}>*</span></label>
+                      <input 
+                        type="text" 
+                        className={styles.formInput} 
+                        value={newVariantData.variant_type} 
+                        onChange={e => {
+                          const newVal = e.target.value;
+                          onSetNewVariantData((prev: any) => ({...prev, variant_type: newVal}));
+                        }} 
+                        placeholder="e.g. H1, Standard, Large..." 
+                      />
+                   </div>
+                )}
+              </>
+            ) : (
               <>
                 <div className={styles.formGroup}>
-                  <label>{config.variantTypeLabel} *</label>
+                  <label>{config.variantTypeLabel} <span style={{ color: 'var(--brand-neon)' }}>*</span></label>
                   {!isAddingNewTypeInVariantForm ? (
                     <select 
                       className={styles.formInput} 
-                      value={filteredVariantTypes?.includes(newVariantData.variant_type) ? newVariantData.variant_type : ''} 
+                      value={newVariantData.variant_type || ''} 
                       onChange={(e) => {
                         const val = e.target.value;
                         if (val === '__NEW__') {
                           onSetIsAddingNewType(true);
-                          onSetNewVariantData({ ...newVariantData, variant_type: '' });
+                          onSetNewVariantData((prev: any) => ({ ...prev, variant_type: '' }));
                         } else {
                           onSetIsAddingNewType(false);
                           onSetNewVariantData((prev: any) => ({ ...prev, variant_type: val }));
@@ -219,6 +258,9 @@ export default function VariantManager({
                       }}
                     >
                       <option value="">Select {config.variantTypeLabel}</option>
+                      {newVariantData.variant_type && !filteredVariantTypes.includes(newVariantData.variant_type) && (
+                         <option value={newVariantData.variant_type}>{newVariantData.variant_type}</option>
+                      )}
                       {filteredVariantTypes?.map(type => <option key={type} value={type}>{type}</option>)}
                       <option value="__NEW__">+ Add New {config.variantTypeLabel}</option>
                     </select>
@@ -228,7 +270,10 @@ export default function VariantManager({
                         type="text" 
                         className={styles.formInput} 
                         value={newVariantData.variant_type} 
-                        onChange={e => onSetNewVariantData({...newVariantData, variant_type: e.target.value})} 
+                        onChange={e => {
+                          const newVal = e.target.value;
+                          onSetNewVariantData((prev: any) => ({...prev, variant_type: newVal}));
+                        }} 
                         placeholder={`Enter ${config.variantTypeLabel.toLowerCase()}`}
                         autoFocus 
                         style={{ flex: 1 }} 
@@ -240,38 +285,64 @@ export default function VariantManager({
 
                 <div className={styles.formGroup}>
                   <label>Color / Notes</label>
-                  <input type="text" className={styles.formInput} value={newVariantData.color} onChange={e => onSetNewVariantData({...newVariantData, color: e.target.value})} placeholder="e.g. Black" />
+                  <input 
+                    type="text" 
+                    className={styles.formInput} 
+                    value={newVariantData.color} 
+                    onChange={e => {
+                      const newVal = e.target.value;
+                      onSetNewVariantData((prev: any) => ({...prev, color: newVal}));
+                    }} 
+                    placeholder="e.g. Black" 
+                  />
                 </div>
               </>
             )}
 
             <div className={styles.formGroup}>
               <label>Cost Price (₱)</label>
-              <input type="number" step="0.01" className={styles.formInput} value={newVariantData.cost_price || ''} onChange={e => onSetNewVariantData({...newVariantData, cost_price: e.target.value === '' ? 0 : parseFloat(e.target.value)})} placeholder="0.00" />
+              <input type="number" step="0.01" className={styles.formInput} value={newVariantData.cost_price || ''} onChange={e => { const val = e.target.value; onSetNewVariantData((prev: any) => ({...prev, cost_price: val === '' ? 0 : parseFloat(val)})); }} placeholder="0.00" />
             </div>
             <div className={styles.formGroup}>
               <label>Selling Price (₱)</label>
-              <input type="number" step="0.01" className={styles.formInput} value={newVariantData.selling_price || ''} onChange={e => onSetNewVariantData({...newVariantData, selling_price: e.target.value === '' ? 0 : parseFloat(e.target.value)})} placeholder="0.00" />
+              <input type="number" step="0.01" className={styles.formInput} value={newVariantData.selling_price || ''} onChange={e => { const val = e.target.value; onSetNewVariantData((prev: any) => ({...prev, selling_price: val === '' ? 0 : parseFloat(val)})); }} placeholder="0.00" />
             </div>
             <div className={styles.formGroup}>
               <label>Stock Qty</label>
-              <input type="number" className={styles.formInput} value={newVariantData.stock || ''} onChange={e => onSetNewVariantData({...newVariantData, stock: e.target.value === '' ? 0 : parseInt(e.target.value)})} placeholder="0" />
+              <input type="number" className={styles.formInput} value={newVariantData.stock || ''} onChange={e => { const val = e.target.value; onSetNewVariantData((prev: any) => ({...prev, stock: val === '' ? 0 : parseInt(val)})); }} placeholder="0" />
             </div>
             <div className={styles.formGroup}>
               <label>Min Stock</label>
-              <input type="number" className={styles.formInput} value={newVariantData.min_stock_level || ''} onChange={e => onSetNewVariantData({...newVariantData, min_stock_level: e.target.value === '' ? 5 : parseInt(e.target.value)})} placeholder="5" />
+              <input type="number" className={styles.formInput} value={newVariantData.min_stock_level || ''} onChange={e => { const val = e.target.value; onSetNewVariantData((prev: any) => ({...prev, min_stock_level: val === '' ? 5 : parseInt(val)})); }} placeholder="5" />
             </div>
             <div className={styles.formGroup}>
               <label>Variant SKU</label>
-              <input type="text" className={styles.formInput} value={newVariantData.sku} onChange={e => onSetNewVariantData({...newVariantData, sku: e.target.value})} placeholder="Optional" />
+              <input type="text" className={styles.formInput} value={newVariantData.sku} onChange={e => { const val = e.target.value; onSetNewVariantData((prev: any) => ({...prev, sku: val})); }} placeholder="Optional" />
             </div>
             <div className={styles.formGroup} style={{ gridColumn: '1/-1' }}>
               <label>Description (Optional)</label>
-              <input type="text" className={styles.formInput} value={newVariantData.description || ''} onChange={e => onSetNewVariantData({...newVariantData, description: e.target.value})} placeholder="Additional details..." />
+              <input type="text" className={styles.formInput} value={newVariantData.description || ''} onChange={e => { const val = e.target.value; onSetNewVariantData((prev: any) => ({...prev, description: val})); }} placeholder="Additional details..." />
+            </div>
+            <div className={styles.formGroup} style={{ gridColumn: '1/-1' }}>
+              <label>Internal Notes (Private)</label>
+              <textarea 
+                className={styles.formInput} 
+                rows={2} 
+                value={newVariantData.notes || ''} 
+                onChange={e => { const val = e.target.value; onSetNewVariantData((prev: any) => ({...prev, notes: val})); }}
+                placeholder="Private notes for this variant..." 
+                style={{ resize: 'vertical', border: '1px dashed #333' }}
+              />
             </div>
           <div className={styles.variantFormActions}>
-            <button className={styles.variantCancelBtn} onClick={() => { onSetShowVariantForm(false); onSetEditingVariantId(null); onSetNewVariantData({ variant_type: '', cost_price: 0, selling_price: 0, stock: 0, min_stock_level: 5, color: '', color_temperature: '', description: '', sku: '', specifications: {} }); }}>Cancel</button>
-            <button className={styles.variantSaveBtn} onClick={onAddVariant} disabled={!newVariantData.variant_type}>Save Variant</button>
+            <button className={styles.variantCancelBtn} onClick={() => { onSetShowVariantForm(false); onSetEditingVariantId(null); onSetNewVariantData({ variant_type: '', cost_price: 0, selling_price: 0, stock: 0, min_stock_level: 5, color: '', color_temperature: '', description: '', sku: '', notes: '', specifications: {} }); }}>Cancel</button>
+            <button 
+              className={styles.variantSaveBtn} 
+              onClick={onAddVariant} 
+              style={{ width: '100%' }}
+            >
+              Save Variant
+            </button>
           </div>
         </div>
       )}

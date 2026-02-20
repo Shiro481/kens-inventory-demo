@@ -100,6 +100,22 @@ export default function CategoryManager({ onCategoryAdded }: CategoryManagerProp
     }
   };
 
+  const handleDeleteCategory = async (catId: number, catName: string) => {
+    if (!supabase) return;
+    if (!window.confirm(`Delete category "${catName}"?\n\nThis will remove the configuration. Products using this category keep their category text but the category won't appear in dropdowns or filters.`)) return;
+    try {
+      // Delete metadata first (FK order)
+      await supabase.from('category_metadata').delete().eq('category_id', catId);
+      const { error } = await supabase.from('product_categories').delete().eq('id', catId);
+      if (error) throw error;
+      if (selectedCategoryId === catId) { setSelectedCategoryId(null); setMetadata(null); }
+      await fetchCategories();
+      if (onCategoryAdded) onCategoryAdded();
+    } catch (err: any) {
+      alert('Error deleting category: ' + err.message);
+    }
+  };
+
   async function fetchMetadata(catId: number) {
     if (!supabase) return;
     setLoading(true);
@@ -278,6 +294,41 @@ export default function CategoryManager({ onCategoryAdded }: CategoryManagerProp
 
       <div className={styles.selector}>
         <label>Select Category to Manage:</label>
+        {/* Category list with delete buttons */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', marginBottom: '10px' }}>
+          {categories.map(cat => (
+            <div
+              key={cat.id}
+              style={{
+                display: 'flex', alignItems: 'center', gap: '8px',
+                padding: '6px 10px', borderRadius: '4px', cursor: 'pointer',
+                background: selectedCategoryId === cat.id ? 'rgba(0,255,157,0.1)' : 'transparent',
+                border: selectedCategoryId === cat.id ? '1px solid rgba(0,255,157,0.3)' : '1px solid transparent',
+                transition: 'all 0.15s'
+              }}
+            >
+              <span
+                style={{ flex: 1, fontSize: '13px', color: selectedCategoryId === cat.id ? '#00ff9d' : '#ccc' }}
+                onClick={() => { setSelectedCategoryId(cat.id); fetchMetadata(cat.id); }}
+              >
+                {cat.name}
+              </span>
+              <button
+                onClick={(e) => { e.stopPropagation(); handleDeleteCategory(cat.id, cat.name); }}
+                title={`Delete "${cat.name}"`}
+                style={{
+                  background: 'transparent', border: 'none', cursor: 'pointer',
+                  color: '#555', padding: '2px', display: 'flex', alignItems: 'center',
+                  transition: 'color 0.15s'
+                }}
+                onMouseEnter={e => (e.currentTarget.style.color = '#ef4444')}
+                onMouseLeave={e => (e.currentTarget.style.color = '#555')}
+              >
+                <Trash2 size={13} />
+              </button>
+            </div>
+          ))}
+        </div>
         <select value={selectedCategoryId || ''} onChange={handleCategoryChange} className={styles.catSelect}>
           {categories.map(cat => (
             <option key={cat.id} value={cat.id}>{cat.name}</option>

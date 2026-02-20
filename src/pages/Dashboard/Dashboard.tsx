@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useInventoryStore } from '../../store/inventoryStore';
 
 import { Menu } from 'lucide-react';
 import styles from './Dashboard.module.css';
@@ -29,7 +30,10 @@ interface DashboardProps {
  * @param onLogout - Callback function to handle user logout
  */
 export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
-  const [items, setItems] = useState<InventoryItem[]>([]);
+  // ── Inventory state from Zustand store (single source of truth) ──────────
+  const { items, fetchInventory } = useInventoryStore();
+  const removeItemOptimistically = useInventoryStore(s => s.removeItemOptimistically);
+
   const [error, setError] = useState<string | null>(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [suppliers, setSuppliers] = useState<any[]>([]);
@@ -55,7 +59,7 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
       setError("Supabase client is not initialized. Please check your .env file for VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY.");
       return;
     }
-    fetchParts();
+    fetchInventory();
     fetchSuppliers();
     fetchCategories();
   }, []);
@@ -90,168 +94,8 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
     return isVariant ? baseId + 10000000 : baseId;
   };
 
-  async function fetchParts() {
-    if (!supabase) return;
-
-    try {
-      // 1. Fetch all products (Base Parent Items) from the 'products' table
-      // relationships are joined: categories, variant_categories, suppliers
-      const { data: rawData, error } = await supabase
-        .from('products')
-        .select(`
-          *,
-          product_categories(name),
-          variant_categories(code),
-          suppliers(name)
-        `);
-      
-      if (error) {
-        console.error('Error fetching products:', error);
-        setError(`Error fetching products: ${error.message}`);
-        return;
-      }
-
-      // 2. Fetch ALL variants from 'product_variants' table
-      // These will be flattened into the main list for the UI
-      const { data: allVariants, error: variantsError } = await supabase
-        .from('product_variants')
-        .select(`
-            *,
-            variant_definitions (
-                variant_name
-            )
-        `);
-      
-      if (variantsError) {
-        console.error('Error fetching variants:', variantsError);
-      }
-
-      console.log(`📦 [Dashboard] Fetched ${rawData.length} products and ${allVariants?.length || 0} variants`);
-
-      const allItems: InventoryItem[] = [];
-      
-      // 3. Process Base Products
-      // Convert database schema to InventoryItem interface used by the frontend
-      for (const item of rawData) {
-        const baseItem = {
-          id: generateNumericId(item.id, false),
-          uuid: item.id,
-          name: item.name,
-          sku: item.sku,
-          price: item.selling_price,
-          stock: item.stock_quantity,
-          quantity: item.stock_quantity,
-          minQuantity: item.min_stock_level,
-          min_qty: item.min_stock_level,
-          category: item.product_categories?.name,
-          brand: item.brand,
-          description: item.description,
-          image_url: item.image_url,
-          barcode: item.barcode,
-          cost_price: item.cost_price,
-          voltage: item.voltage,
-          wattage: item.wattage,
-          color_temperature: item.color_temperature,
-          variant_color: item.variant_color || item.specifications?.color,
-          lumens: item.lumens,
-          beam_type: item.beam_type,
-          variant_type: item.variant_type || item.specifications?.socket || item.variant_categories?.code,
-          specifications: item.specifications,
-          supplier: item.suppliers?.name,
-          has_variants: item.has_variants || allVariants?.some((v: any) => v.product_id === item.id),
-          variant_count: allVariants?.filter((v: any) => v.product_id === item.id).length || 0,
-          created_at: item.created_at,
-          updated_at: item.updated_at,
-          notes: item.specifications?.internal_notes || '', // Map internal notes
-          tags: item.specifications?.tags || [], // Extract tags from specifications
-          // Map restock data for activity feed
-          restocked_at: item.specifications?.last_restock?.date,
-          restock_quantity: item.specifications?.last_restock?.quantity,
-          is_variant: false  // Explicitly mark as NOT a variant
-        };
-        
-        allItems.push(baseItem);
-      }
-      
-      // 4. Process Variants
-      // Flatten variants into the same list as base products
-      // They are linked via parent_product_id
-      if (allVariants && allVariants.length > 0) {
-        for (const variant of allVariants) {
-          // Find the parent product to inherit shared properties (image, brand, etc.)
-          const parentProduct = rawData.find((p: any) => p.id === variant.product_id);
-          
-          if (parentProduct) {
-            // Get the variant name from the joined relation
-            const variantName = variant.variant_type || variant.variant_definitions?.variant_name || 'Unknown';
-            const temp = variant.color_temperature ? `${variant.color_temperature}K` : '';
-             // Process variant attributes
-
-            const variantItem: InventoryItem = {
-              id: generateNumericId(variant.id, true),  // Use TRUE for variants - ensures unique ID
-              uuid: variant.id,  // Store the actual variant DB ID
-              // Name: "GPNE R6" (Clean, avoids redundancy with attributes)
-              name: parentProduct.name,
-              base_name: parentProduct.name,
-              sku: variant.variant_sku || `${parentProduct.sku}-${variant.id}`,
-              price: (variant.selling_price !== null && variant.selling_price !== undefined && variant.selling_price !== 0) 
-                 ? variant.selling_price 
-                 : (variant.price_adjustment ? parentProduct.selling_price + variant.price_adjustment : parentProduct.selling_price),
-              stock: variant.stock_quantity ?? 0,
-              quantity: variant.stock_quantity,
-              minQuantity: variant.min_stock_level,
-              min_qty: variant.min_stock_level,
-              category: parentProduct.product_categories?.name,
-              brand: parentProduct.brand,
-              description: variant.description || parentProduct.description,
-              image_url: parentProduct.image_url,
-              barcode: variant.variant_barcode || variant.variant_sku,
-              cost_price: variant.cost_price,
-              voltage: parentProduct.voltage,
-              wattage: parentProduct.wattage,
-              color_temperature: variant.color_temperature || parentProduct.color_temperature,
-              variant_color: variant.variant_color,
-              lumens: parentProduct.lumens,
-              beam_type: parentProduct.beam_type,
-              variant_type: variantName,
-              specifications: variant.specifications || parentProduct.specifications,
-              supplier: parentProduct.suppliers?.name,
-              has_variants: false,
-              variant_count: 0,
-              variant_id: variant.variant_id, // FIX: Use the actual variant_id (FK to definitions)
-              variant_display_name: `${variantName} ${temp}`.trim(),
-              is_variant: true,  // CRITICAL: Mark as variant
-              parent_product_id: variant.product_id,
-              created_at: variant.created_at,
-              updated_at: variant.updated_at,
-              notes: (variant.specifications?.internal_notes || ''), // Use actual internal notes if they exist
-              tags: parentProduct.specifications?.tags || [] // Inherit tags from parent
-            };
-            
-            allItems.push(variantItem);
-            console.log(`  ➕ [Dashboard] Added variant ID=${variantItem.id}, is_variant=${variantItem.is_variant}, name=${variantItem.name}`);
-          } else {
-            console.warn(`⚠️ [Dashboard] Variant ${variant.id} has no parent product`);
-          }
-        }
-      }
-      
-      // 5. Build final list, filtering out parent products that have variants
-      // This removes "duplication" where both the parent and its variants appear in the list.
-      const filteredItems = allItems.filter(item => {
-        // If it's a variant, always show it
-        if (item.is_variant) return true;
-        // If it's a parent, only show it if it DOES NOT have variants
-        return !item.has_variants;
-      });
-
-      console.log(`📦 [Dashboard] Total items in inventory: ${filteredItems.length} (Filtered ${allItems.length - filteredItems.length} parents)`);
-      setItems(filteredItems);
-    } catch (err) {
-      console.error('Unexpected error:', err);
-      setError('An unexpected error occurred while fetching data.');
-    }
-  }
+  // fetchParts logic is now centralised in useInventoryStore.fetchInventory()
+  // Dashboard uses the store's items directly via destructuring above.
 
   /**
    * Handle delete operation for an inventory item
@@ -348,10 +192,9 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
         console.error('❌ [Delete] Error deleting item:', error);
         alert(`Error deleting item: ${error.message}`);
       } else {
-        // Optimistic update
-        setItems(items.filter(item => item.id !== itemToDelete.id));
-        // Refresh all data to ensure consistency across POS and Edit modals
-        fetchParts();
+        // Optimistically remove from store immediately, then re-fetch for full sync
+        removeItemOptimistically(itemToDelete.id, !isVariantItem);
+        fetchInventory();
       }
     } catch (err: any) {
       console.error('❌ [Delete] Unexpected error:', err);
@@ -421,6 +264,8 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
 
     // --- CREATE NEW ITEM FLOW ---
     if (updatedItem.id === 0) {
+      console.log('✨ [Save] Creating NEW product family:', updatedItem.name, 'with', variants?.length || 0, 'variants');
+      
       // 1. Prepare payload for insertion
       const payload: any = {
         name: updatedItem.name,
@@ -440,7 +285,12 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
         lumens: updatedItem.lumens,
         beam_type: updatedItem.beam_type,
         has_variants: updatedItem.has_variants || false,
-        specifications: { ...(updatedItem.specifications || {}), socket: updatedItem.variant_type },
+        specifications: { 
+          ...(updatedItem.specifications || {}), 
+          socket: updatedItem.variant_type,
+          internal_notes: updatedItem.notes,
+          tags: updatedItem.tags || []
+        },
         supplier_id: supplierId
       };
 
@@ -498,9 +348,11 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
         `);
 
       if (error) {
-        console.error('Error creating product:', error);
+        console.error('❌ [Save] Error creating product:', error);
         alert(`Error creating product: ${error.message}`);
       } else if (data && data[0]) {
+        console.log('✅ [Save] Product record created with ID:', data[0].id);
+        
         // 4. Update Local State
         // Transform the new item to match InventoryItem interface
         const newItem = {
@@ -539,30 +391,36 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
             
             const variantInserts = variants.map(v => ({
                 product_id: newProductId,
-                variant_type: v.variant_type || v.variant_type,
+                variant_type: v.variant_type,
                 variant_id: v.variant_id, 
-                color_temperature: v.color_temperature,
-                cost_price: v.cost_price,
-                selling_price: v.selling_price,
-                stock_quantity: v.stock_quantity,
-                min_stock_level: v.min_stock_level,
+                color_temperature: v.color_temperature ? String(v.color_temperature) : null,
+                cost_price: Number(v.cost_price) || 0,
+                selling_price: Number(v.selling_price) || 0,
+                stock_quantity: Number(v.stock_quantity) || 0,
+                min_stock_level: Number(v.min_stock_level) || 5,
                 variant_color: v.variant_color,
                 description: v.description,
-                variant_sku: v.variant_sku
+                variant_sku: v.variant_sku,
+                specifications: v.specifications || {}
             }));
+
+            console.log('📦 [Save] Attempting to batch insert', variantInserts.length, 'variants');
 
             const { error: varError } = await supabase
                 .from('product_variants')
                 .insert(variantInserts);
             
             if (varError) {
-                console.error('Error adding variants:', varError);
+                console.error('❌ [Save] Error adding variants:', varError);
                 alert('Product created, but error adding variants: ' + varError.message);
+            } else {
+                console.log('✅ [Save] Variants batch inserted successfully');
             }
-            // Always fetch parts to show new variants correctly
-            fetchParts();
+            // Always fetch to show new variants
+            await fetchInventory();
         } else {
-             setItems([...items, newItem]);
+            // New standalone item — re-fetch to get the store in sync
+            await fetchInventory();
         }
       }
     } else {
@@ -610,10 +468,13 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
            variant_type: updatedItem.variant_type,
            variant_id: variantId,
            color_temperature: updatedItem.color_temperature ? String(updatedItem.color_temperature) : null,
-            variant_color: updatedItem.variant_color || updatedItem.notes || null,
+            variant_color: updatedItem.variant_color || null,
             variant_barcode: updatedItem.barcode || null,
             description: updatedItem.description || null,
-            specifications: updatedItem.specifications || {}
+            specifications: {
+                ...(updatedItem.specifications || {}),
+                internal_notes: updatedItem.notes
+            }
         };
         
         const { data: updatedVariant, error } = await supabase
@@ -662,7 +523,7 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
             }
         }
 
-        await fetchParts();
+        await fetchInventory();
         handleModalClose();
         return;
       }
@@ -755,7 +616,7 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
       } else {
         console.log('✅ [Save] Product updated successfully:', updatedProd[0]);
         // Refresh the data to get updated values
-        await fetchParts();
+        await fetchInventory();
       }
     }
     
@@ -821,7 +682,7 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
           
           {activeView === 'analytics' && <Analytics />}
 
-          {activeView === 'pos' && <Pos items={items} onSaleComplete={fetchParts} />}
+          {activeView === 'pos' && <Pos items={items} onSaleComplete={fetchInventory} />}
           
           {activeView === 'inventory' && (
             <InventoryManager
