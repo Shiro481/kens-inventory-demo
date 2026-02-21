@@ -99,9 +99,9 @@ export default function InventoryTable({ items, isLoading = false, onEdit, onDel
                     <span style={{ color: '#00ff9d' }}>⚠</span> {item.notes}
                   </div>
                 )}
-                {item.tags && item.tags.length > 0 && (
+                {item.specifications?.tags && item.specifications.tags.length > 0 && (
                   <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', marginTop: '6px' }}>
-                    {item.tags.map(tag => (
+                    {item.specifications.tags.map(tag => (
                       <span 
                         key={tag} 
                         style={{ 

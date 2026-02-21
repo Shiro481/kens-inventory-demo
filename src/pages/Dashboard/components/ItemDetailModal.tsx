@@ -18,7 +18,7 @@ interface ItemDetailModalProps {
 export default function ItemDetailModal({ isOpen, item, onClose, onAddToCart, variants, onVariantSelect }: ItemDetailModalProps) {
   const [quantity, setQuantity] = useState(1);
   const [selectedVariant, setSelectedVariant] = useState<any | null>(null);
-  const [selectedVariantType, setSelectedVariantType] = useState<string>('');
+  const [dimensionSelections, setDimensionSelections] = useState<Record<string, string>>({});
   const { settings } = useSettings();
   const { config } = useCategoryMetadata(item?.category);
   
@@ -37,16 +37,23 @@ export default function ItemDetailModal({ isOpen, item, onClose, onAddToCart, va
   };
 
   const allAvailableOptions = hasVariants && variants ? variants : [parentOption];
-  const uniqueVariantTypes = Array.from(new Set(allAvailableOptions.map(v => v.variant_type))).filter(Boolean);
+  
+  const getParsedSpecs = (specs: any) => {
+    if (!specs) return {};
+    if (typeof specs === 'object') return specs;
+    try { return JSON.parse(specs); } catch { return {}; }
+  };
 
-  const availableTemperatures = selectedVariantType
-    ? allAvailableOptions
-        .filter(v => v.variant_type === selectedVariantType)
-        .map(v => ({
-          value: v.color_temperature || v.variant_color,
-          variant: v
-        }))
-    : [];
+  const getDimensionValue = (variant: any, dimColumn: string) => {
+    if (!variant) return null;
+    const colName = dimColumn.toLowerCase();
+    if (colName === 'variant_type' || colName === 'socket') return variant.variant_type || variant.variant_definitions?.variant_name || getParsedSpecs(variant.specifications)?.socket;
+    if (colName === 'variant_color' || colName === 'color') return variant.variant_color || getParsedSpecs(variant.specifications)?.color;
+    if (colName === 'color_temperature' || colName === 'temp') return variant.color_temperature || getParsedSpecs(variant.specifications)?.color_temperature || getParsedSpecs(variant.specifications)?.temp;
+    return getParsedSpecs(variant.specifications)?.[dimColumn];
+  };
+
+  const activeDimensions = config.variantDimensions?.filter((d: any) => d.active) || [];
 
   const currentPrice = selectedVariant ? selectedVariant.selling_price : (item.price || 0);
   const stock = selectedVariant ? selectedVariant.stock_quantity : (item.stock ?? item.quantity ?? 0);
@@ -72,7 +79,7 @@ export default function ItemDetailModal({ isOpen, item, onClose, onAddToCart, va
       onClose();
       setQuantity(1);
       setSelectedVariant(null);
-      setSelectedVariantType('');
+      setDimensionSelections({});
     }
   };
 
@@ -140,99 +147,106 @@ export default function ItemDetailModal({ isOpen, item, onClose, onAddToCart, va
           {hasVariants && (
             <div className={styles.variantSection}>
               <h3 className={styles.sectionTitle}>Select Variants</h3>
-              {config.variantDimensions?.filter((d: any) => d.active).map((dim: any, idx: number) => {
-                // For now, we only support cascading selection for the first two dimensions 
-                // in this specific UI layout. Others will display as specs once selected.
-                if (dim.column === 'variant_type') {
-                  return (
-                    <div key={dim.column} className={styles.dropdownGroup}>
-                      <label className={styles.variantLabel}>Select {dim.label}:</label>
-                      <select 
-                        className={styles.variantDropdown}
-                        value={selectedVariantType}
-                        onChange={(e) => {
-                          const val = e.target.value;
-                          setSelectedVariantType(val);
-                          setSelectedVariant(null);
-                          const matches = allAvailableOptions.filter(v => (v.variant_type || v.variant_definitions?.variant_name) === val);
-                          if (matches.length === 1) setSelectedVariant(matches[0]);
-                        }}
-                      >
-                        <option value="">-- Select {dim.label.toLowerCase()} --</option>
-                        {uniqueVariantTypes.map((t) => <option key={t} value={t}>{t}</option>)}
-                      </select>
-                    </div>
-                  );
-                }
-                
-                // Second dimension (Color, Temp, or Custom)
-                if (selectedVariantType && idx === 1) {
-                  const availableOptionsForType = allAvailableOptions.filter(v => (v.variant_type || v.variant_definitions?.variant_name) === selectedVariantType);
-                  
-                  return (
-                    <div key={dim.column} className={styles.dropdownGroup}>
-                      <label className={styles.variantLabel}>Select {dim.label}:</label>
-                      <select 
-                        className={styles.variantDropdown}
-                        value={selectedVariant?.id || ''}
-                        onChange={(e) => {
-                          const vId = e.target.value;
-                          const v = availableOptionsForType.find(opt => String(opt.id) === vId);
-                          setSelectedVariant(v || null);
-                        }}
-                      >
-                        <option value="">-- Select {dim.label.toLowerCase()} --</option>
-                        {availableOptionsForType.map((v) => {
-                          let displayVal = null;
-                          if (dim.column === 'variant_color') displayVal = v.variant_color;
-                          else if (dim.column === 'color_temperature') displayVal = v.color_temperature;
-                          else displayVal = v.specifications?.[dim.column];
+              {activeDimensions.length > 0 ? (
+                activeDimensions.map((dim: any, idx: number) => {
+                  // Determine available options for THIS dropdown based on previous selections
+                  let optionsForThisDropdown = allAvailableOptions;
 
-                          return (
-                            <option key={v.id} value={v.id}>
-                              {displayVal || 'Default'}{dim.column === 'color_temperature' && !isNaN(Number(displayVal)) ? 'K' : ''}
-                            </option>
-                          );
-                        })}
-                      </select>
-                    </div>
-                  );
-                }
-                return null;
-              })}
+                  for (let i = 0; i < idx; i++) {
+                      const prevDimColumn = activeDimensions[i].column;
+                      const selectedVal = dimensionSelections[prevDimColumn];
+                      if (selectedVal) {
+                          optionsForThisDropdown = optionsForThisDropdown.filter(v => String(getDimensionValue(v, prevDimColumn)) === String(selectedVal));
+                      }
+                  }
 
-              {!config.variantDimensions && (
+                  // Extract unique values
+                  const uniqueValues = Array.from(new Set(optionsForThisDropdown.map(v => getDimensionValue(v, dim.column)).filter(Boolean)));
+                  const isEnabled = idx === 0 || !!dimensionSelections[activeDimensions[idx - 1].column];
+
+                  return (
+                      <div key={dim.column} className={styles.dropdownGroup}>
+                          <label className={styles.variantLabel}>Select {dim.label}:</label>
+                          <select 
+                              className={styles.variantDropdown}
+                              value={dimensionSelections[dim.column] || ''}
+                              onChange={(e) => {
+                                const val = e.target.value;
+                                const newSelections: Record<string, string> = { ...dimensionSelections, [dim.column]: val };
+                                
+                                // Clear downstream selections
+                                for (let i = idx + 1; i < activeDimensions.length; i++) {
+                                    const nextColKey = activeDimensions[i].column as string;
+                                    delete newSelections[nextColKey];
+                                }
+                                
+                                setDimensionSelections(newSelections);
+
+                                // Check if we have selected all active dimensions
+                                if (Object.keys(newSelections).length === activeDimensions.length) {
+                                    // Find exact match
+                                    const match = allAvailableOptions.find(v => {
+                                        return activeDimensions.every((d: any) => {
+                                            const dimVal = getDimensionValue(v, d.column);
+                                            const selectedVal = newSelections[d.column as string];
+                                            return String(dimVal) === String(selectedVal);
+                                        });
+                                    });
+                                    setSelectedVariant(match || null);
+                                } else {
+                                    setSelectedVariant(null);
+                                }
+                              }}
+                              disabled={!isEnabled}
+                          >
+                              <option value="">-- Select {dim.label.toLowerCase()} --</option>
+                              {uniqueValues.map((val: any) => (
+                                  <option key={String(val)} value={String(val)}>
+                                      {String(val)}{dim.column === 'color_temperature' && !isNaN(Number(val)) ? 'K' : ''}
+                                  </option>
+                              ))}
+                          </select>
+                      </div>
+                  );
+                })
+              ) : (
                 <>
                   <div className={styles.dropdownGroup}>
                     <label className={styles.variantLabel}>Select {config.variantTypeLabel || 'Type'}:</label>
                     <select 
                       className={styles.variantDropdown}
-                      value={selectedVariantType}
+                      value={dimensionSelections['variant_type'] || ''}
                       onChange={(e) => {
-                        setSelectedVariantType(e.target.value);
+                        const val = e.target.value;
+                        setDimensionSelections({ 'variant_type': val });
                         setSelectedVariant(null);
                       }}
                     >
                       <option value="">-- Select --</option>
-                      {uniqueVariantTypes.map((t) => <option key={t} value={t}>{t}</option>)}
+                      {Array.from(new Set(allAvailableOptions.map(v => getDimensionValue(v, 'variant_type')))).filter(Boolean).map((t: any) => <option key={String(t)} value={String(t)}>{String(t)}</option>)}
                     </select>
                   </div>
-                  {selectedVariantType && (
+                  {dimensionSelections['variant_type'] && (
                     <div className={styles.dropdownGroup}>
                       <label className={styles.variantLabel}>Options:</label>
                       <select 
                         className={styles.variantDropdown}
                         value={selectedVariant?.id || ''}
                         onChange={(e) => {
-                          const vId = e.target.value;
-                          const v = availableTemperatures.find(opt => String(opt.variant.id) === vId)?.variant;
-                          setSelectedVariant(v || null);
+                           const vId = e.target.value;
+                           const v = allAvailableOptions.find(opt => String(opt.id) === vId);
+                           setSelectedVariant(v || null);
                         }}
                       >
                         <option value="">-- Select --</option>
-                        {availableTemperatures.map(({ value, variant }) => (
-                          <option key={variant.id} value={variant.id}>{value}</option>
-                        ))}
+                        {allAvailableOptions
+                            .filter(v => String(getDimensionValue(v, 'variant_type')) === String(dimensionSelections['variant_type']))
+                            .map(v => (
+                                <option key={v.id} value={v.id}>
+                                    {v.color_temperature || v.variant_color || 'Default'}
+                                </option>
+                            ))
+                        }
                       </select>
                     </div>
                   )}

@@ -72,17 +72,19 @@ export default function DynamicCategorySpecs({
         
         // 1. Check for standard column mappings and their common aliases
         if (col === 'variant_type' || col === 'socket') {
-            val = item.variant_type || (item.specifications && getSafeSpecValue(getParsedSpecs(item.specifications), 'socket'));
+            const vt = item.variant_type;
+            const hasValidVt = vt && vt !== 'Unknown' && vt !== 'Base';
+            val = hasValidVt ? vt : (item.specifications && (getSafeSpecValue(getParsedSpecs(item.specifications), 'socket') || getSafeSpecValue(getParsedSpecs(item.specifications), 'variant_type')));
             displayedKeys.add('variant_type');
             displayedKeys.add('socket');
         }
         else if (col === 'variant_color' || col === 'color') {
-            val = item.variant_color || (item.specifications && getSafeSpecValue(getParsedSpecs(item.specifications), 'color'));
+            val = item.variant_color || (item.specifications && (getSafeSpecValue(getParsedSpecs(item.specifications), 'color') || getSafeSpecValue(getParsedSpecs(item.specifications), 'variant_color')));
             displayedKeys.add('variant_color');
             displayedKeys.add('color');
         }
         else if (col === 'color_temperature' || col === 'temp') {
-            val = item.color_temperature || (item.specifications && getSafeSpecValue(getParsedSpecs(item.specifications), 'color_temperature'));
+            val = item.color_temperature || (item.specifications && (getSafeSpecValue(getParsedSpecs(item.specifications), 'color_temperature') || getSafeSpecValue(getParsedSpecs(item.specifications), 'temp')));
             displayedKeys.add('color_temperature');
             displayedKeys.add('temp');
             if (val && !isNaN(Number(val)) && !val.toString().endsWith('K')) val = `${val}K`;
@@ -97,7 +99,7 @@ export default function DynamicCategorySpecs({
         
         if (val === undefined || val === null || val === '') return null;
         const valStr = String(val).trim();
-        if (!valStr || valStr.toLowerCase() === 'undefined') return null;
+        if (!valStr || valStr.toLowerCase() === 'undefined' || valStr.toLowerCase() === 'unknown' || valStr.toLowerCase() === 'base') return null;
         
         displayedValues.add(valStr.toLowerCase());
 
@@ -115,6 +117,34 @@ export default function DynamicCategorySpecs({
           </div>
         );
       })}
+
+      {/* Fallback for primary variant type if no dynamic variant dimensions exist */}
+      {(!config.variantDimensions || config.variantDimensions.length === 0) && (() => {
+        const vt = item.variant_type;
+        const hasValidVt = vt && vt !== 'Unknown' && vt !== 'Base';
+        const val = hasValidVt ? vt : (item.specifications && (getSafeSpecValue(currentSpecs, 'socket') || getSafeSpecValue(currentSpecs, 'variant_type')));
+        
+        if (val && String(val).trim() !== '' && String(val).toLowerCase() !== 'unknown' && String(val).toLowerCase() !== 'base') {
+          displayedKeys.add('variant_type');
+          displayedKeys.add('socket');
+          displayedValues.add(String(val).toLowerCase());
+          
+          return (
+            <div key="fallback-variant-type" style={{ ...valueStyle, display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <span style={{ 
+                color: '#555', 
+                textTransform: 'uppercase', 
+                fontSize: '9px', 
+                fontWeight: 'bold',
+                minWidth: '70px',
+                ...labelStyle 
+              }}>{config.variantTypeLabel || 'Type'}:</span>
+              <span style={{ fontWeight: '600' }}>{val}</span>
+            </div>
+          );
+        }
+        return null;
+      })()}
 
       {/* Technical Fields list */}
       {config.fields.filter(field => {
@@ -134,7 +164,7 @@ export default function DynamicCategorySpecs({
         
         const valStr = String(val).trim();
         // Avoid duplicates. Note: Removed the name inclusion check to ensure important specs like PCD always show.
-        if (!valStr || valStr.toLowerCase() === 'undefined' || displayedValues.has(valStr.toLowerCase())) return null;
+        if (!valStr || valStr.toLowerCase() === 'undefined' || valStr.toLowerCase() === 'unknown' || valStr.toLowerCase() === 'base' || displayedValues.has(valStr.toLowerCase())) return null;
         
         displayedKeys.add(field.key.toLowerCase());
         displayedValues.add(valStr.toLowerCase());

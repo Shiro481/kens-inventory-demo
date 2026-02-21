@@ -275,9 +275,9 @@ export default function EditItemModal({
       e.preventDefault();
       const newTag = tagInput.trim().toLowerCase();
       if (newTag && editingItem) {
-        const currentTags = editingItem.tags || [];
+        const currentTags = editingItem.specifications?.tags || [];
         if (!currentTags.includes(newTag)) {
-          handleInputChange('tags', [...currentTags, newTag]);
+          handleInputChange('specifications', { ...editingItem.specifications, tags: [...currentTags, newTag] });
         }
       }
       setTagInput('');
@@ -286,8 +286,8 @@ export default function EditItemModal({
 
   const handleRemoveTag = (tagToRemove: string) => {
     if (editingItem) {
-      const currentTags = editingItem.tags || [];
-      handleInputChange('tags', currentTags.filter(t => t !== tagToRemove));
+      const currentTags = editingItem.specifications?.tags || [];
+      handleInputChange('specifications', { ...editingItem.specifications, tags: currentTags.filter((t: string) => t !== tagToRemove) });
     }
   };
 
@@ -395,7 +395,7 @@ export default function EditItemModal({
               <DescriptionNotesSection editingItem={editingItem} onInputChange={handleInputChange} />
 
               <TagManager 
-                tags={editingItem.tags || []} tagInput={tagInput}
+                tags={editingItem.specifications?.tags || []} tagInput={tagInput}
                 onTagInputChange={setTagInput} onAddTag={handleAddTag} onRemoveTag={handleRemoveTag}
               />
 

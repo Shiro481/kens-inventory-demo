@@ -31,6 +31,12 @@ export default function VariantManager({
   onSetIsAddingNewType,
   onSetEditingVariantId
 }: VariantManagerProps) {
+  const getParsedSpecs = (specs: any) => {
+    if (!specs) return {};
+    if (typeof specs === 'object') return specs;
+    try { return JSON.parse(specs); } catch { return {}; }
+  };
+
   return (
     <div className={styles.variantSection}>
       <div className={styles.variantHeader}>
@@ -45,15 +51,15 @@ export default function VariantManager({
                 <div className={styles.variantInfoMain} style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', alignItems: 'center' }}>
                   {config.variantDimensions?.filter((d: any) => d.active).map((dim: any) => {
                     let val = null;
-                    const isTypeColumn = dim.column === 'variant_type';
+                    const isTypeColumn = dim.column === 'variant_type' || dim.column === 'socket';
                     if (isTypeColumn) {
-                      val = v.variant_type || v.variant_definitions?.variant_name;
-                    } else if (dim.column === 'variant_color') {
-                      val = v.variant_color;
-                    } else if (dim.column === 'color_temperature') {
-                      val = v.color_temperature;
+                      val = v.variant_type || v.variant_definitions?.variant_name || getParsedSpecs(v.specifications)?.socket;
+                    } else if (dim.column === 'variant_color' || dim.column === 'color') {
+                      val = v.variant_color || getParsedSpecs(v.specifications)?.color;
+                    } else if (dim.column === 'color_temperature' || dim.column === 'temp') {
+                      val = v.color_temperature || getParsedSpecs(v.specifications)?.color_temperature || getParsedSpecs(v.specifications)?.temp;
                     } else {
-                      val = v.specifications?.[dim.column];
+                      val = getParsedSpecs(v.specifications)?.[dim.column];
                     }
                     
                     if (!val) return null;
@@ -96,8 +102,8 @@ export default function VariantManager({
                       color_temperature: v.color_temperature || '',
                       description: v.description || '',
                       sku: v.variant_sku || '',
-                      notes: v.specifications?.internal_notes || '',
-                      specifications: v.specifications || {}
+                      notes: getParsedSpecs(v.specifications)?.internal_notes || '',
+                      specifications: getParsedSpecs(v.specifications)
                     });
                     onSetIsAddingNewType(false);
                     onSetShowVariantForm(true);
@@ -134,11 +140,11 @@ export default function VariantManager({
                 {config.variantDimensions.filter((d: any) => d.active).map((dim: any) => {
                   const normalizedDimLabel = dim.label.toLowerCase().replace(':', '').trim();
                   const normalizedTypeLabel = (config.variantTypeLabel || 'Variant Type').toLowerCase().replace(':', '').trim();
-                  const isPrimaryType = dim.column === 'variant_type' || normalizedDimLabel === normalizedTypeLabel;
+                  const isPrimaryType = dim.column === 'variant_type' || dim.column === 'socket' || normalizedDimLabel === normalizedTypeLabel;
                   
                   let val = '';
-                  if (dim.column === 'variant_color') val = newVariantData.color || '';
-                  else if (dim.column === 'color_temperature') val = newVariantData.color_temperature || '';
+                  if (dim.column === 'variant_color' || dim.column === 'color') val = newVariantData.color || '';
+                  else if (dim.column === 'color_temperature' || dim.column === 'temp') val = newVariantData.color_temperature || '';
                   else if (isPrimaryType) val = newVariantData.variant_type || '';
                   else val = newVariantData.specifications?.[dim.column] || '';
                   
@@ -195,9 +201,9 @@ export default function VariantManager({
                           value={val} 
                           onChange={e => {
                             const newVal = e.target.value;
-                            if (dim.column === 'variant_color') {
+                            if (dim.column === 'variant_color' || dim.column === 'color') {
                               onSetNewVariantData((prev: any) => ({...prev, color: newVal}));
-                            } else if (dim.column === 'color_temperature') {
+                            } else if (dim.column === 'color_temperature' || dim.column === 'temp') {
                               onSetNewVariantData((prev: any) => ({...prev, color_temperature: newVal}));
                             } else {
                               onSetNewVariantData((prev: any) => ({

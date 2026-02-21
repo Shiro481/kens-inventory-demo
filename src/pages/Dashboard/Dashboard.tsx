@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useInventoryStore } from '../../store/inventoryStore';
 import { useInventory } from '../../hooks/useInventory';
+import { useCategories } from '../../hooks/useCategories';
+import { useSuppliers } from '../../hooks/useSuppliers';
 
 import { Menu } from 'lucide-react';
 import styles from './Dashboard.module.css';
@@ -32,12 +34,12 @@ interface DashboardProps {
  */
 export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
   // ── Inventory state from Zustand store (single source of truth) ──────────
-  const { items, fetchInventory, isLoading } = useInventoryStore();
+  const { items, fetchInventory, isLoading, error } = useInventoryStore();
 
-  const [error, setError] = useState<string | null>(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [suppliers, setSuppliers] = useState<any[]>([]);
-  const [categories, setCategories] = useState<string[]>([]);
+  
+  const { suppliers, fetchSuppliers } = useSuppliers();
+  const { categories, fetchCategories } = useCategories();
 
   // Mutator hook
   const { confirmDelete: _confirmDelete, handleSave: _handleSave } = useInventory(suppliers);
@@ -59,27 +61,13 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
 
   useEffect(() => {
     if (!supabase) {
-      setError("Supabase client is not initialized. Please check your .env file for VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY.");
+      console.error("Supabase client is not initialized.");
       return;
     }
     fetchInventory();
     fetchSuppliers();
     fetchCategories();
   }, []);
-
-  async function fetchCategories() {
-    if (!supabase) return;
-    const { data } = await supabase.from('product_categories').select('name').order('name');
-    if (data) {
-      setCategories(data.map(c => c.name));
-    }
-  }
-
-  async function fetchSuppliers() {
-    if (!supabase) return;
-    const { data } = await supabase.from('suppliers').select('*').order('name');
-    if (data) setSuppliers(data);
-  }
 
   // Inventory data is fetched and managed by useInventoryStore.fetchInventory().
   // Dashboard reads items directly from the store via destructuring above.
@@ -229,11 +217,12 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
           
           {activeView === 'analytics' && <Analytics />}
 
-          {activeView === 'pos' && <Pos items={items} onSaleComplete={fetchInventory} />}
+          {activeView === 'pos' && <Pos items={items} isLoading={isLoading} onSaleComplete={fetchInventory} />}
           
           {activeView === 'inventory' && (
             <InventoryManager
               items={items}
+              isLoading={isLoading}
               onAddItem={handleAddItem}
               onAddVariant={handleAddVariantClick}
               onEdit={handleEditClick}

@@ -40,7 +40,7 @@ export interface InventoryItem {
   variant_type?: string;
   supplier?: string;
   /** JSONB specifications blob from database */
-  specifications?: any;
+  specifications?: Specifications;
 
   // --- Variant-related fields ---
   /** ID of the specific variant if this item is a variant */
@@ -54,11 +54,19 @@ export interface InventoryItem {
   parent_product_id?: string;
   /** Internal notes for specific item or variant */
   notes?: string;
-  /** Custom tags for filtering and categorization */
-  tags?: string[];
-
   // Allow for other dynamic fields
   [key: string]: any;
+}
+
+export interface Specifications {
+  tags?: string[];
+  last_restock?: string;
+  internal_notes?: string;
+  color?: string;
+  socket?: string;
+  material?: string;
+  warranty_months?: number;
+  [key: string]: any; // Allow open-ended but strong type base
 }
 
 /**

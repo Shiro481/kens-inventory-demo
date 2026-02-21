@@ -165,6 +165,15 @@ export default function Pos({ items, isLoading: globalLoading = false, onSaleCom
     const specParts: string[] = [];
     const displayedKeys = new Set<string>();
     const displayedValues = new Set<string>();
+    
+    // Robust helper to parse specifications if it's a string
+    const getParsedSpecs = (specs: any) => {
+      if (!specs) return {};
+      if (typeof specs === 'object') return specs;
+      try { return JSON.parse(specs); } catch { return {}; }
+    };
+    
+    const currentSpecs = getParsedSpecs(variant.specifications);
 
     const getSafeVal = (obj: any, key: string) => {
         if (!obj) return null;
@@ -177,20 +186,23 @@ export default function Pos({ items, isLoading: globalLoading = false, onSaleCom
     if (config.variantDimensions) {
       config.variantDimensions.filter((d: any) => d.active).forEach((dim: any) => {
         let val = null;
-        if (dim.column === 'variant_type') {
-            val = variant.variant_type;
+        const colName = dim.column.toLowerCase();
+        
+        if (colName === 'variant_type' || colName === 'socket') {
+            val = variant.variant_type || variant.variant_definitions?.variant_name || getParsedSpecs(variant.specifications)?.socket;
             displayedKeys.add('variant_type');
             displayedKeys.add('socket');
-        } else if (dim.column === 'variant_color') {
-            val = variant.variant_color;
+        } else if (colName === 'variant_color' || colName === 'color') {
+            val = variant.variant_color || getParsedSpecs(variant.specifications)?.color;
             displayedKeys.add('variant_color');
             displayedKeys.add('color');
-        } else if (dim.column === 'color_temperature') {
-            val = variant.color_temperature;
+        } else if (colName === 'color_temperature' || colName === 'temp') {
+            val = variant.color_temperature || getParsedSpecs(variant.specifications)?.color_temperature || getParsedSpecs(variant.specifications)?.temp;
             displayedKeys.add('color_temperature');
-            if (val && !isNaN(Number(val)) && !val.toString().endsWith('K')) val = `${val}K`;
+            displayedKeys.add('temp');
+            if (val && !isNaN(Number(val)) && !String(val).endsWith('K')) val = `${val}K`;
         } else {
-            val = (variant as any)[dim.column] ?? getSafeVal(variant.specifications || {}, dim.column);
+            val = (variant as any)[dim.column] ?? getSafeVal(currentSpecs, dim.column);
             displayedKeys.add(dim.column.toLowerCase());
         }
         
@@ -210,7 +222,7 @@ export default function Pos({ items, isLoading: globalLoading = false, onSaleCom
         const [parent, child] = field.key.split('.');
         val = (variant as any)[parent]?.[child];
       } else {
-        val = (variant as any)[field.key] ?? getSafeVal(variant.specifications || {}, field.key);
+        val = (variant as any)[field.key] ?? getSafeVal(currentSpecs, field.key);
       }
       
       if (val && String(val).trim() !== '' && String(val) !== '0') {
@@ -224,7 +236,7 @@ export default function Pos({ items, isLoading: globalLoading = false, onSaleCom
     });
 
     // Catch-all for other specifications
-    const allSpecs = { ...(variant.specifications || {}), ...(variant.specifications?.specs || {}) };
+    const allSpecs = { ...currentSpecs, ...(currentSpecs.specs || {}) };
     const internalFields = ['tags', 'last_restock', 'internal_notes', 'color', 'socket', 'specs', 'variant_type', 'variant_color', 'color_temperature'];
     
     Object.entries(allSpecs).forEach(([key, val]) => {

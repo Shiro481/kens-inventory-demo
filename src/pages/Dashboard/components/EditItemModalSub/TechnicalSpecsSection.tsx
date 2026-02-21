@@ -134,10 +134,8 @@ export default function TechnicalSpecsSection({
       {/* Dynamic Variant Dimensions (Custom Dimensions) */}
       {config.variantDimensions?.filter((d: any) => d.active).map((dim: any) => {
         // Skip legacy columns if they are already rendered or handled specifically
-        if (dim.column === 'variant_type' || dim.column === 'variant_color' || dim.column === 'color_temperature') {
+        if (dim.column === 'variant_color' || dim.column === 'color_temperature') {
             // These are already rendered above if they are part of legacy UI
-            // But we should render them here if they are active but not "variant_type"
-            if (dim.column === 'variant_type') return null;
         }
 
         const value = dim.column === 'variant_color' ? editingItem.variant_color :
