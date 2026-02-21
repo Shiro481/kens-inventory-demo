@@ -48,6 +48,8 @@ export interface InventoryItem {
   /** Display name suffix for the variant */
   variant_display_name?: string;
   variant_price?: number;
+  /** The specific color of the variant from the product_variants table */
+  variant_color?: string;
   /** Flag to identify if this is a variant row in the flat list */
   is_variant?: boolean;
   /** UUID of the parent product if this is a variant */

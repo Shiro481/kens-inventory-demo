@@ -41,10 +41,10 @@ function buildInventoryContext(items: InventoryItem[]): string {
     })
     .join('\n');
 
-  const variantLines = variants
+    const variantLines = variants
     .map(v => {
       let specs = '';
-      if (v.specifications?.color) specs += `Color: ${v.specifications.color} | `;
+      if (v.variant_color) specs += `Color: ${v.variant_color} | `;
       if (v.specifications?.socket) specs += `Socket: ${v.specifications.socket} | `;
       if (v.specifications?.tags?.length) specs += `Tags: ${v.specifications.tags.join(', ')} | `;
       if (v.sku) specs += `SKU: ${v.sku} | `;
