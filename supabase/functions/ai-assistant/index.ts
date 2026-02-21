@@ -75,7 +75,7 @@ INSTRUCTIONS:
     ];
 
     const groqPayload = {
-      model: "llama-3.1-8b-instant",
+      model: "llama-3.3-70b-versatile",
       messages: groqMessages,
       temperature: 0.7,
       max_tokens: 2048,
