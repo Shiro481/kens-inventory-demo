@@ -109,7 +109,9 @@ export const useInventoryStore = create<InventoryStore>((set, get) => ({
           variant_color: item.variant_color || specs?.color,
           lumens: item.lumens,
           beam_type: item.beam_type,
-          variant_type: item.variant_type || specs?.socket || item.variant_categories?.code,
+          // For single items, specs.socket is the canonical write target (set by useInventory save logic).
+          // Fall back to variant_categories.code (FK join) for legacy data, then item.variant_type.
+          variant_type: specs?.socket || item.variant_categories?.code || item.variant_type || null,
           specifications: specs,
           supplier: item.suppliers?.name,
           has_variants: item.has_variants || allVariants?.some((v: any) => v.product_id === item.id),

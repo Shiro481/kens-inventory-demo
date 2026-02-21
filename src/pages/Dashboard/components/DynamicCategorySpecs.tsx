@@ -74,17 +74,30 @@ export default function DynamicCategorySpecs({
         if (col === 'variant_type' || col === 'socket') {
             const vt = item.variant_type;
             const hasValidVt = vt && vt !== 'Unknown' && vt !== 'Base';
-            val = hasValidVt ? vt : (item.specifications && (getSafeSpecValue(getParsedSpecs(item.specifications), 'socket') || getSafeSpecValue(getParsedSpecs(item.specifications), 'variant_type')));
+            // Always check specifications.socket as the authoritative write target for single items
+            const fromSpecs = getSafeSpecValue(getParsedSpecs(item.specifications), 'socket')
+              || getSafeSpecValue(getParsedSpecs(item.specifications), 'variant_type');
+            val = hasValidVt ? vt : fromSpecs;
             displayedKeys.add('variant_type');
             displayedKeys.add('socket');
         }
         else if (col === 'variant_color' || col === 'color') {
-            val = item.variant_color || (item.specifications && (getSafeSpecValue(getParsedSpecs(item.specifications), 'color') || getSafeSpecValue(getParsedSpecs(item.specifications), 'variant_color')));
+            // For Rims/Wheels categories, color may be stored in color_temperature column as a string
+            const fromSpecs = getSafeSpecValue(getParsedSpecs(item.specifications), 'color')
+              || getSafeSpecValue(getParsedSpecs(item.specifications), 'variant_color');
+            const ctAsColor = item.color_temperature && isNaN(Number(item.color_temperature)) ? item.color_temperature : null;
+            val = item.variant_color || fromSpecs || ctAsColor || null;
             displayedKeys.add('variant_color');
             displayedKeys.add('color');
         }
         else if (col === 'color_temperature' || col === 'temp') {
-            val = item.color_temperature || (item.specifications && (getSafeSpecValue(getParsedSpecs(item.specifications), 'color_temperature') || getSafeSpecValue(getParsedSpecs(item.specifications), 'temp')));
+            const rawCt = item.color_temperature;
+            const fromSpecs = getSafeSpecValue(getParsedSpecs(item.specifications), 'color_temperature')
+              || getSafeSpecValue(getParsedSpecs(item.specifications), 'temp');
+            const candidate = rawCt || fromSpecs;
+            // Only use this as a Kelvin value if it's actually numeric — skip strings like 'Red Orange'
+            const isKelvin = candidate && !isNaN(Number(String(candidate).replace('K', '').trim()));
+            val = isKelvin ? candidate : fromSpecs;
             displayedKeys.add('color_temperature');
             displayedKeys.add('temp');
             if (val && !isNaN(Number(val)) && !val.toString().endsWith('K')) val = `${val}K`;
@@ -122,7 +135,9 @@ export default function DynamicCategorySpecs({
       {(!config.variantDimensions || config.variantDimensions.length === 0) && (() => {
         const vt = item.variant_type;
         const hasValidVt = vt && vt !== 'Unknown' && vt !== 'Base';
-        const val = hasValidVt ? vt : (item.specifications && (getSafeSpecValue(currentSpecs, 'socket') || getSafeSpecValue(currentSpecs, 'variant_type')));
+        // specifications.socket is the canonical save target — always check it
+        const fromSpecs = getSafeSpecValue(currentSpecs, 'socket') || getSafeSpecValue(currentSpecs, 'variant_type');
+        const val = hasValidVt ? vt : fromSpecs;
         
         if (val && String(val).trim() !== '' && String(val).toLowerCase() !== 'unknown' && String(val).toLowerCase() !== 'base') {
           displayedKeys.add('variant_type');

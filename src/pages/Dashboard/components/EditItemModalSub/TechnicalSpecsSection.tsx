@@ -133,14 +133,22 @@ export default function TechnicalSpecsSection({
 
       {/* Dynamic Variant Dimensions (Custom Dimensions) */}
       {config.variantDimensions?.filter((d: any) => d.active).map((dim: any) => {
-        // Skip legacy columns if they are already rendered or handled specifically
-        if (dim.column === 'variant_color' || dim.column === 'color_temperature') {
-            // These are already rendered above if they are part of legacy UI
-        }
+        // Determine where to read the current value from
+        const isColorDim = dim.column === 'color' || dim.column === 'variant_color';
+        const isKelvinDim = dim.column === 'color_temperature' || dim.column === 'temp';
 
-        const value = dim.column === 'variant_color' ? editingItem.variant_color :
-                    dim.column === 'color_temperature' ? editingItem.color_temperature :
-                    (editingItem.specifications?.[dim.column] || '');
+        let value = '';
+        if (isColorDim) {
+          // Color lives in specifications.color (or variant_color for legacy)
+          value = editingItem.specifications?.color || editingItem.variant_color || '';
+        } else if (isKelvinDim) {
+          // Only use color_temperature DB column if it's numeric (Kelvin)
+          const rawCt = editingItem.color_temperature;
+          const ctIsKelvin = rawCt && !isNaN(Number(String(rawCt).replace('K', '').trim()));
+          value = ctIsKelvin ? String(rawCt) : (editingItem.specifications?.color_temperature || '');
+        } else {
+          value = editingItem.specifications?.[dim.column] || '';
+        }
 
         return (
           <div key={dim.column} className={styles.formGroup}>
@@ -151,17 +159,32 @@ export default function TechnicalSpecsSection({
               value={value}
               onChange={(e) => {
                 const newVal = e.target.value;
-                if (dim.column === 'variant_color') onInputChange('variant_color', newVal);
-                else if (dim.column === 'color_temperature') onInputChange('color_temperature', newVal);
-                else {
+                if (isColorDim) {
+                  // Always write color to specifications.color — keeps it out of the Kelvin column
+                  onInputChange('specifications', {
+                    ...(editingItem.specifications || {}),
+                    color: newVal
+                  });
+                } else if (isKelvinDim) {
+                  // Only write to DB column if the value is numeric (Kelvin)
+                  const isKelvin = newVal !== '' && !isNaN(Number(newVal.replace('K', '').trim()));
+                  if (isKelvin) {
+                    onInputChange('color_temperature', newVal.replace('K', ''));
+                  } else {
+                    onInputChange('specifications', {
+                      ...(editingItem.specifications || {}),
+                      color_temperature: newVal
+                    });
+                  }
+                } else {
                   onInputChange('specifications', {
                     ...(editingItem.specifications || {}),
                     [dim.column]: newVal
                   });
                 }
               }}
-              placeholder={dim.column === 'variant_color' ? 'e.g. Black, Red, etc.' : 
-                           dim.column === 'color_temperature' ? 'e.g. 6000K' : 
+              placeholder={isColorDim ? 'e.g. Black, Red, etc.' : 
+                           isKelvinDim ? 'e.g. 6000 or 6000K' : 
                            `Enter ${dim.label.toLowerCase()}`}
             />
           </div>
