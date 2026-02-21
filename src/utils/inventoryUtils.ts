@@ -85,42 +85,68 @@ export const filterAndSortItems = (
     });
 };
 
+import * as XLSX from 'xlsx';
+
 /**
- * Export items to CSV
+ * Build a flat row array from one InventoryItem
  */
-export const exportToCSV = (items: InventoryItem[]) => {
-  const headers = [
-    'Name', 'SKU', 'Category', 'Brand', 'Price', 'Cost Price', 
-    'Stock', 'Min Stock', 'Type / Size', 'Color Temperature', 
-    'Supplier', 'Status', 'Notes'
-  ];
+const itemToRow = (item: InventoryItem) => ({
+  'Name':              item.name || '',
+  'SKU':               item.sku || '',
+  'Brand':             item.brand || '',
+  'Variant / Type':    item.variant_type || '',
+  'Color Temp':        item.color_temperature ? String(item.color_temperature) : '',
+  'Price':             item.price || 0,
+  'Cost Price':        item.cost_price || 0,
+  'Stock':             item.stock ?? item.quantity ?? 0,
+  'Min Stock':         item.minQuantity ?? item.min_qty ?? 0,
+  'Supplier':          item.supplier || '',
+  'Status':            getStatus(item),
+  'Notes':             item.notes || '',
+});
 
-  const rows = items.map(item => [
-    `"${(item.name || '').replace(/"/g, '""')}"`,
-    `"${(item.sku || '').replace(/"/g, '""')}"`,
-    `"${(item.category || '').replace(/"/g, '""')}"`,
-    `"${(item.brand || '').replace(/"/g, '""')}"`,
-    item.price || 0,
-    item.cost_price || 0,
-    item.stock ?? item.quantity ?? 0,
-    item.minQuantity ?? item.min_qty ?? 10,
-    `"${(item.variant_type || '').replace(/"/g, '""')}"`,
-    `"${(item.color_temperature || '').toString().replace(/"/g, '""')}"`,
-    `"${(item.supplier || '').replace(/"/g, '""')}"`,
-    `"${getStatus(item)}"`,
-    `"${(item.notes || '').replace(/"/g, '""')}"`
-  ]);
+/**
+ * Export items to Excel (.xlsx) with one sheet per category + an "All Items" summary sheet.
+ */
+export const exportToExcel = (items: InventoryItem[]) => {
+  const wb = XLSX.utils.book_new();
 
-  const csvContent = [headers.join(','), ...rows.map(row => row.join(','))].join('\n');
-  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement('a');
-  const filename = `inventory_export_${new Date().toISOString().split('T')[0]}.csv`;
-  
-  link.setAttribute('href', url);
-  link.setAttribute('download', filename);
-  link.style.visibility = 'hidden';
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
+  // ── All Items (summary sheet always first) ─────────────────────────────────
+  const allRows = items.map(itemToRow);
+  const wsAll = XLSX.utils.json_to_sheet(allRows);
+  applyColumnWidths(wsAll, allRows);
+  XLSX.utils.book_append_sheet(wb, wsAll, 'All Items');
+
+  // ── One sheet per category, sorted alphabetically ─────────────────────────
+  const byCategory = items.reduce<Record<string, InventoryItem[]>>((acc, item) => {
+    const cat = (item.category || 'Uncategorized').trim();
+    if (!acc[cat]) acc[cat] = [];
+    acc[cat].push(item);
+    return acc;
+  }, {});
+
+  Object.keys(byCategory).sort().forEach(category => {
+    const rows = byCategory[category].map(itemToRow);
+    const ws = XLSX.utils.json_to_sheet(rows);
+    applyColumnWidths(ws, rows);
+    // Sheet names max 31 chars, no special chars
+    const sheetName = category.replace(/[\\/*?[\]:]/g, '').slice(0, 31);
+    XLSX.utils.book_append_sheet(wb, ws, sheetName);
+  });
+
+  const filename = `inventory_${new Date().toISOString().split('T')[0]}.xlsx`;
+  XLSX.writeFile(wb, filename);
 };
+
+/** Auto-size column widths based on content */
+function applyColumnWidths(ws: XLSX.WorkSheet, rows: Record<string, any>[]) {
+  if (!rows.length) return;
+  const colKeys = Object.keys(rows[0]);
+  ws['!cols'] = colKeys.map(key => ({
+    wch: Math.max(
+      key.length,
+      ...rows.map(r => String(r[key] ?? '').length)
+    ) + 2
+  }));
+}
+

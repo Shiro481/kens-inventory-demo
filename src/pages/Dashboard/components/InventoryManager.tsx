@@ -3,7 +3,7 @@ import { Search, Download } from 'lucide-react';
 import styles from '../Dashboard.module.css';
 import type { InventoryItem } from '../../../types/inventory';
 import InventoryTable from './InventoryTable';
-import { filterAndSortItems, exportToCSV } from '../../../utils/inventoryUtils';
+import { filterAndSortItems, exportToExcel } from '../../../utils/inventoryUtils';
 import type { FilterStatus, SortBy } from '../../../utils/inventoryUtils';
 
 // Sub-components
@@ -48,7 +48,7 @@ export default function InventoryManager({
     selectedCategories
   );
 
-  const handleExport = () => exportToCSV(filteredItems);
+  const handleExport = () => exportToExcel(filteredItems);
 
   const activeFilterCount = (filterStatus !== 'All' ? 1 : 0) + selectedTags.length + selectedCategories.length;
 
@@ -72,11 +72,11 @@ export default function InventoryManager({
           <button 
             className={styles.filterBtn}
             onClick={handleExport}
-            title="Export to CSV"
+            title="Export to Excel (organized by category)"
             style={{ display: 'flex', alignItems: 'center', gap: '6px' }}
           >
             <Download size={18} />
-            Export
+            Export Excel
           </button>
 
           <FilterMenu 
