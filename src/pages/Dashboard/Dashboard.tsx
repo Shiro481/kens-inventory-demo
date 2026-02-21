@@ -21,6 +21,7 @@ import Settings from './components/Settings';
 import WorkOrders from './components/WorkOrders';
 import DeleteConfirmModal from './components/DeleteConfirmModal';
 import AddVariantModal from './components/AddVariantModal';
+import AiAssistant from './components/AiAssistant';
 
 interface DashboardProps {
   onGoToHome?: () => void;
@@ -274,6 +275,9 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
         onSelect={handleSelectParentItem}
         items={items}
       />
+
+      {/* AI ASSISTANT */}
+      <AiAssistant />
     </div>
   );
 }
