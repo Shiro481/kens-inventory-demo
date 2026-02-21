@@ -87,6 +87,15 @@ export const useInventoryStore = create<InventoryStore>((set, get) => ({
             ? JSON.parse(item.specifications || '{}')
             : (item.specifications || {});
 
+        const itemVariants = allVariants?.filter((v: any) => v.product_id === item.id) || [];
+        const variantCount = itemVariants.length;
+        const hasVariants = item.has_variants || variantCount > 0;
+        
+        // Calculate total stock: sum of variants if it has them, else the base stock
+        const totalStock = hasVariants && variantCount > 0
+          ? itemVariants.reduce((sum: number, v: any) => sum + (v.stock_quantity || 0), 0)
+          : (item.stock_quantity || 0);
+
         allItems.push({
           // Use the raw DB integer ID — no offset needed since UUIDs handle uniqueness
           id: typeof item.id === 'number' ? item.id : parseInt(item.id),
@@ -95,7 +104,7 @@ export const useInventoryStore = create<InventoryStore>((set, get) => ({
           base_name: item.name,
           sku: item.sku,
           price: item.selling_price,
-          stock: item.stock_quantity,
+          stock: totalStock,
           minQuantity: item.min_stock_level,
           category: item.product_categories?.name,
           brand: item.brand,
@@ -114,8 +123,8 @@ export const useInventoryStore = create<InventoryStore>((set, get) => ({
           variant_type: specs?.socket || item.variant_categories?.code || item.variant_type || null,
           specifications: specs,
           supplier: item.suppliers?.name,
-          has_variants: item.has_variants || allVariants?.some((v: any) => v.product_id === item.id),
-          variant_count: allVariants?.filter((v: any) => v.product_id === item.id).length || 0,
+          has_variants: hasVariants,
+          variant_count: variantCount,
           created_at: item.created_at,
           updated_at: item.updated_at,
           notes: specs?.internal_notes || '',
