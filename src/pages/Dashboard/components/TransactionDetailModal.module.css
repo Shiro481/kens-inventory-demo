@@ -364,6 +364,27 @@
   background: #444;
 }
 
+.dimensionContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin: 4px 0;
+}
+
+.dimensionBadge {
+  font-size: 11px;
+  background-color: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  padding: 2px 6px;
+  border-radius: 4px;
+  color: #aaa;
+}
+
+.dimensionValue {
+  color: #fff;
+  font-weight: 600;
+}
+
 /* Print styles */
 @media print {
   .modalOverlay {
@@ -392,5 +413,29 @@
   .printButton,
   .closeFooterButton {
     display: none;
+  }
+  
+  /* Ensure specs print visibly on white paper */
+  .dimensionBadge {
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    color: #444;
+  }
+  
+  .dimensionValue {
+    color: #000;
+  }
+  
+  .itemInfo, .itemName, .customerField, .overviewItem, .notesContainer, .itemRow, .summary {
+    color: #000;
+    border-color: #ccc;
+  }
+  
+  .itemName, .itemSubtotal, .quantityValue {
+    color: #000;
+  }
+  
+  .value, .notesText, .summaryValue, .summaryLabelTotal {
+    color: #000;
   }
 }

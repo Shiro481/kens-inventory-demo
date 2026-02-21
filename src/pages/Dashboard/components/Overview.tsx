@@ -105,7 +105,7 @@ export default function Overview({ items }: OverviewProps) {
   const isGrowthPositive = parseFloat(revenueGrowth) >= 0;
 
   // Calculate Popular Parts based on Sales History
-  const itemSalesCount: Record<number, number> = {};
+  const itemSalesCount: Record<string | number, number> = {};
   sales.forEach(sale => {
     sale.items.forEach(item => {
       itemSalesCount[item.id] = (itemSalesCount[item.id] || 0) + item.quantity;

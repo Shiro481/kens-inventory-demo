@@ -16,6 +16,7 @@ interface CartItem extends InventoryItem {
   variant_id?: string | number;
   variant_display_name?: string;
   variant_price?: number;
+  variant_dimensions?: Record<string, string>;
 }
 
 
@@ -163,6 +164,7 @@ export default function Pos({ items, isLoading: globalLoading = false, onSaleCom
     
     // Create a dynamic display name based on multi-dimensions or legacy fields
     const specParts: string[] = [];
+    const variant_dimensions: Record<string, string> = {};
     const displayedKeys = new Set<string>();
     const displayedValues = new Set<string>();
     
@@ -208,6 +210,7 @@ export default function Pos({ items, isLoading: globalLoading = false, onSaleCom
         
         if (val && String(val).trim() !== '' && String(val) !== '0') {
           specParts.push(`${dim.label}: ${val}`);
+          variant_dimensions[dim.label] = String(val).trim();
           displayedValues.add(String(val).toLowerCase());
         }
       });
@@ -229,6 +232,7 @@ export default function Pos({ items, isLoading: globalLoading = false, onSaleCom
         const valStr = String(val).trim();
         if (!displayedValues.has(valStr.toLowerCase())) {
           specParts.push(`${field.label}: ${val}${field.suffix || ''}`);
+          variant_dimensions[field.label] = `${val}${field.suffix || ''}`.trim();
           displayedValues.add(valStr.toLowerCase());
           displayedKeys.add(field.key.toLowerCase());
         }
@@ -246,6 +250,7 @@ export default function Pos({ items, isLoading: globalLoading = false, onSaleCom
             if (!displayedValues.has(valStr.toLowerCase())) {
                 const label = key.replace(/_/g, ' ').toUpperCase();
                 specParts.push(`${label}: ${valStr}`);
+                variant_dimensions[label] = valStr;
                 displayedValues.add(valStr.toLowerCase());
                 displayedKeys.add(key.toLowerCase());
             }
@@ -269,6 +274,7 @@ export default function Pos({ items, isLoading: globalLoading = false, onSaleCom
       variant_id: variant.id.toString(),
       variant_display_name: specParts.join(' | '),
       variant_price: variant.selling_price,
+      variant_dimensions,
       description: variant.description || selectedItem.description || '',
       color_temperature: variant.color_temperature,
       has_variants: true,
@@ -382,13 +388,16 @@ export default function Pos({ items, isLoading: globalLoading = false, onSaleCom
           name: i.name,
           price: i.variant_price || i.price || 0,
           quantity: i.cartQuantity,
-          variant_id: i.variant_id || null
+          variant_id: i.variant_id || null,
+          variant_dimensions: i.variant_dimensions || null,
+          category: i.category || null,
+          specifications: i.specifications || null
         })),
         p_subtotal: subtotal,
         p_tax: tax,
         p_total: total,
         p_payment_method: paymentMethod,
-        p_notes: `Processed via POS v2 (Atomic)`
+        p_notes: ''
       });
 
       if (rpcError) throw rpcError;
@@ -537,8 +546,23 @@ export default function Pos({ items, isLoading: globalLoading = false, onSaleCom
                 <div className={styles.cartItemInfo}>
                   <div className={styles.cartItemName}>
                     {item.name}
-                    {item.variant_display_name && (
+                    {item.variant_dimensions && Object.keys(item.variant_dimensions).length > 0 ? (
+                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', margin: '6px 0 4px 0' }}>
+                        {Object.entries(item.variant_dimensions).map(([key, value]) => (
+                          <span key={key} style={{ fontSize: '9px', backgroundColor: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)', padding: '2px 6px', borderRadius: '4px', color: '#aaa', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                            {key}: <span style={{ color: '#fff', fontWeight: 600 }}>{value}</span>
+                          </span>
+                        ))}
+                      </div>
+                    ) : item.variant_display_name ? (
                       <div className={styles.variantInfo}>{item.variant_display_name}</div>
+                    ) : (
+                      <DynamicCategorySpecs 
+                        item={item} 
+                        style={{ gap: '2px', marginTop: '4px' }}
+                        labelStyle={{ fontSize: '9px', minWidth: '40px' }}
+                        valueStyle={{ fontSize: '10px', color: '#aaa' }}
+                      />
                     )}
                   </div>
                   <div className={styles.cartItemPrice}>

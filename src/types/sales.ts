@@ -1,10 +1,13 @@
 export interface SaleItem {
-  id: number;
+  id: number | string;
   name: string;
   sku?: string;
   price: number;
   quantity: number;
   subtotal?: number;
+  variant_dimensions?: Record<string, string>;
+  category?: string;
+  specifications?: any;
 }
 
 export interface Sale {

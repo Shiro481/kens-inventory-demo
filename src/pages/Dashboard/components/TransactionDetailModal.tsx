@@ -1,6 +1,8 @@
 import { X, Receipt, User, CreditCard, Package, Calendar, FileText, CheckCircle, AlertCircle } from 'lucide-react';
 import styles from './TransactionDetailModal.module.css';
 import type { Sale } from '../../../types/sales';
+import { useSettings } from '../../../context/SettingsContext';
+import DynamicCategorySpecs from './DynamicCategorySpecs';
 
 interface TransactionDetailModalProps {
   isOpen: boolean;
@@ -33,16 +35,15 @@ export default function TransactionDetailModal({ isOpen, transaction, onClose }:
     });
   };
 
+  const { settings } = useSettings();
+
   /**
    * Format number as currency string
    * @param amount - Number to format as currency
    * @returns Formatted currency string
    */
   const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD'
-    }).format(amount);
+    return `${settings.currency_symbol}${amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
   };
 
   /**
@@ -157,6 +158,22 @@ export default function TransactionDetailModal({ isOpen, transaction, onClose }:
                     <Package size={16} className={styles.itemIcon} />
                     <div>
                       <p className={styles.itemName}>{item.name}</p>
+                      {item.variant_dimensions && Object.keys(item.variant_dimensions).length > 0 ? (
+                        <div className={styles.dimensionContainer}>
+                          {Object.entries(item.variant_dimensions).map(([key, value]) => (
+                            <span key={key} className={styles.dimensionBadge}>
+                              {key}: <span className={styles.dimensionValue}>{value}</span>
+                            </span>
+                          ))}
+                        </div>
+                      ) : (item.category && item.specifications) ? (
+                        <DynamicCategorySpecs 
+                          item={item} 
+                          style={{ gap: '2px', marginTop: '4px' }}
+                          labelStyle={{ fontSize: '11px', minWidth: '40px' }}
+                          valueStyle={{ fontSize: '12px', color: '#888' }}
+                        />
+                      ) : null}
                       <p className={styles.itemSku}>SKU: {item.sku || 'N/A'}</p>
                     </div>
                   </div>
