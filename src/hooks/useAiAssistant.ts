@@ -32,7 +32,6 @@ function buildInventoryContext(items: InventoryItem[]): string {
   const outOfStock = items.filter(i => (i.stock ?? 0) === 0);
 
   const itemLines = parents
-    .slice(0, 60) // cap to avoid huge prompts
     .map(item => {
       const variantCount = item.variant_count ?? 0;
       const stockInfo = variantCount > 0
@@ -43,8 +42,16 @@ function buildInventoryContext(items: InventoryItem[]): string {
     .join('\n');
 
   const variantLines = variants
-    .slice(0, 80)
-    .map(v => `  ↳ ${v.name} (${v.variant_type ?? 'variant'}) | stock: ${v.stock}, price: ₱${v.price}`)
+    .map(v => {
+      let specs = '';
+      if (v.specifications?.color) specs += `Color: ${v.specifications.color} | `;
+      if (v.specifications?.socket) specs += `Socket: ${v.specifications.socket} | `;
+      if (v.specifications?.tags?.length) specs += `Tags: ${v.specifications.tags.join(', ')} | `;
+      if (v.sku) specs += `SKU: ${v.sku} | `;
+      
+      const specString = specs ? ` [Specs: ${specs.slice(0, -3)}]` : '';
+      return `  ↳ Variant: ${v.name} (Type: ${v.variant_type ?? 'Standard'})${specString} | Stock: ${v.stock} | Price: ₱${v.price}`;
+    })
     .join('\n');
 
   return [

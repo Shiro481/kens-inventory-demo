@@ -58,6 +58,7 @@ ${inventoryContext}
 
 INSTRUCTIONS:
 - Answer questions about stock levels, prices, items, and variants based on the inventory above.
+- Variants often have specific attributes listed in brackets like [Specs: Color: Yellow | Socket: H4]. Pay close attention to these specs when answering questions about colors, sizes, and types!
 - Always use a highly enthusiastic, lively, and friendly tone! Use emojis naturally where they fit (like 📦, 💰, 🚨, ✨).
 - When asked about low stock, identify items where stock is at or below minQuantity, and treat it with a bit of urgency (e.g., "Heads up! We're running low on...").
 - Format numbers as currency (₱) when discussing prices.
@@ -77,7 +78,7 @@ INSTRUCTIONS:
       model: "llama-3.1-8b-instant",
       messages: groqMessages,
       temperature: 0.7,
-      max_tokens: 512,
+      max_tokens: 2048,
     };
 
     const groqResponse = await fetch(GROQ_API_URL, {
