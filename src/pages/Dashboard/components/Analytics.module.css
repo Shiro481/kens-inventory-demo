@@ -1,17 +1,20 @@
-.analyticsContainer {
+.container {
   padding: 40px;
   display: flex;
   flex-direction: column;
-  gap: 40px;
+  gap: 24px;
   background-color: var(--bg-dark);
   color: #fff;
   min-height: 100%;
 }
 
+/* ── Header ─────────────────────────────────────────────────────────────── */
 .header {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 20px;
 }
 
 .titleSection h1 {
@@ -36,6 +39,7 @@
   background-color: #050505;
   border: 1px solid var(--border-dim);
   padding: 6px;
+  gap: 2px;
 }
 
 .timeBtn {
@@ -51,150 +55,273 @@
   text-transform: uppercase;
 }
 
+.timeBtn:hover { color: #888; }
+
 .timeBtnActive {
   background-color: var(--brand-neon);
   color: #000;
 }
 
-/* Stats Cards */
+/* ── Stat Cards ─────────────────────────────────────────────────────────── */
 .statsGrid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
+  gap: 16px;
 }
 
 .statCard {
   background-color: #050505;
   border: 1px solid var(--border-dim);
-  padding: 32px;
+  padding: 28px 28px 24px;
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 8px;
   overflow: hidden;
   transition: all 0.2s;
 }
 
 .statCard:hover {
-  border-color: #444;
+  border-color: #333;
   transform: translateY(-2px);
 }
 
-.statHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  z-index: 1;
+.statIcon {
+  position: absolute;
+  right: -10px;
+  bottom: -10px;
+  opacity: 0.03;
+  pointer-events: none;
+  color: #fff;
 }
 
 .statLabel {
   font-weight: 900;
-  font-size: 10px;
+  font-size: 9px;
   color: #555;
   letter-spacing: 2px;
   text-transform: uppercase;
-}
-
-.statValue {
-  font-size: 38px;
-  font-weight: 900;
-  letter-spacing: -0.5px;
   position: relative;
   z-index: 1;
 }
 
-.avgOrderValue {
-  color: var(--brand-neon);
+.statValue {
+  font-size: 34px;
+  font-weight: 900;
+  letter-spacing: -0.5px;
+  position: relative;
+  z-index: 1;
+  line-height: 1;
 }
 
-/* Charts Section */
-.chartsGrid {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 20px;
+.accentValue { color: var(--brand-neon); }
+
+/* Growth Badges */
+.growthUp, .growthDown, .growthNeutral {
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.5px;
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 
+.growthUp      { color: var(--brand-neon); }
+.growthDown    { color: #ef4444; }
+.growthNeutral { color: #333; }
+
+.growthLabel {
+  font-size: 8px;
+  font-weight: 700;
+  color: #444;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+/* ── Chart Panels ────────────────────────────────────────────────────────── */
 .chartPanel {
   background-color: #050505;
   border: 1px solid var(--border-dim);
-  padding: 40px;
+  padding: 32px;
   display: flex;
   flex-direction: column;
-  gap: 32px;
+  gap: 24px;
 }
 
 .panelHeader {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-shrink: 0;
 }
 
 .panelHeader h2 {
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 900;
-  letter-spacing: 1.5px;
+  letter-spacing: 2px;
   margin: 0;
   text-transform: uppercase;
 }
+
+.panelIcon { color: #444; }
 
 .chartViewBadge {
   font-size: 9px;
   font-weight: 900;
   color: #555;
   background-color: #111;
-  padding: 6px 12px;
+  padding: 5px 10px;
   letter-spacing: 2px;
   text-transform: uppercase;
+  border: 1px solid #1a1a1a;
 }
 
 .chartContainer {
   width: 100%;
-  height: 350px;
+  height: 320px;
+  flex-shrink: 0;
 }
 
 .spinnerWrapper {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 250px;
+  height: 100%;
   color: #444;
 }
 
-.spinner {
-  animation: spin 1s linear infinite;
+.emptyChart {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  color: #1a1a1a;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 3px;
+  text-transform: uppercase;
 }
 
-@keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+/* ── Bottom 3-panel grid ─────────────────────────────────────────────────── */
+.bottomGrid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 16px;
 }
 
-@media (max-width: 1200px) {
-  .statsGrid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  
-  .chartsGrid {
-    grid-template-columns: 1fr;
-  }
+/* ── Tooltip ─────────────────────────────────────────────────────────────── */
+.tooltip {
+  background-color: #050505;
+  border: 1px solid #222;
+  padding: 12px 16px;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
-@media (max-width: 768px) {
-  .analyticsContainer {
-    padding: 30px 20px;
-  }
-  .statsGrid {
-    grid-template-columns: 1fr;
-  }
-  .header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 24px;
-  }
-  .statCard {
-    padding: 24px;
-  }
-  .chartPanel {
-    padding: 30px 20px;
-  }
+.ttLabel   { font-size: 9px; color: #555; font-weight: 900; letter-spacing: 1px; text-transform: uppercase; margin: 0; }
+.ttRevenue { font-size: 16px; font-weight: 900; color: var(--brand-neon); margin: 0; }
+.ttOrders  { font-size: 10px; font-weight: 700; color: #555; margin: 0; }
+
+/* ── Payment Breakdown ────────────────────────────────────────────────────── */
+.paymentList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.paymentRow {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.paymentMeta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.paymentMethod {
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  color: #666;
+  text-transform: uppercase;
+}
+
+.paymentAmount {
+  font-size: 14px;
+  font-weight: 900;
+  color: #fff;
+}
+
+.paymentBarTrack {
+  width: 100%;
+  height: 3px;
+  background: #111;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.paymentBarFill {
+  height: 100%;
+  background: var(--brand-neon);
+  border-radius: 2px;
+  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.paymentPct {
+  font-size: 9px;
+  font-weight: 900;
+  color: #444;
+  letter-spacing: 1px;
+  text-align: right;
+}
+
+.paymentTotal {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid #111;
+  padding-top: 16px;
+  margin-top: 4px;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: #444;
+}
+
+.paymentTotal span:last-child {
+  color: var(--brand-neon);
+  font-size: 14px;
+}
+
+/* ── Spinner ─────────────────────────────────────────────────────────────── */
+@keyframes spin { to { transform: rotate(360deg); } }
+.spinner { animation: spin 1s linear infinite; }
+
+/* ── Responsive ──────────────────────────────────────────────────────────── */
+@media (max-width: 1300px) {
+  .statsGrid { grid-template-columns: repeat(2, 1fr); }
+  .bottomGrid { grid-template-columns: 1fr 1fr; }
+  .bottomGrid > :first-child { grid-column: 1 / -1; }
+}
+
+@media (max-width: 900px) {
+  .bottomGrid { grid-template-columns: 1fr; }
+  .bottomGrid > :first-child { grid-column: auto; }
+  .statsGrid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 640px) {
+  .container { padding: 24px 16px; }
+  .statsGrid { grid-template-columns: 1fr; }
+  .header { flex-direction: column; align-items: flex-start; }
+  .statValue { font-size: 28px; }
+  .chartPanel { padding: 24px 16px; }
 }
