@@ -69,6 +69,13 @@ export default function Pos({ items, isLoading: globalLoading = false, onSaleCom
         (item.category || ''),
         (item.brand || ''),
         (item.variant_type || ''),
+        (item.variant_display_name || ''),
+        (item.variant_color || ''),
+        (item.color_temperature?.toString() || ''),
+        (item.voltage?.toString() || ''),
+        (item.wattage?.toString() || ''),
+        (item.lumens?.toString() || ''),
+        (item.beam_type || ''),
         (item.barcode || ''),
         (item.description || ''),
         (item.notes || '')
