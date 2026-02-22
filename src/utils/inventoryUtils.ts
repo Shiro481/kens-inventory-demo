@@ -26,7 +26,7 @@ export const filterAndSortItems = (
       if (searchQuery.trim() !== '') {
         const queryWords = searchQuery.toLowerCase().split(/\s+/).filter(word => word.length > 0);
         const searchableString = [
-          item.name,
+          cleanItemName(item),
           item.sku,
           item.category,
           item.brand,
@@ -38,8 +38,7 @@ export const filterAndSortItems = (
           item.wattage?.toString(),
           item.lumens?.toString(),
           item.notes,
-          item.tags?.join(' '),
-          item.specifications ? JSON.stringify(item.specifications) : ''
+          item.tags?.join(' ')
         ].join(' ').toLowerCase();
 
         if (!queryWords.every(word => searchableString.includes(word))) return false;

@@ -71,13 +71,7 @@ export default function Pos({ items, isLoading: globalLoading = false, onSaleCom
         (item.variant_type || ''),
         (item.barcode || ''),
         (item.description || ''),
-        (item.notes || ''),
-        (item.color_temperature?.toString() || ''),
-        (item.voltage?.toString() || ''),
-        (item.wattage?.toString() || ''),
-        (item.lumens?.toString() || ''),
-        (item.beam_type || ''),
-        (item.specifications ? JSON.stringify(item.specifications) : '')
+        (item.notes || '')
       ];
       
       const inFields = searchFields.some(field => field.toLowerCase().includes(token));

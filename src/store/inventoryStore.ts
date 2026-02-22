@@ -154,13 +154,33 @@ export const useInventoryStore = create<InventoryStore>((set, get) => ({
             ? JSON.parse(variant.specifications || '{}')
             : (variant.specifications || {});
 
+        // 4.1 Collect all dimension words from all siblings to strip from parent name
+        const siblingDimensions = (allVariants ?? [])
+          .filter((v: any) => v.product_id === variant.product_id)
+          .flatMap((v: any) => [
+            v.variant_type,
+            v.variant_color,
+            v.color_temperature ? String(v.color_temperature) : null
+          ])
+          .filter(Boolean);
+
+        let cleanedParentName = parentProduct.name || '';
+        siblingDimensions.forEach(val => {
+          const words = String(val).toLowerCase().split(/\s+/).filter(w => w.length > 2);
+          words.forEach(word => {
+            const regex = new RegExp(`\\b${word}\\b`, 'gi');
+            cleanedParentName = cleanedParentName.replace(regex, '');
+          });
+        });
+        cleanedParentName = cleanedParentName.replace(/\s+-/g, ' ').replace(/\s+/g, ' ').replace(/^-\s+/, '').trim() || parentProduct.name;
+
         allItems.push({
           // Use the raw DB integer ID for variants — parent IDs and variant IDs
           // live in separate tables so collision in the flat UI list is handled
           // by uuid being the actual PK used for all DB operations.
           id: typeof variant.id === 'number' ? variant.id : parseInt(variant.id),
           uuid: variant.id,
-          name: parentProduct.name,
+          name: cleanedParentName,
           base_name: parentProduct.name,
           sku: variant.variant_sku || `${parentProduct.sku}-${variant.id}`,
           price:
