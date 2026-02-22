@@ -23,6 +23,35 @@
   background-color: rgba(255, 255, 255, 0.02);
 }
 
+/* --- VIRTUALIZATION CONTAINERS --- */
+.virtualScrollContainer {
+  flex: 1;
+  height: calc(100vh - 260px);
+  overflow-y: auto;
+  position: relative;
+  /* Optional: stylish thin scrollbar */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 255, 157, 0.2) transparent;
+}
+
+.virtualScrollContainer::-webkit-scrollbar {
+  width: 6px;
+}
+
+.virtualScrollContainer::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.virtualScrollContainer::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 255, 157, 0.2);
+  border-radius: 10px;
+}
+
+.virtualTotalSizeContainer {
+  width: 100%;
+  position: relative;
+}
+
 .partInfo {
   display: flex;
   gap: 16px;
