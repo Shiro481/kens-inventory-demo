@@ -146,15 +146,28 @@ export default function EditItemModal({
     if (!pid || item?.id === 0) {
          // --- LOCAL FLOW (New Product) ---
          // Check for local duplicates before adding
-         const isDuplicate = productVariants.some(v => 
-            v.variant_id === variantId && 
-            (v.variant_color || '') === (newVariantData.color || '') &&
-            (v.color_temperature || '') === (newVariantData.color_temperature || '') &&
-            v.id !== editingVariantId // Allow editing the current variant
-         );
+         const isDuplicate = productVariants.some(v => {
+            if (v.id === editingVariantId) return false; // Allow editing the current variant
+            if (v.variant_id !== variantId) return false;
+            if ((v.variant_color || '') !== (newVariantData.color || '')) return false;
+            if ((v.color_temperature || '') !== (newVariantData.color_temperature || '')) return false;
+            
+            // Check dynamic specifications (e.g., Length for Wipers)
+            const vSpecs = typeof v.specifications === 'string' ? JSON.parse(v.specifications || '{}') : (v.specifications || {});
+            const nSpecs = newVariantData.specifications || {};
+            
+            // If the new variant has specific dimensions, the existing one MUST match them all to be a duplicate
+            for (const key of Object.keys(nSpecs)) {
+               if (key === 'internal_notes') continue;
+               if (String(vSpecs[key] || '') !== String(nSpecs[key] || '')) {
+                  return false; // Found a difference in dimensions (e.g., 20 vs 24 inch)
+               }
+            }
+            return true;
+         });
 
          if (isDuplicate && !editingVariantId) {
-            return alert(`This variant (${normalizedType}) already exists in your list.`);
+            return alert(`This variant (${normalizedType}) already exists in your list with these exact specifications.`);
          }
 
          const newVar = {
@@ -174,6 +187,8 @@ export default function EditItemModal({
              description: newVariantData.description,
              specifications: { 
                 ...(newVariantData.specifications || {}),
+                color: newVariantData.color || null,
+                color_temperature: newVariantData.color_temperature || null,
                 internal_notes: newVariantData.notes
               }
           };
@@ -201,17 +216,29 @@ export default function EditItemModal({
     } else {
         const { data: potentialMatches } = await supabase
             .from('product_variants')
-            .select('id, variant_color, color_temperature')
+            .select('id, variant_color, color_temperature, specifications')
             .eq('product_id', pid)
             .eq('variant_id', variantId);
 
         const targetColor = newVariantData.color || null;
         const targetTemp = newVariantData.color_temperature || null;
+        const targetSpecs = newVariantData.specifications || {};
 
-        existingProductVariant = potentialMatches?.find((v: any) => 
-            (v.variant_color || null) === targetColor && 
-            (v.color_temperature || null) === (targetTemp ? String(targetTemp) : null)
-        );
+        existingProductVariant = potentialMatches?.find((v: any) => {
+            const matchColor = (v.variant_color || null) === targetColor;
+            const matchTemp = (v.color_temperature || null) === (targetTemp ? String(targetTemp) : null);
+            if (!matchColor || !matchTemp) return false;
+
+            // Deep check specifications (Wiper Lengths, Wattage, etc.)
+            const vSpecs = typeof v.specifications === 'string' ? JSON.parse(v.specifications || '{}') : (v.specifications || {});
+            for (const key of Object.keys(targetSpecs)) {
+               if (key === 'internal_notes') continue;
+               if (String(vSpecs[key] || '') !== String(targetSpecs[key] || '')) {
+                  return false;
+               }
+            }
+            return true;
+        });
     }
 
     const updates: any = {
@@ -227,7 +254,9 @@ export default function EditItemModal({
       variant_sku: newVariantData.sku || null,
       specifications: {
           ...(newVariantData.specifications || {}),
-          internal_notes: newVariantData.notes
+          color: newVariantData.color || null,
+          color_temperature: newVariantData.color_temperature || null,
+          internal_notes: newVariantData.notes || null
       }
     };
 

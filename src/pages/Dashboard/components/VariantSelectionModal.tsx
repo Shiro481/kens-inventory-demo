@@ -3,6 +3,8 @@ import { X, Package, ShoppingCart, Plus, Minus, Zap } from 'lucide-react';
 import styles from './VariantSelectionModal.module.css';
 import { useCategoryMetadata } from '../../../hooks/useCategoryMetadata';
 import DynamicCategorySpecs from './DynamicCategorySpecs';
+import { cleanItemName } from '../../../utils/inventoryUtils';
+import type { InventoryItem } from '../../../types/inventory';
 
 interface ProductVariant {
   id: number;
@@ -86,7 +88,7 @@ export default function VariantSelectionModal({
           <div className={styles.productInfo}>
             <h2>{config.variantDimensions?.filter((d: any) => d.active).map((d: any) => d.label).join(' & ') || config.variantTypeLabel}</h2>
             <div className={styles.productDetails}>
-              <span className={styles.productName}>{product.name}</span>
+              <span className={styles.productName}>{cleanItemName(product as any as InventoryItem)}</span>
               <span className={styles.brand}>{product.brand}</span>
             </div>
           </div>

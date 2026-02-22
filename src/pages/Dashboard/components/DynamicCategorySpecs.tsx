@@ -94,10 +94,8 @@ export default function DynamicCategorySpecs({
             const rawCt = item.color_temperature;
             const fromSpecs = getSafeSpecValue(getParsedSpecs(item.specifications), 'color_temperature')
               || getSafeSpecValue(getParsedSpecs(item.specifications), 'temp');
-            const candidate = rawCt || fromSpecs;
-            // Only use this as a Kelvin value if it's actually numeric — skip strings like 'Red Orange'
-            const isKelvin = candidate && !isNaN(Number(String(candidate).replace('K', '').trim()));
-            val = isKelvin ? candidate : fromSpecs;
+            // Prioritize the database column (rawCt) even if it's a string like "Green"
+            val = rawCt || fromSpecs;
             displayedKeys.add('color_temperature');
             displayedKeys.add('temp');
             if (val && !isNaN(Number(val)) && !val.toString().endsWith('K')) val = `${val}K`;

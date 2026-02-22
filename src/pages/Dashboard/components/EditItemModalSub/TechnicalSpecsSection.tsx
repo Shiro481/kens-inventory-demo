@@ -139,8 +139,8 @@ export default function TechnicalSpecsSection({
 
         let value = '';
         if (isColorDim) {
-          // Color lives in specifications.color (or variant_color for legacy)
-          value = editingItem.specifications?.color || editingItem.variant_color || '';
+          // Prefer database column variant_color, then fallback to specifications.color
+          value = editingItem.variant_color || editingItem.specifications?.color || '';
         } else if (isKelvinDim) {
           // Only use color_temperature DB column if it's numeric (Kelvin)
           const rawCt = editingItem.color_temperature;
@@ -160,22 +160,20 @@ export default function TechnicalSpecsSection({
               onChange={(e) => {
                 const newVal = e.target.value;
                 if (isColorDim) {
-                  // Always write color to specifications.color — keeps it out of the Kelvin column
+                  // Write to both fields to keep them in sync
+                  onInputChange('variant_color', newVal);
                   onInputChange('specifications', {
                     ...(editingItem.specifications || {}),
                     color: newVal
                   });
                 } else if (isKelvinDim) {
-                  // Only write to DB column if the value is numeric (Kelvin)
-                  const isKelvin = newVal !== '' && !isNaN(Number(newVal.replace('K', '').trim()));
-                  if (isKelvin) {
-                    onInputChange('color_temperature', newVal.replace('K', ''));
-                  } else {
-                    onInputChange('specifications', {
-                      ...(editingItem.specifications || {}),
-                      color_temperature: newVal
-                    });
-                  }
+                  // Write to both database column and specifications to ensure consistency
+                  // This is crucial for categories like Wipers that use this column for Color Strings
+                  onInputChange('color_temperature', newVal);
+                  onInputChange('specifications', {
+                    ...(editingItem.specifications || {}),
+                    color_temperature: newVal
+                  });
                 } else {
                   onInputChange('specifications', {
                     ...(editingItem.specifications || {}),

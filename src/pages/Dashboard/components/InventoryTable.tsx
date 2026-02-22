@@ -2,6 +2,7 @@ import { Package, Edit, Trash2 } from 'lucide-react';
 import styles from './InventoryTable.module.css';
 import { useSettings } from '../../../context/SettingsContext';
 import DynamicCategorySpecs from './DynamicCategorySpecs';
+import { cleanItemName } from '../../../utils/inventoryUtils';
 import type { InventoryItem } from '../../../types/inventory';
 
 interface InventoryTableProps {
@@ -78,7 +79,7 @@ export default function InventoryTable({ items, isLoading = false, onEdit, onDel
               </div>
               <div>
                 <span className={styles.partName}>
-                  {item.name}
+                  {cleanItemName(item)}
                 </span>
                 
                 {/* Dynamic Attributes based on Category Metadata */}

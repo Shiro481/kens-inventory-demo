@@ -5,6 +5,7 @@ import type { InventoryItem } from '../../../types/inventory';
 import { useSettings } from '../../../context/SettingsContext';
 import { useCategoryMetadata } from '../../../hooks/useCategoryMetadata';
 import DynamicCategorySpecs from './DynamicCategorySpecs';
+import { cleanItemName } from '../../../utils/inventoryUtils';
 
 interface ItemDetailModalProps {
   isOpen: boolean;
@@ -111,7 +112,7 @@ export default function ItemDetailModal({ isOpen, item, onClose, onAddToCart, va
               )}
             </div>
             <div className={styles.itemTitle}>
-              <h2>{item.name}</h2>
+              <h2>{cleanItemName(selectedVariant ? { ...item, ...selectedVariant } : item)}</h2>
               <p className={styles.sku}>SKU: {item.sku || 'NO SKU'}</p>
             </div>
           </div>

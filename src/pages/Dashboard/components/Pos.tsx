@@ -9,6 +9,7 @@ import VariantContainerBox from './VariantContainerBox';
 import ItemDetailModal from './ItemDetailModal';
 import VariantSelectionModal from './VariantSelectionModal';
 import DynamicCategorySpecs from './DynamicCategorySpecs';
+import { cleanItemName } from '../../../utils/inventoryUtils';
 
 interface CartItem extends InventoryItem {
   cartKey: string;        // Stable composite key: "parentId:variantId" or "itemId"
@@ -501,8 +502,7 @@ export default function Pos({ items, isLoading: globalLoading = false, onSaleCom
                 <div className={styles.sku}>{item.sku || 'NO SKU'}</div>
                 {item.brand && <div className={styles.brand}>{item.brand}</div>}
                 <div className={styles.productName}>
-                  {item.name}
-                  {item.is_variant && <span className={styles.isVariantTag}>{item.variant_type}</span>}
+                  {cleanItemName(item)}
                 </div>
                 <div className={styles.productSubInfo}>
                   <DynamicCategorySpecs 
@@ -545,7 +545,7 @@ export default function Pos({ items, isLoading: globalLoading = false, onSaleCom
               <div key={`${item.id}-${item.variant_id || 'default'}`} className={styles.cartItem}>
                 <div className={styles.cartItemInfo}>
                   <div className={styles.cartItemName}>
-                    {item.name}
+                    {cleanItemName(item)}
                     {item.variant_dimensions && Object.keys(item.variant_dimensions).length > 0 ? (
                       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', margin: '6px 0 4px 0' }}>
                         {Object.entries(item.variant_dimensions).map(([key, value]) => (

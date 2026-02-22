@@ -202,9 +202,23 @@ export default function VariantManager({
                           onChange={e => {
                             const newVal = e.target.value;
                             if (dim.column === 'variant_color' || dim.column === 'color') {
-                              onSetNewVariantData((prev: any) => ({...prev, color: newVal}));
+                              onSetNewVariantData((prev: any) => ({
+                                ...prev, 
+                                color: newVal,
+                                specifications: { 
+                                  ...(prev.specifications || {}), 
+                                  color: newVal 
+                                }
+                              }));
                             } else if (dim.column === 'color_temperature' || dim.column === 'temp') {
-                              onSetNewVariantData((prev: any) => ({...prev, color_temperature: newVal}));
+                              onSetNewVariantData((prev: any) => ({
+                                ...prev, 
+                                color_temperature: newVal,
+                                specifications: { 
+                                  ...(prev.specifications || {}), 
+                                  color_temperature: newVal 
+                                }
+                              }));
                             } else {
                               onSetNewVariantData((prev: any) => ({
                                 ...prev, 

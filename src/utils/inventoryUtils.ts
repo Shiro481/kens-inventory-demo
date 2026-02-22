@@ -31,6 +31,8 @@ export const filterAndSortItems = (
           item.category,
           item.brand,
           item.variant_type,
+          item.variant_display_name,
+          item.variant_color,
           item.color_temperature?.toString(),
           item.voltage?.toString(),
           item.wattage?.toString(),
@@ -150,3 +152,37 @@ function applyColumnWidths(ws: XLSX.WorkSheet, rows: Record<string, any>[]) {
   }));
 }
 
+/**
+ * Cleans an item name by stripping redundant variant details (color, type, temp).
+ * Used to avoid "Wiper Blade - Green" redundancy when "Color: Green" is already in sub-info.
+ */
+export const cleanItemName = (item: InventoryItem): string => {
+  let name = item.name || '';
+  if (!item.is_variant) return name;
+
+  const toStrip = [
+    item.variant_type,
+    item.variant_color,
+    item.color_temperature ? String(item.color_temperature) : null
+  ].filter(Boolean);
+
+  toStrip.forEach(val => {
+    // Strip words with length > 2 to avoid over-cleaning specific letters/numbers
+    const words = String(val).toLowerCase().split(/\s+/).filter(w => w.length > 2);
+    words.forEach(word => {
+      // Use word boundary regex to replace exact matches
+      const regex = new RegExp(`\\b${word}\\b`, 'gi');
+      name = name.replace(regex, '');
+    });
+  });
+
+  // Cleanup: remove extra dashes, multiple spaces, leading/trailing non-alphanumerics
+  const cleaned = name
+    .replace(/\s+-/g, ' ')
+    .replace(/\s+/g, ' ')
+    .replace(/^-\s+/, '')
+    .trim();
+
+  // Fallback to original name if cleaning results in empty string or too short
+  return cleaned.length > 2 ? cleaned : item.name;
+};
