@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
-import { Save, Calculator, User, Loader2, Layers, Edit2, Search, Trash2, Settings as SettingsIcon } from 'lucide-react';
+import { Save, Calculator, User, Loader2, Layers, Edit2, Search, Trash2, Settings as SettingsIcon, List } from 'lucide-react';
 import styles from './Settings.module.css';
 import { supabase } from '../../../lib/supabase';
 import { useSettings as useGlobalSettings } from '../../../context/SettingsContext';
 import CategoryManager from './CategoryManager';
 import type { InventoryItem } from '../../../types/inventory';
+
+type TabType = 'general' | 'families' | 'categories';
 
 interface StoreSettings {
   store_name: string;
@@ -30,6 +32,7 @@ export default function Settings({ items, onEdit, onDelete, onCategoryAdded }: S
   const [success, setSuccess] = useState(false);
   const [user, setUser] = useState<any>(null);
   const [familySearch, setFamilySearch] = useState('');
+  const [activeTab, setActiveTab] = useState<TabType>('general');
   
   const [settings, setSettings] = useState<StoreSettings>({
     store_name: "KEN'S GARAGE",
@@ -141,11 +144,36 @@ export default function Settings({ items, onEdit, onDelete, onCategoryAdded }: S
           <h1>SETTINGS</h1>
           <p>CONFIGURE SYSTEM PARAMETERS & PREFERENCES</p>
         </div>
+
+        <div className={styles.tabsContainer}>
+          <button 
+            className={`${styles.tabBtn} ${activeTab === 'general' ? styles.activeTab : ''}`}
+            onClick={() => setActiveTab('general')}
+          >
+            <SettingsIcon size={16} />
+            GENERAL SETTINGS
+          </button>
+          <button 
+            className={`${styles.tabBtn} ${activeTab === 'families' ? styles.activeTab : ''}`}
+            onClick={() => setActiveTab('families')}
+          >
+            <Layers size={16} />
+            PRODUCT FAMILIES
+          </button>
+          <button 
+            className={`${styles.tabBtn} ${activeTab === 'categories' ? styles.activeTab : ''}`}
+            onClick={() => setActiveTab('categories')}
+          >
+            <List size={16} />
+            CATEGORY METADATA
+          </button>
+        </div>
       </header>
 
-      <div className={styles.settingsGrid}>
-        {/* Store Profile */}
-        <section className={styles.section}>
+      {activeTab === 'general' && (
+        <div className={`${styles.settingsGrid} ${styles.tabContent}`}>
+          {/* Store Profile */}
+          <section className={styles.section}>
           <div className={styles.sectionHeader}>
             <SettingsIcon className={styles.iconWrapper} size={20} />
             <h2>STORE IDENTITY</h2>
@@ -282,9 +310,13 @@ export default function Settings({ items, onEdit, onDelete, onCategoryAdded }: S
             To change password or security settings, please contact the system proprietor.
           </p>
         </section>
+        </div>
+      )}
 
-        {/* Product Family Management */}
-        <section className={styles.section}>
+      {activeTab === 'families' && (
+        <div className={`${styles.settingsGrid} ${styles.tabContent}`} style={{ display: 'block' }}>
+          {/* Product Family Management */}
+          <section className={styles.section}>
           <div className={styles.sectionHeader}>
             <Layers className={styles.iconWrapper} size={20} />
             <h2>PRODUCT FAMILIES</h2>
@@ -366,12 +398,17 @@ export default function Settings({ items, onEdit, onDelete, onCategoryAdded }: S
             )}
           </div>
         </section>
-        
-        {/* Category Metadata Manager */}
-        <div style={{ padding: '0 4px' }}>
-          <CategoryManager onCategoryAdded={onCategoryAdded} />
         </div>
-      </div>
+      )}
+      
+      {activeTab === 'categories' && (
+        <div className={`${styles.settingsGrid} ${styles.tabContent}`} style={{ display: 'block' }}>
+          {/* Category Metadata Manager */}
+          <div style={{ padding: '0 4px' }}>
+            <CategoryManager onCategoryAdded={onCategoryAdded} />
+          </div>
+        </div>
+      )}
     </div>
   );
 }

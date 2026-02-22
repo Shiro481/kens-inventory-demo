@@ -1,31 +1,8 @@
-
 import { useState, useEffect } from 'react';
 import { Settings, Plus, Trash2, Save, X, List, Tag, AlertCircle, Loader2 } from 'lucide-react';
 import styles from './CategoryManager.module.css';
 import { supabase } from '../../../lib/supabase';
-
-interface CategoryField {
-  key: string;
-  label: string;
-  type: 'text' | 'number' | 'select';
-  suffix?: string;
-  options?: string[];
-}
-
-interface VariantDimension {
-  label: string;
-  column: string;
-  active: boolean;
-}
-
-interface CategoryMetadata {
-  id?: number;
-  category_id: number;
-  variant_type_label: string;
-  variant_dimensions?: VariantDimension[];
-  fields: CategoryField[];
-  suggested_variant_types: string[];
-}
+import type { CategoryField, VariantDimension, CategoryMetadata } from '../../../types/category';
 
 interface ProductCategory {
   id: number;
@@ -368,11 +345,15 @@ export default function CategoryManager({ onCategoryAdded }: CategoryManagerProp
                     disabled={!dim.active}
                     style={{ flex: 1 }}
                   />
-                  <div className={styles.columnBadge}>{dim.column}</div>
                   {idx > 0 && (
-                    <button onClick={() => removeDimension(idx)} className={styles.removeBtn} style={{ marginLeft: '8px' }}>
-                      <Trash2 size={14} />
-                    </button>
+                    <div style={{ display: 'flex', alignItems: 'center', marginLeft: 'auto', gap: '8px' }}>
+                      <span style={{ fontSize: '11px', fontWeight: 700, color: '#666', textTransform: 'uppercase', letterSpacing: '1px' }}>
+                        {dim.label || `Dimension ${idx + 1}`}
+                      </span>
+                      <button onClick={() => removeDimension(idx)} className={styles.removeBtn} title={`Delete ${dim.label || 'Dimension'}`}>
+                        <Trash2 size={14} />
+                      </button>
+                    </div>
                   )}
                 </div>
               ))}

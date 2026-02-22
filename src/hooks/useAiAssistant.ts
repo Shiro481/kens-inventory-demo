@@ -1,6 +1,7 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 import { useInventoryStore } from '../store/inventoryStore';
+import { useAllCategoryConfigs, type CategoryMetadataWithCategory } from './useAllCategoryConfigs';
 import type { InventoryItem } from '../types/inventory';
 
 export interface ChatMessage {
@@ -22,7 +23,7 @@ interface UseAiAssistantReturn {
  * Builds a compact inventory snapshot for the AI system prompt.
  * We summarise instead of dumping raw JSON to stay within token limits.
  */
-function buildInventoryContext(items: InventoryItem[]): string {
+function buildInventoryContext(items: InventoryItem[], metadataList: CategoryMetadataWithCategory[]): string {
   if (!items.length) return 'No inventory data available.';
 
   const parents = items.filter(i => !i.is_variant);
@@ -44,8 +45,34 @@ function buildInventoryContext(items: InventoryItem[]): string {
     const variantLines = variants
     .map(v => {
       let specs = '';
-      if (v.variant_color) specs += `Color: ${v.variant_color} | `;
-      if (v.specifications?.socket) specs += `Socket: ${v.specifications.socket} | `;
+      
+      // 1. Find the parent product to get its category
+      const parent = parents.find(p => p.uuid === v.parent_product_id);
+      
+      // 2. Find the metadata config for that category
+      const categoryConfig = metadataList.find(m => m.product_categories?.name === parent?.category);
+      
+      // 3. Dynamically map active variant dimensions
+      if (categoryConfig?.variant_dimensions) {
+         categoryConfig.variant_dimensions.forEach(dim => {
+            if (!dim.active) return;
+            
+            // Extract the actual value from the variant using the dimension's column mapping
+            let val;
+            if (dim.column === 'variant_color') val = v.variant_color;
+            else if (dim.column === 'color_temperature') val = v.color_temperature;
+            else if (dim.column.startsWith('spec_')) {
+                const specKey = dim.column.replace('spec_', '');
+                val = v.specifications?.[specKey];
+            }
+
+            if (val) {
+               specs += `${dim.label}: ${val} | `;
+            }
+         });
+      }
+
+      // Add standard fields
       if (v.specifications?.tags?.length) specs += `Tags: ${v.specifications.tags.join(', ')} | `;
       if (v.sku) specs += `SKU: ${v.sku} | `;
       
@@ -54,19 +81,37 @@ function buildInventoryContext(items: InventoryItem[]): string {
     })
     .join('\n');
 
+  const metaLines = metadataList
+    .map(m => {
+      const catName = m.product_categories?.name || 'Unknown';
+      const dims = m.variant_dimensions?.filter(d => d.active).map(d => d.label).join(', ') || 'None';
+      const fields = m.fields?.map(f => f.label).join(', ') || 'None';
+      return `- ${catName}: Dimensions (${dims}), Custom Fields (${fields})`;
+    })
+    .join('\n');
+
   return [
     `Total parent items: ${parents.length}, Total variant SKUs: ${variants.length}`,
     `Low stock (${lowStock.length}): ${lowStock.map(i => i.name).join(', ') || 'none'}`,
     `Out of stock (${outOfStock.length}): ${outOfStock.slice(0, 10).map(i => i.name).join(', ') || 'none'}`,
     '',
-    'INVENTORY:',
+    'CATEGORY CONFIGURATIONS (Defines the variant structures & specs):',
+    metaLines || 'No categories defined.',
+    '',
+    'INVENTORY PARENTS:',
     itemLines,
-    variantLines ? '\nVARIANTS:\n' + variantLines : '',
+    variantLines ? '\nINVENTORY VARIANTS (Specs match the category configuration dimensions!):\n' + variantLines : '',
   ].join('\n');
 }
 
 export function useAiAssistant(): UseAiAssistantReturn {
   const { items } = useInventoryStore();
+  const { metadataList, fetchAllMetadata } = useAllCategoryConfigs();
+
+  useEffect(() => {
+    fetchAllMetadata();
+  }, [fetchAllMetadata]);
+
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       id: 'welcome',
@@ -103,7 +148,7 @@ export function useAiAssistant(): UseAiAssistantReturn {
         content: m.content,
       }));
 
-      const inventoryContext = buildInventoryContext(items);
+      const inventoryContext = buildInventoryContext(items, metadataList);
 
       const { data, error: fnError } = await supabase.functions.invoke('ai-assistant', {
         body: { messages: history, inventoryContext },
@@ -128,7 +173,7 @@ export function useAiAssistant(): UseAiAssistantReturn {
     } finally {
       setIsLoading(false);
     }
-  }, [messages, items, isLoading]);
+  }, [messages, items, metadataList, isLoading]);
 
   const clearMessages = useCallback(() => {
     setMessages([{
