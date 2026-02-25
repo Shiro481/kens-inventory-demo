@@ -47,10 +47,10 @@ export default function InventoryManager({
     return () => clearTimeout(timer);
   }, [searchInput]);
 
-  // Trigger server-side fetch when debounced query changes
+  // Trigger server-side fetch when debounced search query OR category filter changes
   useEffect(() => {
-    fetchInventory(searchQuery, true);
-  }, [searchQuery, fetchInventory]);
+    fetchInventory(searchQuery, true, selectedCategories);
+  }, [searchQuery, selectedCategories, fetchInventory]);
 
   const allAvailableTags = Array.from(new Set(items.flatMap(item => item.tags || []))).sort();
   const allAvailableCategories = Array.from(

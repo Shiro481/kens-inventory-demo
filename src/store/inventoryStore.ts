@@ -13,13 +13,15 @@ interface InventoryStore {
   currentPage: number;
   hasMore: boolean;
   currentSearchQuery: string;
+  currentCategories: string[];
 
   /** 
    * Fetches inventory from the server using the search RPC. 
    * If reset=true, it clears existing items and starts from page 0.
    * Otherwise, it appends the next page to the existing items.
+   * Optionally filter to specific categories server-side.
    */
-  fetchInventory: (searchQuery?: string, reset?: boolean) => Promise<void>;
+  fetchInventory: (searchQuery?: string, reset?: boolean, categories?: string[]) => Promise<void>;
 
   /**
    * Immediately patches a single item in local state before the DB round-trip
@@ -45,9 +47,10 @@ export const useInventoryStore = create<InventoryStore>((set, get) => ({
   currentPage: 0,
   hasMore: true,
   currentSearchQuery: '',
+  currentCategories: [],
 
   // ── fetchInventory (Server-Side Paginated) ──────────────────────────────────
-  fetchInventory: async (searchQuery = '', reset = true) => {
+  fetchInventory: async (searchQuery = '', reset = true, categories: string[] = []) => {
     if (!supabase) {
       set({ error: 'Supabase client not initialized. Check your .env file.' });
       return;
@@ -62,17 +65,22 @@ export const useInventoryStore = create<InventoryStore>((set, get) => ({
     if (isFetchingMore && !get().hasMore) return;
 
     if (reset) {
-      set({ isLoading: true, error: null, currentSearchQuery: searchQuery });
+      set({ isLoading: true, error: null, currentSearchQuery: searchQuery, currentCategories: categories });
     } else {
       set({ isLoadingMore: true, error: null });
     }
 
     try {
+      // Determine which categories to filter by:
+      // On load-more, reuse the persisted categories from the store
+      const categoriesToUse = reset ? categories : get().currentCategories;
+
       // Call the server-side RPC for searching and paginating
       const { data, error } = await supabase.rpc('search_inventory', {
         p_search_query: searchQuery,
         p_limit: PAGE_SIZE,
-        p_offset: offset
+        p_offset: offset,
+        p_categories: categoriesToUse.length > 0 ? categoriesToUse : null
       });
 
       if (error) {

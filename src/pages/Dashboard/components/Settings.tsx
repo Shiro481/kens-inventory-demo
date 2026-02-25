@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Save, Calculator, User, Loader2, Layers, Edit2, Search, Trash2, Settings as SettingsIcon, List } from 'lucide-react';
 import styles from './Settings.module.css';
 import { supabase } from '../../../lib/supabase';
@@ -33,6 +33,11 @@ export default function Settings({ items, onEdit, onDelete, onCategoryAdded }: S
   const [user, setUser] = useState<any>(null);
   const [familySearch, setFamilySearch] = useState('');
   const [activeTab, setActiveTab] = useState<TabType>('general');
+
+  // ── Independent families state (not paginated, fetches directly from DB) ──
+  const [families, setFamilies] = useState<InventoryItem[]>([]);
+  const [familiesLoading, setFamiliesLoading] = useState(false);
+  const prevItemsLengthRef = useRef(items.length);
   
   const [settings, setSettings] = useState<StoreSettings>({
     store_name: "KEN'S GARAGE",
@@ -47,7 +52,57 @@ export default function Settings({ items, onEdit, onDelete, onCategoryAdded }: S
   useEffect(() => {
     fetchSettings();
     fetchUser();
+    fetchFamilies();
   }, []);
+
+  // Re-fetch families whenever items changes length (proxy for "a save just happened")
+  useEffect(() => {
+    if (prevItemsLengthRef.current !== items.length) {
+      prevItemsLengthRef.current = items.length;
+      fetchFamilies();
+    }
+  }, [items]);
+
+  /**
+   * Fetch all parent product families directly from the products table.
+   * Independent of the paginated store so ALL families are always visible.
+   */
+  async function fetchFamilies() {
+    if (!supabase) return;
+    setFamiliesLoading(true);
+    try {
+      const { data, error } = await supabase
+        .from('products')
+        .select(`
+          id, name, sku, brand, has_variants,
+          product_variants(id),
+          product_categories(name)
+        `)
+        .eq('has_variants', true)
+        .order('name');
+
+      if (error) throw error;
+
+      const mapped: InventoryItem[] = (data || []).map((p: any) => ({
+        id: p.id,
+        name: p.name || '',
+        sku: p.sku || '',
+        brand: p.brand || '',
+        has_variants: true,
+        is_variant: false,
+        variant_count: (p.product_variants || []).length,
+        category: p.product_categories?.name || '',
+        stock: 0,
+        price: 0,
+        minQuantity: 0,
+      }));
+      setFamilies(mapped);
+    } catch (err: any) {
+      console.error('[Settings] Error fetching families:', err);
+    } finally {
+      setFamiliesLoading(false);
+    }
+  }
 
   /**
    * Fetch current authenticated user data from Supabase
@@ -338,29 +393,31 @@ export default function Settings({ items, onEdit, onDelete, onCategoryAdded }: S
               />
             </div>
             <div className={styles.familyCount}>
-              {items.filter(item => 
-                item.has_variants && 
-                !item.is_variant && 
-                (item.name.toLowerCase().includes(familySearch.toLowerCase()) || 
-                 item.brand?.toLowerCase().includes(familySearch.toLowerCase()) ||
-                 item.sku?.toLowerCase().includes(familySearch.toLowerCase()))
+              {familiesLoading ? '...' : families.filter(f =>
+                f.name.toLowerCase().includes(familySearch.toLowerCase()) || 
+                f.brand?.toLowerCase().includes(familySearch.toLowerCase()) ||
+                f.sku?.toLowerCase().includes(familySearch.toLowerCase())
               ).length} Families
             </div>
           </div>
 
           <div className={styles.familyList}>
-            {items.filter(item => item.has_variants && !item.is_variant).length === 0 ? (
+            {familiesLoading ? (
+              <div className={styles.emptyList}>
+                <Loader2 size={18} style={{ animation: 'spin 1s linear infinite', display: 'inline-block', marginRight: 8 }} />
+                Loading families...
+              </div>
+            ) : families.filter(f => f.has_variants && !f.is_variant).length === 0 ? (
               <div className={styles.emptyList}>No product families found.</div>
             ) : (
-              items
-                .filter(item => 
-                  item.has_variants && 
-                  !item.is_variant &&
-                  (item.name.toLowerCase().includes(familySearch.toLowerCase()) || 
-                   item.brand?.toLowerCase().includes(familySearch.toLowerCase()) ||
-                   item.sku?.toLowerCase().includes(familySearch.toLowerCase()))
+              families
+                .filter(f => 
+                  f.has_variants && 
+                  !f.is_variant &&
+                  (f.name.toLowerCase().includes(familySearch.toLowerCase()) || 
+                   f.brand?.toLowerCase().includes(familySearch.toLowerCase()) ||
+                   f.sku?.toLowerCase().includes(familySearch.toLowerCase()))
                 )
-                .sort((a, b) => a.name.localeCompare(b.name))
                 .map(product => (
                   <div key={product.id} className={styles.familyItem}>
                     <div className={styles.familyInfo}>
@@ -388,11 +445,11 @@ export default function Settings({ items, onEdit, onDelete, onCategoryAdded }: S
                   </div>
                 ))
             )}
-            {familySearch && items.filter(item => 
-              item.has_variants && 
-              !item.is_variant &&
-              (item.name.toLowerCase().includes(familySearch.toLowerCase()) || 
-               item.brand?.toLowerCase().includes(familySearch.toLowerCase()))
+            {familySearch && !familiesLoading && families.filter(f => 
+              f.has_variants && 
+              !f.is_variant &&
+              (f.name.toLowerCase().includes(familySearch.toLowerCase()) || 
+               f.brand?.toLowerCase().includes(familySearch.toLowerCase()))
             ).length === 0 && (
               <div className={styles.emptyList}>No families match your search.</div>
             )}

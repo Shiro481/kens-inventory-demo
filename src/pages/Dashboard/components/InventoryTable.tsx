@@ -28,7 +28,7 @@ export default function InventoryTable({ items, isLoading = false, onEdit, onDel
   const parentRef = useRef<HTMLDivElement>(null);
   
   // Connect to store for infinite scroll logic
-  const { fetchInventory, hasMore, isLoadingMore, currentSearchQuery } = useInventoryStore();
+  const { fetchInventory, hasMore, isLoadingMore, currentSearchQuery, currentCategories } = useInventoryStore();
 
   const rowVirtualizer = useVirtualizer({
     count: items.length,
@@ -49,7 +49,7 @@ export default function InventoryTable({ items, isLoading = false, onEdit, onDel
 
       if (isNearBottom && hasMore && !isLoadingMore && !isLoading) {
         // false means "append to existing list", not reset
-        fetchInventory(currentSearchQuery, false);
+        fetchInventory(currentSearchQuery, false, currentCategories);
       }
     };
 
