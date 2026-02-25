@@ -1,9 +1,12 @@
 -- ============================================================
--- SQL Migration: Add search_inventory RPC for Server-Side Pagination
--- Description: Efficient text searching and pagination directly on the DB.
+-- Migration: Fix variant specs merge in search_inventory RPC
+-- Problem: Variant rows were only returning p.specifications (parent),
+--          completely discarding v.specifications (variant-specific data).
+--          This caused variant dimensions stored on the variant record
+--          (e.g. socket, PCD, custom specs) to be invisible in the UI.
+-- Fix: Merge parent + variant specs using JSONB || operator.
+--      Variant-specific values take precedence over parent values.
 -- ============================================================
-
-CREATE EXTENSION IF NOT EXISTS unaccent;
 
 CREATE OR REPLACE FUNCTION search_inventory(
   p_search_query TEXT,
@@ -208,7 +211,7 @@ BEGIN
       )
     )
   ORDER BY 
-    CASE WHEN COALESCE(p_search_query, '') = '' THEN 0 ELSE 1 END DESC, -- Put ranked results at top if searching
+    CASE WHEN COALESCE(p_search_query, '') = '' THEN 0 ELSE 1 END DESC,
     search_rank DESC,
     ci.name ASC
   LIMIT p_limit
