@@ -170,7 +170,8 @@ export const cleanItemName = (item: InventoryItem): string => {
     const words = String(val).toLowerCase().split(/\s+/).filter(w => w.length > 2);
     words.forEach(word => {
       // Use word boundary regex to replace exact matches
-      const regex = new RegExp(`\\b${word}\\b`, 'gi');
+      const escapedWord = word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const regex = new RegExp(`\\b${escapedWord}\\b`, 'gi');
       name = name.replace(regex, '');
     });
   });
