@@ -53,7 +53,7 @@ export const useInventoryStore = create<InventoryStore>((set, get) => ({
       return;
     }
 
-    const { currentPage, items } = get();
+    const { currentPage } = get();
     const isFetchingMore = !reset;
     const targetPage = reset ? 0 : currentPage + 1;
     const offset = targetPage * PAGE_SIZE;
