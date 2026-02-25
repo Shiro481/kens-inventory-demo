@@ -35,7 +35,7 @@ export function useInventory(suppliers: Supplier[]) {
         return { error };
       } else {
         removeItemOptimistically(itemToDelete.id, !isVariantItem);
-        await fetchInventory(true);
+        await fetchInventory(undefined, true);
         return { error: null };
       }
     } catch (error: any) {
@@ -144,9 +144,9 @@ export function useInventory(suppliers: Supplier[]) {
 
             const { error: varError } = await supabase.from('product_variants').insert(variantInserts);
             if (varError) return { error: varError };
-            await fetchInventory(true);
+            await fetchInventory(undefined, true);
         } else {
-            await fetchInventory(true);
+            await fetchInventory(undefined, true);
         }
       }
     } else {
@@ -221,7 +221,7 @@ export function useInventory(suppliers: Supplier[]) {
             await supabase.from('products').update(sharedPayload).eq('id', parentId);
         }
 
-        await fetchInventory(true);
+        await fetchInventory(undefined, true);
         if (onSuccess) onSuccess();
         return { error: null };
       }
@@ -299,7 +299,7 @@ export function useInventory(suppliers: Supplier[]) {
       if (error) {
         return { error };
       } else if (updatedProd && updatedProd.length > 0) {
-        await fetchInventory(true);
+        await fetchInventory(undefined, true);
       }
     }
     

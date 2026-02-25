@@ -46,8 +46,8 @@ export const filterAndSortItems = (
 
       // 3. Filter by Tags
       if (selectedTags.length > 0) {
-        const itemTags = item.tags || [];
-        if (!selectedTags.every(tag => itemTags.includes(tag))) return false;
+        const itemTags = (item.tags || []).map(t => t.toLowerCase());
+        if (!selectedTags.every(tag => itemTags.includes(tag.toLowerCase()))) return false;
       }
 
       // 4. Filter by Category

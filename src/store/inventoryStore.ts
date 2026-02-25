@@ -6,11 +6,20 @@ import type { InventoryItem } from '../types/inventory';
 interface InventoryStore {
   items: InventoryItem[];
   isLoading: boolean;
+  isLoadingMore: boolean;
   error: string | null;
-  lastFetched: number | null;
+  
+  // Pagination State
+  currentPage: number;
+  hasMore: boolean;
+  currentSearchQuery: string;
 
-  /** Full re-fetch from Supabase. Use force=true to bypass cache. */
-  fetchInventory: (force?: boolean) => Promise<void>;
+  /** 
+   * Fetches inventory from the server using the search RPC. 
+   * If reset=true, it clears existing items and starts from page 0.
+   * Otherwise, it appends the next page to the existing items.
+   */
+  fetchInventory: (searchQuery?: string, reset?: boolean) => Promise<void>;
 
   /**
    * Immediately patches a single item in local state before the DB round-trip
@@ -25,88 +34,68 @@ interface InventoryStore {
   removeItemOptimistically: (id: number, removeChildren?: boolean) => void;
 }
 
+const PAGE_SIZE = 50;
+
 // ─── Store ────────────────────────────────────────────────────────────────────
 export const useInventoryStore = create<InventoryStore>((set, get) => ({
   items: [],
   isLoading: false,
+  isLoadingMore: false,
   error: null,
-  lastFetched: null,
+  currentPage: 0,
+  hasMore: true,
+  currentSearchQuery: '',
 
-  // ── fetchInventory ──────────────────────────────────────────────────────────
-  fetchInventory: async (force = false) => {
+  // ── fetchInventory (Server-Side Paginated) ──────────────────────────────────
+  fetchInventory: async (searchQuery = '', reset = true) => {
     if (!supabase) {
       set({ error: 'Supabase client not initialized. Check your .env file.' });
       return;
     }
 
-    const CACHE_DURATION_MS = 5 * 60 * 1000; // 5 minutes
-    const now = Date.now();
-    const { lastFetched, items } = get();
+    const { currentPage, items } = get();
+    const isFetchingMore = !reset;
+    const targetPage = reset ? 0 : currentPage + 1;
+    const offset = targetPage * PAGE_SIZE;
 
-    // Check cache
-    if (!force && lastFetched && (now - lastFetched < CACHE_DURATION_MS) && items.length > 0) {
-      return; // Return cached items
+    // Prevent fetching more if we already hit the end
+    if (isFetchingMore && !get().hasMore) return;
+
+    if (reset) {
+      set({ isLoading: true, error: null, currentSearchQuery: searchQuery });
+    } else {
+      set({ isLoadingMore: true, error: null });
     }
 
-    set({ isLoading: true, error: null });
-
     try {
-      // 1. Fetch all parent products with joined relations
-      const { data: rawData, error: productsError } = await supabase
-        .from('products')
-        .select(`
-          *,
-          product_categories(name),
-          variant_categories(code),
-          suppliers(name)
-        `);
+      // Call the server-side RPC for searching and paginating
+      const { data, error } = await supabase.rpc('search_inventory', {
+        p_search_query: searchQuery,
+        p_limit: PAGE_SIZE,
+        p_offset: offset
+      });
 
-      if (productsError) {
-        set({ error: `Error fetching products: ${productsError.message}`, isLoading: false });
-        return;
+      if (error) {
+        throw error;
       }
 
-      // 2. Fetch all variants
-      const { data: allVariants, error: variantsError } = await supabase
-        .from('product_variants')
-        .select(`
-          *,
-          variant_definitions(variant_name)
-        `);
+      // Format data to match InventoryItem interface exactly
+      const formattedItems: InventoryItem[] = (data || []).map((item: any) => {
+        // Safe parsing for specifications which might come back as string or JSONB
+        const specs = typeof item.specifications === 'string' 
+          ? JSON.parse(item.specifications || '{}') 
+          : (item.specifications || {});
 
-      if (variantsError) {
-        console.error('[inventoryStore] Error fetching variants:', variantsError);
-      }
-
-      const allItems: InventoryItem[] = [];
-
-      // 3. Map parent products → InventoryItem
-      for (const item of rawData ?? []) {
-        const specs =
-          typeof item.specifications === 'string'
-            ? JSON.parse(item.specifications || '{}')
-            : (item.specifications || {});
-
-        const itemVariants = allVariants?.filter((v: any) => v.product_id === item.id) || [];
-        const variantCount = itemVariants.length;
-        const hasVariants = item.has_variants || variantCount > 0;
-        
-        // Calculate total stock: sum of variants if it has them, else the base stock
-        const totalStock = hasVariants && variantCount > 0
-          ? itemVariants.reduce((sum: number, v: any) => sum + (v.stock_quantity || 0), 0)
-          : (item.stock_quantity || 0);
-
-        allItems.push({
-          // Use the raw DB integer ID — no offset needed since UUIDs handle uniqueness
+        return {
           id: typeof item.id === 'number' ? item.id : parseInt(item.id),
-          uuid: item.id,
+          uuid: item.uuid,
           name: item.name,
-          base_name: item.name,
+          base_name: item.base_name,
           sku: item.sku,
-          price: item.selling_price,
-          stock: totalStock,
-          minQuantity: item.min_stock_level,
-          category: item.product_categories?.name,
+          price: item.price,
+          stock: item.stock,
+          minQuantity: item.min_quantity,
+          category: item.category,
           brand: item.brand,
           description: item.description,
           image_url: item.image_url,
@@ -115,114 +104,40 @@ export const useInventoryStore = create<InventoryStore>((set, get) => ({
           voltage: item.voltage,
           wattage: item.wattage,
           color_temperature: item.color_temperature,
-          variant_color: item.variant_color || specs?.color,
+          variant_color: item.variant_color,
           lumens: item.lumens,
           beam_type: item.beam_type,
-          // For single items, specs.socket is the canonical write target (set by useInventory save logic).
-          // Fall back to variant_categories.code (FK join) for legacy data, then item.variant_type.
-          variant_type: specs?.socket || item.variant_categories?.code || item.variant_type || null,
+          variant_type: item.variant_type,
           specifications: specs,
-          supplier: item.suppliers?.name,
-          has_variants: hasVariants,
-          variant_count: variantCount,
+          supplier: item.supplier,
+          has_variants: item.has_variants,
+          variant_count: item.variant_count,
+          variant_id: item.variant_id,
+          variant_display_name: item.variant_display_name,
+          is_variant: item.is_variant,
+          parent_product_id: item.parent_product_id,
           created_at: item.created_at,
           updated_at: item.updated_at,
-          notes: specs?.internal_notes || '',
-          tags: specs?.tags || [],
-          restocked_at: specs?.last_restock?.date,
-          restock_quantity: specs?.last_restock?.quantity,
-          is_variant: false,
-        });
-      }
+          notes: item.notes || '',
+          tags: item.tags || [],
+        };
+      });
 
-      // 4. Map variants → InventoryItem (flattened into same list)
-      for (const variant of allVariants ?? []) {
-        const parentProduct = (rawData ?? []).find((p: any) => p.id === variant.product_id);
-        if (!parentProduct) continue;
+      set(state => ({
+        items: reset ? formattedItems : [...state.items, ...formattedItems],
+        currentPage: targetPage,
+        hasMore: formattedItems.length === PAGE_SIZE, // If we got less than requested, we hit the end
+        isLoading: false,
+        isLoadingMore: false,
+      }));
 
-        const defs = variant.variant_definitions;
-        const defName = Array.isArray(defs) ? defs[0]?.variant_name : defs?.variant_name;
-        const variantName = variant.variant_type || defName || 'Unknown';
-        const temp = variant.color_temperature ? `${variant.color_temperature}K` : '';
-
-        const parentSpecs =
-          typeof parentProduct.specifications === 'string'
-            ? JSON.parse(parentProduct.specifications || '{}')
-            : (parentProduct.specifications || {});
-        const variantSpecs =
-          typeof variant.specifications === 'string'
-            ? JSON.parse(variant.specifications || '{}')
-            : (variant.specifications || {});
-
-        // 4.1 Collect all dimension words from all siblings to strip from parent name
-        const siblingDimensions = (allVariants ?? [])
-          .filter((v: any) => v.product_id === variant.product_id)
-          .flatMap((v: any) => [
-            v.variant_type,
-            v.variant_color,
-            v.color_temperature ? String(v.color_temperature) : null
-          ])
-          .filter(Boolean);
-
-        let cleanedParentName = parentProduct.name || '';
-        siblingDimensions.forEach(val => {
-          const words = String(val).toLowerCase().split(/\s+/).filter(w => w.length > 2);
-          words.forEach(word => {
-            const regex = new RegExp(`\\b${word}\\b`, 'gi');
-            cleanedParentName = cleanedParentName.replace(regex, '');
-          });
-        });
-        cleanedParentName = cleanedParentName.replace(/\s+-/g, ' ').replace(/\s+/g, ' ').replace(/^-\s+/, '').trim() || parentProduct.name;
-
-        allItems.push({
-          // Use the raw DB integer ID for variants — parent IDs and variant IDs
-          // live in separate tables so collision in the flat UI list is handled
-          // by uuid being the actual PK used for all DB operations.
-          id: typeof variant.id === 'number' ? variant.id : parseInt(variant.id),
-          uuid: variant.id,
-          name: cleanedParentName,
-          base_name: parentProduct.name,
-          sku: variant.variant_sku || `${parentProduct.sku}-${variant.id}`,
-          price:
-            variant.selling_price != null && variant.selling_price !== 0
-              ? variant.selling_price
-              : variant.price_adjustment
-              ? parentProduct.selling_price + variant.price_adjustment
-              : parentProduct.selling_price,
-          stock: variant.stock_quantity ?? 0,
-          minQuantity: variant.min_stock_level,
-          category: parentProduct.product_categories?.name,
-          brand: parentProduct.brand,
-          description: variant.description || parentProduct.description,
-          image_url: parentProduct.image_url,
-          barcode: variant.variant_barcode || variant.variant_sku,
-          cost_price: variant.cost_price,
-          voltage: parentProduct.voltage,
-          wattage: parentProduct.wattage,
-          color_temperature: variant.color_temperature || parentProduct.color_temperature,
-          variant_color: variant.variant_color,
-          lumens: parentProduct.lumens,
-          beam_type: parentProduct.beam_type,
-          variant_type: variantName,
-          specifications: { ...parentSpecs, ...variantSpecs },
-          supplier: parentProduct.suppliers?.name,
-          has_variants: false,
-          variant_count: 0,
-          variant_id: variant.variant_id,
-          variant_display_name: `${variantName} ${temp}`.trim(),
-          is_variant: true,
-          parent_product_id: variant.product_id,
-          created_at: variant.created_at,
-          updated_at: variant.updated_at,
-          notes: variantSpecs?.internal_notes || '',
-          tags: parentSpecs?.tags || [],
-        });
-      }
-
-      set({ items: allItems, isLoading: false, lastFetched: Date.now() });
     } catch (err: any) {
-      console.error('[inventoryStore] Unexpected error:', err);
-      set({ error: 'An unexpected error occurred while fetching inventory.', isLoading: false });
+      console.error('[inventoryStore] Error fetching paginated inventory:', err);
+      set({ 
+        error: 'An unexpected error occurred while fetching inventory.', 
+        isLoading: false,
+        isLoadingMore: false
+      });
     }
   },
 

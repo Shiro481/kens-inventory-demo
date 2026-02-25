@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Search, ShoppingCart, Box, Minus, Plus, CreditCard, Banknote, Loader2, Check } from 'lucide-react';
 import styles from './Pos.module.css';
 import type { InventoryItem } from '../../../types/inventory';
 import { supabase } from '../../../lib/supabase';
 import { useSettings } from '../../../context/SettingsContext';
 import { useCategoryMetadata } from '../../../hooks/useCategoryMetadata';
+import { useInventoryStore } from '../../../store/inventoryStore';
 import VariantContainerBox from './VariantContainerBox';
 import ItemDetailModal from './ItemDetailModal';
 import VariantSelectionModal from './VariantSelectionModal';
@@ -35,6 +36,7 @@ interface PosProps {
  * @param onSaleComplete - Callback function called after successful sale
  */
 export default function Pos({ items, isLoading: globalLoading = false, onSaleComplete }: PosProps) {
+  const [searchInput, setSearchInput] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
   const [cart, setCart] = useState<CartItem[]>([]);
   const [loading, setLoading] = useState(false);
@@ -48,8 +50,43 @@ export default function Pos({ items, isLoading: globalLoading = false, onSaleCom
   const [selectedProductForVariant, setSelectedProductForVariant] = useState<InventoryItem | null>(null);
   const [productVariants, setProductVariants] = useState<any[]>([]);
   
+  const gridRef = useRef<HTMLDivElement>(null);
+  const { fetchInventory, hasMore, isLoadingMore } = useInventoryStore();
+
   // Dynamic metadata for the currently selected item (used in handleVariantSelect)
   const { config: selectedConfig } = useCategoryMetadata(selectedItem?.category);
+
+  // Debounce search input
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setSearchQuery(searchInput);
+    }, 400);
+    return () => clearTimeout(timer);
+  }, [searchInput]);
+
+  // Trigger server-side fetch when debounced query changes
+  useEffect(() => {
+    fetchInventory(searchQuery, true);
+  }, [searchQuery, fetchInventory]);
+
+  // Infinite Scroll Handler for POS Grid
+  useEffect(() => {
+    const grid = gridRef.current;
+    if (!grid) return;
+
+    const handleScroll = () => {
+      // Threshold: fetch more when user is within 300px of the bottom
+      const threshold = 300;
+      const isNearBottom = grid.scrollHeight - grid.scrollTop - grid.clientHeight < threshold;
+
+      if (isNearBottom && hasMore && !isLoadingMore && !globalLoading) {
+        fetchInventory(searchQuery, false);
+      }
+    };
+
+    grid.addEventListener('scroll', handleScroll);
+    return () => grid.removeEventListener('scroll', handleScroll);
+  }, [hasMore, isLoadingMore, globalLoading, fetchInventory, searchQuery]);
 
   const filteredItems = items.filter(item => {
     const query = searchQuery.trim().toLowerCase();
@@ -59,33 +96,9 @@ export default function Pos({ items, isLoading: globalLoading = false, onSaleCom
       return (item as any).is_variant !== true;
     }
 
-    const tokens = query.split(/\s+/); // Split by whitespace
-    
-    // Every token must match at least one searchable field
-    return tokens.every(token => {
-      const searchFields = [
-        (item.name || ''),
-        (item.sku || ''),
-        (item.category || ''),
-        (item.brand || ''),
-        (item.variant_type || ''),
-        (item.variant_display_name || ''),
-        (item.variant_color || ''),
-        (item.color_temperature?.toString() || ''),
-        (item.voltage?.toString() || ''),
-        (item.wattage?.toString() || ''),
-        (item.lumens?.toString() || ''),
-        (item.beam_type || ''),
-        (item.barcode || ''),
-        (item.description || ''),
-        (item.notes || '')
-      ];
-      
-      const inFields = searchFields.some(field => field.toLowerCase().includes(token));
-      const inTags = (item.tags || []).some((tag: string) => tag.toLowerCase().includes(token));
-      
-      return inFields || inTags;
-    });
+    // Since text search is handled by the server RPC, we just pass
+    // through the search results directly here when searching.
+    return true; 
   });
 
   /**
@@ -452,8 +465,8 @@ export default function Pos({ items, isLoading: globalLoading = false, onSaleCom
               type="text" 
               placeholder="SEARCH PARTS..." 
               className={styles.searchInput}
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.target.value)}
               disabled={loading || globalLoading}
             />
           </div>
@@ -462,68 +475,91 @@ export default function Pos({ items, isLoading: globalLoading = false, onSaleCom
           </button>
         </div>
           
-        {globalLoading ? (
+        {globalLoading && !isLoadingMore ? (
            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '400px', color: '#666' }}>
              <Loader2 style={{ animation: 'spin 2s linear infinite', marginBottom: '16px' }} size={48} color="#00ff9d" />
              <p style={{ letterSpacing: '2px', fontSize: '12px' }}>LOADING CATALOG...</p>
            </div>
         ) : (
-          <div className={styles.productGrid} key={searchQuery}>
-          {filteredItems.map((item, index) => {
-            const hasVariants = !!item.has_variants;
-            const stock = item.stock ?? item.quantity ?? 0;
-            const isOutOfStock = stock <= 0 && !hasVariants;
-            
-            const animationStyle = { animationDelay: `${Math.min(index * 0.05, 0.5)}s` };
-            
-            // Simplified "Container Box" for items with variants
-            if (hasVariants) {
-              return (
-                <VariantContainerBox 
-                  key={item.id}
-                  item={item}
-                  loading={loading}
-                  onClick={handleItemClick}
-                  animationStyle={animationStyle}
-                />
-              );
-            }
-
-            return (
-              <div 
-                key={item.id} 
-                className={`${styles.productCard} ${isOutOfStock || loading ? styles.outOfStock : ''}`}
-                onClick={() => !isOutOfStock && !loading && handleItemClick(item)}
-                title={isOutOfStock ? "Out of Stock" : "Add to Cart"}
-                style={animationStyle}
-              >
-                {!isOutOfStock && stock < (item.minQuantity ?? settings.low_stock_threshold ?? 5) && (
-                  <div className={styles.lowStockBadge}>LOW STOCK</div>
-                )}
-                <div className={styles.sku}>{item.sku || 'NO SKU'}</div>
-                {item.brand && <div className={styles.brand}>{item.brand}</div>}
-                <div className={styles.productName}>
-                  {cleanItemName(item)}
-                </div>
-                <div className={styles.productSubInfo}>
-                  <DynamicCategorySpecs 
-                    item={item} 
-                    style={{ gap: '2px' }}
-                    labelStyle={{ minWidth: '45px', fontSize: '8px' }}
-                    valueStyle={{ fontSize: '10px' }}
+          <>
+            <div className={styles.productGrid} key={searchQuery} ref={gridRef}>
+            {filteredItems.map((item, index) => {
+              const hasVariants = !!item.has_variants;
+              const stock = item.stock ?? item.quantity ?? 0;
+              const isOutOfStock = stock <= 0 && !hasVariants;
+              
+              const animationStyle = { animationDelay: `${Math.min(index * 0.05, 0.5)}s` };
+              
+              // Simplified "Container Box" for items with variants
+              if (hasVariants) {
+                return (
+                  <VariantContainerBox 
+                    key={item.id}
+                    item={item}
+                    loading={loading}
+                    onClick={handleItemClick}
+                    animationStyle={animationStyle}
                   />
-                </div>
-                
-                <div className={styles.productFooter}>
-                  <div className={styles.qtyInfo}>
-                    QTY: <span className={styles.qtyValue}>{stock}</span>
+                );
+              }
+
+              return (
+                <div 
+                  key={item.id} 
+                  className={`${styles.productCard} ${isOutOfStock || loading ? styles.outOfStock : ''}`}
+                  onClick={() => !isOutOfStock && !loading && handleItemClick(item)}
+                  title={isOutOfStock ? "Out of Stock" : "Add to Cart"}
+                  style={animationStyle}
+                >
+                  {!isOutOfStock && stock < (item.minQuantity ?? settings.low_stock_threshold ?? 5) && (
+                    <div className={styles.lowStockBadge}>LOW STOCK</div>
+                  )}
+                  <div className={styles.sku}>{item.sku || 'NO SKU'}</div>
+                  {item.brand && <div className={styles.brand}>{item.brand}</div>}
+                  <div className={styles.productName}>
+                    {cleanItemName(item)}
                   </div>
-                  <div className={styles.price}>{settings.currency_symbol}{(item.price || 0).toFixed(2)}</div>
+                  <div className={styles.productSubInfo}>
+                    <DynamicCategorySpecs 
+                      item={item} 
+                      style={{ gap: '2px' }}
+                      labelStyle={{ minWidth: '45px', fontSize: '8px' }}
+                      valueStyle={{ fontSize: '10px' }}
+                    />
+                  </div>
+                  
+                  <div className={styles.productFooter}>
+                    <div className={styles.qtyInfo}>
+                      QTY: <span className={styles.qtyValue}>{stock}</span>
+                    </div>
+                    <div className={styles.price}>{settings.currency_symbol}{(item.price || 0).toFixed(2)}</div>
+                  </div>
                 </div>
-              </div>
-            );
-          })}
-          </div>
+              );
+            })}
+            </div>
+
+            {/* Infinite Scroll Trigger & Loader */}
+            <div 
+              style={{ 
+                height: '40px', 
+                width: '100%', 
+                display: 'flex', 
+                alignItems: 'center', 
+                justifyContent: 'center', 
+                color: '#00ff9d',
+                marginTop: '1rem',
+                opacity: isLoadingMore ? 1 : 0
+              }}
+            >
+              {isLoadingMore && (
+                <>
+                  <Loader2 size={24} style={{ animation: 'spin 1s linear infinite' }} />
+                  <span style={{ marginLeft: '12px', fontSize: '14px', fontWeight: 'bold' }}>Loading more items...</span>
+                </>
+              )}
+            </div>
+          </>
         )}
       </div>
 

@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Search, Download } from 'lucide-react';
 import styles from '../Dashboard.module.css';
 import type { InventoryItem } from '../../../types/inventory';
 import InventoryTable from './InventoryTable';
 import { filterAndSortItems, exportToExcel } from '../../../utils/inventoryUtils';
 import type { FilterStatus, SortBy } from '../../../utils/inventoryUtils';
+import { useInventoryStore } from '../../../store/inventoryStore';
 
 // Sub-components
 import InventoryManagerHeader from './InventoryManagerHeader';
@@ -30,19 +31,39 @@ export default function InventoryManager({
   const [filterStatus, setFilterStatus] = useState<FilterStatus>('All');
   const [showFilterMenu, setShowFilterMenu] = useState(false);
   const [sortBy, setSortBy] = useState<SortBy>('none');
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchInput, setSearchInput] = useState(''); // Fast local state for typing
+  const [searchQuery, setSearchQuery] = useState(''); // Debounced state for fetching
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+
+  const { fetchInventory } = useInventoryStore();
+
+  // Debounce search input
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setSearchQuery(searchInput);
+    }, 400); // 400ms delay
+
+    return () => clearTimeout(timer);
+  }, [searchInput]);
+
+  // Trigger server-side fetch when debounced query changes
+  useEffect(() => {
+    fetchInventory(searchQuery, true);
+  }, [searchQuery, fetchInventory]);
 
   const allAvailableTags = Array.from(new Set(items.flatMap(item => item.tags || []))).sort();
   const allAvailableCategories = Array.from(
     new Set(items.map(item => item.category).filter(Boolean) as string[])
   ).sort();
 
+  // Pass empty string for text search to `filterAndSortItems` because the
+  // text search is now handled by the server-side RPC. We keep client-side
+  // filtering for status (In Stock/Low Stock), tags, and categories.
   const filteredItems = filterAndSortItems(
     items,
     filterStatus,
-    searchQuery,
+    '', // bypass client text search
     selectedTags,
     sortBy,
     selectedCategories
@@ -64,8 +85,8 @@ export default function InventoryManager({
             type="text" 
             placeholder="Search items..." 
             className={styles.input}
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+            value={searchInput}
+            onChange={(e) => setSearchInput(e.target.value)}
           />
         </div>
         <div style={{ display: 'flex', gap: '10px' }}>

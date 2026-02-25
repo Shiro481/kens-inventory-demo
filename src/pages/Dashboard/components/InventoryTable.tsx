@@ -1,11 +1,12 @@
-import { useRef } from 'react';
-import { Package, Edit, Trash2 } from 'lucide-react';
+import { useRef, useEffect } from 'react';
+import { Package, Edit, Trash2, Loader2 } from 'lucide-react';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import styles from './InventoryTable.module.css';
 import { useSettings } from '../../../context/SettingsContext';
 import DynamicCategorySpecs from './DynamicCategorySpecs';
 import { cleanItemName } from '../../../utils/inventoryUtils';
 import type { InventoryItem } from '../../../types/inventory';
+import { useInventoryStore } from '../../../store/inventoryStore';
 
 interface InventoryTableProps {
   items: InventoryItem[];
@@ -25,6 +26,9 @@ export default function InventoryTable({ items, isLoading = false, onEdit, onDel
   // IMPORTANT: Call hooks at the top level, not inside loops or conditions
   const { settings } = useSettings();
   const parentRef = useRef<HTMLDivElement>(null);
+  
+  // Connect to store for infinite scroll logic
+  const { fetchInventory, hasMore, isLoadingMore, currentSearchQuery } = useInventoryStore();
 
   const rowVirtualizer = useVirtualizer({
     count: items.length,
@@ -32,6 +36,26 @@ export default function InventoryTable({ items, isLoading = false, onEdit, onDel
     estimateSize: () => 100, // Approximate row height in pixels
     overscan: 5,
   });
+
+  // Infinite Scroll Handler
+  useEffect(() => {
+    const parent = parentRef.current;
+    if (!parent) return;
+
+    const handleScroll = () => {
+      // Threshold: fetch more when user is within 300px of the bottom
+      const threshold = 300;
+      const isNearBottom = parent.scrollHeight - parent.scrollTop - parent.clientHeight < threshold;
+
+      if (isNearBottom && hasMore && !isLoadingMore && !isLoading) {
+        // false means "append to existing list", not reset
+        fetchInventory(currentSearchQuery, false);
+      }
+    };
+
+    parent.addEventListener('scroll', handleScroll);
+    return () => parent.removeEventListener('scroll', handleScroll);
+  }, [hasMore, isLoadingMore, isLoading, fetchInventory, currentSearchQuery]);
   
   return (
     <>
@@ -76,7 +100,8 @@ export default function InventoryTable({ items, isLoading = false, onEdit, onDel
         <div ref={parentRef} className={styles.virtualScrollContainer}>
           <div 
             className={styles.virtualTotalSizeContainer}
-            style={{ height: `${rowVirtualizer.getTotalSize()}px` }}
+            // Add extra space at the bottom if loading more to fit the loader spinner comfortably
+            style={{ height: `${rowVirtualizer.getTotalSize() + (isLoadingMore ? 80 : 0)}px` }} 
           >
             {rowVirtualizer.getVirtualItems().map((virtualRow) => {
               const item = items[virtualRow.index];
@@ -200,6 +225,24 @@ export default function InventoryTable({ items, isLoading = false, onEdit, onDel
                 </div>
               );
             })}
+            
+            {/* Show a loading spinner at the bottom when fetching more items */}
+            {isLoadingMore && (
+              <div style={{ 
+                position: 'absolute', 
+                bottom: 0, 
+                left: 0, 
+                width: '100%', 
+                height: '80px', 
+                display: 'flex', 
+                alignItems: 'center', 
+                justifyContent: 'center',
+                color: '#00ff9d'
+              }}>
+                <Loader2 size={24} className={styles.spinnerIcon} style={{ animation: 'spin 1s linear infinite' }} />
+                <span style={{ marginLeft: '12px', fontSize: '14px', fontWeight: 'bold' }}>Loading more items...</span>
+              </div>
+            )}
           </div>
         </div>
       )}
