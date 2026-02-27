@@ -5,10 +5,7 @@
 
 CREATE EXTENSION IF NOT EXISTS unaccent;
 
-DROP FUNCTION IF EXISTS search_inventory(text, int, int);
-DROP FUNCTION IF EXISTS search_inventory(text, int, int, text[]);
-
-CREATE OR REPLACE FUNCTION search_inventory(
+CREATE OR REPLACE FUNCTION search_inventory_v2(
   p_search_query TEXT,
   p_limit INT DEFAULT 50,
   p_offset INT DEFAULT 0,
@@ -222,6 +219,8 @@ BEGIN
 END;
 $$;
 
--- Grant access (specific signatures to avoid ambiguity)
-GRANT EXECUTE ON FUNCTION search_inventory(TEXT, INT, INT, TEXT[]) TO authenticated;
-GRANT EXECUTE ON FUNCTION search_inventory(TEXT, INT, INT, TEXT[]) TO anon;
+
+
+-- Grant access
+GRANT EXECUTE ON FUNCTION search_inventory_v2(TEXT, INT, INT, TEXT[]) TO authenticated;
+GRANT EXECUTE ON FUNCTION search_inventory_v2(TEXT, INT, INT, TEXT[]) TO anon;

@@ -220,5 +220,5 @@ END;
 $$;
 
 -- Grant access
-GRANT EXECUTE ON FUNCTION search_inventory TO authenticated;
-GRANT EXECUTE ON FUNCTION search_inventory TO anon;
+GRANT EXECUTE ON FUNCTION search_inventory(TEXT, INT, INT) TO authenticated;
+GRANT EXECUTE ON FUNCTION search_inventory(TEXT, INT, INT) TO anon;

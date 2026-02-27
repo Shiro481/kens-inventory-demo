@@ -125,7 +125,7 @@ export const useInventoryStore = create<InventoryStore>((set, get) => ({
       const categoriesToUse = reset ? categories : get().currentCategories;
 
       // Call the server-side RPC for searching and paginating
-      const { data, error } = await supabase.rpc('search_inventory', {
+      const { data, error } = await supabase.rpc('search_inventory_v2', {
         p_search_query: searchQuery,
         p_limit: PAGE_SIZE,
         p_offset: offset,

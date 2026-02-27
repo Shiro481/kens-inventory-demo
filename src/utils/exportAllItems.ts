@@ -20,7 +20,7 @@ export const exportAllItems = async (
   try {
     // Make a one-off RPC call with a very large limit to get ALL matching items
     // Since we only do this explicitly on button click, the performance hit is acceptable
-    const { data, error } = await supabase.rpc('search_inventory', {
+    const { data, error } = await supabase.rpc('search_inventory_v2', {
       p_search_query: searchQuery,
       p_limit: 50000, // Arbitrarily high limit to ensure we get everything
       p_offset: 0,
