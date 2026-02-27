@@ -27,7 +27,7 @@ interface CartItem extends InventoryItem {
 interface PosProps {
   items: InventoryItem[];
   isLoading?: boolean;
-  onSaleComplete?: () => void;
+  onSaleComplete?: (query?: string, reset?: boolean) => void;
 }
 
 /**
@@ -398,16 +398,25 @@ export default function Pos({ items, isLoading: globalLoading = false, onSaleCom
       // --- 1. Process Sale Atomically via RPC ---
       // This call handles BOTH stock deduction and sale recording in one transaction.
       const { error: rpcError } = await supabase.rpc('process_sale', {
-        p_items: cart.map(i => ({
-          id: i.id,
-          name: i.name,
-          price: i.variant_price || i.price || 0,
-          quantity: i.cartQuantity,
-          variant_id: i.variant_id || null,
-          variant_dimensions: i.variant_dimensions || null,
-          category: i.category || null,
-          specifications: i.specifications || null
-        })),
+        p_items: cart.map(i => {
+          // If the item was added directly from search results as a variant, 
+          // `i.id` holds the real product_variants.id AND `i.is_variant` is true.
+          // If it was added via the variant modal, `i.variant_id` holds the real product_variants.id.
+          const isDirectVariant = i.is_variant === true;
+          const assignedVariantId = isDirectVariant ? i.id : (i.variant_id || null);
+          const assignedProductId = isDirectVariant ? (i as any).parent_product_id : i.id;
+
+          return {
+            id: assignedProductId,
+            name: i.name,
+            price: i.variant_price || i.price || 0,
+            quantity: i.cartQuantity,
+            variant_id: assignedVariantId,
+            variant_dimensions: i.variant_dimensions || null,
+            category: i.category || null,
+            specifications: i.specifications || null
+          };
+        }),
         p_subtotal: subtotal,
         p_tax: tax,
         p_total: total,
@@ -423,7 +432,7 @@ export default function Pos({ items, isLoading: globalLoading = false, onSaleCom
       setCart([]);
       
       // Refresh parent data (inventory list)
-      if (onSaleComplete) onSaleComplete();
+      if (onSaleComplete) onSaleComplete(searchQuery, true);
       
     } catch (err: any) {
       console.error('Payment error:', err);
