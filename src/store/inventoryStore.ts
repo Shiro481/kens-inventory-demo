@@ -61,6 +61,8 @@ export const useInventoryStore = create<InventoryStore>((set, get) => ({
   currentPage: 0,
   hasMore: true,
   currentCategories: [],
+  currentSearchQuery: '',
+  currentStatus: 'active',
   aggregateStats: null,
   allParentProducts: [],
   isLoadingParents: false,

@@ -4,8 +4,7 @@ import { supabase } from '../lib/supabase';
 export interface VariantDefinition {
   id: number;
   variant_name: string;
-  variant_type_id: string;
-  category_id?: number | null;
+  display_name?: string;
 }
 
 export function useVariantDefinitions() {
@@ -23,7 +22,7 @@ export function useVariantDefinitions() {
       try {
         const { data, error: fetchError } = await supabase
           .from('variant_definitions')
-          .select('id, variant_name, variant_type_id, category_id')
+          .select('id, variant_name, display_name')
           .order('variant_name');
 
         if (fetchError) throw fetchError;
