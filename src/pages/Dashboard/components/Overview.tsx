@@ -72,21 +72,10 @@ export default function Overview({ items: paginatedItems }: OverviewProps) {
   // ── Stats Calculations ──────────────────────────────────────────────────────
   const now = new Date();
   const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-  const startOfWeek = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
-  const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
-  const startOfLastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);
-  const endOfLastMonth = new Date(now.getFullYear(), now.getMonth(), 0);
 
   const todaysSales = sales.filter((sale: Sale) => new Date(sale.created_at) >= startOfToday);
-  const monthSales = sales.filter((sale: Sale) => new Date(sale.created_at) >= startOfMonth);
-  const lastMonthSales = sales.filter((sale: Sale) => {
-    const saleDate = new Date(sale.created_at);
-    return saleDate >= startOfLastMonth && saleDate <= endOfLastMonth;
-  });
 
   const todaysRevenue = todaysSales.reduce((sum: number, sale: Sale) => sum + sale.total, 0);
-  const monthRevenue = monthSales.reduce((sum: number, sale: Sale) => sum + sale.total, 0);
-  const lastMonthRevenue = lastMonthSales.reduce((sum: number, sale: Sale) => sum + sale.total, 0);
 
   // Chart Data: Last 7 days revenue trend
   const chartData = useMemo(() => {
