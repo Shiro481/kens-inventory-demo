@@ -57,9 +57,15 @@ export function useCategoryMetadata(categoryName?: string): CategoryMetadataResu
         // Step 3: Build config from DB data — real metadata, not a fallback
         const dbConfig: CategoryConfig = {
           variantTypeLabel: metaData.variant_type_label || DEFAULT_CONFIG.variantTypeLabel,
-          variantDimensions: metaData.variant_dimensions || DEFAULT_CONFIG.variantDimensions,
-          fields: metaData.fields || DEFAULT_CONFIG.fields,
-          suggestedVariantTypes: metaData.suggested_variant_types || DEFAULT_CONFIG.suggestedVariantTypes,
+          variantDimensions: Array.isArray(metaData.variant_dimensions)
+            ? metaData.variant_dimensions
+            : DEFAULT_CONFIG.variantDimensions,
+          fields: Array.isArray(metaData.fields)
+            ? metaData.fields
+            : DEFAULT_CONFIG.fields,
+          suggestedVariantTypes: Array.isArray(metaData.suggested_variant_types)
+            ? metaData.suggested_variant_types
+            : DEFAULT_CONFIG.suggestedVariantTypes,
         };
         setConfig(dbConfig);
         setIsFallback(false);

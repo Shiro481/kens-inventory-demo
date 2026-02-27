@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
 import { useCategoryMetadata } from '../../../hooks/useCategoryMetadata';
+import { useVariantDefinitions } from '../../../hooks/useVariantDefinitions';
 import styles from './EditItemModal.module.css';
 import type { InventoryItem } from '../../../types/inventory';
 import { supabase } from '../../../lib/supabase';
@@ -67,9 +68,17 @@ export default function EditItemModal({
   }, [item, categories, variantTypes]);
 
   const { config, isFallback } = useCategoryMetadata(editingItem?.category);
+  const { variantDefinitions } = useVariantDefinitions();
 
   const filteredVariantTypes = Array.from(new Set([
     ...(config.suggestedVariantTypes || []),
+    ...variantDefinitions
+      // If the variant definition has a category_id, we can optionally filter by it, 
+      // but for global autocomplete, just mapping all known names + the current item's type is very robust.
+      // We will prefer showing all globally defined types over isolating them strictly, 
+      // but prioritize if needed later. Just map them all for now so the dropdown is fully populated:
+      .map((vd: any) => vd.variant_name)
+      .filter(Boolean),
     ...allItems
       .filter(i => i.category === editingItem?.category)
       .map(i => i.variant_type)

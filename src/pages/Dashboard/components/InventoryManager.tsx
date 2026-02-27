@@ -3,7 +3,8 @@ import { Search, Download } from 'lucide-react';
 import styles from '../Dashboard.module.css';
 import type { InventoryItem } from '../../../types/inventory';
 import InventoryTable from './InventoryTable';
-import { filterAndSortItems, exportToExcel } from '../../../utils/inventoryUtils';
+import { filterAndSortItems } from '../../../utils/inventoryUtils';
+import { exportAllItems } from '../../../utils/exportAllItems';
 import type { FilterStatus, SortBy } from '../../../utils/inventoryUtils';
 import { useInventoryStore } from '../../../store/inventoryStore';
 
@@ -35,6 +36,7 @@ export default function InventoryManager({
   const [searchQuery, setSearchQuery] = useState(''); // Debounced state for fetching
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [isExporting, setIsExporting] = useState(false);
 
   const { fetchInventory } = useInventoryStore();
 
@@ -69,7 +71,18 @@ export default function InventoryManager({
     selectedCategories
   );
 
-  const handleExport = () => exportToExcel(filteredItems);
+  const handleExport = async () => {
+    try {
+      setIsExporting(true);
+      // Wait for fetch & export
+      await exportAllItems(searchQuery, selectedCategories, selectedTags, filterStatus);
+    } catch (error) {
+      console.error('Export failed:', error);
+      alert('Failed to export inventory. Please try again.');
+    } finally {
+      setIsExporting(false);
+    }
+  };
 
   const activeFilterCount = (filterStatus !== 'All' ? 1 : 0) + selectedTags.length + selectedCategories.length;
 
@@ -93,11 +106,12 @@ export default function InventoryManager({
           <button 
             className={styles.filterBtn}
             onClick={handleExport}
-            title="Export to Excel (organized by category)"
-            style={{ display: 'flex', alignItems: 'center', gap: '6px' }}
+            disabled={isExporting}
+            title="Export full inventory to Excel"
+            style={{ display: 'flex', alignItems: 'center', gap: '6px', opacity: isExporting ? 0.7 : 1 }}
           >
             <Download size={18} />
-            Export Excel
+            {isExporting ? 'Exporting...' : 'Export All Items'}
           </button>
 
           <FilterMenu 

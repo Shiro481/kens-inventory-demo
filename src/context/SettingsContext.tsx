@@ -64,7 +64,10 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({ chil
    * Reads from 'store_settings' table where id=1
    */
   const fetchSettings = async () => {
-    if (!supabase) return;
+    if (!supabase) {
+      setLoading(false);
+      return;
+    }
     try {
       const { data, error } = await supabase
         .from('store_settings')

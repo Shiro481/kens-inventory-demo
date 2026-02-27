@@ -160,7 +160,7 @@ export default function DynamicCategorySpecs({
       })()}
 
       {/* Technical Fields list */}
-      {config.fields.filter(field => {
+      {(Array.isArray(config.fields) ? config.fields : []).filter(field => {
         // Skip rendering if this field is already handled as an active dimension
         return !config.variantDimensions?.some(d => d.active && (d.column === field.key || d.column === field.key.toLowerCase() || (field.key === 'color_temperature' && (d.column === 'variant_color' || d.column === 'color_temperature' || d.column === 'variant_type'))));
       }).map(field => {
@@ -238,28 +238,34 @@ export default function DynamicCategorySpecs({
           const valStr = String(val).trim();
           if (!valStr || valStr.toLowerCase() === 'undefined' || displayedValues.has(valStr.toLowerCase())) return null;
           
-          // Final check to avoid showing meaningless keys or already shown values
+          // We want to avoid skipping these entirely if they have real data
+          // But if we know it's a generated key and we've already displayed the *value* elsewhere, we can skip it.
           if (key.startsWith('field_') || key.startsWith('spec_')) {
-              // For generated keys, only show if the value is unique
               if (displayedValues.has(valStr.toLowerCase())) return null;
           }
           displayedKeys.add(key.toLowerCase());
           displayedValues.add(valStr.toLowerCase());
 
           // Simple formatting for key
-          const displayLabel = key.replace(/_/g, ' ').toUpperCase();
+          let displayLabel = key.replace(/_/g, ' ').toUpperCase();
+          
+          if (key.startsWith('spec_')) {
+              // If it's a raw spec timestamp, format it slightly better like "Spec Item" instead of "SPEC 177..."
+              displayLabel = 'Specification';
+          } else if (key.startsWith('field_')) {
+              displayLabel = 'Custom Field';
+          }
 
           return (
-            <div key={key} style={{ ...valueStyle, display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <div key={key} style={{ ...valueStyle, display: 'flex', alignItems: 'center', gap: '6px', justifyContent: 'space-between' }}>
               <span style={{ 
                 color: '#555', 
                 textTransform: 'uppercase', 
                 fontSize: '9px', 
                 fontWeight: 'bold',
-                minWidth: '70px',
                 ...labelStyle 
               }}>{displayLabel}:</span>
-              <span style={{ fontWeight: '600' }}>{valStr}</span>
+              <span style={{ fontWeight: '600', textAlign: 'right' }}>{valStr}</span>
             </div>
           );
         });

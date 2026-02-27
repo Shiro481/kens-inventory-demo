@@ -14,6 +14,20 @@ interface InventoryStore {
   hasMore: boolean;
   currentSearchQuery: string;
   currentCategories: string[];
+  
+  // Global lookups (Non-paginated)
+  allParentProducts: { id: number; name: string; category: string; category_id: number; }[];
+  isLoadingParents: boolean;
+  fetchAllParents: () => Promise<void>;
+  
+  // Aggregate Stats for Dashboard
+  aggregateStats: {
+    total_items: number;
+    low_stock: number;
+    out_of_stock: number;
+  } | null;
+
+  fetchInventoryStats: () => Promise<void>;
 
   /** 
    * Fetches inventory from the server using the search RPC. 
@@ -46,8 +60,43 @@ export const useInventoryStore = create<InventoryStore>((set, get) => ({
   error: null,
   currentPage: 0,
   hasMore: true,
-  currentSearchQuery: '',
   currentCategories: [],
+  aggregateStats: null,
+  allParentProducts: [],
+  isLoadingParents: false,
+
+  // ── fetchAllParents (Non-Paginated Lookup) ──────────────────────────────────
+  fetchAllParents: async () => {
+    if (!supabase) return;
+    set({ isLoadingParents: true });
+    try {
+      // Fetch products that are parents. We don't fetch variants.
+      const { data, error } = await supabase
+        .from('products')
+        .select(`
+          id, 
+          name, 
+          category_id, 
+          product_categories(name)
+        `)
+        .eq('has_variants', true)
+        .order('name');
+
+      if (error) throw error;
+
+      const formatted = (data || []).map((item: any) => ({
+        id: item.id,
+        name: item.name,
+        category_id: item.category_id,
+        category: item.product_categories?.name || 'Uncategorized'
+      }));
+
+      set({ allParentProducts: formatted, isLoadingParents: false });
+    } catch (err) {
+      console.error('Failed to fetch parent products:', err);
+      set({ isLoadingParents: false });
+    }
+  },
 
   // ── fetchInventory (Server-Side Paginated) ──────────────────────────────────
   fetchInventory: async (searchQuery = '', reset = true, categories: string[] = []) => {
@@ -167,5 +216,17 @@ export const useInventoryStore = create<InventoryStore>((set, get) => ({
         return true;
       }),
     }));
+  },
+
+  // ── fetchInventoryStats ─────────────────────────────────────────────────────
+  fetchInventoryStats: async () => {
+    if (!supabase) return;
+    try {
+      const { data, error } = await supabase.rpc('get_dashboard_stats');
+      if (error) throw error;
+      set({ aggregateStats: data });
+    } catch (err) {
+      console.error('[inventoryStore] Error fetching inventory stats:', err);
+    }
   },
 }));

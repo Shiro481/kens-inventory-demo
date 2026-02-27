@@ -1,13 +1,12 @@
 import { useState, useMemo } from 'react';
 import { X, Plus } from 'lucide-react';
 import styles from './AddVariantModal.module.css';
-import type { InventoryItem } from '../../../types/inventory';
+import { useInventoryStore } from '../../../store/inventoryStore';
 
 interface AddVariantModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSelect: (item: InventoryItem) => void;
-  items: InventoryItem[];
+  onSelect: (item: any) => void;
 }
 
 /**
@@ -15,25 +14,20 @@ interface AddVariantModalProps {
  * Displays a searchable list of base products (excluding existing variants).
  * When a product is selected, it triggers the callback to open the edit modal for that product.
  */
-export default function AddVariantModal({ isOpen, onClose, onSelect, items }: AddVariantModalProps) {
+export default function AddVariantModal({ isOpen, onClose, onSelect }: AddVariantModalProps) {
   const [searchQuery, setSearchQuery] = useState('');
+  const allParentProducts = useInventoryStore(state => state.allParentProducts);
 
-  // Filter items: 
-  // 1. Must NOT be a variant itself (is_variant !== true)
-  // 2. Match search query
+  // Filter items: Match search query
   const filteredItems = useMemo(() => {
-    return items.filter(item => {
-      // Only base products
-      if (item.is_variant) return false;
-
+    return allParentProducts.filter(item => {
       // Search
       const query = searchQuery.toLowerCase();
       const matchName = (item.name || '').toLowerCase().includes(query);
-      const matchSku = (item.sku || '').toLowerCase().includes(query);
       
-      return matchName || matchSku;
+      return matchName;
     }).slice(0, 50); // Limit to 50 for performance
-  }, [items, searchQuery]);
+  }, [allParentProducts, searchQuery]);
 
   if (!isOpen) return null;
 
@@ -64,14 +58,14 @@ export default function AddVariantModal({ isOpen, onClose, onSelect, items }: Ad
           {filteredItems.length > 0 ? (
             filteredItems.map(item => (
               <div 
-                key={item.uuid || item.id} 
+                key={item.id} 
                 className={styles.itemCard}
                 onClick={() => onSelect(item)}
               >
                 <div className={styles.itemInfo}>
                   <span className={styles.itemName}>{item.name}</span>
                   <span className={styles.itemSku}>
-                    {item.sku || 'NO SKU'} • {item.category || 'Uncategorized'}
+                    {item.category || 'Uncategorized'}
                   </span>
                 </div>
                 <div className={styles.selectIcon}>

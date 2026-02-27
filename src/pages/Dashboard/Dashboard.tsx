@@ -35,7 +35,7 @@ interface DashboardProps {
  */
 export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
   // ── Inventory state from Zustand store (single source of truth) ──────────
-  const { items, fetchInventory, isLoading, error } = useInventoryStore();
+  const { items, fetchInventory, fetchInventoryStats, fetchAllParents, isLoading, error } = useInventoryStore();
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   
@@ -60,14 +60,32 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
   // Add Variant Modal State
   const [isAddVariantModalOpen, setIsAddVariantModalOpen] = useState(false);
 
+  // Load parent products globally for the Add Variant picker
+  useEffect(() => {
+    fetchAllParents();
+  }, [fetchAllParents]);
+
   useEffect(() => {
     if (!supabase) {
       console.error("Supabase client is not initialized.");
       return;
     }
     fetchInventory();
+    fetchInventoryStats();
     fetchSuppliers();
     fetchCategories();
+
+    // Global event listeners for Quick Actions in Overview
+    const handleNavInventory = () => setActiveView('inventory');
+    const handleNavPos = () => setActiveView('pos');
+    
+    window.addEventListener('nav-inventory', handleNavInventory);
+    window.addEventListener('nav-pos', handleNavPos);
+
+    return () => {
+      window.removeEventListener('nav-inventory', handleNavInventory);
+      window.removeEventListener('nav-pos', handleNavPos);
+    };
   }, []);
 
   // Inventory data is fetched and managed by useInventoryStore.fetchInventory().
@@ -273,7 +291,6 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
         isOpen={isAddVariantModalOpen}
         onClose={() => setIsAddVariantModalOpen(false)}
         onSelect={handleSelectParentItem}
-        items={items}
       />
 
       {/* AI ASSISTANT */}
