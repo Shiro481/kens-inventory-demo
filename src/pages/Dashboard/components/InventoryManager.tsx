@@ -51,8 +51,8 @@ export default function InventoryManager({
 
   // Trigger server-side fetch when debounced search query OR category filter changes
   useEffect(() => {
-    fetchInventory(searchQuery, true, selectedCategories);
-  }, [searchQuery, selectedCategories, fetchInventory]);
+    fetchInventory(searchQuery, true, selectedCategories, filterStatus);
+  }, [searchQuery, selectedCategories, filterStatus, fetchInventory]);
 
   const allAvailableTags = Array.from(new Set(items.flatMap(item => item.tags || []))).sort();
   const allAvailableCategories = Array.from(
@@ -61,14 +61,14 @@ export default function InventoryManager({
 
   // Pass empty string for text search to `filterAndSortItems` because the
   // text search is now handled by the server-side RPC. We keep client-side
-  // filtering for status (In Stock/Low Stock), tags, and categories.
+  // filtering for tags.
   const filteredItems = filterAndSortItems(
     items,
-    filterStatus,
+    'All', // Status is now handled server-side, keep it 'All' for client-side to prevent double-filtering 
     '', // bypass client text search
     selectedTags,
     sortBy,
-    selectedCategories
+    [] // Categories are handled server-side
   );
 
   const handleExport = async () => {

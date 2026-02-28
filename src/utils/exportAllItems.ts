@@ -25,6 +25,7 @@ export const exportAllItems = async (
       p_limit: 50000, // Arbitrarily high limit to ensure we get everything
       p_offset: 0,
       p_categories: categories.length > 0 ? categories : null,
+      p_status: status,
     });
 
     if (error) {
@@ -75,21 +76,8 @@ export const exportAllItems = async (
     });
 
     // Apply the remaining client-side filters (Status and Tags) to match the current view
-    // The server handles Search and Category, but we must manually handle these two:
+    // The server handles Search, Category, and Status, but we must manually handle Tags:
     
-    // Helper to get status
-    const getStatus = (item: InventoryItem) => {
-      const stock = item.stock ?? item.quantity ?? 0;
-      const minQty = item.minQuantity ?? item.min_qty ?? 0;
-      if (stock <= 0) return 'Out of Stock';
-      if (stock <= minQty) return 'Low Stock';
-      return 'In Stock';
-    };
-
-    if (status !== 'All') {
-        allItems = allItems.filter(item => getStatus(item) === status);
-    }
-
     if (tags.length > 0) {
         allItems = allItems.filter(item => {
             const itemTags = (item.tags || []).map((t: string) => t.toLowerCase());

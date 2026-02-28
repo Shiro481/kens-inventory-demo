@@ -35,7 +35,7 @@ interface InventoryStore {
    * Otherwise, it appends the next page to the existing items.
    * Optionally filter to specific categories server-side.
    */
-  fetchInventory: (searchQuery?: string, reset?: boolean, categories?: string[]) => Promise<void>;
+  fetchInventory: (searchQuery?: string, reset?: boolean, categories?: string[], statusFilter?: string) => Promise<void>;
 
   /**
    * Immediately patches a single item in local state before the DB round-trip
@@ -101,7 +101,7 @@ export const useInventoryStore = create<InventoryStore>((set, get) => ({
   },
 
   // ── fetchInventory (Server-Side Paginated) ──────────────────────────────────
-  fetchInventory: async (searchQuery = '', reset = true, categories: string[] = []) => {
+  fetchInventory: async (searchQuery = '', reset = true, categories: string[] = [], statusFilter = 'All') => {
     if (!supabase) {
       set({ error: 'Supabase client not initialized. Check your .env file.' });
       return;
@@ -131,7 +131,8 @@ export const useInventoryStore = create<InventoryStore>((set, get) => ({
         p_search_query: searchQuery,
         p_limit: PAGE_SIZE,
         p_offset: offset,
-        p_categories: categoriesToUse.length > 0 ? categoriesToUse : null
+        p_categories: categoriesToUse.length > 0 ? categoriesToUse : null,
+        p_status: statusFilter
       });
 
       if (error) {
