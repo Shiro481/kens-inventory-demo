@@ -241,6 +241,7 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
           {activeView === 'inventory' && (
             <InventoryManager
               items={items}
+              globalCategories={categories}
               isLoading={isLoading}
               onAddItem={handleAddItem}
               onAddVariant={handleAddVariantClick}

@@ -14,6 +14,7 @@ import FilterMenu from './FilterMenu';
 
 interface InventoryManagerProps {
   items: InventoryItem[];
+  globalCategories?: string[];
   isLoading?: boolean;
   onAddItem: () => void;
   onAddVariant: () => void;
@@ -23,6 +24,7 @@ interface InventoryManagerProps {
 
 export default function InventoryManager({ 
   items, 
+  globalCategories = [],
   isLoading = false,
   onAddItem, 
   onAddVariant, 
@@ -55,9 +57,10 @@ export default function InventoryManager({
   }, [searchQuery, selectedCategories, filterStatus, fetchInventory]);
 
   const allAvailableTags = Array.from(new Set(items.flatMap(item => item.tags || []))).sort();
-  const allAvailableCategories = Array.from(
-    new Set(items.map(item => item.category).filter(Boolean) as string[])
-  ).sort();
+  // Override paginated map mapping with the true global categories array
+  const allAvailableCategories = globalCategories.length > 0 
+    ? [...globalCategories].sort()
+    : Array.from(new Set(items.map(item => item.category).filter(Boolean) as string[])).sort();
 
   // Pass empty string for text search to `filterAndSortItems` because the
   // text search is now handled by the server-side RPC. We keep client-side
