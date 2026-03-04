@@ -10,7 +10,8 @@ export const exportAllItems = async (
   searchQuery: string = '',
   categories: string[] = [],
   tags: string[] = [], // client-side filter
-  status: 'All' | 'In Stock' | 'Low Stock' | 'Out of Stock' = 'All' // client-side filter
+  status: 'All' | 'In Stock' | 'Low Stock' | 'Out of Stock' = 'All', // client-side filter
+  allCategories: string[] = [] // New parameter to force empty sheets
 ): Promise<void> => {
   if (!supabase) {
     console.error('Supabase client not initialized');
@@ -92,7 +93,7 @@ export const exportAllItems = async (
     });
 
     // Finally, pass the full list to the existing Excel generator
-    exportToExcel(allItems);
+    exportToExcel(allItems, allCategories);
 
   } catch (err) {
     console.error('Failed to export all items:', err);

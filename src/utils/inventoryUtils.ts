@@ -108,8 +108,9 @@ const itemToRow = (item: InventoryItem) => ({
 
 /**
  * Export items to Excel (.xlsx) with one sheet per category + an "All Items" summary sheet.
+ * If allCategories is provided, an empty sheet will be generated for categories without items.
  */
-export const exportToExcel = (items: InventoryItem[]) => {
+export const exportToExcel = (items: InventoryItem[], allCategories: string[] = []) => {
   const wb = XLSX.utils.book_new();
 
   // ── All Items (summary sheet always first) ─────────────────────────────────
@@ -119,12 +120,18 @@ export const exportToExcel = (items: InventoryItem[]) => {
   XLSX.utils.book_append_sheet(wb, wsAll, 'All Items');
 
   // ── One sheet per category, sorted alphabetically ─────────────────────────
-  const byCategory = items.reduce<Record<string, InventoryItem[]>>((acc, item) => {
+  const byCategory: Record<string, InventoryItem[]> = {};
+  
+  // Pre-seed with all known categories to ensure they get a sheet even if empty
+  allCategories.forEach(cat => {
+    byCategory[cat.trim()] = [];
+  });
+
+  items.forEach(item => {
     const cat = (item.category || 'Uncategorized').trim();
-    if (!acc[cat]) acc[cat] = [];
-    acc[cat].push(item);
-    return acc;
-  }, {});
+    if (!byCategory[cat]) byCategory[cat] = [];
+    byCategory[cat].push(item);
+  });
 
   Object.keys(byCategory).sort().forEach(category => {
     const rows = byCategory[category].map(itemToRow);

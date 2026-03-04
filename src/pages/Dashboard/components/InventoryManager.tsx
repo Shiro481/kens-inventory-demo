@@ -78,7 +78,7 @@ export default function InventoryManager({
     try {
       setIsExporting(true);
       // Wait for fetch & export
-      await exportAllItems(searchQuery, selectedCategories, selectedTags, filterStatus);
+      await exportAllItems(searchQuery, selectedCategories, selectedTags, filterStatus, allAvailableCategories);
     } catch (error) {
       console.error('Export failed:', error);
       alert('Failed to export inventory. Please try again.');
