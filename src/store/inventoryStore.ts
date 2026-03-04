@@ -16,7 +16,7 @@ interface InventoryStore {
   currentCategories: string[];
   
   // Global lookups (Non-paginated)
-  allParentProducts: { id: number; name: string; category: string; category_id: number; }[];
+  allParentProducts: { id: number; uuid: string; name: string; category: string; category_id: number; }[];
   isLoadingParents: boolean;
   fetchAllParents: () => Promise<void>;
   
@@ -88,6 +88,7 @@ export const useInventoryStore = create<InventoryStore>((set, get) => ({
 
       const formatted = (data || []).map((item: any) => ({
         id: item.id,
+        uuid: String(item.id),
         name: item.name,
         category_id: item.category_id,
         category: item.product_categories?.name || 'Uncategorized'

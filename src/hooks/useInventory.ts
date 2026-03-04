@@ -220,6 +220,31 @@ export function useInventory(suppliers: Supplier[]) {
             };
             await supabase.from('products').update(sharedPayload).eq('id', parentId);
         }
+        
+        if (variants && variants.length > 0) {
+            const variantInserts = variants
+                // Only insert new ones that hadn't been saved yet (which the modal typically flags with is_temp)
+                .filter(v => v.is_temp)
+                .map(v => ({
+                    product_id: targetId,
+                    variant_type: v.variant_type,
+                    variant_id: v.variant_id, 
+                    color_temperature: v.color_temperature ? String(v.color_temperature) : null,
+                    cost_price: Number(v.cost_price) || 0,
+                    selling_price: Number(v.selling_price) || 0,
+                    stock_quantity: Number(v.stock_quantity) || 0,
+                    min_stock_level: Number(v.min_stock_level) || 5,
+                    variant_color: v.variant_color,
+                    description: v.description,
+                    variant_sku: v.variant_sku,
+                    specifications: v.specifications || {}
+                }));
+
+            if (variantInserts.length > 0) {
+                 const { error: newVarsError } = await supabase.from('product_variants').insert(variantInserts);
+                 if (newVarsError) return { error: newVarsError };
+            }
+        }
 
         await fetchInventory(undefined, true);
         if (onSuccess) onSuccess();
@@ -299,6 +324,29 @@ export function useInventory(suppliers: Supplier[]) {
       if (error) {
         return { error };
       } else if (updatedProd && updatedProd.length > 0) {
+        if (variants && variants.length > 0 && updatedItem.has_variants) {
+            const variantInserts = variants
+                .filter(v => v.is_temp)
+                .map(v => ({
+                    product_id: targetId,
+                    variant_type: v.variant_type,
+                    variant_id: v.variant_id, 
+                    color_temperature: v.color_temperature ? String(v.color_temperature) : null,
+                    cost_price: Number(v.cost_price) || 0,
+                    selling_price: Number(v.selling_price) || 0,
+                    stock_quantity: Number(v.stock_quantity) || 0,
+                    min_stock_level: Number(v.min_stock_level) || 5,
+                    variant_color: v.variant_color,
+                    description: v.description,
+                    variant_sku: v.variant_sku,
+                    specifications: v.specifications || {}
+                }));
+
+            if (variantInserts.length > 0) {
+                 const { error: newVarsError } = await supabase.from('product_variants').insert(variantInserts);
+                 if (newVarsError) return { error: newVarsError };
+            }
+        }
         await fetchInventory(undefined, true);
       }
     }
