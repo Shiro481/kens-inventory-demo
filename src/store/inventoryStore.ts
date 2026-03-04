@@ -16,7 +16,19 @@ interface InventoryStore {
   currentCategories: string[];
   
   // Global lookups (Non-paginated)
-  allParentProducts: { id: number; uuid: string; name: string; category: string; category_id: number; }[];
+  allParentProducts: { 
+    id: number; 
+    uuid: string; 
+    name: string; 
+    category: string; 
+    category_id: number; 
+    brand: string;
+    sku: string;
+    barcode: string;
+    supplier: string;
+    description: string;
+    image_url: string;
+  }[];
   isLoadingParents: boolean;
   fetchAllParents: () => Promise<void>;
   
@@ -78,8 +90,14 @@ export const useInventoryStore = create<InventoryStore>((set, get) => ({
         .select(`
           id, 
           name, 
+          brand,
+          sku,
+          barcode,
+          description,
+          image_url,
           category_id, 
-          product_categories(name)
+          product_categories(name),
+          suppliers(name)
         `)
         .eq('has_variants', true)
         .order('name');
@@ -90,6 +108,12 @@ export const useInventoryStore = create<InventoryStore>((set, get) => ({
         id: item.id,
         uuid: String(item.id),
         name: item.name,
+        brand: item.brand || '',
+        sku: item.sku || '',
+        barcode: item.barcode || '',
+        description: item.description || '',
+        image_url: item.image_url || '',
+        supplier: item.suppliers?.name || '',
         category_id: item.category_id,
         category: item.product_categories?.name || 'Uncategorized'
       }));
