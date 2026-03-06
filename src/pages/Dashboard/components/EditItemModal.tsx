@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
 import { useCategoryMetadata } from '../../../hooks/useCategoryMetadata';
-import { useVariantDefinitions } from '../../../hooks/useVariantDefinitions';
+import { useVariantTypesByCategory } from '../../../hooks/useVariantTypesByCategory';
 import styles from './EditItemModal.module.css';
 import type { InventoryItem } from '../../../types/inventory';
 import { supabase } from '../../../lib/supabase';
@@ -68,21 +68,20 @@ export default function EditItemModal({
   }, [item, categories, variantTypes]);
 
   const { config, isFallback } = useCategoryMetadata(editingItem?.category);
-  const { variantDefinitions } = useVariantDefinitions();
+  const { categoryVariantTypes } = useVariantTypesByCategory(editingItem?.category);
 
   const filteredVariantTypes = Array.from(new Set([
+    // 1. Predefined suggestions from category config (e.g. H1, H4, H11 for headlights)
     ...(config.suggestedVariantTypes || []),
-    ...variantDefinitions
-      // If the variant definition has a category_id, we can optionally filter by it, 
-      // but for global autocomplete, just mapping all known names + the current item's type is very robust.
-      // We will prefer showing all globally defined types over isolating them strictly, 
-      // but prioritize if needed later. Just map them all for now so the dropdown is fully populated:
-      .map((vd: any) => vd.variant_name)
-      .filter(Boolean),
+    // 2. All variant_type values used across product_variants for this category (DB fetch)
+    ...categoryVariantTypes,
+    // 3. variant_type on base items in allItems that share this category
     ...allItems
       .filter(i => i.category === editingItem?.category)
       .map(i => i.variant_type)
-      .filter(Boolean) as string[]
+      .filter(Boolean) as string[],
+    // 4. Preserve current value so it always appears in the list when editing
+    ...(editingItem?.variant_type ? [editingItem.variant_type] : [])
   ])).sort();
 
   const handleInputChange = (field: string, value: any) => {
