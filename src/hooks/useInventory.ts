@@ -139,12 +139,13 @@ export function useInventory(suppliers: Supplier[]) {
                 variant_color: v.variant_color,
                 description: v.description,
                 variant_sku: v.variant_sku,
-                specifications: v.specifications || {}
+                specifications: v.specifications || {},
+                spec_key: v.spec_key || buildSpecKey(v as any)
             }));
 
             const { error: varError } = await supabase
                 .from('product_variants')
-                .upsert(variantInserts, { onConflict: 'product_id,variant_type,color_temperature', ignoreDuplicates: false });
+                .upsert(variantInserts, { onConflict: 'product_id,spec_key', ignoreDuplicates: false });
 
             if (varError) return { error: varError };
             await fetchInventory(undefined, true);

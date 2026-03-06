@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
 import { useCategoryMetadata } from '../../../hooks/useCategoryMetadata';
 import { useVariantTypesByCategory } from '../../../hooks/useVariantTypesByCategory';
+import { buildSpecKey } from '../../../utils/buildSpecKey';
 import styles from './EditItemModal.module.css';
 import type { InventoryItem } from '../../../types/inventory';
 import { supabase } from '../../../lib/supabase';
@@ -153,16 +154,20 @@ export default function EditItemModal({
     const pid = (editingItem as any)?.uuid;
     if (!pid || item?.id === 0) {
          // --- LOCAL FLOW (New Product) ---
+         // Compute the definitive spec_key for the new variant
+         const newSpecKey = buildSpecKey(
+             { ...newVariantData, variant_type: normalizedType }, 
+             config.variantDimensions?.filter(d => d.active)
+         );
+
          // Check for local duplicates before adding.
-         // Match on (variant_type, color_temperature) — the same fields as the DB unique constraint
-         // so we can never build a local list that would explode on batch insert.
+         // Match on the exact spec_key so N-dimensional uniqueness is cleanly enforced.
          const isDuplicate = productVariants.some(v => {
             if (v.id === editingVariantId) return false; // Allow editing the current variant
-            // Primary match: same variant_type string (case-insensitive)
-            if ((v.variant_type || '').toLowerCase() !== normalizedType.toLowerCase()) return false;
-            // Secondary match: same color_temperature
-            if ((v.color_temperature || '') !== (newVariantData.color_temperature || '')) return false;
-            return true;
+            
+            // Generate the spec key for the existing variant to compare
+            const vSpecKey = v.spec_key || buildSpecKey(v, config.variantDimensions?.filter(d => d.active));
+            return vSpecKey === newSpecKey;
          });
 
 
@@ -190,7 +195,8 @@ export default function EditItemModal({
                 color: newVariantData.color || null,
                 color_temperature: newVariantData.color_temperature || null,
                 internal_notes: newVariantData.notes
-              }
+              },
+             spec_key: newSpecKey
           };
 
          if (editingVariantId) {
@@ -240,25 +246,30 @@ export default function EditItemModal({
             return true;
         });
 
-        // Fallback: if not found by variant_id, check by the DB unique constraint columns
-        // (product_id, variant_type, color_temperature) to avoid duplicate key violations
+        // Fallback: if not found by variant_id, check by the DB unique constraint column
+        // (product_id, spec_key) to avoid duplicate key violations
         if (!existingProductVariant) {
-            const fallbackQuery = supabase
+            const tempSpecKey = buildSpecKey(
+                { ...newVariantData, variant_type: normalizedType }, 
+                config.variantDimensions?.filter((d: any) => d.active)
+            );
+
+            const { data: fallbackMatch } = await supabase
                 .from('product_variants')
                 .select('id')
                 .eq('product_id', pid)
-                .eq('variant_type', normalizedType);
-
-            const resolvedTemp = targetTemp ? String(targetTemp) : null;
-            const { data: fallbackMatch } = resolvedTemp
-                ? await fallbackQuery.eq('color_temperature', resolvedTemp)
-                : await fallbackQuery.is('color_temperature', null);
+                .eq('spec_key', tempSpecKey);
 
             if (fallbackMatch && fallbackMatch.length > 0) {
                 existingProductVariant = fallbackMatch[0];
             }
         }
     }
+
+    const finalSpecKey = buildSpecKey(
+        { ...newVariantData, variant_type: normalizedType }, 
+        config.variantDimensions?.filter((d: any) => d.active)
+    );
 
 
     const updates: any = {
@@ -272,6 +283,7 @@ export default function EditItemModal({
       variant_color: newVariantData.color || null,
       description: newVariantData.description || null,
       variant_sku: newVariantData.sku || null,
+      spec_key: finalSpecKey,
       specifications: {
           ...(newVariantData.specifications || {}),
           color: newVariantData.color || null,
@@ -471,3 +483,5 @@ export default function EditItemModal({
     </div>
   );
 }
+
+
