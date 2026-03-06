@@ -247,7 +247,27 @@ export default function EditItemModal({
             }
             return true;
         });
+
+        // Fallback: if not found by variant_id, check by the DB unique constraint columns
+        // (product_id, variant_type, color_temperature) to avoid duplicate key violations
+        if (!existingProductVariant) {
+            const fallbackQuery = supabase
+                .from('product_variants')
+                .select('id')
+                .eq('product_id', pid)
+                .eq('variant_type', normalizedType);
+
+            const resolvedTemp = targetTemp ? String(targetTemp) : null;
+            const { data: fallbackMatch } = resolvedTemp
+                ? await fallbackQuery.eq('color_temperature', resolvedTemp)
+                : await fallbackQuery.is('color_temperature', null);
+
+            if (fallbackMatch && fallbackMatch.length > 0) {
+                existingProductVariant = fallbackMatch[0];
+            }
+        }
     }
+
 
     const updates: any = {
       variant_type: normalizedType,
