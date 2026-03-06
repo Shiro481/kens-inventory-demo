@@ -142,7 +142,10 @@ export function useInventory(suppliers: Supplier[]) {
                 specifications: v.specifications || {}
             }));
 
-            const { error: varError } = await supabase.from('product_variants').insert(variantInserts);
+            const { error: varError } = await supabase
+                .from('product_variants')
+                .upsert(variantInserts, { onConflict: 'product_id,variant_type,color_temperature', ignoreDuplicates: false });
+
             if (varError) return { error: varError };
             await fetchInventory(undefined, true);
         } else {

@@ -153,26 +153,18 @@ export default function EditItemModal({
     const pid = (editingItem as any)?.uuid;
     if (!pid || item?.id === 0) {
          // --- LOCAL FLOW (New Product) ---
-         // Check for local duplicates before adding
+         // Check for local duplicates before adding.
+         // Match on (variant_type, color_temperature) — the same fields as the DB unique constraint
+         // so we can never build a local list that would explode on batch insert.
          const isDuplicate = productVariants.some(v => {
             if (v.id === editingVariantId) return false; // Allow editing the current variant
-            if (v.variant_id !== variantId) return false;
-            if ((v.variant_color || '') !== (newVariantData.color || '')) return false;
+            // Primary match: same variant_type string (case-insensitive)
+            if ((v.variant_type || '').toLowerCase() !== normalizedType.toLowerCase()) return false;
+            // Secondary match: same color_temperature
             if ((v.color_temperature || '') !== (newVariantData.color_temperature || '')) return false;
-            
-            // Check dynamic specifications (e.g., Length for Wipers)
-            const vSpecs = typeof v.specifications === 'string' ? JSON.parse(v.specifications || '{}') : (v.specifications || {});
-            const nSpecs = newVariantData.specifications || {};
-            
-            // If the new variant has specific dimensions, the existing one MUST match them all to be a duplicate
-            for (const key of Object.keys(nSpecs)) {
-               if (key === 'internal_notes') continue;
-               if (String(vSpecs[key] || '') !== String(nSpecs[key] || '')) {
-                  return false; // Found a difference in dimensions (e.g., 20 vs 24 inch)
-               }
-            }
             return true;
          });
+
 
          if (isDuplicate && !editingVariantId) {
             return alert(`This variant (${normalizedType}) already exists in your list with these exact specifications.`);
