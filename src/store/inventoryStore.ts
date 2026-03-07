@@ -84,7 +84,7 @@ export const useInventoryStore = create<InventoryStore>((set, get) => ({
     if (!supabase) return;
     set({ isLoadingParents: true });
     try {
-      // Fetch products that are parents. We don't fetch variants.
+      // Fetch all base products for the "Add Variant To..." picker
       const { data, error } = await supabase
         .from('products')
         .select(`
@@ -99,7 +99,6 @@ export const useInventoryStore = create<InventoryStore>((set, get) => ({
           product_categories(name),
           suppliers(name)
         `)
-        .eq('has_variants', true)
         .order('name');
 
       if (error) throw error;

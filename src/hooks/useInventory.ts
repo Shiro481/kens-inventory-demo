@@ -1,6 +1,7 @@
 import { supabase } from '../lib/supabase';
 import { useInventoryStore } from '../store/inventoryStore';
 import type { InventoryItem, Supplier } from '../types/inventory';
+import { buildSpecKey } from '../utils/buildSpecKey';
 
 export function useInventory(suppliers: Supplier[]) {
   const { items, fetchInventory, removeItemOptimistically } = useInventoryStore();
@@ -230,7 +231,7 @@ export function useInventory(suppliers: Supplier[]) {
                 // Only insert new ones that hadn't been saved yet (which the modal typically flags with is_temp)
                 .filter(v => v.is_temp)
                 .map(v => ({
-                    product_id: targetId,
+                    product_id: updatedItem.parent_product_id || updatedItem.id,
                     variant_type: v.variant_type,
                     variant_id: v.variant_id, 
                     color_temperature: v.color_temperature ? String(v.color_temperature) : null,
