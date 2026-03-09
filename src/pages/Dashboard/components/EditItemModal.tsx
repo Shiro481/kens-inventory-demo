@@ -47,16 +47,20 @@ export default function EditItemModal({
   const [editingVariantId, setEditingVariantId] = useState<number | null>(null);
 
   useEffect(() => {
-    const pid = (item as any)?.uuid;
+    const pid = (item as any)?.uuid ?? item?.id;
+    console.log('[EditItemModal] Variant fetch check:', { pid, has_variants: item?.has_variants, id: item?.id });
     if (pid && item?.has_variants && item?.id !== 0) {
         if (!supabase) return;
+        console.log('[EditItemModal] Fetching variants for product_id:', pid);
         supabase.from('product_variants')
           .select('*, variant_definitions(variant_name)')
-          .eq('product_id', pid)
-          .then(({ data }) => {
+          .eq('product_id', Number(pid))
+          .then(({ data, error }) => {
+             console.log('[EditItemModal] Variant fetch result:', { data, error, count: data?.length });
              setProductVariants(data || []);
           });
     } else {
+        console.log('[EditItemModal] Skipping variant fetch:', { hasPid: !!pid, hasVariants: !!item?.has_variants, idNotZero: item?.id !== 0 });
         setProductVariants([]);
     }
   }, [item]);

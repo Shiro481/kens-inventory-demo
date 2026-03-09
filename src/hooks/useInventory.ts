@@ -4,7 +4,7 @@ import type { InventoryItem, Supplier } from '../types/inventory';
 import { buildSpecKey } from '../utils/buildSpecKey';
 
 export function useInventory(suppliers: Supplier[]) {
-  const { items, fetchInventory, removeItemOptimistically } = useInventoryStore();
+  const { items, fetchInventory, fetchAllParents, removeItemOptimistically } = useInventoryStore();
 
   const confirmDelete = async (itemToDelete: InventoryItem) => {
     if (!supabase || !itemToDelete) return { error: null };
@@ -150,8 +150,10 @@ export function useInventory(suppliers: Supplier[]) {
 
             if (varError) return { error: varError };
             await fetchInventory(undefined, true);
+            await fetchAllParents();
         } else {
             await fetchInventory(undefined, true);
+            await fetchAllParents();
         }
       }
     } else {
@@ -252,6 +254,7 @@ export function useInventory(suppliers: Supplier[]) {
         }
 
         await fetchInventory(undefined, true);
+        await fetchAllParents();
         if (onSuccess) onSuccess();
         return { error: null };
       }
@@ -353,6 +356,7 @@ export function useInventory(suppliers: Supplier[]) {
             }
         }
         await fetchInventory(undefined, true);
+        await fetchAllParents();
       }
     }
     

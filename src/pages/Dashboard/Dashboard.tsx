@@ -96,8 +96,13 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
    * Opens delete confirmation modal with the selected item
    * @param id - The ID of the item to delete
    */
-  const handleDelete = (id: number) => {
-    const item = items.find(i => i.id === id);
+  const handleDelete = (idOrItem: number | InventoryItem) => {
+    let item: InventoryItem | undefined;
+    if (typeof idOrItem === 'number') {
+      item = items.find(i => i.id === idOrItem);
+    } else {
+      item = idOrItem;
+    }
     if (item) {
       setItemToDelete(item);
       setIsDeleteModalOpen(true);

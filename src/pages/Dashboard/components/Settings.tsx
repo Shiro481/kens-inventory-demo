@@ -18,7 +18,7 @@ interface StoreSettings {
 interface SettingsProps {
   items: InventoryItem[];
   onEdit: (item: InventoryItem) => void;
-  onDelete: (id: number) => void;
+  onDelete: (item: number | InventoryItem) => void;
   onCategoryAdded?: () => void;
 }
 
@@ -436,7 +436,7 @@ export default function Settings({ items, onEdit, onDelete, onCategoryAdded }: S
                       </button>
                       <button 
                         className={`${styles.editFamilyBtn} ${styles.deleteFamilyBtn}`}
-                        onClick={() => onDelete(product.id)}
+                        onClick={() => onDelete(product)}
                         title="Delete Family"
                       >
                         <Trash2 size={14} />

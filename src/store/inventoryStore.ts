@@ -95,6 +95,7 @@ export const useInventoryStore = create<InventoryStore>((set, get) => ({
           barcode,
           description,
           image_url,
+          has_variants,
           category_id, 
           product_categories(name),
           suppliers(name)
@@ -105,7 +106,7 @@ export const useInventoryStore = create<InventoryStore>((set, get) => ({
 
       const formatted = (data || []).map((item: any) => ({
         id: item.id,
-        uuid: String(item.id),
+        uuid: item.id,
         name: item.name,
         brand: item.brand || '',
         sku: item.sku || '',
@@ -114,7 +115,8 @@ export const useInventoryStore = create<InventoryStore>((set, get) => ({
         image_url: item.image_url || '',
         supplier: item.suppliers?.name || '',
         category_id: item.category_id,
-        category: item.product_categories?.name || 'Uncategorized'
+        category: item.product_categories?.name || 'Uncategorized',
+        has_variants: item.has_variants || false
       }));
 
       set({ allParentProducts: formatted, isLoadingParents: false });
