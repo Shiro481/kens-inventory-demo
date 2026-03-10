@@ -146,7 +146,7 @@ export function useInventory(suppliers: Supplier[]) {
 
             const { error: varError } = await supabase
                 .from('product_variants')
-                .upsert(variantInserts, { onConflict: 'product_id,spec_key', ignoreDuplicates: false });
+                .insert(variantInserts);
 
             if (varError) return { error: varError };
             await fetchInventory(undefined, true);

@@ -223,51 +223,6 @@ export default function EditItemModal({
     let existingProductVariant: any = null;
     if (editingVariantId) {
         existingProductVariant = { id: editingVariantId };
-    } else {
-        const { data: potentialMatches } = await supabase
-            .from('product_variants')
-            .select('id, variant_color, color_temperature, specifications')
-            .eq('product_id', pid)
-            .eq('variant_id', variantId);
-
-        const targetColor = newVariantData.color || null;
-        const targetTemp = newVariantData.color_temperature || null;
-        const targetSpecs = newVariantData.specifications || {};
-
-        existingProductVariant = potentialMatches?.find((v: any) => {
-            const matchColor = (v.variant_color || null) === targetColor;
-            const matchTemp = (v.color_temperature || null) === (targetTemp ? String(targetTemp) : null);
-            if (!matchColor || !matchTemp) return false;
-
-            // Deep check specifications (Wiper Lengths, Wattage, etc.)
-            const vSpecs = typeof v.specifications === 'string' ? JSON.parse(v.specifications || '{}') : (v.specifications || {});
-            for (const key of Object.keys(targetSpecs)) {
-               if (key === 'internal_notes') continue;
-               if (String(vSpecs[key] || '') !== String(targetSpecs[key] || '')) {
-                  return false;
-               }
-            }
-            return true;
-        });
-
-        // Fallback: if not found by variant_id, check by the DB unique constraint column
-        // (product_id, spec_key) to avoid duplicate key violations
-        if (!existingProductVariant) {
-            const tempSpecKey = buildSpecKey(
-                { ...newVariantData, variant_type: normalizedType }, 
-                config.variantDimensions?.filter((d: any) => d.active)
-            );
-
-            const { data: fallbackMatch } = await supabase
-                .from('product_variants')
-                .select('id')
-                .eq('product_id', pid)
-                .eq('spec_key', tempSpecKey);
-
-            if (fallbackMatch && fallbackMatch.length > 0) {
-                existingProductVariant = fallbackMatch[0];
-            }
-        }
     }
 
     const finalSpecKey = buildSpecKey(
