@@ -165,19 +165,16 @@ export default function EditItemModal({
          );
 
          // Check for local duplicates before adding.
-         // Match on the exact spec_key so N-dimensional uniqueness is cleanly enforced.
-         const isDuplicate = productVariants.some(v => {
-            if (v.id === editingVariantId) return false; // Allow editing the current variant
-            
-            // Generate the spec key for the existing variant to compare
-            const vSpecKey = v.spec_key || buildSpecKey(v, config.variantDimensions?.filter(d => d.active));
-            return vSpecKey === newSpecKey;
-         });
+         // Wait: Removing duplicate spec_key check to allow multiple similar variants.
+         // const isDuplicate = productVariants.some(v => {
+         //    if (v.id === editingVariantId) return false;
+         //    const vSpecKey = v.spec_key || buildSpecKey(v, config.variantDimensions?.filter(d => d.active));
+         //    return vSpecKey === newSpecKey;
+         // });
 
-
-         if (isDuplicate && !editingVariantId) {
-            return alert(`This variant (${normalizedType}) already exists in your list with these exact specifications.`);
-         }
+         // if (isDuplicate && !editingVariantId) {
+         //    return alert(`This variant (${normalizedType}) already exists in your list with these exact specifications.`);
+         // }
 
          const newVar = {
              ...newVariantData,
