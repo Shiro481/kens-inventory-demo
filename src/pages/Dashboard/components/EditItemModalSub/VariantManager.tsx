@@ -1,4 +1,4 @@
-import { Info, Plus, Pencil, Trash2 } from 'lucide-react';
+import { Info, Plus, Pencil, Trash2, Loader2 } from 'lucide-react';
 import styles from '../EditItemModal.module.css';
 
 
@@ -15,6 +15,7 @@ interface VariantManagerProps {
   onSetNewVariantData: (data: any) => void;
   onSetIsAddingNewType: (val: boolean) => void;
   onSetEditingVariantId: (id: number | null) => void;
+  isSavingVariant: boolean;
 }
 
 export default function VariantManager({
@@ -29,7 +30,8 @@ export default function VariantManager({
   onSetShowVariantForm,
   onSetNewVariantData,
   onSetIsAddingNewType,
-  onSetEditingVariantId
+  onSetEditingVariantId,
+  isSavingVariant
 }: VariantManagerProps) {
   const getParsedSpecs = (specs: any) => {
     if (!specs) return {};
@@ -359,9 +361,17 @@ export default function VariantManager({
             <button 
               className={styles.variantSaveBtn} 
               onClick={onAddVariant} 
-              style={{ width: '100%' }}
+              style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', opacity: isSavingVariant ? 0.7 : 1 }}
+              disabled={isSavingVariant}
             >
-              Save Variant
+              {isSavingVariant ? (
+                <>
+                  <Loader2 size={16} className={styles.spin} style={{ animation: 'spin 2s linear infinite' }} />
+                  Saving...
+                </>
+              ) : (
+                'Save Variant'
+              )}
             </button>
           </div>
         </div>

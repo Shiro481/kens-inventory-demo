@@ -45,6 +45,7 @@ export default function EditItemModal({
   });
   const [isAddingNewTypeInVariantForm, setIsAddingNewTypeInVariantForm] = useState(false);
   const [editingVariantId, setEditingVariantId] = useState<number | null>(null);
+  const [isSavingVariant, setIsSavingVariant] = useState(false);
 
   useEffect(() => {
     const pid = (item as any)?.uuid ?? item?.id;
@@ -111,8 +112,11 @@ export default function EditItemModal({
 
     if (!supabase) return;
 
-    // Resolve Variant Definition
-    let variantId: number | null = null;
+    try {
+        setIsSavingVariant(true);
+
+        // Resolve Variant Definition
+        let variantId: number | null = null;
     const { data: variants, error: fetchDefError } = await supabase
         .from('variant_definitions')
         .select('*')
@@ -222,11 +226,6 @@ export default function EditItemModal({
         existingProductVariant = { id: editingVariantId };
     }
 
-    const finalSpecKey = buildSpecKey(
-        { ...newVariantData, variant_type: normalizedType }, 
-        config.variantDimensions?.filter((d: any) => d.active)
-    );
-
 
     const updates: any = {
       variant_type: normalizedType,
@@ -239,7 +238,6 @@ export default function EditItemModal({
       variant_color: newVariantData.color || null,
       description: newVariantData.description || null,
       variant_sku: newVariantData.sku || null,
-      spec_key: finalSpecKey,
       specifications: {
           ...(newVariantData.specifications || {}),
           color: newVariantData.color || null,
@@ -270,6 +268,9 @@ export default function EditItemModal({
         });
     } else {
         alert('Error saving variant: ' + error.message);
+    }
+    } finally {
+        setIsSavingVariant(false);
     }
   };
 
@@ -425,6 +426,7 @@ export default function EditItemModal({
                   onAddVariant={handleAddVariant} onDeleteVariant={handleDeleteVariant}
                   onSetShowVariantForm={setShowVariantForm} onSetNewVariantData={setNewVariantData}
                   onSetIsAddingNewType={setIsAddingNewTypeInVariantForm} onSetEditingVariantId={setEditingVariantId}
+                  isSavingVariant={isSavingVariant}
                 />
               )}
             </>
