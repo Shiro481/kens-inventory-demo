@@ -10,7 +10,9 @@ import VariantContainerBox from './VariantContainerBox';
 import ItemDetailModal from './ItemDetailModal';
 import VariantSelectionModal from './VariantSelectionModal';
 import DynamicCategorySpecs from './DynamicCategorySpecs';
-import { cleanItemName } from '../../../utils/inventoryUtils';
+import { cleanItemName, filterAndSortItems } from '../../../utils/inventoryUtils';
+import type { FilterStatus, SortBy } from '../../../utils/inventoryUtils';
+import FilterMenu from './FilterMenu';
 
 interface CartItem extends InventoryItem {
   cartKey: string;        // Stable composite key: "parentId:variantId" or "itemId"
@@ -26,6 +28,7 @@ interface CartItem extends InventoryItem {
 
 interface PosProps {
   items: InventoryItem[];
+  globalCategories?: string[];
   isLoading?: boolean;
   onSaleComplete?: (query?: string, reset?: boolean) => void;
 }
@@ -35,9 +38,15 @@ interface PosProps {
  * @param items - Array of inventory items available for sale
  * @param onSaleComplete - Callback function called after successful sale
  */
-export default function Pos({ items, isLoading: globalLoading = false, onSaleComplete }: PosProps) {
+export default function Pos({ items, globalCategories = [], isLoading: globalLoading = false, onSaleComplete }: PosProps) {
   const [searchInput, setSearchInput] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
+  const [filterStatus, setFilterStatus] = useState<FilterStatus>('All');
+  const [showFilterMenu, setShowFilterMenu] = useState(false);
+  const [sortBy, setSortBy] = useState<SortBy>('none');
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  
   const [cart, setCart] = useState<CartItem[]>([]);
   const [loading, setLoading] = useState(false);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
@@ -66,8 +75,8 @@ export default function Pos({ items, isLoading: globalLoading = false, onSaleCom
 
   // Trigger server-side fetch when debounced query changes
   useEffect(() => {
-    fetchInventory(searchQuery, true);
-  }, [searchQuery, fetchInventory]);
+    fetchInventory(searchQuery, true, selectedCategories, filterStatus);
+  }, [searchQuery, selectedCategories, filterStatus, fetchInventory]);
 
   // Infinite Scroll Handler for POS Grid
   useEffect(() => {
@@ -80,26 +89,43 @@ export default function Pos({ items, isLoading: globalLoading = false, onSaleCom
       const isNearBottom = grid.scrollHeight - grid.scrollTop - grid.clientHeight < threshold;
 
       if (isNearBottom && hasMore && !isLoadingMore && !globalLoading) {
-        fetchInventory(searchQuery, false);
+        fetchInventory(searchQuery, false, selectedCategories, filterStatus);
       }
     };
 
     grid.addEventListener('scroll', handleScroll);
     return () => grid.removeEventListener('scroll', handleScroll);
-  }, [hasMore, isLoadingMore, globalLoading, fetchInventory, searchQuery]);
+  }, [hasMore, isLoadingMore, globalLoading, fetchInventory, searchQuery, selectedCategories, filterStatus]);
 
-  const filteredItems = items.filter(item => {
-    const query = searchQuery.trim().toLowerCase();
-    
-    // If no search query, only show parent products to keep the grid clean
-    if (!query) {
-      return (item as any).is_variant !== true;
-    }
+  const filteredItems = filterAndSortItems(
+    items.filter(item => {
+      const query = searchQuery.trim().toLowerCase();
+      const hasActiveFilters = selectedCategories.length > 0 || selectedTags.length > 0 || filterStatus !== 'All';
+      
+      // If no search query and no active filters, only show parent products to keep the grid clean.
+      // If a search query or a filter IS active, show matching variants as well.
+      if (!query && !hasActiveFilters) {
+        return (item as any).is_variant !== true;
+      }
 
-    // Since text search is handled by the server RPC, we just pass
-    // through the search results directly here when searching.
-    return true; 
-  });
+      // Since text search and server-side filters are handled by the RPC, we just pass
+      // through the results directly here when interacting with filters/search.
+      return true; 
+    }),
+    'All', // Status is now handled server-side, keep it 'All' for client-side to prevent double-filtering 
+    '', // bypass client text search
+    selectedTags,
+    sortBy,
+    [], // Categories are handled server-side
+    false // DO NOT exclude parent products from the POS grid!
+  );
+
+  const allAvailableTags = Array.from(new Set(items.flatMap(item => item.tags || []))).sort();
+  const allAvailableCategories = globalCategories.length > 0 
+    ? [...globalCategories].sort()
+    : Array.from(new Set(items.map(item => item.category).filter(Boolean) as string[])).sort();
+
+  const activeFilterCount = (filterStatus !== 'All' ? 1 : 0) + selectedTags.length + selectedCategories.length;
 
   /**
    * Add item to cart with stock validation
@@ -476,13 +502,71 @@ export default function Pos({ items, isLoading: globalLoading = false, onSaleCom
               className={styles.searchInput}
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
-              disabled={loading || globalLoading}
             />
           </div>
-          <button className={styles.filterBtn} disabled={loading || globalLoading}>
-            <div style={{ width: 4, height: 4, backgroundColor: '#666', borderRadius: '50%', margin: '0 auto' }}></div>
-          </button>
+          <FilterMenu 
+            filterStatus={filterStatus}
+            setFilterStatus={setFilterStatus}
+            sortBy={sortBy}
+            setSortBy={setSortBy}
+            showFilterMenu={showFilterMenu}
+            setShowFilterMenu={setShowFilterMenu}
+            allAvailableTags={allAvailableTags}
+            selectedTags={selectedTags}
+            setSelectedTags={setSelectedTags}
+            allAvailableCategories={allAvailableCategories}
+            selectedCategories={selectedCategories}
+            setSelectedCategories={setSelectedCategories}
+            activeFilterCount={activeFilterCount}
+          />
         </div>
+        
+        {/* ACTIVE FILTER CHIPS */}
+        {(selectedCategories.length > 0 || selectedTags.length > 0 || filterStatus !== 'All') && (
+          <div className={styles.activeFilters}>
+            {filterStatus !== 'All' && (
+              <span
+                onClick={() => setFilterStatus('All')}
+                style={{
+                  fontSize: '10px', padding: '3px 10px', borderRadius: '12px',
+                  background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)',
+                  color: '#fff', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px'
+                }}
+                title="Remove filter"
+              >
+                Status: {filterStatus} ×
+              </span>
+            )}
+            {selectedCategories.map(cat => (
+              <span
+                key={cat}
+                onClick={() => setSelectedCategories(prev => prev.filter(c => c !== cat))}
+                style={{
+                  fontSize: '10px', padding: '3px 10px', borderRadius: '12px',
+                  background: 'rgba(0,255,157,0.15)', border: '1px solid rgba(0,255,157,0.4)',
+                  color: '#00ff9d', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px'
+                }}
+                title="Remove filter"
+              >
+                {cat} ×
+              </span>
+            ))}
+            {selectedTags.map(tag => (
+              <span
+                key={tag}
+                onClick={() => setSelectedTags(prev => prev.filter(t => t !== tag))}
+                style={{
+                  fontSize: '10px', padding: '3px 10px', borderRadius: '12px',
+                  background: 'rgba(255,152,0,0.15)', border: '1px solid rgba(255,152,0,0.4)',
+                  color: '#ff9800', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px'
+                }}
+                title="Remove filter"
+              >
+                #{tag} ×
+              </span>
+            ))}
+          </div>
+        )}
           
         {globalLoading && !isLoadingMore ? (
            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '400px', color: '#666' }}>

@@ -13,7 +13,8 @@ export const filterAndSortItems = (
   searchQuery: string,
   selectedTags: string[],
   sortBy: SortBy,
-  selectedCategories: string[] = []
+  selectedCategories: string[] = [],
+  excludeParentContainers: boolean = true
 ): InventoryItem[] => {
   return items
     .filter(item => {
@@ -58,7 +59,7 @@ export const filterAndSortItems = (
       
       // 5. Exclude Parent Containers (Product Families)
       // Only show Single Products or specific Variants in the main list
-      if (item.has_variants && !item.is_variant) return false;
+      if (excludeParentContainers && item.has_variants && !item.is_variant) return false;
       
       return true;
     })

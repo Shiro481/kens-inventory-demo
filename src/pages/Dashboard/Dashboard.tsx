@@ -241,7 +241,7 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
           
           {activeView === 'analytics' && <Analytics />}
 
-          {activeView === 'pos' && <Pos items={items} isLoading={isLoading} onSaleComplete={fetchInventory} />}
+          {activeView === 'pos' && <Pos items={items} globalCategories={categories} isLoading={isLoading} onSaleComplete={fetchInventory} />}
           
           {activeView === 'inventory' && (
             <InventoryManager
