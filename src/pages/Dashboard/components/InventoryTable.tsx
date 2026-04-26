@@ -105,6 +105,7 @@ export default function InventoryTable({ items, isLoading = false, onEdit, onDel
           >
             {rowVirtualizer.getVirtualItems().map((virtualRow) => {
               const item = items[virtualRow.index];
+              if (!item) return null;
               const qty = item.stock ?? item.quantity ?? 0;
               const minQty = item.minQuantity ?? item.min_qty ?? settings.low_stock_threshold;
             
@@ -155,7 +156,7 @@ export default function InventoryTable({ items, isLoading = false, onEdit, onDel
                           <span style={{ color: '#00ff9d' }}>⚠</span> {item.notes}
                         </div>
                       )}
-                      {item.specifications?.tags && item.specifications.tags.length > 0 && (
+                      {item.specifications?.tags && Array.isArray(item.specifications.tags) && item.specifications.tags.length > 0 && (
                         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', marginTop: '6px' }}>
                           {item.specifications.tags.map(tag => (
                             <span 
@@ -184,7 +185,10 @@ export default function InventoryTable({ items, isLoading = false, onEdit, onDel
                     {item.category || '-'}
                   </div>
                   
-                  <div className={styles.price}>{settings.currency_symbol}{item.price?.toFixed(2)}</div>
+                  <div className={styles.price}>
+                    {settings.currency_symbol}
+                    {typeof item.price === 'number' ? item.price.toFixed(2) : (Number(item.price) || 0).toFixed(2)}
+                  </div>
                   
                   <div style={{ fontWeight: 'bold' }}>
                     {qty} <span style={{ color: '#666', fontSize: '12px', fontWeight: 'normal' }}>/ {minQty} min</span>

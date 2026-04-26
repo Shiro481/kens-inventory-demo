@@ -1,10 +1,11 @@
 import styles from '../EditItemModal.module.css';
-import type { InventoryItem } from '../../../../types/inventory';
+import type { InventoryItem, Brand } from '../../../../types/inventory';
 
 interface BasicInfoSectionProps {
   editingItem: InventoryItem;
   categories: string[];
   suppliers: string[];
+  brands: Brand[];
   onInputChange: (field: string, value: any) => void;
   onCategorySelect: (e: React.ChangeEvent<HTMLSelectElement>) => void;
 }
@@ -13,6 +14,7 @@ export default function BasicInfoSection({
   editingItem, 
   categories, 
   suppliers,
+  brands,
   onInputChange, 
   onCategorySelect
 }: BasicInfoSectionProps) {
@@ -33,13 +35,21 @@ export default function BasicInfoSection({
       </div>
       <div className={styles.formGroup}>
         <label>Brand</label>
-        <input 
+        <select 
           className={styles.formInput} 
-          type="text" 
-          value={editingItem.brand || ''} 
-          onChange={(e) => onInputChange('brand', e.target.value)} 
-          placeholder="e.g. Philips, Osram" 
-        />
+          value={editingItem.brand_id || ''} 
+          onChange={(e) => {
+            const selectedId = e.target.value ? Number(e.target.value) : undefined;
+            const selectedBrand = brands.find(b => b.id === selectedId);
+            onInputChange('brand_id', selectedId);
+            onInputChange('brand', selectedBrand?.name || '');
+          }}
+        >
+          <option value="">Select Brand</option>
+          {brands.map(brand => (
+            <option key={brand.id} value={brand.id}>{brand.name}</option>
+          ))}
+        </select>
       </div>
       <div className={styles.formGroup}>
         <label>Barcode</label>

@@ -94,11 +94,11 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
   /**
    * Handle delete operation for an inventory item
    * Opens delete confirmation modal with the selected item
-   * @param id - The ID of the item to delete
+   * @param idOrItem - The ID or item to delete
    */
-  const handleDelete = (idOrItem: number | InventoryItem) => {
+  const handleDelete = (idOrItem: string | number | InventoryItem) => {
     let item: InventoryItem | undefined;
-    if (typeof idOrItem === 'number') {
+    if (typeof idOrItem === 'string' || typeof idOrItem === 'number') {
       item = items.find(i => i.id === idOrItem);
     } else {
       item = idOrItem;
@@ -110,9 +110,23 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
   };
 
   /**
-   * Confirm and execute the delete operation
-   * Removes product from database and updates local state
+   * Handle edit click for an inventory item
+   * Opens edit modal with the selected item data
+   * @param idOrItem - The ID or item to edit
    */
+  const handleEditClick = (idOrItem: string | number | InventoryItem) => {
+    let item: InventoryItem | undefined;
+    if (typeof idOrItem === 'string' || typeof idOrItem === 'number') {
+      item = items.find(i => i.id === idOrItem);
+    } else {
+      item = idOrItem;
+    }
+    if (item) {
+      setEditingItem({ ...item }); // Clone to avoid direct mutation
+      setIsEditModalOpen(true);
+    }
+  };
+
   /**
    * Confirm and execute the delete operation
    * Removes product or variant from database and updates local state
@@ -129,16 +143,6 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
     setIsDeleting(false);
     setIsDeleteModalOpen(false);
     setItemToDelete(null);
-  };
-
-  /**
-   * Handle edit click for an inventory item
-   * Opens edit modal with the selected item data
-   * @param item - The item to edit (passed directly from table to avoid ID collisions)
-   */
-  const handleEditClick = (item: InventoryItem) => {
-    setEditingItem({ ...item }); // Clone to avoid direct mutation
-    setIsEditModalOpen(true);
   };
 
   /**
@@ -241,7 +245,17 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
           
           {activeView === 'analytics' && <Analytics />}
 
-          {activeView === 'pos' && <Pos items={items} globalCategories={categories} isLoading={isLoading} onSaleComplete={fetchInventory} />}
+          {activeView === 'pos' && (
+            <Pos 
+              items={items} 
+              globalCategories={categories} 
+              isLoading={isLoading} 
+              onSaleComplete={() => {
+                fetchInventory();
+                fetchInventoryStats();
+              }} 
+            />
+          )}
           
           {activeView === 'inventory' && (
             <InventoryManager

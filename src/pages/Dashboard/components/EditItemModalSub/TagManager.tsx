@@ -24,7 +24,7 @@ export default function TagManager({ tags, tagInput, onTagInputChange, onAddTag,
         placeholder="e.g. promo, seasonal, hot-item" 
       />
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginTop: '8px' }}>
-        {tags.map(tag => (
+        {(Array.isArray(tags) ? tags : []).map(tag => (
           <span 
             key={tag} 
             style={{ 

@@ -19,7 +19,7 @@ interface InventoryManagerProps {
   onAddItem: () => void;
   onAddVariant: () => void;
   onEdit: (item: InventoryItem) => void;
-  onDelete: (id: number) => void;
+  onDelete: (id: string | number) => void;
 }
 
 export default function InventoryManager({ 
@@ -56,7 +56,7 @@ export default function InventoryManager({
     fetchInventory(searchQuery, true, selectedCategories, filterStatus);
   }, [searchQuery, selectedCategories, filterStatus, fetchInventory]);
 
-  const allAvailableTags = Array.from(new Set(items.flatMap(item => item.tags || []))).sort();
+  const allAvailableTags = Array.from(new Set((items || []).filter(Boolean).flatMap(item => item.tags || []))).sort();
   // Override paginated map mapping with the true global categories array
   const allAvailableCategories = globalCategories.length > 0 
     ? [...globalCategories].sort()

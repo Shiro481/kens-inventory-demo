@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
+import { useBrands } from '../../../hooks/useBrands';
 import { useCategoryMetadata } from '../../../hooks/useCategoryMetadata';
 import { useVariantTypesByCategory } from '../../../hooks/useVariantTypesByCategory';
 import { buildSpecKey } from '../../../utils/buildSpecKey';
@@ -33,6 +34,7 @@ export default function EditItemModal({
   const [editingItem, setEditingItem] = useState<InventoryItem | null>(null);
   const [isNewVariantType, setIsNewVariantType] = useState(false);
   const [tagInput, setTagInput] = useState('');
+  const { brands } = useBrands();
 
   // --- VARIANT MANAGEMENT STATE ---
   const [productVariants, setProductVariants] = useState<any[]>([]);
@@ -369,6 +371,7 @@ export default function EditItemModal({
                 editingItem={editingItem!} 
                 categories={categories}
                 suppliers={suppliers}
+                brands={brands}
                 onInputChange={handleInputChange} 
                 onCategorySelect={(e) => {
                   const val = e.target.value;

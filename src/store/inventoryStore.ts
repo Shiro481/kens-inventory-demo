@@ -31,12 +31,19 @@ interface InventoryStore {
   }[];
   isLoadingParents: boolean;
   fetchAllParents: () => Promise<void>;
+
+  // Brands (Normalized)
+  brands: { id: number; name: string }[];
+  isLoadingBrands: boolean;
+  fetchBrands: () => Promise<void>;
   
   // Aggregate Stats for Dashboard
   aggregateStats: {
     total_items: number;
     low_stock: number;
     out_of_stock: number;
+    today_sales_count?: number;
+    today_revenue?: number;
   } | null;
 
   fetchInventoryStats: () => Promise<void>;
@@ -53,13 +60,13 @@ interface InventoryStore {
    * Immediately patches a single item in local state before the DB round-trip
    * resolves. Eliminates the stale-data window between mutation and re-fetch.
    */
-  updateItemOptimistically: (id: number, patch: Partial<InventoryItem>) => void;
+  updateItemOptimistically: (id: string | number, patch: Partial<InventoryItem>) => void;
 
   /**
    * Immediately removes an item (and optionally all its children) from local
    * state before the DB round-trip resolves.
    */
-  removeItemOptimistically: (id: number, removeChildren?: boolean) => void;
+  removeItemOptimistically: (id: string | number, removeChildren?: boolean) => void;
 }
 
 const PAGE_SIZE = 50;
@@ -122,7 +129,25 @@ export const useInventoryStore = create<InventoryStore>((set, get) => ({
       set({ allParentProducts: formatted, isLoadingParents: false });
     } catch (err) {
       console.error('Failed to fetch parent products:', err);
-      set({ isLoadingParents: false });
+    }
+  },
+
+  brands: [],
+  isLoadingBrands: false,
+  fetchBrands: async () => {
+    if (get().isLoadingBrands) return;
+    set({ isLoadingBrands: true });
+    try {
+      const { data, error } = await supabase
+        .from('brands')
+        .select('id, name')
+        .order('name');
+      
+      if (error) throw error;
+      set({ brands: data || [], isLoadingBrands: false });
+    } catch (err) {
+      console.error('[inventoryStore] Error fetching brands:', err);
+      set({ isLoadingBrands: false });
     }
   },
 
@@ -173,39 +198,16 @@ export const useInventoryStore = create<InventoryStore>((set, get) => ({
           : (item.specifications || {});
 
         return {
-          id: typeof item.id === 'number' ? item.id : parseInt(item.id),
-          uuid: item.uuid,
-          name: item.name,
-          base_name: item.base_name,
-          sku: item.sku,
-          price: item.price,
-          stock: item.stock,
-          minQuantity: item.min_quantity,
-          category: item.category,
-          brand: item.brand,
-          description: item.description,
-          image_url: item.image_url,
-          barcode: item.barcode,
-          cost_price: item.cost_price,
-          voltage: item.voltage,
-          wattage: item.wattage,
-          color_temperature: item.color_temperature,
-          variant_color: item.variant_color,
-          lumens: item.lumens,
-          beam_type: item.beam_type,
-          variant_type: item.variant_type,
+          ...item,
+          id: `${item.is_variant ? 'v' : 'p'}-${item.id}`,
+          uuid: Number(item.id),
+          stock: Number(item.stock) || 0,
+          price: Number(item.unit_price) || 0,
+          cost_price: Number(item.cost_price) || 0,
+          minQuantity: Number(item.min_quantity) || 0,
           specifications: specs,
-          supplier: item.supplier,
-          has_variants: item.has_variants,
-          variant_count: item.variant_count,
-          variant_id: item.variant_id,
-          variant_display_name: item.variant_display_name,
-          is_variant: item.is_variant,
-          parent_product_id: item.parent_product_id,
-          created_at: item.created_at,
-          updated_at: item.updated_at,
-          notes: item.notes || '',
           tags: item.tags || [],
+          notes: item.notes || '',
         };
       });
 

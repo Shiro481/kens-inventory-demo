@@ -152,10 +152,12 @@ export default function Overview({ items: paginatedItems }: OverviewProps) {
             <span className={styles.statLabel}>TODAY'S REVENUE</span>
             <DollarSign size={14} color="#666" />
           </div>
-          <div className={styles.statValue}>{settings.currency_symbol}{todaysRevenue.toLocaleString()}</div>
+          <div className={styles.statValue}>
+            {settings.currency_symbol}{(aggregateStats?.today_revenue ?? todaysRevenue).toLocaleString()}
+          </div>
           <div className={styles.statChange}>
             <TrendingUp size={12} />
-            {todaysSales.length} TRANSACTIONS
+            {aggregateStats?.today_sales_count ?? todaysSales.length} TRANSACTIONS
           </div>
           <div className={styles.statChart}>
             <ResponsiveContainer width="100%" height="100%">

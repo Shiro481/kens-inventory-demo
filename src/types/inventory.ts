@@ -3,10 +3,12 @@
  * This interface normalizes data from the 'products' and 'product_variants' tables.
  */
 export interface InventoryItem {
-  /** Raw DB integer ID (used as React list key and optimistic-update target) */
-  id: number;
-  /** Original Supabase UUID / bigint PK — used for ALL database operations */
-  uuid?: string;
+  /** Unique ID (prefixed for variants/products to prevent React key collisions) */
+  id: string | number;
+  /** Original numeric DB ID — used for database operations */
+  uuid?: number;
+  /** Normalized Brand ID from brands table */
+  brand_id?: number;
   /** Display name of the product or variant */
   name: string;
   /** Stock Keeping Unit code */
@@ -98,4 +100,12 @@ export interface Supplier {
   phone?: string;
   address?: string;
   category?: string;
+}
+/**
+ * Interface representing a brand entity
+ */
+export interface Brand {
+  id: number;
+  name: string;
+  created_at?: string;
 }
