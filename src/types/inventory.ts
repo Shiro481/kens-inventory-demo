@@ -55,7 +55,7 @@ export interface InventoryItem {
   /** Flag to identify if this is a variant row in the flat list */
   is_variant?: boolean;
   /** UUID of the parent product if this is a variant */
-  parent_product_id?: string;
+  parent_product_id?: string | number;
   /** Internal notes for specific item or variant */
   notes?: string;
   // Allow for other dynamic fields

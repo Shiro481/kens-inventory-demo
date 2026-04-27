@@ -7,7 +7,7 @@ import type { InventoryItem } from '../../../types/inventory';
 interface InventoryTableProps {
   items: InventoryItem[];
   onEdit: (item: InventoryItem) => void;
-  onDelete: (id: number) => void;
+  onDelete: (id: string | number) => void;
 }
 
 // Extended interface for automotive lights with additional specifications
@@ -33,10 +33,10 @@ interface AutomotiveLight extends InventoryItem {
  * @param onDelete - Callback function to handle delete action for an item
  */
 export default function EnhancedInventoryTable({ items, onEdit, onDelete }: InventoryTableProps) {
-  const [expandedRows, setExpandedRows] = useState<Set<number>>(new Set());
-  const [showSpecs, setShowSpecs] = useState<Set<number>>(new Set());
+  const [expandedRows, setExpandedRows] = useState<Set<string | number>>(new Set());
+  const [showSpecs, setShowSpecs] = useState<Set<string | number>>(new Set());
 
-  const toggleRowExpansion = (id: number) => {
+  const toggleRowExpansion = (id: string | number) => {
     const newExpanded = new Set(expandedRows);
     if (newExpanded.has(id)) {
       newExpanded.delete(id);
@@ -46,7 +46,7 @@ export default function EnhancedInventoryTable({ items, onEdit, onDelete }: Inve
     setExpandedRows(newExpanded);
   };
 
-  const toggleSpecsVisibility = (id: number) => {
+  const toggleSpecsVisibility = (id: string | number) => {
     const newSpecs = new Set(showSpecs);
     if (newSpecs.has(id)) {
       newSpecs.delete(id);

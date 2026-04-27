@@ -12,7 +12,7 @@ interface InventoryTableProps {
   items: InventoryItem[];
   isLoading?: boolean;
   onEdit: (item: InventoryItem) => void;
-  onDelete: (id: number) => void;
+  onDelete: (id: string | number) => void;
 }
 
 /**

@@ -72,14 +72,14 @@ export const filterAndSortItems = (
       }
       
       if (sortBy === 'newest') {
-        const timeA = (a as any).created_at ? new Date((a as any).created_at).getTime() : a.id;
-        const timeB = (b as any).created_at ? new Date((b as any).created_at).getTime() : b.id;
+        const timeA = (a as any).created_at ? new Date((a as any).created_at).getTime() : (Number(a.uuid) || 0);
+        const timeB = (b as any).created_at ? new Date((b as any).created_at).getTime() : (Number(b.uuid) || 0);
         return timeB - timeA;
       }
       
       if (sortBy === 'oldest') {
-        const timeA = (a as any).created_at ? new Date((a as any).created_at).getTime() : a.id;
-        const timeB = (b as any).created_at ? new Date((b as any).created_at).getTime() : b.id;
+        const timeA = (a as any).created_at ? new Date((a as any).created_at).getTime() : (Number(a.uuid) || 0);
+        const timeB = (b as any).created_at ? new Date((b as any).created_at).getTime() : (Number(b.uuid) || 0);
         return timeA - timeB;
       }
       

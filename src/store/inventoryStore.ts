@@ -137,6 +137,7 @@ export const useInventoryStore = create<InventoryStore>((set, get) => ({
   fetchBrands: async () => {
     if (get().isLoadingBrands) return;
     set({ isLoadingBrands: true });
+    if (!supabase) return;
     try {
       const { data, error } = await supabase
         .from('brands')
@@ -243,7 +244,7 @@ export const useInventoryStore = create<InventoryStore>((set, get) => ({
       items: state.items.filter(item => {
         if (item.id === id) return false;
         // Optionally prune orphaned variant rows with the same parent uuid
-        if (removeChildren && target?.uuid && item.parent_product_id === target.uuid) return false;
+        if (removeChildren && target?.uuid && Number(item.parent_product_id) === target.uuid) return false;
         return true;
       }),
     }));
