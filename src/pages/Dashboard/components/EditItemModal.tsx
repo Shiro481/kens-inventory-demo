@@ -205,6 +205,7 @@ export default function EditItemModal({
                 color_temperature: newVariantData.color_temperature || null,
                 internal_notes: newVariantData.notes
               },
+             variant_barcode: newVariantData.barcode || null,
              spec_key: newSpecKey
           };
 
@@ -242,6 +243,7 @@ export default function EditItemModal({
       variant_color: newVariantData.color || null,
       description: newVariantData.description || null,
       variant_sku: newVariantData.sku || null,
+      variant_barcode: newVariantData.barcode || null,
       specifications: {
           ...(newVariantData.specifications || {}),
           color: newVariantData.color || null,
@@ -355,7 +357,7 @@ export default function EditItemModal({
 
               <TechnicalSpecsSection 
                 editingItem={editingItem} config={config} filteredVariantTypes={filteredVariantTypes}
-                isNewVariantType={isNewVariantType} onInputChange={handleInputChange}
+                isNewVariantType={isNewVariantType} allItems={allItems} onInputChange={handleInputChange}
                 onTypeSelect={(e) => {
                   const val = e.target.value;
                   if (val === '__NEW__') { setIsNewVariantType(true); handleInputChange('variant_type', ''); }
@@ -396,7 +398,7 @@ export default function EditItemModal({
               {!editingItem.has_variants && (
                 <TechnicalSpecsSection 
                   editingItem={editingItem} config={config} filteredVariantTypes={filteredVariantTypes}
-                  isNewVariantType={isNewVariantType} onInputChange={handleInputChange}
+                  isNewVariantType={isNewVariantType} allItems={allItems} onInputChange={handleInputChange}
                   onTypeSelect={(e) => {
                     const val = e.target.value;
                     if (val === '__NEW__') { setIsNewVariantType(true); handleInputChange('variant_type', ''); }
@@ -434,6 +436,7 @@ export default function EditItemModal({
                   onSetShowVariantForm={setShowVariantForm} onSetNewVariantData={setNewVariantData}
                   onSetIsAddingNewType={setIsAddingNewTypeInVariantForm} onSetEditingVariantId={setEditingVariantId}
                   isSavingVariant={isSavingVariant}
+                  allItems={allItems}
                 />
               )}
             </>

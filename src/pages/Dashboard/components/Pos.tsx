@@ -302,7 +302,7 @@ export default function Pos({ items, globalCategories = [], isLoading: globalLoa
 
     const cartItem: CartItem = {
       cartKey,
-      id: (selectedItem.id || 0) * 10000 + variant.id,  // kept for RPC payload compatibility
+      id: (Number(selectedItem.uuid) || 0) * 10000 + Number(variant.id),  // kept for RPC payload compatibility
       name: `${selectedItem.name} (${variant.variant_type})`,
       brand: selectedItem.brand || '',
       category: selectedItem.category || '',
@@ -425,19 +425,20 @@ export default function Pos({ items, globalCategories = [], isLoading: globalLoa
       // This call handles BOTH stock deduction and sale recording in one transaction.
       const { error: rpcError } = await supabase.rpc('process_sale', {
         p_items: cart.map(i => {
-          // If the item was added directly from search results as a variant, 
-          // `i.id` holds the real product_variants.id AND `i.is_variant` is true.
-          // If it was added via the variant modal, `i.variant_id` holds the real product_variants.id.
           const isDirectVariant = i.is_variant === true;
-          const assignedVariantId = isDirectVariant ? i.id : (i.variant_id || null);
-          const assignedProductId = isDirectVariant ? (i as any).parent_product_id : i.id;
+          
+          // Use uuid for the numeric database ID
+          // If it's a direct variant from search results, uuid is the variant ID, parent_product_id is product ID
+          // If it's from the modal or a standard product, uuid is product ID, variant_id is variant ID
+          const productId = isDirectVariant ? Number(i.parent_product_id) : Number(i.uuid);
+          const variantId = isDirectVariant ? Number(i.uuid) : (i.variant_id ? Number(i.variant_id) : null);
 
           return {
-            id: assignedProductId,
+            id: productId,
             name: i.name,
             price: i.variant_price || i.price || 0,
             quantity: i.cartQuantity,
-            variant_id: assignedVariantId,
+            variant_id: variantId,
             variant_dimensions: i.variant_dimensions || null,
             category: i.category || null,
             specifications: i.specifications || null
@@ -863,7 +864,7 @@ export default function Pos({ items, globalCategories = [], isLoading: globalLoa
         isOpen={showVariantModal}
         onClose={closeVariantModal}
         product={selectedProductForVariant ? {
-          uuid: selectedProductForVariant.uuid || '',
+          uuid: String(selectedProductForVariant.uuid || ''),
           name: selectedProductForVariant.name || '',
           brand: selectedProductForVariant.brand || '',
           category: selectedProductForVariant.category || '',
