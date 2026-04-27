@@ -427,11 +427,15 @@ export default function Pos({ items, globalCategories = [], isLoading: globalLoa
         p_items: cart.map(i => {
           const isDirectVariant = i.is_variant === true;
           
-          // Use uuid for the numeric database ID
-          // If it's a direct variant from search results, uuid is the variant ID, parent_product_id is product ID
-          // If it's from the modal or a standard product, uuid is product ID, variant_id is variant ID
-          const productId = isDirectVariant ? Number(i.parent_product_id) : Number(i.uuid);
-          const variantId = isDirectVariant ? Number(i.uuid) : (i.variant_id ? Number(i.variant_id) : null);
+          // IDs in the store are prefixed with 'v-' or 'p-'. Strip them before conversion.
+          const strip = (val: any) => {
+            if (!val) return null;
+            const s = String(val);
+            return Number(s.replace(/^[vp]-/, ''));
+          };
+
+          const productId = isDirectVariant ? strip(i.parent_product_id) : strip(i.uuid);
+          const variantId = isDirectVariant ? strip(i.uuid) : strip(i.variant_id);
 
           return {
             id: productId,
