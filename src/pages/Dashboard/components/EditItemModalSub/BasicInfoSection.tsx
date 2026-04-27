@@ -6,8 +6,10 @@ interface BasicInfoSectionProps {
   categories: string[];
   suppliers: string[];
   brands: Brand[];
+  isNewBrand: boolean;
   onInputChange: (field: string, value: any) => void;
   onCategorySelect: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+  onSetIsNewBrand: (val: boolean) => void;
 }
 
 export default function BasicInfoSection({ 
@@ -15,8 +17,10 @@ export default function BasicInfoSection({
   categories, 
   suppliers,
   brands,
+  isNewBrand,
   onInputChange, 
-  onCategorySelect
+  onCategorySelect,
+  onSetIsNewBrand
 }: BasicInfoSectionProps) {
   return (
     <>
@@ -35,21 +39,54 @@ export default function BasicInfoSection({
       </div>
       <div className={styles.formGroup}>
         <label>Brand</label>
-        <select 
-          className={styles.formInput} 
-          value={editingItem.brand_id || ''} 
-          onChange={(e) => {
-            const selectedId = e.target.value ? Number(e.target.value) : undefined;
-            const selectedBrand = brands.find(b => b.id === selectedId);
-            onInputChange('brand_id', selectedId);
-            onInputChange('brand', selectedBrand?.name || '');
-          }}
-        >
-          <option value="">Select Brand</option>
-          {brands.map(brand => (
-            <option key={brand.id} value={brand.id}>{brand.name}</option>
-          ))}
-        </select>
+        {!isNewBrand ? (
+          <select 
+            className={styles.formInput} 
+            value={editingItem.brand_id || ''} 
+            onChange={(e) => {
+              const val = e.target.value;
+              if (val === '__NEW__') {
+                onSetIsNewBrand(true);
+                onInputChange('brand_id', null);
+                onInputChange('brand', '');
+              } else {
+                const selectedId = val ? Number(val) : undefined;
+                const selectedBrand = brands.find(b => b.id === selectedId);
+                onInputChange('brand_id', selectedId);
+                onInputChange('brand', selectedBrand?.name || '');
+              }
+            }}
+          >
+            <option value="">Select Brand</option>
+            {brands.map(brand => (
+              <option key={brand.id} value={brand.id}>{brand.name}</option>
+            ))}
+            <option value="__NEW__">+ Add New Brand</option>
+          </select>
+        ) : (
+          <div style={{ display: 'flex', gap: '8px' }}>
+            <input 
+              className={styles.formInput} 
+              type="text" 
+              autoFocus 
+              placeholder="Enter brand name" 
+              value={editingItem.brand || ''} 
+              onChange={(e) => onInputChange('brand', e.target.value)} 
+              style={{ flex: 1 }} 
+            />
+            <button 
+              onClick={() => {
+                onSetIsNewBrand(false);
+                onInputChange('brand', '');
+                onInputChange('brand_id', null);
+              }} 
+              className={styles.cancelBtn} 
+              style={{ padding: '0 10px', border: '1px solid #333' }}
+            >
+              Cancel
+            </button>
+          </div>
+        )}
       </div>
       <div className={styles.formGroup}>
         <label>Barcode</label>

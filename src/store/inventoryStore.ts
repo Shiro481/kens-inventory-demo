@@ -202,7 +202,7 @@ export const useInventoryStore = create<InventoryStore>((set, get) => ({
           id: `${item.is_variant ? 'v' : 'p'}-${item.id}`,
           uuid: Number(item.id),
           stock: Number(item.stock) || 0,
-          price: Number(item.unit_price) || 0,
+          price: Number(item.price) || 0,
           cost_price: Number(item.cost_price) || 0,
           minQuantity: Number(item.min_quantity) || 0,
           specifications: specs,

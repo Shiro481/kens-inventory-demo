@@ -46,6 +46,7 @@ export default function EditItemModal({
     specifications: {}
   });
   const [isAddingNewTypeInVariantForm, setIsAddingNewTypeInVariantForm] = useState(false);
+  const [isNewBrand, setIsNewBrand] = useState(false);
   const [editingVariantId, setEditingVariantId] = useState<number | null>(null);
   const [isSavingVariant, setIsSavingVariant] = useState(false);
 
@@ -72,6 +73,7 @@ export default function EditItemModal({
     if (item) {
       setEditingItem({ ...item });
       setIsNewVariantType(Boolean(item.variant_type && !variantTypes.includes(item.variant_type)));
+      setIsNewBrand(Boolean(item.brand && !brands.find(b => b.name === item.brand)));
     }
   }, [item, categories, variantTypes]);
 
@@ -372,11 +374,13 @@ export default function EditItemModal({
                 categories={categories}
                 suppliers={suppliers}
                 brands={brands}
+                isNewBrand={isNewBrand}
                 onInputChange={handleInputChange} 
                 onCategorySelect={(e) => {
                   const val = e.target.value;
                   handleInputChange('category', val);
                 }}
+                onSetIsNewBrand={setIsNewBrand}
               />
 
               {item?.id === 0 && (

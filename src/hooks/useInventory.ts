@@ -56,12 +56,36 @@ export function useInventory(suppliers: Supplier[]) {
         if (s) supplierId = s.id;
     }
 
+    // --- NEW BRAND HANDLING ---
+    let bId = updatedItem.brand_id;
+    if (updatedItem.brand && !bId) {
+      const { data: existingBrand } = await supabase
+        .from('brands')
+        .select('id')
+        .eq('name', updatedItem.brand)
+        .maybeSingle();
+        
+      if (existingBrand) {
+        bId = existingBrand.id;
+      } else {
+        const { data: newBrand } = await supabase
+          .from('brands')
+          .insert({ name: updatedItem.brand })
+          .select('id')
+          .maybeSingle();
+        if (newBrand) bId = newBrand.id;
+      }
+    }
+    // Sync bId back to updatedItem so all subsequent logic uses it
+    updatedItem.brand_id = bId;
+
     if (updatedItem.id === 0) {
       const payload: any = {
         name: updatedItem.name,
         sku: updatedItem.sku || null,
         barcode: updatedItem.barcode,
         brand: updatedItem.brand || 'Aftermarket',
+        brand_id: bId,
         selling_price: updatedItem.has_variants ? 0 : updatedItem.price,
         cost_price: updatedItem.has_variants ? 0 : (updatedItem.cost_price || 0),
         stock_quantity: updatedItem.has_variants ? 0 : stockVal,
@@ -131,6 +155,10 @@ export function useInventory(suppliers: Supplier[]) {
                 variant_color: v.variant_color,
                 description: v.description,
                 variant_sku: v.variant_sku,
+                selling_price: Number(v.selling_price) || 0,
+                cost_price: Number(v.cost_price) || 0,
+                stock_quantity: Number(v.stock_quantity) || 0,
+                min_stock_level: Number(v.min_stock_level) || 5,
                 specifications: v.specifications || {},
                 spec_key: v.spec_key || buildSpecKey(v as any)
             }));
