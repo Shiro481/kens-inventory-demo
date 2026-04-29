@@ -308,3 +308,65 @@ SELECT setval('public.product_variants_id_seq', COALESCE((SELECT MAX(id) + 1 FRO
 SELECT setval('public.store_settings_id_seq', COALESCE((SELECT MAX(id) + 1 FROM public.store_settings), 1), false);
 
 SET session_replication_role = DEFAULT;
+
+-- Seed Admin User for Local Development
+-- This ensures the POS can associate sales with a staff member locally.
+INSERT INTO auth.users (
+    instance_id,
+    id,
+    aud,
+    role,
+    email,
+    encrypted_password,
+    email_confirmed_at,
+    recovery_sent_at,
+    last_sign_in_at,
+    raw_app_meta_data,
+    raw_user_meta_data,
+    created_at,
+    updated_at,
+    confirmation_token,
+    email_change,
+    email_change_token_new,
+    recovery_token
+) VALUES (
+    '00000000-0000-0000-0000-000000000000',
+    'd8aa5496-1174-4940-afd0-c72b9ff751b0',
+    'authenticated',
+    'authenticated',
+    'admin@example.com',
+    crypt('password123', gen_salt('bf')),
+    now(),
+    now(),
+    now(),
+    '{"provider":"email","providers":["email"]}',
+    '{"full_name":"Admin User"}',
+    now(),
+    now(),
+    '',
+    '',
+    '',
+    ''
+) ON CONFLICT (id) DO NOTHING;
+
+INSERT INTO auth.identities (
+    id,
+    user_id,
+    identity_data,
+    provider,
+    last_sign_in_at,
+    created_at,
+    updated_at
+) VALUES (
+    'd8aa5496-1174-4940-afd0-c72b9ff751b0',
+    'd8aa5496-1174-4940-afd0-c72b9ff751b0',
+    jsonb_build_object('sub', 'd8aa5496-1174-4940-afd0-c72b9ff751b0', 'email', 'admin@example.com'),
+    'email',
+    now(),
+    now(),
+    now()
+) ON CONFLICT (provider, id) DO NOTHING;
+
+INSERT INTO public.admins (id, email, full_name, role)
+VALUES ('d8aa5496-1174-4940-afd0-c72b9ff751b0', 'admin@example.com', 'Admin User', 'superadmin')
+ON CONFLICT (id) DO NOTHING;
