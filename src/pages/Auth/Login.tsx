@@ -88,6 +88,11 @@ export default function Login({ onBack, onSuccess }: LoginProps) {
         </form>
 
         <div className={styles.authNote}>
+          <div className={styles.sampleCreds}>
+            <strong>Sample Admin (Local Development):</strong>
+            <p>Email: admin@example.com</p>
+            <p>Password: password123</p>
+          </div>
           <p>Admin access: Enter your email address.</p>
           <p>Regular users: Enter both email and password.</p>
           <p>Password must be at least 8 characters with uppercase, lowercase, and numbers.</p>

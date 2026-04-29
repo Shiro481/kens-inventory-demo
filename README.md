@@ -1,73 +1,35 @@
-# React + TypeScript + Vite
+# Ken's Inventory Management System
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A premium inventory and POS management system for Ken's Garage.
 
-Currently, two official plugins are available:
+## 🚀 Getting Started
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### Local Development (Docker)
+1. Ensure Docker is running.
+2. Run `supabase start` to initialize the database.
+3. Run `npm install` and `npm run dev`.
 
-## React Compiler
+### Sample Login Credentials (Local)
+For testing and local development, use the following administrator account:
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **Email**: `admin@example.com`
+- **Password**: `password123`
 
-## Expanding the ESLint configuration
+*Note: These credentials are automatically created by the `supabase/seed.sql` script.*
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 🛠 Tech Stack
+- **Frontend**: React + TypeScript + Vite
+- **Styling**: CSS Modules
+- **Backend/DB**: Supabase (PostgreSQL)
+- **Icons**: Lucide React
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## 📂 Project Structure
+- `src/pages`: Main application views (Dashboard, Auth, etc.)
+- `src/lib`: Core utilities (Supabase client)
+- `supabase/migrations`: Database schema and RLS policies
+- `supabase/seed.sql`: Sample data and initial admin setup
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## 🔐 Security
+- Row Level Security (RLS) is enabled on all tables.
+- Authentication is handled via Supabase Auth.
+- Staff members must be present in the `public.admins` table to process sales.
