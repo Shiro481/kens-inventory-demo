@@ -15,7 +15,7 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 
 async function testSearch(query) {
   console.log(`\nTesting search for: "${query}"`);
-  const { data, error } = await supabase.rpc('search_inventory', {
+  const { data, error } = await supabase.rpc('search_inventory_v2', {
     p_search_query: query,
     p_limit: 5,
     p_offset: 0

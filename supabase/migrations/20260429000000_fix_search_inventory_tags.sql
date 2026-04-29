@@ -1,4 +1,5 @@
--- Updated search_inventory_v2 to handle non-array tags safely
+-- Fix search_inventory_v2 tags array error
+-- Applied on 2026-04-29
 CREATE OR REPLACE FUNCTION search_inventory_v2(
   p_search_query TEXT,
   p_limit INT DEFAULT 50,
