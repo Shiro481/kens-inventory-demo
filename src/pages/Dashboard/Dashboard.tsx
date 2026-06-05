@@ -3,6 +3,7 @@ import { useInventoryStore } from '../../store/inventoryStore';
 import { useInventory } from '../../hooks/useInventory';
 import { useCategories } from '../../hooks/useCategories';
 import { useSuppliers } from '../../hooks/useSuppliers';
+import { useToast } from '../../components/Toast/useToastStore';
 
 import { Menu } from 'lucide-react';
 import styles from './Dashboard.module.css';
@@ -44,6 +45,8 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
 
   // Mutator hook
   const { confirmDelete: _confirmDelete, handleSave: _handleSave } = useInventory(suppliers);
+
+  const toast = useToast();
   
   // View State
   const [activeView, setActiveView] = useState<DashboardView>('overview');
@@ -137,7 +140,7 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
 
     const { error } = await _confirmDelete(itemToDelete);
     if (error) {
-      alert(`Error deleting item: ${error.message}`);
+      toast.error(`Failed to delete "${itemToDelete.name}": ${error.message}`);
     }
 
     setIsDeleting(false);
@@ -179,10 +182,11 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
   const handleSave = async (updatedItem: InventoryItem, variants?: any[]) => {
     const { error } = await _handleSave(updatedItem, variants, () => {
       handleModalClose();
+      toast.success(`"${updatedItem.name}" saved successfully.`);
     });
 
     if (error) {
-      alert(`Error saving item: ${error.message}`);
+      toast.error(`Failed to save "${updatedItem.name}": ${error.message}`);
     }
   };
 

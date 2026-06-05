@@ -2,8 +2,14 @@ import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 
 const GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions";
 
+// Restrict CORS to the configured deployment origin only.
+// Set this secret once: npx supabase secrets set ALLOWED_ORIGIN=https://kens-inventory-demo.vercel.app
+// Falls back to localhost for local development.
+const ALLOWED_ORIGIN =
+  Deno.env.get("ALLOWED_ORIGIN") ?? "https://kens-inventory-demo.vercel.app";
+
 const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Origin": ALLOWED_ORIGIN,
   "Access-Control-Allow-Headers":
     "authorization, x-client-info, apikey, content-type",
   "Access-Control-Allow-Methods": "POST, OPTIONS",

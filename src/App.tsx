@@ -1,13 +1,15 @@
 import { useState, useEffect } from 'react'
+import type { User } from '@supabase/supabase-js'
 import Home from './pages/Home/Home'
 import Dashboard from './pages/Dashboard/Dashboard'
 import Login from './pages/Auth/Login'
 import { supabase } from './lib/supabase'
+import ToastContainer from './components/Toast/Toast'
 import './App.css'
 
 function App() {
   const [currentPage, setCurrentPage] = useState<'home' | 'login' | 'dashboard'>('home')
-  const [user, setUser] = useState<any>(null)
+  const [user, setUser] = useState<User | null>(null)
 
   useEffect(() => {
     // Check for existing session
@@ -60,6 +62,9 @@ function App() {
       {(currentPage === 'dashboard' || (currentPage === 'login' && user)) && (
         <Dashboard onGoToHome={() => setCurrentPage('home')} onLogout={handleLogout} />
       )}
+
+      {/* Global toast notifications — rendered above everything */}
+      <ToastContainer />
     </>
   )
 }

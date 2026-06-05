@@ -129,6 +129,7 @@ export const useInventoryStore = create<InventoryStore>((set, get) => ({
       set({ allParentProducts: formatted, isLoadingParents: false });
     } catch (err) {
       console.error('Failed to fetch parent products:', err);
+      set({ isLoadingParents: false });
     }
   },
 
