@@ -14,6 +14,7 @@ interface InventoryStore {
   hasMore: boolean;
   currentSearchQuery: string;
   currentCategories: string[];
+  currentStatusFilter: string;
   
   // Global lookups (Non-paginated)
   allParentProducts: { 
@@ -81,7 +82,7 @@ export const useInventoryStore = create<InventoryStore>((set, get) => ({
   hasMore: true,
   currentCategories: [],
   currentSearchQuery: '',
-  currentStatus: 'active',
+  currentStatusFilter: 'All',
   aggregateStats: null,
   allParentProducts: [],
   isLoadingParents: false,
@@ -154,13 +155,13 @@ export const useInventoryStore = create<InventoryStore>((set, get) => ({
   },
 
   // ── fetchInventory (Server-Side Paginated) ──────────────────────────────────
-  fetchInventory: async (searchQuery = '', reset = true, categories: string[] = [], statusFilter = 'All') => {
+  fetchInventory: async (searchQuery, reset = true, categories, statusFilter) => {
     if (!supabase) {
       set({ error: 'Supabase client not initialized. Check your .env file.' });
       return;
     }
 
-    const { currentPage } = get();
+    const { currentPage, currentSearchQuery, currentCategories, currentStatusFilter } = get();
     const isFetchingMore = !reset;
     const targetPage = reset ? 0 : currentPage + 1;
     const offset = targetPage * PAGE_SIZE;
@@ -168,24 +169,31 @@ export const useInventoryStore = create<InventoryStore>((set, get) => ({
     // Prevent fetching more if we already hit the end
     if (isFetchingMore && !get().hasMore) return;
 
+    // Resolve parameter values: if they are undefined, default to the currently active store values.
+    const resolvedSearchQuery = searchQuery !== undefined ? searchQuery : currentSearchQuery;
+    const resolvedCategories = categories !== undefined ? categories : currentCategories;
+    const resolvedStatusFilter = statusFilter !== undefined ? statusFilter : currentStatusFilter;
+
     if (reset) {
-      set({ isLoading: true, error: null, currentSearchQuery: searchQuery, currentCategories: categories });
+      set({ 
+        isLoading: true, 
+        error: null, 
+        currentSearchQuery: resolvedSearchQuery, 
+        currentCategories: resolvedCategories,
+        currentStatusFilter: resolvedStatusFilter
+      });
     } else {
       set({ isLoadingMore: true, error: null });
     }
 
     try {
-      // Determine which categories to filter by:
-      // On load-more, reuse the persisted categories from the store
-      const categoriesToUse = reset ? categories : get().currentCategories;
-
       // Call the server-side RPC for searching and paginating
       const { data, error } = await supabase.rpc('search_inventory_v2', {
-        p_search_query: searchQuery,
+        p_search_query: resolvedSearchQuery,
         p_limit: PAGE_SIZE,
         p_offset: offset,
-        p_categories: categoriesToUse.length > 0 ? categoriesToUse : null,
-        p_status: statusFilter
+        p_categories: resolvedCategories.length > 0 ? resolvedCategories : null,
+        p_status: resolvedStatusFilter
       });
 
       if (error) {

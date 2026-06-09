@@ -73,7 +73,6 @@ BEGIN
   RETURN v_sale_id;
 END;
 $$;
-
 -- Grant access to the function
 GRANT EXECUTE ON FUNCTION process_sale TO anon;
 GRANT EXECUTE ON FUNCTION process_sale TO authenticated;

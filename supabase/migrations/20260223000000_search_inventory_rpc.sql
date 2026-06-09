@@ -3,8 +3,6 @@
 -- Description: Efficient text searching and pagination directly on the DB.
 -- ============================================================
 
-CREATE EXTENSION IF NOT EXISTS unaccent;
-
 CREATE OR REPLACE FUNCTION search_inventory(
   p_search_query TEXT,
   p_limit INT DEFAULT 50,
@@ -27,7 +25,7 @@ RETURNS TABLE (
   cost_price NUMERIC,
   voltage NUMERIC,
   wattage NUMERIC,
-  color_temperature TEXT,
+  color_temperature NUMERIC,
   variant_color TEXT,
   lumens NUMERIC,
   beam_type TEXT,
@@ -43,13 +41,13 @@ RETURNS TABLE (
   created_at TIMESTAMP WITH TIME ZONE,
   updated_at TIMESTAMP WITH TIME ZONE,
   notes TEXT,
-  tags TEXT[],
-  search_rank REAL
+  tags TEXT[]
 )
 LANGUAGE plpgsql
 SECURITY DEFINER
 AS $$
-#variable_conflict use_column
+DECLARE
+  v_search TEXT := '%' || lower(p_search_query) || '%';
 BEGIN
   RETURN QUERY
   WITH CombinedInventory AS (
@@ -77,13 +75,14 @@ BEGIN
       p.wattage AS wattage,
       p.color_temperature AS color_temperature,
       -- Fallback priority for variant_color
-      (p.specifications->>'color')::TEXT AS variant_color,
+      COALESCE(p.variant_color, (p.specifications->>'color')::TEXT) AS variant_color,
       p.lumens AS lumens,
       p.beam_type AS beam_type,
       -- Fallback priority for variant_type (socket)
       COALESCE(
         (p.specifications->>'socket')::TEXT, 
-        vc.code
+        vc.code, 
+        p.variant_type
       ) AS variant_type,
       p.specifications AS specifications,
       s.name AS supplier,
@@ -99,7 +98,7 @@ BEGIN
       ARRAY(SELECT jsonb_array_elements_text(p.specifications->'tags')) AS tags
     FROM products p
     LEFT JOIN product_categories pc ON p.category_id = pc.id
-    LEFT JOIN variant_categories vc ON p.variant_type_id = vc.id
+    LEFT JOIN variant_categories vc ON p.variant_category_id = vc.id
     LEFT JOIN suppliers s ON p.supplier_id = s.id
 
     UNION ALL
@@ -132,8 +131,7 @@ BEGIN
       p.lumens AS lumens,
       p.beam_type AS beam_type,
       COALESCE(vd.variant_name, v.variant_type, 'Unknown') AS variant_type,
-      -- FIX: Merge parent AND variant specifications.
-      -- Variant-specific values take precedence over parent values (right side wins with ||).
+      -- Merge parent and variant specifications
       COALESCE(p.specifications, '{}'::jsonb) || COALESCE(v.specifications, '{}'::jsonb) AS specifications,
       s.name AS supplier,
       false AS has_variants,
@@ -143,79 +141,32 @@ BEGIN
       true AS is_variant,
       v.product_id AS parent_product_id,
       v.created_at AS created_at,
-      p.updated_at AS updated_at,
+      v.updated_at AS updated_at,
       (v.specifications->>'internal_notes')::TEXT AS notes,
-      CASE 
-        WHEN v.specifications->'tags' IS NOT NULL AND jsonb_array_length(v.specifications->'tags') > 0 
-        THEN ARRAY(SELECT jsonb_array_elements_text(v.specifications->'tags'))
-        ELSE ARRAY(SELECT jsonb_array_elements_text(p.specifications->'tags'))
-      END AS tags
+      ARRAY(SELECT jsonb_array_elements_text(p.specifications->'tags')) AS tags
     FROM product_variants v
     JOIN products p ON v.product_id = p.id
     LEFT JOIN variant_definitions vd ON v.variant_id = vd.id
     LEFT JOIN product_categories pc ON p.category_id = pc.id
     LEFT JOIN suppliers s ON p.supplier_id = s.id
   )
-  SELECT 
-    ci.*,
-    (
-      ts_rank(
-        setweight(to_tsvector('simple', unaccent(COALESCE(ci.name, ''))), 'A') ||
-        setweight(to_tsvector('simple', unaccent(COALESCE(ci.sku, ''))), 'A') ||
-        setweight(to_tsvector('simple', unaccent(COALESCE(ci.brand, ''))), 'B') ||
-        setweight(to_tsvector('simple', unaccent(COALESCE(ci.variant_color, ''))), 'B') ||
-        setweight(to_tsvector('simple', unaccent(COALESCE(ci.color_temperature::TEXT, ''))), 'B') ||
-        setweight(to_tsvector('simple', unaccent(COALESCE(ci.category, ''))), 'C') ||
-        setweight(to_tsvector('simple', unaccent(COALESCE(ci.variant_type, ''))), 'C') ||
-        setweight(to_tsvector('simple', unaccent(COALESCE(ci.notes, ''))), 'C') ||
-        setweight(to_tsvector('simple', unaccent(COALESCE(array_to_string(ci.tags, ' '), ''))), 'C'),
-        plainto_tsquery('simple', unaccent(COALESCE(p_search_query, '')))
-      )
-    ) AS search_rank
-  FROM CombinedInventory ci
+  SELECT *
+  FROM CombinedInventory
   WHERE 
-    COALESCE(p_search_query, '') = '' OR
-    (
-      -- Combine FTS and Keyword Multi-Match for maximum robustness
-      (
-        setweight(to_tsvector('simple', unaccent(COALESCE(ci.name, ''))), 'A') ||
-        setweight(to_tsvector('simple', unaccent(COALESCE(ci.sku, ''))), 'A') ||
-        setweight(to_tsvector('simple', unaccent(COALESCE(ci.brand, ''))), 'B') ||
-        setweight(to_tsvector('simple', unaccent(COALESCE(ci.variant_color, ''))), 'B') ||
-        setweight(to_tsvector('simple', unaccent(COALESCE(ci.color_temperature::TEXT, ''))), 'B') ||
-        setweight(to_tsvector('simple', unaccent(COALESCE(ci.category, ''))), 'C') ||
-        setweight(to_tsvector('simple', unaccent(COALESCE(ci.variant_type, ''))), 'C') ||
-        setweight(to_tsvector('simple', unaccent(COALESCE(ci.notes, ''))), 'C') ||
-        setweight(to_tsvector('simple', unaccent(COALESCE(array_to_string(ci.tags, ' '), ''))), 'C')
-      ) @@ plainto_tsquery('simple', unaccent(p_search_query))
-      OR
-      (
-        SELECT COALESCE(bool_and(
-          lower(unaccent(
-            COALESCE(ci.name, '') || ' ' ||
-            COALESCE(ci.sku, '') || ' ' ||
-            COALESCE(ci.notes, '') || ' ' ||
-            COALESCE(ci.category, '') || ' ' ||
-            COALESCE(ci.brand, '') || ' ' ||
-            COALESCE(ci.variant_type, '') || ' ' ||
-            COALESCE(ci.variant_color, '') || ' ' ||
-            COALESCE(ci.color_temperature, '') || ' ' ||
-            COALESCE(array_to_string(ci.tags, ' '), '')
-          )) LIKE '%' || kw || '%'
-        ), true)
-        FROM unnest(string_to_array(lower(unaccent(trim(p_search_query))), ' ')) AS kw 
-        WHERE kw <> ''
-      )
-    )
-  ORDER BY 
-    CASE WHEN COALESCE(p_search_query, '') = '' THEN 0 ELSE 1 END DESC, -- Put ranked results at top if searching
-    search_rank DESC,
-    ci.name ASC
+    p_search_query = '' OR -- Return all if no search query
+    lower(name) LIKE v_search OR
+    lower(sku) LIKE v_search OR
+    lower(COALESCE(notes, '')) LIKE v_search OR
+    lower(category) LIKE v_search OR
+    lower(brand) LIKE v_search OR
+    lower(variant_type) LIKE v_search OR
+    lower(variant_color) LIKE v_search OR
+    EXISTS (SELECT 1 FROM unnest(tags) t WHERE lower(t) LIKE v_search)
+  ORDER BY name ASC, variant_display_name ASC
   LIMIT p_limit
   OFFSET p_offset;
 END;
 $$;
-
 -- Grant access
-GRANT EXECUTE ON FUNCTION search_inventory(TEXT, INT, INT) TO authenticated;
-GRANT EXECUTE ON FUNCTION search_inventory(TEXT, INT, INT) TO anon;
+GRANT EXECUTE ON FUNCTION search_inventory TO authenticated;
+GRANT EXECUTE ON FUNCTION search_inventory TO anon;

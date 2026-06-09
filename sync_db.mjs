@@ -64,9 +64,19 @@ async function sync() {
 
   // Reset sequences for bigint id tables
   sql += '-- Reset Sequences\n';
-  const bigintTables = ['product_categories', 'variant_categories', 'variant_definitions', 'category_metadata', 'suppliers', 'products', 'product_variants', 'store_settings'];
-  for (const table of bigintTables) {
-    sql += `SELECT setval('public.${table}_id_seq', COALESCE((SELECT MAX(id) + 1 FROM public.${table}), 1), false);\n`;
+  const sequenceMapping = {
+    'product_categories': 'public.product_categories_id_seq',
+    'variant_categories': 'public.bulb_types_id_seq',
+    'variant_definitions': 'public.bulb_type_variants_id_seq',
+    'category_metadata': 'public.category_metadata_id_seq',
+    'suppliers': 'public.suppliers_id_seq',
+    'products': 'public.products_id_seq',
+    'product_variants': 'public.product_bulb_variants_id_seq',
+    'store_settings': 'public.store_settings_id_seq'
+  };
+  for (const table of Object.keys(sequenceMapping)) {
+    const seq = sequenceMapping[table];
+    sql += `SELECT setval('${seq}', COALESCE((SELECT MAX(id) + 1 FROM public.${table}), 1), false);\n`;
   }
 
   sql += '\nSET session_replication_role = DEFAULT;\n';

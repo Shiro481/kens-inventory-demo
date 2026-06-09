@@ -86,3 +86,4 @@ SELECT pv.id, kv.key, COALESCE(kv.value#>>'{}', '')
 FROM public.product_variants pv, jsonb_each(pv.specifications) AS kv
 WHERE pv.specifications IS NOT NULL AND pv.specifications != '{}'::jsonb
 ON CONFLICT (variant_id, spec_key) DO NOTHING;
+;

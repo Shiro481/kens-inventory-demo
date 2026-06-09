@@ -223,7 +223,6 @@ BEGIN
   OFFSET p_offset;
 END;
 $$;
-
 -- Grant access
 GRANT EXECUTE ON FUNCTION search_inventory_v2(TEXT, INT, INT, TEXT[], TEXT) TO authenticated;
 GRANT EXECUTE ON FUNCTION search_inventory_v2(TEXT, INT, INT, TEXT[], TEXT) TO anon;

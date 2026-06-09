@@ -1,7 +1,6 @@
 SET search_path TO public;
 -- Generalizing the schema for varied automotive parts
 BEGIN;
-
 -- 1. Rename tables (if they exist with old names)
 DO $$
 BEGIN
@@ -15,7 +14,6 @@ BEGIN
         ALTER TABLE "public"."product_bulb_variants" RENAME TO "product_variants";
     END IF;
 END $$;
-
 -- 2. Rename columns in products (if they exist with old names)
 DO $$
 BEGIN
@@ -23,7 +21,6 @@ BEGIN
         ALTER TABLE "public"."products" RENAME COLUMN "bulb_type_id" TO "variant_type_id";
     END IF;
 END $$;
-
 -- 3. Rename columns in product_variants (if they exist with old names)
 DO $$
 BEGIN
@@ -31,7 +28,6 @@ BEGIN
         ALTER TABLE "public"."product_variants" RENAME COLUMN "bulb_type" TO "variant_type";
     END IF;
 END $$;
-
 -- 4. Update the stock sync function
 CREATE OR REPLACE FUNCTION "public"."sync_product_stock_from_variants"() RETURNS "trigger"
     LANGUAGE "plpgsql"
@@ -47,7 +43,6 @@ BEGIN
     RETURN NEW;
 END;
 $$;
-
 -- 5. Rename constraints for consistency (wrapped in DO blocks for safety)
 DO $$
 BEGIN
@@ -70,7 +65,6 @@ BEGIN
         ALTER TABLE "public"."product_variants" RENAME CONSTRAINT "product_bulb_variants_variant_id_fkey" TO "product_variants_variant_id_fkey";
     END IF;
 END $$;
-
 -- 6. Recreate the view with new names
 DROP VIEW IF EXISTS "public"."pos_product_variants";
 CREATE OR REPLACE VIEW "public"."pos_product_variants" AS
@@ -101,5 +95,4 @@ CREATE OR REPLACE VIEW "public"."pos_product_variants" AS
      LEFT JOIN "public"."product_categories" "pc" ON (("p"."category_id" = "pc"."id")))
   WHERE (("p"."has_variants" = true) AND (("btv"."is_active" = true) OR ("btv"."id" IS NULL)))
   ORDER BY "p"."name", COALESCE("btv"."display_name", "pbv"."variant_type");
-
 COMMIT;

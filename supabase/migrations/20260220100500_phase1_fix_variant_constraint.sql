@@ -6,12 +6,10 @@
 -- ============================================================
 
 BEGIN;
-
 -- ── 1. Drop stale constraint (references renamed column 'bulb_type') ──────────
 -- This constraint has been silently inactive since the column was renamed.
 ALTER TABLE public.product_variants
   DROP CONSTRAINT IF EXISTS "product_variants_product_id_bulb_type_color_temperatur_key";
-
 -- ── 2. Check for existing duplicates before adding the new constraint ─────────
 -- If duplicates exist, we log them and skip constraint creation to avoid hard failure.
 DO $$
@@ -38,16 +36,13 @@ BEGIN
     RAISE NOTICE 'Unique constraint on (product_id, variant_type, color_temperature) added successfully.';
   END IF;
 END $$;
-
 -- ── 3. Drop the SKU unique constraint on products ─────────────────────────────
 -- SKUs are intentionally non-unique in this system (multiple items may share
 -- the same SKU across model years; notes/specs are used for distinction).
 ALTER TABLE public.products
   DROP CONSTRAINT IF EXISTS "products_sku_key";
-
 DO $$
 BEGIN
   RAISE NOTICE 'Phase 1 constraint migration applied: stale bulb_type constraint dropped, SKU uniqueness removed.';
 END $$;
-
 COMMIT;

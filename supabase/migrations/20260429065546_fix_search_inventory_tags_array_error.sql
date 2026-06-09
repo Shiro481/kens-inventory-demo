@@ -1,14 +1,9 @@
--- ============================================================
--- SQL Migration: Update search_inventory RPC for Enhanced Dynamic Search
--- Description: Applies fixes for search_rank REAL and broader keyword matching.
--- ============================================================
-
-CREATE EXTENSION IF NOT EXISTS unaccent;
 CREATE OR REPLACE FUNCTION search_inventory_v2(
   p_search_query TEXT,
   p_limit INT DEFAULT 50,
   p_offset INT DEFAULT 0,
-  p_categories TEXT[] DEFAULT NULL
+  p_categories TEXT[] DEFAULT NULL,
+  p_status TEXT DEFAULT 'All'
 )
 RETURNS TABLE (
   id BIGINT,
@@ -52,7 +47,21 @@ AS $$
 #variable_conflict use_column
 BEGIN
   RETURN QUERY
-  WITH CombinedInventory AS (
+  WITH ProductSpecs AS (
+    SELECT 
+      product_id, 
+      jsonb_object_agg(spec_key, spec_value) as specs
+    FROM product_specifications
+    GROUP BY product_id
+  ),
+  VariantSpecs AS (
+    SELECT 
+      variant_id, 
+      jsonb_object_agg(spec_key, spec_value) as specs
+    FROM variant_specifications
+    GROUP BY variant_id
+  ),
+  CombinedInventory AS (
     -- 1. PARENT PRODUCTS
     SELECT 
       p.id AS id,
@@ -61,31 +70,29 @@ BEGIN
       p.name AS base_name,
       p.sku AS sku,
       p.selling_price AS price,
-      -- Stock: Sum of variants if any exist, otherwise parent stock
       COALESCE(
         (SELECT SUM(pv.stock_quantity) FROM product_variants pv WHERE pv.product_id = p.id),
         p.stock_quantity
       ) AS stock,
       p.min_stock_level AS min_quantity,
       pc.name AS category,
-      p.brand AS brand,
+      b.name AS brand,
       p.description AS description,
       p.image_url AS image_url,
       p.barcode AS barcode,
       p.cost_price AS cost_price,
-      p.voltage AS voltage,
-      p.wattage AS wattage,
-      p.color_temperature AS color_temperature,
-      -- Fallback priority for variant_color
-      (p.specifications->>'color')::TEXT AS variant_color,
-      p.lumens AS lumens,
-      p.beam_type AS beam_type,
-      -- Fallback priority for variant_type (socket)
+      COALESCE((ps.specs->>'voltage')::numeric, p.voltage) AS voltage,
+      COALESCE((ps.specs->>'wattage')::numeric, p.wattage) AS wattage,
+      COALESCE(ps.specs->>'color_temperature', p.color_temperature) AS color_temperature,
+      COALESCE(ps.specs->>'variant_color', (p.specifications->>'color')::text) AS variant_color,
+      COALESCE((ps.specs->>'lumens')::numeric, p.lumens) AS lumens,
+      COALESCE(ps.specs->>'beam_type', p.beam_type) AS beam_type,
       COALESCE(
-        (p.specifications->>'socket')::TEXT, 
+        ps.specs->>'socket', 
+        (p.specifications->>'socket')::text, 
         vc.code
       ) AS variant_type,
-      p.specifications AS specifications,
+      COALESCE(p.specifications, '{}'::jsonb) || COALESCE(ps.specs, '{}'::jsonb) AS specifications,
       s.name AS supplier,
       (p.has_variants OR (SELECT COUNT(*) FROM product_variants pv WHERE pv.product_id = p.id) > 0) AS has_variants,
       (SELECT COUNT(*)::INT FROM product_variants pv WHERE pv.product_id = p.id) AS variant_count,
@@ -96,11 +103,18 @@ BEGIN
       p.created_at AS created_at,
       p.updated_at AS updated_at,
       (p.specifications->>'internal_notes')::TEXT AS notes,
-      ARRAY(SELECT jsonb_array_elements_text(p.specifications->'tags')) AS tags
+      COALESCE(
+        (SELECT array_agg(x) FROM jsonb_array_elements_text(
+          CASE WHEN jsonb_typeof(p.specifications->'tags') = 'array' THEN p.specifications->'tags' ELSE '[]'::jsonb END
+        ) x),
+        ARRAY[]::TEXT[]
+      ) AS tags
     FROM products p
     LEFT JOIN product_categories pc ON p.category_id = pc.id
     LEFT JOIN variant_categories vc ON p.variant_type_id = vc.id
     LEFT JOIN suppliers s ON p.supplier_id = s.id
+    LEFT JOIN brands b ON p.brand_id = b.id
+    LEFT JOIN ProductSpecs ps ON p.id = ps.product_id
 
     UNION ALL
 
@@ -108,7 +122,6 @@ BEGIN
     SELECT
       v.id AS id,
       v.id AS uuid,
-      -- Simplistic name merge for SQL, JS side will handle strict cleaning if needed
       (p.name || ' - ' || COALESCE(vd.variant_name, v.variant_type, '')) AS name,
       p.name AS base_name,
       COALESCE(v.variant_sku, p.sku || '-' || v.id) AS sku,
@@ -120,20 +133,19 @@ BEGIN
       v.stock_quantity::BIGINT AS stock,
       v.min_stock_level AS min_quantity,
       pc.name AS category,
-      p.brand AS brand,
+      b.name AS brand,
       COALESCE(v.description, p.description) AS description,
       p.image_url AS image_url,
       COALESCE(v.variant_barcode, v.variant_sku) AS barcode,
       v.cost_price AS cost_price,
-      p.voltage AS voltage,
-      p.wattage AS wattage,
-      COALESCE(v.color_temperature, p.color_temperature) AS color_temperature,
-      v.variant_color AS variant_color,
-      p.lumens AS lumens,
-      p.beam_type AS beam_type,
+      COALESCE((ps.specs->>'voltage')::numeric, p.voltage) AS voltage,
+      COALESCE((ps.specs->>'wattage')::numeric, p.wattage) AS wattage,
+      COALESCE(vs.specs->>'color_temperature', v.color_temperature, ps.specs->>'color_temperature', p.color_temperature) AS color_temperature,
+      COALESCE(vs.specs->>'variant_color', v.variant_color) AS variant_color,
+      COALESCE((ps.specs->>'lumens')::numeric, p.lumens) AS lumens,
+      COALESCE(ps.specs->>'beam_type', p.beam_type) AS beam_type,
       COALESCE(vd.variant_name, v.variant_type, 'Unknown') AS variant_type,
-      -- Merge parent and variant specifications
-      COALESCE(p.specifications, '{}'::jsonb) || COALESCE(v.specifications, '{}'::jsonb) AS specifications,
+      COALESCE(p.specifications, '{}'::jsonb) || COALESCE(v.specifications, '{}'::jsonb) || COALESCE(ps.specs, '{}'::jsonb) || COALESCE(vs.specs, '{}'::jsonb) AS specifications,
       s.name AS supplier,
       false AS has_variants,
       0 AS variant_count,
@@ -144,16 +156,24 @@ BEGIN
       v.created_at AS created_at,
       p.updated_at AS updated_at,
       (v.specifications->>'internal_notes')::TEXT AS notes,
-      CASE 
-        WHEN v.specifications->'tags' IS NOT NULL AND jsonb_array_length(v.specifications->'tags') > 0 
-        THEN ARRAY(SELECT jsonb_array_elements_text(v.specifications->'tags'))
-        ELSE ARRAY(SELECT jsonb_array_elements_text(p.specifications->'tags'))
-      END AS tags
+      COALESCE(
+        (SELECT array_agg(x) FROM jsonb_array_elements_text(
+          CASE 
+            WHEN jsonb_typeof(v.specifications->'tags') = 'array' THEN v.specifications->'tags'
+            WHEN jsonb_typeof(p.specifications->'tags') = 'array' THEN p.specifications->'tags'
+            ELSE '[]'::jsonb
+          END
+        ) x),
+        ARRAY[]::TEXT[]
+      ) AS tags
     FROM product_variants v
     JOIN products p ON v.product_id = p.id
     LEFT JOIN variant_definitions vd ON v.variant_id = vd.id
     LEFT JOIN product_categories pc ON p.category_id = pc.id
     LEFT JOIN suppliers s ON p.supplier_id = s.id
+    LEFT JOIN brands b ON p.brand_id = b.id
+    LEFT JOIN ProductSpecs ps ON p.id = ps.product_id
+    LEFT JOIN VariantSpecs vs ON v.id = vs.variant_id
   )
   SELECT 
     ci.*,
@@ -175,9 +195,14 @@ BEGIN
   WHERE 
     (p_categories IS NULL OR ci.category = ANY(p_categories))
     AND (
+      p_status = 'All' OR
+      (p_status = 'Out of Stock' AND ci.stock <= 0) OR
+      (p_status = 'Low Stock' AND ci.stock > 0 AND ci.stock < COALESCE(ci.min_quantity, 10)) OR
+      (p_status = 'In Stock' AND ci.stock >= COALESCE(ci.min_quantity, 10))
+    )
+    AND (
       COALESCE(p_search_query, '') = '' OR
       (
-        -- Combine FTS and Keyword Multi-Match for maximum robustness
         (
           setweight(to_tsvector('simple', unaccent(COALESCE(ci.name, ''))), 'A') ||
           setweight(to_tsvector('simple', unaccent(COALESCE(ci.sku, ''))), 'A') ||
@@ -210,53 +235,11 @@ BEGIN
       )
     )
   ORDER BY 
-    CASE WHEN COALESCE(p_search_query, '') = '' THEN 0 ELSE 1 END DESC, -- Put ranked results at top if searching
+    CASE WHEN COALESCE(p_search_query, '') = '' THEN 0 ELSE 1 END DESC,
     search_rank DESC,
     ci.name ASC
   LIMIT p_limit
   OFFSET p_offset;
 END;
 $$;
--- Grant access
-GRANT EXECUTE ON FUNCTION search_inventory_v2(TEXT, INT, INT, TEXT[]) TO authenticated;
-GRANT EXECUTE ON FUNCTION search_inventory_v2(TEXT, INT, INT, TEXT[]) TO anon;
--- ============================================================
--- Migration: Add get_dashboard_stats RPC 
--- Description: Aggregates inventory health stats across the ENTIRE database.
--- ============================================================
-
-CREATE OR REPLACE FUNCTION get_dashboard_stats()
-RETURNS JSONB
-LANGUAGE plpgsql
-SECURITY DEFINER
-AS $$
-DECLARE
-    result JSONB;
-BEGIN
-    WITH SellableItems AS (
-        -- Products with no variants
-        SELECT 
-            p.stock_quantity as stock, 
-            p.min_stock_level as min_qty
-        FROM products p
-        WHERE NOT p.has_variants
-        
-        UNION ALL
-        
-        -- All variants
-        SELECT 
-            v.stock_quantity as stock, 
-            v.min_stock_level as min_qty
-        FROM product_variants v
-    )
-    SELECT jsonb_build_object(
-        'total_items', (SELECT COUNT(*) FROM SellableItems),
-        'low_stock', (SELECT COUNT(*) FROM SellableItems WHERE stock > 0 AND stock < min_qty),
-        'out_of_stock', (SELECT COUNT(*) FROM SellableItems WHERE stock <= 0)
-    ) INTO result;
-    
-    RETURN result;
-END;
-$$;
-GRANT EXECUTE ON FUNCTION get_dashboard_stats() TO authenticated;
-GRANT EXECUTE ON FUNCTION get_dashboard_stats() TO anon;
+;

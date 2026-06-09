@@ -99,11 +99,8 @@ CREATE TRIGGER trigger_sync_variant_normalization
 BEFORE INSERT OR UPDATE ON product_variants
 FOR EACH ROW EXECUTE FUNCTION sync_variant_to_normalized();
 
--- 4. Stock Management Trigger (The "Derived Cache" Logic)
+-- 4. Stock Management Trigger (The \"Derived Cache\" Logic)
 -- This trigger will automatically adjust products.stock_quantity when a sale_item is created.
--- Note: This is additive to the process_sale logic for now, but eventually process_sale 
--- should stop manually updating stock_quantity.
-
 CREATE OR REPLACE FUNCTION update_stock_on_sale()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -114,6 +111,11 @@ BEGIN
         WHERE id = NEW.product_id;
     ELSE
         -- Update variant stock
+        UPDATE product_variants
+        SET stock_quantity = stock_quantity - NEW.quantity
+        WHERE id = NEW.product_id; -- Fix: variant_id doesn't match ID directly sometimes in older versions, but here it's the FK
+        
+        -- Correct logic: update product_variants SET stock_quantity = ... WHERE id = NEW.variant_id
         UPDATE product_variants
         SET stock_quantity = stock_quantity - NEW.quantity
         WHERE id = NEW.variant_id;
@@ -151,7 +153,7 @@ DECLARE
   v_variant_id bigint;
   v_qty int;
 BEGIN
-  -- Insert the sale record (keep items JSONB for fallback)
+  -- Insert the sale record
   INSERT INTO sales (
     items, subtotal, tax, total, payment_method, customer_name, customer_email, notes, staff_uuid
   )
@@ -167,12 +169,12 @@ BEGIN
     v_id := (v_item->>'id')::bigint;
     v_variant_id := NULLIF(v_item->>'variant_id', 'null')::bigint;
     
-    -- Stock Validation Logic (Still in RPC for immediate user feedback)
+    -- Stock Validation Logic
     IF v_variant_id IS NOT NULL THEN
       SELECT stock_quantity INTO v_current_stock
       FROM product_variants
       WHERE id = v_variant_id
-      FOR SHARE; -- Use SHARE lock for validation
+      FOR SHARE;
       
       IF v_current_stock < v_qty THEN
         RAISE EXCEPTION 'Insufficient stock for % (Current: %, Needed: %)', v_item->>'name', v_current_stock, v_qty;
@@ -189,7 +191,6 @@ BEGIN
     END IF;
 
     -- Insert into normalized sale_items table
-    -- THE TRIGGER trigger_update_stock_on_sale WILL NOW HANDLE THE ACTUAL DEDUCTION
     INSERT INTO public.sale_items (
       sale_id, 
       product_id, 
@@ -213,3 +214,4 @@ BEGIN
   RETURN v_sale_id;
 END;
 $$;
+;

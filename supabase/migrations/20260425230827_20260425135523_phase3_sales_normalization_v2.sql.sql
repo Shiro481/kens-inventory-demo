@@ -1,5 +1,5 @@
--- Phase 3: Sales Normalization
--- Extract line items from the sales JSON blob.
+-- Phase 3: Sales Normalization (Safe Version)
+-- Extract line items from the sales JSON blob, filtering out orphaned product IDs.
 
 CREATE TABLE IF NOT EXISTS public.sale_items (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -14,6 +14,7 @@ CREATE TABLE IF NOT EXISTS public.sale_items (
 );
 
 -- Backfill data from sales.items JSONB array
+-- Join with products to ensure referential integrity
 INSERT INTO public.sale_items (sale_id, product_id, variant_id, quantity, unit_price, total_price, discount)
 SELECT 
     s.id AS sale_id,
@@ -25,7 +26,9 @@ SELECT
     COALESCE((item->>'discount')::NUMERIC, 0) AS discount
 FROM 
     public.sales s,
-    jsonb_array_elements(s.items) AS item;
+    jsonb_array_elements(s.items) AS item
+JOIN 
+    public.products p ON p.id = (item->>'id')::BIGINT;
 
 -- Enable RLS
 ALTER TABLE public.sale_items ENABLE ROW LEVEL SECURITY;
@@ -47,3 +50,4 @@ CREATE POLICY "Authenticated users can read sale_items"
 ON public.sale_items FOR SELECT
 TO authenticated
 USING (true);
+;

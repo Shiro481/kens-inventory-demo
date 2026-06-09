@@ -8,6 +8,8 @@
 --      Variant-specific values take precedence over parent values.
 -- ============================================================
 
+DROP FUNCTION IF EXISTS search_inventory(TEXT, INT, INT);
+
 CREATE OR REPLACE FUNCTION search_inventory(
   p_search_query TEXT,
   p_limit INT DEFAULT 50,
@@ -218,7 +220,6 @@ BEGIN
   OFFSET p_offset;
 END;
 $$;
-
 -- Grant access
 GRANT EXECUTE ON FUNCTION search_inventory(TEXT, INT, INT) TO authenticated;
 GRANT EXECUTE ON FUNCTION search_inventory(TEXT, INT, INT) TO anon;

@@ -4,12 +4,11 @@
 -- ============================================================
 
 CREATE EXTENSION IF NOT EXISTS unaccent;
-
-CREATE OR REPLACE FUNCTION search_inventory_v2(
+DROP FUNCTION IF EXISTS search_inventory(text, int, int);
+CREATE OR REPLACE FUNCTION search_inventory(
   p_search_query TEXT,
   p_limit INT DEFAULT 50,
-  p_offset INT DEFAULT 0,
-  p_categories TEXT[] DEFAULT NULL
+  p_offset INT DEFAULT 0
 )
 RETURNS TABLE (
   id BIGINT,
@@ -118,7 +117,7 @@ BEGIN
         p.selling_price + COALESCE(v.price_adjustment, 0),
         p.selling_price
       ) AS price,
-      v.stock_quantity::BIGINT AS stock,
+      v.stock_quantity AS stock,
       v.min_stock_level AS min_quantity,
       pc.name AS category,
       p.brand AS brand,
@@ -134,7 +133,7 @@ BEGIN
       p.beam_type AS beam_type,
       COALESCE(vd.variant_name, v.variant_type, 'Unknown') AS variant_type,
       -- Merge parent and variant specifications
-      COALESCE(p.specifications, '{}'::jsonb) || COALESCE(v.specifications, '{}'::jsonb) AS specifications,
+      COALESCE(p.specifications, '{}'::jsonb) AS specifications,
       s.name AS supplier,
       false AS has_variants,
       0 AS variant_count,
@@ -174,40 +173,37 @@ BEGIN
     ) AS search_rank
   FROM CombinedInventory ci
   WHERE 
-    (p_categories IS NULL OR ci.category = ANY(p_categories))
-    AND (
-      COALESCE(p_search_query, '') = '' OR
+    COALESCE(p_search_query, '') = '' OR
+    (
+      -- Combine FTS and Keyword Multi-Match for maximum robustness
       (
-        -- Combine FTS and Keyword Multi-Match for maximum robustness
-        (
-          setweight(to_tsvector('simple', unaccent(COALESCE(ci.name, ''))), 'A') ||
-          setweight(to_tsvector('simple', unaccent(COALESCE(ci.sku, ''))), 'A') ||
-          setweight(to_tsvector('simple', unaccent(COALESCE(ci.brand, ''))), 'B') ||
-          setweight(to_tsvector('simple', unaccent(COALESCE(ci.variant_color, ''))), 'B') ||
-          setweight(to_tsvector('simple', unaccent(COALESCE(ci.color_temperature::TEXT, ''))), 'B') ||
-          setweight(to_tsvector('simple', unaccent(COALESCE(ci.category, ''))), 'C') ||
-          setweight(to_tsvector('simple', unaccent(COALESCE(ci.variant_type, ''))), 'C') ||
-          setweight(to_tsvector('simple', unaccent(COALESCE(ci.notes, ''))), 'C') ||
-          setweight(to_tsvector('simple', unaccent(COALESCE(array_to_string(ci.tags, ' '), ''))), 'C')
-        ) @@ plainto_tsquery('simple', unaccent(p_search_query))
-        OR
-        (
-          SELECT COALESCE(bool_and(
-            lower(unaccent(
-              COALESCE(ci.name, '') || ' ' ||
-              COALESCE(ci.sku, '') || ' ' ||
-              COALESCE(ci.notes, '') || ' ' ||
-              COALESCE(ci.category, '') || ' ' ||
-              COALESCE(ci.brand, '') || ' ' ||
-              COALESCE(ci.variant_type, '') || ' ' ||
-              COALESCE(ci.variant_color, '') || ' ' ||
-              COALESCE(ci.color_temperature, '') || ' ' ||
-              COALESCE(array_to_string(ci.tags, ' '), '')
-            )) LIKE '%' || kw || '%'
-          ), true)
-          FROM unnest(string_to_array(lower(unaccent(trim(p_search_query))), ' ')) AS kw 
-          WHERE kw <> ''
-        )
+        setweight(to_tsvector('simple', unaccent(COALESCE(ci.name, ''))), 'A') ||
+        setweight(to_tsvector('simple', unaccent(COALESCE(ci.sku, ''))), 'A') ||
+        setweight(to_tsvector('simple', unaccent(COALESCE(ci.brand, ''))), 'B') ||
+        setweight(to_tsvector('simple', unaccent(COALESCE(ci.variant_color, ''))), 'B') ||
+        setweight(to_tsvector('simple', unaccent(COALESCE(ci.color_temperature::TEXT, ''))), 'B') ||
+        setweight(to_tsvector('simple', unaccent(COALESCE(ci.category, ''))), 'C') ||
+        setweight(to_tsvector('simple', unaccent(COALESCE(ci.variant_type, ''))), 'C') ||
+        setweight(to_tsvector('simple', unaccent(COALESCE(ci.notes, ''))), 'C') ||
+        setweight(to_tsvector('simple', unaccent(COALESCE(array_to_string(ci.tags, ' '), ''))), 'C')
+      ) @@ plainto_tsquery('simple', unaccent(p_search_query))
+      OR
+      (
+        SELECT COALESCE(bool_and(
+          lower(unaccent(
+            COALESCE(ci.name, '') || ' ' ||
+            COALESCE(ci.sku, '') || ' ' ||
+            COALESCE(ci.notes, '') || ' ' ||
+            COALESCE(ci.category, '') || ' ' ||
+            COALESCE(ci.brand, '') || ' ' ||
+            COALESCE(ci.variant_type, '') || ' ' ||
+            COALESCE(ci.variant_color, '') || ' ' ||
+            COALESCE(ci.color_temperature, '') || ' ' ||
+            COALESCE(array_to_string(ci.tags, ' '), '')
+          )) LIKE '%' || kw || '%'
+        ), true)
+        FROM unnest(string_to_array(lower(unaccent(trim(p_search_query))), ' ')) AS kw 
+        WHERE kw <> ''
       )
     )
   ORDER BY 
@@ -218,9 +214,6 @@ BEGIN
   OFFSET p_offset;
 END;
 $$;
-
-
-
 -- Grant access
-GRANT EXECUTE ON FUNCTION search_inventory_v2(TEXT, INT, INT, TEXT[]) TO authenticated;
-GRANT EXECUTE ON FUNCTION search_inventory_v2(TEXT, INT, INT, TEXT[]) TO anon;
+GRANT EXECUTE ON FUNCTION search_inventory(text, int, int) TO authenticated;
+GRANT EXECUTE ON FUNCTION search_inventory(text, int, int) TO anon;

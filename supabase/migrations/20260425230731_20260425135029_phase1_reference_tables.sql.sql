@@ -68,4 +68,4 @@ ADD COLUMN IF NOT EXISTS staff_uuid uuid REFERENCES public.admins(id) ON DELETE 
 UPDATE public.sales 
 SET staff_uuid = staff_id::uuid 
 WHERE staff_id ~ '^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$';
-
+;
