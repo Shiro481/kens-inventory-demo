@@ -1,5 +1,5 @@
-import { useRef, useEffect } from 'react';
-import { Package, Edit, Trash2, Loader2 } from 'lucide-react';
+import { useRef, useEffect, useState } from 'react';
+import { Package, Edit, Trash2, Loader2, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import styles from './InventoryTable.module.css';
 import { useSettings } from '../../../context/SettingsContext';
@@ -27,8 +27,19 @@ export default function InventoryTable({ items, isLoading = false, onEdit, onDel
   const { settings } = useSettings();
   const parentRef = useRef<HTMLDivElement>(null);
   
-  // Connect to store for infinite scroll logic
-  const { fetchInventory, hasMore, isLoadingMore, currentSearchQuery, currentCategories } = useInventoryStore();
+  // Connect to store for pagination logic
+  const { 
+    fetchInventory, 
+    currentPage, 
+    hasMore, 
+    isLoadingMore, 
+    currentSearchQuery, 
+    currentCategories, 
+    currentStatusFilter,
+    totalMatchingCount
+  } = useInventoryStore();
+
+  const [pageInputVal, setPageInputVal] = useState((currentPage + 1).toString());
 
   const rowVirtualizer = useVirtualizer({
     count: items.length,
@@ -37,25 +48,76 @@ export default function InventoryTable({ items, isLoading = false, onEdit, onDel
     overscan: 5,
   });
 
-  // Infinite Scroll Handler
+  // Reset scroll to top when page changes and sync the input value
   useEffect(() => {
-    const parent = parentRef.current;
-    if (!parent) return;
+    if (parentRef.current) {
+      parentRef.current.scrollTop = 0;
+    }
+    setPageInputVal((currentPage + 1).toString());
+  }, [currentPage]);
 
-    const handleScroll = () => {
-      // Threshold: fetch more when user is within 300px of the bottom
-      const threshold = 300;
-      const isNearBottom = parent.scrollHeight - parent.scrollTop - parent.clientHeight < threshold;
+  const handlePageSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const pageNum = parseInt(pageInputVal, 10);
+    if (!isNaN(pageNum) && pageNum > 0) {
+      fetchInventory(currentSearchQuery, pageNum - 1, currentCategories, currentStatusFilter);
+    } else {
+      setPageInputVal((currentPage + 1).toString());
+    }
+  };
 
-      if (isNearBottom && hasMore && !isLoadingMore && !isLoading) {
-        // false means "append to existing list", not reset
-        fetchInventory(currentSearchQuery, false, currentCategories);
-      }
+  const renderPageButtons = () => {
+    const buttons = [];
+    const totalPages = Math.max(1, Math.ceil(totalMatchingCount / 20));
+
+    const addPageButton = (pageIndex: number) => {
+      buttons.push(
+        <button
+          key={pageIndex}
+          className={`${styles.paginationBtn} ${currentPage === pageIndex ? styles.activePageBtn : ''}`}
+          onClick={() => fetchInventory(currentSearchQuery, pageIndex, currentCategories, currentStatusFilter)}
+          disabled={isLoadingMore}
+        >
+          {pageIndex + 1}
+        </button>
+      );
     };
 
-    parent.addEventListener('scroll', handleScroll);
-    return () => parent.removeEventListener('scroll', handleScroll);
-  }, [hasMore, isLoadingMore, isLoading, fetchInventory, currentSearchQuery]);
+    // Always render Page 1
+    addPageButton(0);
+
+    // Render left ellipsis if currentPage > 2
+    if (currentPage > 2) {
+      buttons.push(<span key="dots-prev" style={{ color: '#444', alignSelf: 'center' }}>...</span>);
+    }
+
+    // Render previous page button if we are not on Page 1 or 2
+    if (currentPage > 1 && currentPage < totalPages - 1) {
+      addPageButton(currentPage - 1);
+    }
+
+    // Render current page button (if it's not Page 1 and not the last page)
+    if (currentPage > 0 && currentPage < totalPages - 1) {
+      addPageButton(currentPage);
+    }
+
+    // Render next page button if we are not on the last page or second-to-last page
+    if (currentPage < totalPages - 2 && currentPage > 0) {
+      addPageButton(currentPage + 1);
+    }
+
+    // Render right ellipsis if we are far from the last page
+    if (currentPage < totalPages - 3) {
+      buttons.push(<span key="dots-next" style={{ color: '#444', alignSelf: 'center' }}>...</span>);
+    }
+
+    // Render last page button (if totalPages > 1)
+    if (totalPages > 1) {
+      addPageButton(totalPages - 1);
+    }
+
+    return buttons;
+  };
   
   return (
     <>
@@ -229,25 +291,54 @@ export default function InventoryTable({ items, isLoading = false, onEdit, onDel
                 </div>
               );
             })}
-            
-            {/* Show a loading spinner at the bottom when fetching more items */}
-            {isLoadingMore && (
-              <div style={{ 
-                position: 'absolute', 
-                bottom: 0, 
-                left: 0, 
-                width: '100%', 
-                height: '80px', 
-                display: 'flex', 
-                alignItems: 'center', 
-                justifyContent: 'center',
-                color: '#00ff9d'
-              }}>
-                <Loader2 size={24} className={styles.spinnerIcon} style={{ animation: 'spin 1s linear infinite' }} />
-                <span style={{ marginLeft: '12px', fontSize: '14px', fontWeight: 'bold' }}>Loading more items...</span>
-              </div>
-            )}
           </div>
+        </div>
+      )}
+
+      {/* Pagination Controls */}
+      {!isLoading && (currentPage > 0 || hasMore) && (
+        <div className={styles.paginationContainer}>
+          <button 
+            className={styles.paginationBtn} 
+            onClick={() => fetchInventory(currentSearchQuery, currentPage - 1, currentCategories, currentStatusFilter)} 
+            disabled={currentPage === 0 || isLoadingMore}
+            title="Previous Page"
+          >
+            <ChevronLeft size={16} />
+            PREV
+          </button>
+          
+          <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+            {renderPageButtons()}
+          </div>
+
+          <button 
+            className={styles.paginationBtn} 
+            onClick={() => fetchInventory(currentSearchQuery, currentPage + 1, currentCategories, currentStatusFilter)} 
+            disabled={!hasMore || isLoadingMore}
+            title="Next Page"
+          >
+            NEXT
+            <ChevronRight size={16} />
+          </button>
+
+          {/* Quick Page Jump Input */}
+          <form onSubmit={handlePageSubmit} className={styles.pageInputWrapper}>
+            <span>GO TO</span>
+            <input 
+              type="number" 
+              min="1" 
+              max={Math.max(1, Math.ceil(totalMatchingCount / 20))}
+              value={pageInputVal} 
+              onChange={(e) => setPageInputVal(e.target.value)}
+              className={styles.pageInput}
+              disabled={isLoadingMore}
+            />
+            <span>OF {Math.max(1, Math.ceil(totalMatchingCount / 20))}</span>
+            {isLoadingMore && (
+              <Loader2 size={16} style={{ animation: 'spin 1s linear infinite', color: '#00ff9d', marginLeft: '4px' }} />
+            )}
+          </form>
         </div>
       )}
     </>

@@ -15,6 +15,7 @@ interface InventoryStore {
   currentSearchQuery: string;
   currentCategories: string[];
   currentStatusFilter: string;
+  totalMatchingCount: number;
   
   // Global lookups (Non-paginated)
   allParentProducts: { 
@@ -55,7 +56,7 @@ interface InventoryStore {
    * Otherwise, it appends the next page to the existing items.
    * Optionally filter to specific categories server-side.
    */
-  fetchInventory: (searchQuery?: string, reset?: boolean, categories?: string[], statusFilter?: string) => Promise<void>;
+  fetchInventory: (searchQuery?: string, pageOrReset?: boolean | number, categories?: string[], statusFilter?: string) => Promise<void>;
 
   /**
    * Immediately patches a single item in local state before the DB round-trip
@@ -70,7 +71,7 @@ interface InventoryStore {
   removeItemOptimistically: (id: string | number, removeChildren?: boolean) => void;
 }
 
-const PAGE_SIZE = 50;
+const PAGE_SIZE = 20;
 
 // ─── Store ────────────────────────────────────────────────────────────────────
 export const useInventoryStore = create<InventoryStore>((set, get) => ({
@@ -80,6 +81,7 @@ export const useInventoryStore = create<InventoryStore>((set, get) => ({
   error: null,
   currentPage: 0,
   hasMore: true,
+  totalMatchingCount: 0,
   currentCategories: [],
   currentSearchQuery: '',
   currentStatusFilter: 'All',
@@ -155,26 +157,36 @@ export const useInventoryStore = create<InventoryStore>((set, get) => ({
   },
 
   // ── fetchInventory (Server-Side Paginated) ──────────────────────────────────
-  fetchInventory: async (searchQuery, reset = true, categories, statusFilter) => {
+  fetchInventory: async (searchQuery, pageOrReset = true, categories, statusFilter) => {
     if (!supabase) {
       set({ error: 'Supabase client not initialized. Check your .env file.' });
       return;
     }
 
     const { currentPage, currentSearchQuery, currentCategories, currentStatusFilter } = get();
-    const isFetchingMore = !reset;
-    const targetPage = reset ? 0 : currentPage + 1;
+    
+    let targetPage = 0;
+    let isAppending = false;
+    
+    if (typeof pageOrReset === 'boolean') {
+      targetPage = pageOrReset ? 0 : currentPage + 1;
+      isAppending = !pageOrReset;
+    } else if (typeof pageOrReset === 'number') {
+      targetPage = pageOrReset;
+      isAppending = false;
+    }
+    
     const offset = targetPage * PAGE_SIZE;
 
     // Prevent fetching more if we already hit the end
-    if (isFetchingMore && !get().hasMore) return;
+    if (isAppending && !get().hasMore) return;
 
     // Resolve parameter values: if they are undefined, default to the currently active store values.
     const resolvedSearchQuery = searchQuery !== undefined ? searchQuery : currentSearchQuery;
     const resolvedCategories = categories !== undefined ? categories : currentCategories;
     const resolvedStatusFilter = statusFilter !== undefined ? statusFilter : currentStatusFilter;
 
-    if (reset) {
+    if (!isAppending) {
       set({ 
         isLoading: true, 
         error: null, 
@@ -188,9 +200,10 @@ export const useInventoryStore = create<InventoryStore>((set, get) => ({
 
     try {
       // Call the server-side RPC for searching and paginating
+      // Fetch PAGE_SIZE + 1 items to see if there is another page.
       const { data, error } = await supabase.rpc('search_inventory_v2', {
         p_search_query: resolvedSearchQuery,
-        p_limit: PAGE_SIZE,
+        p_limit: PAGE_SIZE + 1,
         p_offset: offset,
         p_categories: resolvedCategories.length > 0 ? resolvedCategories : null,
         p_status: resolvedStatusFilter
@@ -221,10 +234,15 @@ export const useInventoryStore = create<InventoryStore>((set, get) => ({
         };
       });
 
+      const totalCount = data && data[0] ? Number(data[0].total_count) || 0 : 0;
+      const hasMore = formattedItems.length > PAGE_SIZE;
+      const itemsToSave = hasMore ? formattedItems.slice(0, PAGE_SIZE) : formattedItems;
+
       set(state => ({
-        items: reset ? formattedItems : [...state.items, ...formattedItems],
+        items: isAppending ? [...state.items, ...itemsToSave] : itemsToSave,
         currentPage: targetPage,
-        hasMore: formattedItems.length === PAGE_SIZE, // If we got less than requested, we hit the end
+        hasMore,
+        totalMatchingCount: totalCount,
         isLoading: false,
         isLoadingMore: false,
       }));

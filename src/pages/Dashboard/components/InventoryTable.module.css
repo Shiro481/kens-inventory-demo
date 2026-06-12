@@ -343,3 +343,99 @@
     left: 100%;
   }
 }
+
+/* --- PAGINATION --- */
+.paginationContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  padding: 24px 20px;
+  background-color: #050505;
+  border-top: 1px solid var(--border-dim);
+}
+
+.paginationBtn {
+  background: #0a0a0a;
+  border: 1px solid var(--border-dim);
+  color: #888;
+  padding: 8px 16px;
+  font-weight: 800;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.2s;
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.paginationBtn:hover:not(:disabled) {
+  border-color: var(--brand-neon);
+  color: var(--brand-neon);
+  box-shadow: 0 0 10px rgba(0, 255, 157, 0.15);
+}
+
+.paginationBtn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.pageIndicator {
+  color: #fff;
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.activePageBtn {
+  border-color: var(--brand-neon) !important;
+  color: var(--brand-neon) !important;
+  background-color: rgba(0, 255, 157, 0.05) !important;
+  box-shadow: 0 0 10px rgba(0, 255, 157, 0.15);
+}
+
+.pageInputWrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #666;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.pageInput {
+  background: #0a0a0a;
+  border: 1px solid var(--border-dim);
+  color: #fff;
+  width: 45px;
+  padding: 6px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 12px;
+  outline: none;
+  transition: border-color 0.2s;
+  border-radius: 2px;
+}
+
+.pageInput:focus {
+  border-color: var(--brand-neon);
+  box-shadow: 0 0 10px rgba(0, 255, 157, 0.1);
+}
+
+/* Hide spin buttons for Chrome/Safari/Edge/Opera */
+.pageInput::-webkit-outer-spin-button,
+.pageInput::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Hide spin buttons for Firefox */
+.pageInput[type=number] {
+  -moz-appearance: textfield;
+}
