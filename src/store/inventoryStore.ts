@@ -15,6 +15,7 @@ interface InventoryStore {
   currentSearchQuery: string;
   currentCategories: string[];
   currentStatusFilter: string;
+  currentTags: string[];
   totalMatchingCount: number;
   
   // Global lookups (Non-paginated)
@@ -56,7 +57,7 @@ interface InventoryStore {
    * Otherwise, it appends the next page to the existing items.
    * Optionally filter to specific categories server-side.
    */
-  fetchInventory: (searchQuery?: string, pageOrReset?: boolean | number, categories?: string[], statusFilter?: string) => Promise<void>;
+  fetchInventory: (searchQuery?: string, pageOrReset?: boolean | number, categories?: string[], statusFilter?: string, tags?: string[]) => Promise<void>;
 
   /**
    * Immediately patches a single item in local state before the DB round-trip
@@ -83,6 +84,7 @@ export const useInventoryStore = create<InventoryStore>((set, get) => ({
   hasMore: true,
   totalMatchingCount: 0,
   currentCategories: [],
+  currentTags: [],
   currentSearchQuery: '',
   currentStatusFilter: 'All',
   aggregateStats: null,
@@ -157,13 +159,13 @@ export const useInventoryStore = create<InventoryStore>((set, get) => ({
   },
 
   // ── fetchInventory (Server-Side Paginated) ──────────────────────────────────
-  fetchInventory: async (searchQuery, pageOrReset = true, categories, statusFilter) => {
+  fetchInventory: async (searchQuery, pageOrReset = true, categories, statusFilter, tags) => {
     if (!supabase) {
       set({ error: 'Supabase client not initialized. Check your .env file.' });
       return;
     }
 
-    const { currentPage, currentSearchQuery, currentCategories, currentStatusFilter } = get();
+    const { currentPage, currentSearchQuery, currentCategories, currentStatusFilter, currentTags } = get();
     
     let targetPage = 0;
     let isAppending = false;
@@ -185,6 +187,7 @@ export const useInventoryStore = create<InventoryStore>((set, get) => ({
     const resolvedSearchQuery = searchQuery !== undefined ? searchQuery : currentSearchQuery;
     const resolvedCategories = categories !== undefined ? categories : currentCategories;
     const resolvedStatusFilter = statusFilter !== undefined ? statusFilter : currentStatusFilter;
+    const resolvedTags = tags !== undefined ? tags : currentTags;
 
     if (!isAppending) {
       set({ 
@@ -192,7 +195,8 @@ export const useInventoryStore = create<InventoryStore>((set, get) => ({
         error: null, 
         currentSearchQuery: resolvedSearchQuery, 
         currentCategories: resolvedCategories,
-        currentStatusFilter: resolvedStatusFilter
+        currentStatusFilter: resolvedStatusFilter,
+        currentTags: resolvedTags
       });
     } else {
       set({ isLoadingMore: true, error: null });
@@ -206,7 +210,8 @@ export const useInventoryStore = create<InventoryStore>((set, get) => ({
         p_limit: PAGE_SIZE + 1,
         p_offset: offset,
         p_categories: resolvedCategories.length > 0 ? resolvedCategories : null,
-        p_status: resolvedStatusFilter
+        p_status: resolvedStatusFilter,
+        p_tags: resolvedTags.length > 0 ? resolvedTags : null
       });
 
       if (error) {

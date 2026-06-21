@@ -12,7 +12,11 @@ dist
 dist-ssr
 *.local
 
-# Editor directories and files
+# Env files with real credentials — never commit these
+.env.development
+.env.production
+# .env is credential-free and safe to commit
+
 .vscode/*
 !.vscode/extensions.json
 .idea

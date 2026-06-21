@@ -73,10 +73,10 @@ export default function Pos({ items, globalCategories = [], isLoading: globalLoa
     return () => clearTimeout(timer);
   }, [searchInput]);
 
-  // Trigger server-side fetch when debounced query changes
+  // Trigger server-side fetch when debounced query, categories, status, or tags change
   useEffect(() => {
-    fetchInventory(searchQuery, true, selectedCategories, filterStatus);
-  }, [searchQuery, selectedCategories, filterStatus, fetchInventory]);
+    fetchInventory(searchQuery, true, selectedCategories, filterStatus, selectedTags);
+  }, [searchQuery, selectedCategories, filterStatus, selectedTags, fetchInventory]);
 
   // Infinite Scroll Handler for POS Grid
   useEffect(() => {
@@ -89,13 +89,13 @@ export default function Pos({ items, globalCategories = [], isLoading: globalLoa
       const isNearBottom = grid.scrollHeight - grid.scrollTop - grid.clientHeight < threshold;
 
       if (isNearBottom && hasMore && !isLoadingMore && !globalLoading) {
-        fetchInventory(searchQuery, false, selectedCategories, filterStatus);
+        fetchInventory(searchQuery, false, selectedCategories, filterStatus, selectedTags);
       }
     };
 
     grid.addEventListener('scroll', handleScroll);
     return () => grid.removeEventListener('scroll', handleScroll);
-  }, [hasMore, isLoadingMore, globalLoading, fetchInventory, searchQuery, selectedCategories, filterStatus]);
+  }, [hasMore, isLoadingMore, globalLoading, fetchInventory, searchQuery, selectedCategories, filterStatus, selectedTags]);
 
   const filteredItems = filterAndSortItems(
     items.filter(item => {
@@ -112,9 +112,9 @@ export default function Pos({ items, globalCategories = [], isLoading: globalLoa
       // through the results directly here when interacting with filters/search.
       return true; 
     }),
-    'All', // Status is now handled server-side, keep it 'All' for client-side to prevent double-filtering 
+    'All', // Status is handled server-side
     '', // bypass client text search
-    selectedTags,
+    [], // Tags are handled server-side
     sortBy,
     [], // Categories are handled server-side
     false // DO NOT exclude parent products from the POS grid!
@@ -289,7 +289,20 @@ export default function Pos({ items, globalCategories = [], isLoading: globalLoa
         if (val && String(val).trim() !== '' && String(val) !== '0') {
             const valStr = String(val).trim();
             if (!displayedValues.has(valStr.toLowerCase())) {
-                const label = key.replace(/_/g, ' ').toUpperCase();
+                let label = key.replace(/_/g, ' ').toUpperCase();
+                
+                if (key.toLowerCase().startsWith('spec_')) {
+                    const dimConfig = config.variantDimensions?.find((d: any) => d.column?.toLowerCase() === key.toLowerCase());
+                    if (dimConfig && dimConfig.label) {
+                        label = dimConfig.label;
+                    }
+                } else if (key.toLowerCase().startsWith('field_')) {
+                    const fieldConfig = config.fields?.find((f: any) => f.key?.toLowerCase() === key.toLowerCase());
+                    if (fieldConfig && fieldConfig.label) {
+                        label = fieldConfig.label;
+                    }
+                }
+
                 specParts.push(`${label}: ${valStr}`);
                 variant_dimensions[label] = valStr;
                 displayedValues.add(valStr.toLowerCase());
@@ -302,7 +315,7 @@ export default function Pos({ items, globalCategories = [], isLoading: globalLoa
 
     const cartItem: CartItem = {
       cartKey,
-      id: (Number(selectedItem.uuid) || 0) * 10000 + Number(variant.id),  // kept for RPC payload compatibility
+      id: selectedItem.uuid ?? 0,  // Fix 9: parent product DB id — informational only; RPC uses productId derived from uuid
       name: `${selectedItem.name} (${variant.variant_type})`,
       brand: selectedItem.brand || '',
       category: selectedItem.category || '',
@@ -482,8 +495,7 @@ export default function Pos({ items, globalCategories = [], isLoading: globalLoa
 
   const { settings } = useSettings();
   
-  // Debug log to trace tax rate updates
-  console.log(`[POS] Active Tax Rate: ${settings.tax_rate}%`);
+  // (tax rate is read from settings.tax_rate below)
 
   const subtotal = cart.reduce((sum, item) => sum + (item.price || 0) * item.cartQuantity, 0);
   const taxRate = (settings.tax_rate ?? 8.25) / 100;

@@ -51,10 +51,10 @@ export default function InventoryManager({
     return () => clearTimeout(timer);
   }, [searchInput]);
 
-  // Trigger server-side fetch when debounced search query OR category filter changes
+  // Trigger server-side fetch when debounced search query, category filter, tags, or status changes
   useEffect(() => {
-    fetchInventory(searchQuery, true, selectedCategories, filterStatus);
-  }, [searchQuery, selectedCategories, filterStatus, fetchInventory]);
+    fetchInventory(searchQuery, true, selectedCategories, filterStatus, selectedTags);
+  }, [searchQuery, selectedCategories, filterStatus, selectedTags, fetchInventory]);
 
   const allAvailableTags = Array.from(new Set((items || []).filter(Boolean).flatMap(item => item.tags || []))).sort();
   // Override paginated map mapping with the true global categories array
@@ -62,14 +62,14 @@ export default function InventoryManager({
     ? [...globalCategories].sort()
     : Array.from(new Set(items.map(item => item.category).filter(Boolean) as string[])).sort();
 
-  // Pass empty string for text search to `filterAndSortItems` because the
-  // text search is now handled by the server-side RPC. We keep client-side
-  // filtering for tags.
+  // Pass empty arrays for text search and tags to `filterAndSortItems` because
+  // both are now handled server-side by the RPC. Client-side filtering only
+  // handles sort order.
   const filteredItems = filterAndSortItems(
     items,
-    'All', // Status is now handled server-side, keep it 'All' for client-side to prevent double-filtering 
+    'All', // Status is handled server-side
     '', // bypass client text search
-    selectedTags,
+    [], // Tags are handled server-side
     sortBy,
     [] // Categories are handled server-side
   );
@@ -137,7 +137,7 @@ export default function InventoryManager({
 
       {/* ACTIVE FILTER CHIPS */}
       {(selectedCategories.length > 0 || selectedTags.length > 0) && (
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', padding: '0 0 10px 0' }}>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', padding: '0 0 8px 0' }}>
           {selectedCategories.map(cat => (
             <span
               key={cat}

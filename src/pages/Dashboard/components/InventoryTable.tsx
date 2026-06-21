@@ -44,19 +44,23 @@ export default function InventoryTable({ items, isLoading = false, onEdit, onDel
   const rowVirtualizer = useVirtualizer({
     count: items.length,
     getScrollElement: () => parentRef.current,
-    estimateSize: () => 100, // Approximate row height in pixels
+    estimateSize: () => 52,
     overscan: 5,
   });
 
-  // Reset scroll to top when page changes and sync the input value
+  // Reset scroll to top when items change (new page or new search)
   useEffect(() => {
     if (parentRef.current) {
       parentRef.current.scrollTop = 0;
     }
+  }, [items]);
+
+  // Sync page input value when page changes
+  useEffect(() => {
     setPageInputVal((currentPage + 1).toString());
   }, [currentPage]);
 
-  const handlePageSubmit = (e: React.FormEvent) => {
+  const handlePageSubmit = (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
     const pageNum = parseInt(pageInputVal, 10);
     if (!isNaN(pageNum) && pageNum > 0) {
@@ -193,42 +197,42 @@ export default function InventoryTable({ items, isLoading = false, onEdit, onDel
                 >
                   <div className={styles.partInfo}>
                     <div className={styles.iconBox}>
-                      <Package size={20} />
+                      <Package size={14} />
                     </div>
-                    <div>
+                    <div style={{ minWidth: 0 }}>
                       <span className={styles.partName}>
                         {cleanItemName(item)}
                       </span>
-                      
+
                       {/* Dynamic Attributes based on Category Metadata */}
-                      <DynamicCategorySpecs 
+                      <DynamicCategorySpecs
                         item={item}
-                        style={{ fontSize: '11px', color: '#aaa', marginTop: '2px' }}
-                        labelStyle={{ color: '#666' }}
+                        style={{ fontSize: '10px', color: '#aaa', marginTop: '1px', flexDirection: 'row', flexWrap: 'wrap', columnGap: '10px', rowGap: '1px' }}
+                        labelStyle={{ color: '#555', minWidth: 'unset' }}
                         valueStyle={{ color: '#00ff9d', fontSize: '10px' }}
                       />
 
                       {item.sku && (
-                        <div style={{ fontSize: '11px', color: '#666', marginTop: '2px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                        <div style={{ fontSize: '10px', color: '#555', marginTop: '1px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
                           SKU: {item.sku}
                         </div>
                       )}
                       {item.notes && (
-                        <div style={{ fontSize: '10px', color: '#888', marginTop: '4px', fontStyle: 'italic', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                        <div style={{ fontSize: '9px', color: '#777', marginTop: '1px', fontStyle: 'italic', display: 'flex', alignItems: 'center', gap: '3px' }}>
                           <span style={{ color: '#00ff9d' }}>⚠</span> {item.notes}
                         </div>
                       )}
                       {item.specifications?.tags && Array.isArray(item.specifications.tags) && item.specifications.tags.length > 0 && (
-                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', marginTop: '6px' }}>
+                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '2px', marginTop: '3px' }}>
                           {item.specifications.tags.map(tag => (
-                            <span 
-                              key={tag} 
-                              style={{ 
-                                fontSize: '8px', 
-                                padding: '1px 5px', 
-                                borderRadius: '10px', 
-                                background: '#0a0a0a', 
-                                border: '1px solid #00ff9d22', 
+                            <span
+                              key={tag}
+                              style={{
+                                fontSize: '8px',
+                                padding: '1px 4px',
+                                borderRadius: '10px',
+                                background: '#0a0a0a',
+                                border: '1px solid #00ff9d22',
                                 color: '#00ff9d',
                                 textTransform: 'uppercase',
                                 fontWeight: 'bold',
@@ -243,7 +247,7 @@ export default function InventoryTable({ items, isLoading = false, onEdit, onDel
                     </div>
                   </div>
 
-                  <div style={{ color: '#888', fontSize: '14px' }}>
+                  <div style={{ color: '#888', fontSize: '13px' }}>
                     {item.category || '-'}
                   </div>
                   
@@ -252,13 +256,13 @@ export default function InventoryTable({ items, isLoading = false, onEdit, onDel
                     {typeof item.price === 'number' ? item.price.toFixed(2) : (Number(item.price) || 0).toFixed(2)}
                   </div>
                   
-                  <div style={{ fontWeight: 'bold' }}>
-                    {qty} <span style={{ color: '#666', fontSize: '12px', fontWeight: 'normal' }}>/ {minQty} min</span>
+                  <div style={{ fontWeight: 'bold', fontSize: '13px' }}>
+                    {qty} <span style={{ color: '#555', fontSize: '11px', fontWeight: 'normal' }}>/ {minQty}</span>
                   </div>
 
                   <div>
-                    <span style={{ color: item.has_variants ? '#00ff9d' : '#444', fontSize: '12px', fontWeight: item.has_variants ? 'bold' : 'normal' }}>
-                      {item.has_variants ? `${item.variant_count || 0} variants` : '-'}
+                    <span style={{ color: item.has_variants ? '#00ff9d' : '#333', fontSize: '12px', fontWeight: item.has_variants ? 'bold' : 'normal' }}>
+                      {item.has_variants ? `${item.variant_count || 0} var` : '-'}
                     </span>
                   </div>
 

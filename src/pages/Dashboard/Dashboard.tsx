@@ -255,7 +255,9 @@ export default function Dashboard({ onGoToHome, onLogout }: DashboardProps) {
               globalCategories={categories} 
               isLoading={isLoading} 
               onSaleComplete={() => {
-                fetchInventory();
+                // Fix 3: explicit neutral reset so POS search state doesn't
+                // pollute the shared store that InventoryManager reads from.
+                fetchInventory('', true, [], 'All');
                 fetchInventoryStats();
               }} 
             />

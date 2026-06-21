@@ -1,694 +1,2560 @@
-/* SEED DATA DUMP FROM LIVE */
-
 SET session_replication_role = replica;
 
--- Table: product_categories
-INSERT INTO public.product_categories ("id", "created_at", "name", "description") VALUES (1, '2026-02-15T12:12:09.933322+00:00', 'Headlight', 'Main front lighting') ON CONFLICT DO NOTHING;
-INSERT INTO public.product_categories ("id", "created_at", "name", "description") VALUES (2, '2026-02-15T12:12:09.933322+00:00', 'Fog Light', 'Auxiliary fog lights') ON CONFLICT DO NOTHING;
-INSERT INTO public.product_categories ("id", "created_at", "name", "description") VALUES (3, '2026-02-15T12:12:09.933322+00:00', 'Signal Light', 'Turn signals') ON CONFLICT DO NOTHING;
-INSERT INTO public.product_categories ("id", "created_at", "name", "description") VALUES (4, '2026-02-15T12:12:09.933322+00:00', 'Interior Light', 'Cabin lighting') ON CONFLICT DO NOTHING;
-INSERT INTO public.product_categories ("id", "created_at", "name", "description") VALUES (5, '2026-02-15T12:12:09.933322+00:00', 'Brake Light', 'Rear brake lights') ON CONFLICT DO NOTHING;
-INSERT INTO public.product_categories ("id", "created_at", "name", "description") VALUES (6, '2026-02-15T12:12:09.933322+00:00', 'Wiper', 'Windshield wipers') ON CONFLICT DO NOTHING;
-INSERT INTO public.product_categories ("id", "created_at", "name", "description") VALUES (7, '2026-02-15T12:12:09.933322+00:00', 'Horn', 'Automotive horns') ON CONFLICT DO NOTHING;
-INSERT INTO public.product_categories ("id", "created_at", "name", "description") VALUES (8, '2026-02-15T12:12:09.933322+00:00', 'Work Light', 'Off-road work lights') ON CONFLICT DO NOTHING;
-INSERT INTO public.product_categories ("id", "created_at", "name", "description") VALUES (12, '2026-02-25T06:26:00.73996+00:00', 'Wheels', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_categories ("id", "created_at", "name", "description") VALUES (13, '2026-03-04T02:54:19.459802+00:00', 'Air Filter', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_categories ("id", "created_at", "name", "description") VALUES (14, '2026-03-04T03:50:06.809026+00:00', 'Cabin Filter', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_categories ("id", "created_at", "name", "description") VALUES (15, '2026-03-04T05:40:10.225343+00:00', 'Wheel spacers', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_categories ("id", "created_at", "name", "description") VALUES (16, '2026-03-06T07:11:08.059617+00:00', 'Coil Spacer', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_categories ("id", "created_at", "name", "description") VALUES (17, '2026-03-10T07:33:10.111348+00:00', 'Throttle Controller', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_categories ("id", "created_at", "name", "description") VALUES (18, '2026-03-12T05:19:52.155196+00:00', 'Tires', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_categories ("id", "created_at", "name", "description") VALUES (19, '2026-03-16T03:29:47.809049+00:00', 'Wheel Nuts', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_categories ("id", "created_at", "name", "description") VALUES (20, '2026-03-16T05:25:47.238251+00:00', 'LED Lights', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_categories ("id", "created_at", "name", "description") VALUES (21, '2026-03-26T08:38:03.172091+00:00', 'LED Covers', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_categories ("id", "created_at", "name", "description") VALUES (22, '2026-04-09T06:14:50.344138+00:00', 'Led Lights Cover', NULL) ON CONFLICT DO NOTHING;
+--
+-- PostgreSQL database dump
+--
 
--- Table: variant_categories
-INSERT INTO public.variant_categories ("id", "created_at", "code", "description") VALUES (1, '2026-02-15T12:12:09.933322+00:00', 'H1', 'Single filament') ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_categories ("id", "created_at", "code", "description") VALUES (2, '2026-02-15T12:12:09.933322+00:00', 'H3', 'Fog light type') ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_categories ("id", "created_at", "code", "description") VALUES (3, '2026-02-15T12:12:09.933322+00:00', 'H4', 'Dual filament Hi/Lo') ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_categories ("id", "created_at", "code", "description") VALUES (4, '2026-02-15T12:12:09.933322+00:00', 'H7', 'Single filament') ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_categories ("id", "created_at", "code", "description") VALUES (5, '2026-02-15T12:12:09.933322+00:00', 'H8', 'Fog light type') ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_categories ("id", "created_at", "code", "description") VALUES (6, '2026-02-15T12:12:09.933322+00:00', 'H9', 'High beam type') ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_categories ("id", "created_at", "code", "description") VALUES (7, '2026-02-15T12:12:09.933322+00:00', 'H11', 'Single filament') ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_categories ("id", "created_at", "code", "description") VALUES (8, '2026-02-15T12:12:09.933322+00:00', 'H16', 'Low wattage fog') ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_categories ("id", "created_at", "code", "description") VALUES (9, '2026-02-15T12:12:09.933322+00:00', '9005', 'HB3 High beam') ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_categories ("id", "created_at", "code", "description") VALUES (10, '2026-02-15T12:12:09.933322+00:00', '9006', 'HB4 Low beam') ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_categories ("id", "created_at", "code", "description") VALUES (11, '2026-02-15T12:12:09.933322+00:00', '9012', 'HIR2') ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_categories ("id", "created_at", "code", "description") VALUES (12, '2026-02-15T12:12:09.933322+00:00', '880', 'Fog light') ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_categories ("id", "created_at", "code", "description") VALUES (13, '2026-02-15T12:12:09.933322+00:00', '881', 'Fog light') ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_categories ("id", "created_at", "code", "description") VALUES (14, '2026-02-15T12:12:09.933322+00:00', 'D1S', 'HID Xenon') ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_categories ("id", "created_at", "code", "description") VALUES (15, '2026-02-15T12:12:09.933322+00:00', 'D2S', 'HID Xenon') ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_categories ("id", "created_at", "code", "description") VALUES (16, '2026-02-15T12:12:09.933322+00:00', 'D3S', 'HID Xenon') ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_categories ("id", "created_at", "code", "description") VALUES (17, '2026-02-15T12:12:09.933322+00:00', 'D4S', 'HID Xenon') ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_categories ("id", "created_at", "code", "description") VALUES (18, '2026-02-15T12:12:09.933322+00:00', 'T10', 'W5W Wedge') ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_categories ("id", "created_at", "code", "description") VALUES (19, '2026-02-15T12:12:09.933322+00:00', 'T15', 'W16W Wedge') ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_categories ("id", "created_at", "code", "description") VALUES (20, '2026-02-15T12:12:09.933322+00:00', 'T20', '7440/7443 Wedge') ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_categories ("id", "created_at", "code", "description") VALUES (21, '2026-02-15T12:12:09.933322+00:00', 'T25', '3156/3157 Wedge') ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_categories ("id", "created_at", "code", "description") VALUES (22, '2026-02-15T12:12:09.933322+00:00', '1156', 'BA15S Bayonet') ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_categories ("id", "created_at", "code", "description") VALUES (23, '2026-02-15T12:12:09.933322+00:00', '1157', 'BAY15D Bayonet') ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_categories ("id", "created_at", "code", "description") VALUES (24, '2026-02-15T16:15:43.192829+00:00', 'H13', 'Created via App') ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_categories ("id", "created_at", "code", "description") VALUES (25, '2026-02-16T01:42:21.081737+00:00', '9012 (HIR2)', 'Created via App') ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_categories ("id", "created_at", "code", "description") VALUES (26, '2026-02-25T09:20:30.848373+00:00', 'Not Specified', 'Created via App') ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_categories ("id", "created_at", "code", "description") VALUES (27, '2026-02-25T09:22:59.119909+00:00', '6x139.7', 'Created via App') ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_categories ("id", "created_at", "code", "description") VALUES (28, '2026-04-09T05:23:27.686948+00:00', 'Driving', 'Created via App') ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_categories ("id", "created_at", "code", "description") VALUES (29, '2026-06-05T01:35:12.821328+00:00', 'Spot', 'Created via App') ON CONFLICT DO NOTHING;
+-- \restrict nTIU96dBUfxLujZr16dszHtI6T1thEJLhd6FkIAT5Sh3bLnV2VgwBRnCLdejgi1
 
--- Table: variant_definitions
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (1, '2026-02-15T12:12:09.933322+00:00', 'LED Headlight Kit', 'H4/H7/9005/9006', 'Universal Kit (H4/H7/9005/9006)', ARRAY['H4', 'H7', '9005', '9006'], 'Fits multiple sockets with adapters', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (2, '2026-02-15T12:12:09.933322+00:00', 'LED Headlight Kit', 'H4/Hb2/9003', 'Hi/Lo Beam (H4)', ARRAY['H4', 'Hb2', '9003'], 'Standard high/low beam', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (3, '2026-02-15T12:12:09.933322+00:00', 'LED Headlight Kit', 'H7', 'Low Beam (H7)', ARRAY['H7'], 'Standard low beam', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (4, '2026-02-15T12:12:09.933322+00:00', 'LED Headlight Kit', 'H11/H8/H9', 'Single Beam (H11)', ARRAY['H11', 'H8', 'H9'], 'Standard single beam', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (5, '2026-02-15T12:12:09.933322+00:00', 'LED Headlight Kit', '9005/HB3', 'High Beam (9005)', ARRAY['9005', 'HB3'], 'Standard high beam', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (6, '2026-02-15T12:12:09.933322+00:00', 'LED Headlight Kit', '9006/HB4', 'Low Beam (9006)', ARRAY['9006', 'HB4'], 'Standard low beam', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (7, '2026-02-15T12:12:09.933322+00:00', 'LED Headlight Kit', '9012/HIR2', 'Single Beam (9012)', ARRAY['9012', 'HIR2'], 'Accessory light', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (8, '2026-02-15T12:12:09.933322+00:00', 'LED Fog Light', 'H11/H8/H16', 'Fog Universal (H11/H8/H16)', ARRAY['H11', 'H8', 'H16'], 'Universal fog light fitment', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (9, '2026-02-15T12:12:09.933322+00:00', 'LED Fog Light', '880/881', 'Fog (880/881)', ARRAY['880', '881'], 'Small fog light', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (10, '2026-02-15T12:12:09.933322+00:00', 'LED Signal', '1156/BA15S', 'Single Contact (1156)', ARRAY['1156', 'BA15S'], 'Turn signal / Reverse', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (11, '2026-02-15T12:12:09.933322+00:00', 'LED Signal', '7440/T20', 'Wedge Base (7440)', ARRAY['7440', 'T20'], 'Turn signal', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (12, '2026-02-15T12:12:09.933322+00:00', 'LED Brake', '1157/BAY15D', 'Double Contact (1157)', ARRAY['1157', 'BAY15D'], 'Brake/Tail light', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (13, '2026-02-15T12:12:09.933322+00:00', 'LED Brake', '7443/T20', 'Wedge Double (7443)', ARRAY['7443', 'T20'], 'Brake/Tail light', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (14, '2026-02-15T12:12:09.933322+00:00', 'Interior LED', 'T10/194/168', 'Wedge T10 (Universal)', ARRAY['T10', '194', '168'], 'Parking/Interior/Plate', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (15, '2026-02-15T12:12:09.933322+00:00', 'Interior LED', 'Festoon 31mm', 'Festoon 31mm', ARRAY['31mm'], 'Dome light', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (16, '2026-02-15T12:12:09.933322+00:00', 'Interior LED', 'Festoon 36mm', 'Festoon 36mm', ARRAY['36mm'], 'Dome light', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (17, '2026-02-15T16:02:47.309202+00:00', 'Simple Bulb', 'H13', 'H13', ARRAY['H13'], 'Standard H13', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (18, '2026-02-15T16:14:45.801102+00:00', 'Simple Bulb', 'H11', 'H11', ARRAY['H11'], 'Standard H11', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (19, '2026-02-15T16:15:38.740664+00:00', 'Simple Bulb', 'Festoon 41mm', 'Festoon 41mm', ARRAY['Festoon 41mm'], 'Standard Festoon 41mm', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (20, '2026-02-16T01:42:51.462139+00:00', 'Simple Bulb', 'D2S', 'D2S', ARRAY['D2S'], 'Standard D2S', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (21, '2026-02-16T01:43:42.742359+00:00', 'Simple Bulb', 'D1S', 'D1S', ARRAY['D1S'], 'Standard D1S', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (22, '2026-02-16T04:02:01.892255+00:00', 'Simple Bulb', '9005 (HB3)', '9005 (HB3)', ARRAY['9005 (HB3)'], 'Standard 9005 (HB3)', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (23, '2026-02-16T05:39:09.432152+00:00', 'Simple Bulb', '9012 (HIR2)', '9012 (HIR2)', ARRAY['9012 (HIR2)'], 'Standard 9012 (HIR2)', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (24, '2026-02-17T03:57:53.340187+00:00', 'Simple Bulb', 'H1', 'H1', ARRAY['H1'], 'Standard H1', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (25, '2026-02-17T03:58:47.351891+00:00', 'Simple Bulb', '9006 (HB4)', '9006 (HB4)', ARRAY['9006 (HB4)'], 'Standard 9006 (HB4)', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (26, '2026-02-17T04:02:21.484399+00:00', 'Simple Bulb', 'H27', 'H27', ARRAY['H27'], 'Standard H27', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (27, '2026-02-17T04:15:43.76334+00:00', 'Simple Bulb', 'H4', 'H4', ARRAY['H4'], 'Standard H4', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (28, '2026-02-17T23:12:03.507824+00:00', 'Simple Variant', '12"', '12"', ARRAY['12"'], 'Standard 12"', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (29, '2026-02-17T23:12:49.697065+00:00', 'Simple Variant', '16"', '16"', ARRAY['16"'], 'Standard 16"', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (30, '2026-02-17T23:13:24.789725+00:00', 'Simple Variant', '17"', '17"', ARRAY['17"'], 'Standard 17"', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (31, '2026-02-17T23:13:44.575145+00:00', 'Simple Variant', '18"', '18"', ARRAY['18"'], 'Standard 18"', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (32, '2026-02-17T23:14:03.960222+00:00', 'Simple Variant', '19"', '19"', ARRAY['19"'], 'Standard 19"', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (33, '2026-02-17T23:14:33.445326+00:00', 'Simple Variant', '20"', '20"', ARRAY['20"'], 'Standard 20"', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (34, '2026-02-17T23:15:07.52315+00:00', 'Simple Variant', '22"', '22"', ARRAY['22"'], 'Standard 22"', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (35, '2026-02-17T23:15:30.764856+00:00', 'Simple Variant', '24"', '24"', ARRAY['24"'], 'Standard 24"', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (36, '2026-02-17T23:16:00.635179+00:00', 'Simple Variant', '26"', '26"', ARRAY['26"'], 'Standard 26"', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (37, '2026-02-17T23:24:42.040657+00:00', 'Simple Variant', '14"', '14"', ARRAY['14"'], 'Standard 14"', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (38, '2026-02-17T23:33:26.320003+00:00', 'Simple Variant', '28"', '28"', ARRAY['28"'], 'Standard 28"', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (39, '2026-02-17T23:40:35.038579+00:00', 'Simple Variant', '10"', '10"', ARRAY['10"'], 'Standard 10"', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (40, '2026-02-17T23:41:09.010751+00:00', 'Simple Variant', '11"', '11"', ARRAY['11"'], 'Standard 11"', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (41, '2026-02-17T23:42:27.15767+00:00', 'Simple Variant', '13"', '13"', ARRAY['13"'], 'Standard 13"', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (42, '2026-02-18T02:05:33.075152+00:00', 'Simple Variant', 'H8/H9/H11', 'H8/H9/H11', ARRAY['H8/H9/H11'], 'Standard H8/H9/H11', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (43, '2026-02-18T02:32:11.970569+00:00', 'Simple Variant', 'H8/H9/H11/H16', 'H8/H9/H11/H16', ARRAY['H8/H9/H11/H16'], 'Standard H8/H9/H11/H16', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (44, '2026-02-18T02:37:31.97448+00:00', 'Simple Variant', 'H15', 'H15', ARRAY['H15'], 'Standard H15', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (45, '2026-02-18T03:06:51.222228+00:00', 'Simple Bulb', 'H4', 'H4', NULL, NULL, true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (46, '2026-02-18T03:06:51.46566+00:00', 'Simple Bulb', 'H4', 'H4', NULL, NULL, true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (47, '2026-02-18T03:06:52.034952+00:00', 'Simple Bulb', 'H4', 'H4', NULL, NULL, true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (48, '2026-02-18T03:06:52.3715+00:00', 'Simple Bulb', 'H4', 'H4', NULL, NULL, true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (49, '2026-02-18T03:12:55.25354+00:00', 'Simple Bulb', 'H4', 'H4', NULL, NULL, true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (50, '2026-02-21T01:27:05.708954+00:00', 'Osram Night Breaker', 'H4', 'H4', NULL, NULL, true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (51, '2026-02-21T03:08:38.494266+00:00', 'XD818 HEIST', '6x114.3', '6x114.3', ARRAY['6x114.3'], 'Standard 6x114.3', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (52, '2026-02-21T03:52:43.465761+00:00', 'Variant', 'Lol', 'Lol', ARRAY['Lol'], 'Standard Lol', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (53, '2026-02-25T04:26:27.696081+00:00', 'Variant', '6x139.7', '6x139.7', ARRAY['6x139.7'], 'Standard 6x139.7', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (54, '2026-02-25T06:29:15.219387+00:00', 'Alap J', '5x139.7', '5x139.7', ARRAY['5x139.7'], 'Standard 5x139.7', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (55, '2026-02-26T01:38:36.679485+00:00', 'ME002 MR701', '5x127', '5x127', ARRAY['5x127'], 'Standard 5x127', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (56, '2026-02-26T02:01:55.844883+00:00', 'Dakarzero', '5x139', '5x139', ARRAY['5x139'], 'Standard 5x139', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (57, '2026-02-26T02:42:01.409154+00:00', 'Trail Cross', '6x139', '6x139', ARRAY['6x139'], 'Standard 6x139', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (58, '2026-02-26T06:14:33.440629+00:00', 'GPNE RS6X - H4', 'H4', 'H4', NULL, NULL, true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (59, '2026-02-26T06:42:45.451191+00:00', 'GPNE R6 - H4', 'H4', 'H4', NULL, NULL, true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (60, '2026-03-04T02:56:16.572244+00:00', 'K&N Air Filter', '33-3185', '33-3185', ARRAY['33-3185'], 'Standard 33-3185', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (61, '2026-03-04T03:00:30.11301+00:00', 'K&N Air Filter', '33-3059', '33-3059', ARRAY['33-3059'], 'Standard 33-3059', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (62, '2026-03-04T03:32:35.893927+00:00', 'K&N Air Filter', '33-3045', '33-3045', ARRAY['33-3045'], 'Standard 33-3045', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (63, '2026-03-04T03:34:46.853005+00:00', 'K&N Air Filter', '33-3062', '33-3062', ARRAY['33-3062'], 'Standard 33-3062', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (65, '2026-03-04T03:35:48.309414+00:00', 'K&N Air Filter', '33-2387', '33-2387', ARRAY['33-2387'], 'Standard 33-2387', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (64, '2026-03-04T03:35:48.310022+00:00', 'K&N Air Filter', '33-2387', '33-2387', ARRAY['33-2387'], 'Standard 33-2387', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (66, '2026-03-04T03:37:21.274458+00:00', 'K&N Air Filter', '33-2443', '33-2443', ARRAY['33-2443'], 'Standard 33-2443', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (67, '2026-03-04T03:38:38.064395+00:00', 'K&N Air Filter', '33-2146', '33-2146', ARRAY['33-2146'], 'Standard 33-2146', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (68, '2026-03-04T03:52:46.457032+00:00', 'K&N Cabin Air Filter', 'VF2052', 'VF2052', ARRAY['VF2052'], 'Standard VF2052', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (69, '2026-03-04T03:53:55.525182+00:00', 'K&N Cabin Air Filter', 'VF2002', 'VF2002', ARRAY['VF2002'], 'Standard VF2002', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (70, '2026-03-04T03:57:24.18952+00:00', 'K&N Cabin Air Filter', 'VF2033', 'VF2033', ARRAY['VF2033'], 'Standard VF2033', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (71, '2026-03-04T03:58:24.575456+00:00', 'K&N Cabin Air Filter', 'VF1001', 'VF1001', ARRAY['VF1001'], 'Standard VF1001', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (72, '2026-03-04T04:00:40.454453+00:00', 'K&N Air Filter', '33-2472', '33-2472', ARRAY['33-2472'], 'Standard 33-2472', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (73, '2026-03-04T04:01:38.424539+00:00', 'K&N Air Filter', '33-2360', '33-2360', ARRAY['33-2360'], 'Standard 33-2360', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (74, '2026-03-04T04:02:37.900217+00:00', 'K&N Air Filter', '33-3018', '33-3018', ARRAY['33-3018'], 'Standard 33-3018', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (75, '2026-03-04T04:03:48.64846+00:00', 'K&N Air Filter', '33-2162', '33-2162', ARRAY['33-2162'], 'Standard 33-2162', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (76, '2026-03-04T04:05:08.864392+00:00', 'K&N Air Filter', '33-2974', '33-2974', ARRAY['33-2974'], 'Standard 33-2974', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (77, '2026-03-04T04:06:55.876484+00:00', 'K&N Air Filter', '33-2342', '33-2342', ARRAY['33-2342'], 'Standard 33-2342', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (78, '2026-03-04T04:08:45.241464+00:00', 'K&N Air Filter', '33-3086', '33-3086', ARRAY['33-3086'], 'Standard 33-3086', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (79, '2026-03-06T07:13:26.822065+00:00', 'Variant', '25mm', '25mm', ARRAY['25mm'], 'Standard 25mm', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (80, '2026-03-06T07:14:03.369878+00:00', 'Variant', '32mm', '32mm', ARRAY['32mm'], 'Standard 32mm', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (81, '2026-03-06T07:15:58.562544+00:00', 'Variant', 'n/a', 'n/a', ARRAY['n/a'], 'Standard n/a', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (82, '2026-03-06T07:19:13.750727+00:00', 'Variant', '40mm', '40mm', ARRAY['40mm'], 'Standard 40mm', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (83, '2026-03-06T07:27:12.405523+00:00', 'SR Coil Spacer', '10mm', '10mm', ARRAY['10mm'], 'Standard 10mm', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (84, '2026-03-06T08:07:30.896715+00:00', 'SR Coil Spacer', '60mm', '60mm', ARRAY['60mm'], 'Standard 60mm', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (85, '2026-03-06T08:11:47.426004+00:00', 'SR Coil Spacer', '50mm', '50mm', ARRAY['50mm'], 'Standard 50mm', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (86, '2026-03-10T07:36:27.307745+00:00', 'Top Speed Advance Accelerator Controller', 'AT622', 'AT622', ARRAY['AT622'], 'Standard AT622', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (87, '2026-03-10T07:36:55.507826+00:00', 'Top Speed Advance Accelerator Controller', 'AT171', 'AT171', ARRAY['AT171'], 'Standard AT171', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (88, '2026-03-10T07:37:12.270417+00:00', 'Top Speed Advance Accelerator Controller', 'AT901', 'AT901', ARRAY['AT901'], 'Standard AT901', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (89, '2026-03-10T07:37:47.271169+00:00', 'Top Speed Advance Accelerator Controller', 'AT173', 'AT173', ARRAY['AT173'], 'Standard AT173', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (90, '2026-03-10T07:38:38.17753+00:00', 'Top Speed Advance Accelerator Controller', 'AT931', 'AT931', ARRAY['AT931'], 'Standard AT931', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (91, '2026-03-10T07:39:00.664114+00:00', 'Top Speed Advance Accelerator Controller', 'AT313', 'AT313', ARRAY['AT313'], 'Standard AT313', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (92, '2026-03-10T07:39:19.997273+00:00', 'Top Speed Advance Accelerator Controller', 'AT804', 'AT804', ARRAY['AT804'], 'Standard AT804', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (93, '2026-03-10T07:40:12.856529+00:00', 'Top Speed Advance Accelerator Controller', 'AT301', 'AT301', ARRAY['AT301'], 'Standard AT301', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (94, '2026-03-10T07:40:12.905918+00:00', 'Top Speed Advance Accelerator Controller', 'AT301', 'AT301', ARRAY['AT301'], 'Standard AT301', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (95, '2026-03-10T07:40:30.939659+00:00', 'Top Speed Advance Accelerator Controller', 'AT161', 'AT161', ARRAY['AT161'], 'Standard AT161', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (96, '2026-03-10T07:40:48.769599+00:00', 'Top Speed Advance Accelerator Controller', 'AT711', 'AT711', ARRAY['AT711'], 'Standard AT711', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (97, '2026-03-12T05:24:51.901254+00:00', 'Falken A/T4W', '285/65R18', '285/65R18', ARRAY['285/65R18'], 'Standard 285/65R18', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (98, '2026-03-12T05:24:51.974852+00:00', 'Falken A/T4W', '285/65R18', '285/65R18', ARRAY['285/65R18'], 'Standard 285/65R18', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (99, '2026-03-12T05:28:44.518222+00:00', 'Falken HT01', '265/65R17', '265/65R17', ARRAY['265/65R17'], 'Standard 265/65R17', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (100, '2026-03-12T05:30:18.95378+00:00', 'Falken HT01', '265/60R18', '265/60R18', ARRAY['265/60R18'], 'Standard 265/60R18', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (101, '2026-03-12T05:34:31.610912+00:00', 'Falken A/T4W', '285/55R20', '285/55R20', ARRAY['285/55R20'], 'Standard 285/55R20', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (102, '2026-03-12T05:36:00.493318+00:00', 'Falken A/T4W', 'LT285/70R17', 'LT285/70R17', ARRAY['LT285/70R17'], 'Standard LT285/70R17', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (103, '2026-03-12T06:01:22.594655+00:00', 'T/A KO3', 'LT265/60R18', 'LT265/60R18', ARRAY['LT265/60R18'], 'Standard LT265/60R18', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (104, '2026-03-12T06:02:20.07282+00:00', 'T/A KO3', 'LT285/65R18', 'LT285/65R18', ARRAY['LT285/65R18'], 'Standard LT285/65R18', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (105, '2026-03-12T06:34:13.666501+00:00', 'T/A KO3', 'LT285/70R27', 'LT285/70R27', ARRAY['LT285/70R27'], 'Standard LT285/70R27', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (106, '2026-03-12T06:35:24.433613+00:00', 'T/A KO3', 'LT275/70R17', 'LT275/70R17', ARRAY['LT275/70R17'], 'Standard LT275/70R17', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (107, '2026-03-12T06:36:17.413467+00:00', 'T/A KO3', 'LT285/75R17', 'LT285/75R17', ARRAY['LT285/75R17'], 'Standard LT285/75R17', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (108, '2026-03-12T06:37:28.561455+00:00', 'T/A KO3', 'LT265/65R17', 'LT265/65R17', ARRAY['LT265/65R17'], 'Standard LT265/65R17', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (109, '2026-03-12T06:39:10.660656+00:00', 'T/A KO2', 'LT275/65R17', 'LT275/65R17', ARRAY['LT275/65R17'], 'Standard LT275/65R17', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (110, '2026-03-12T06:41:24.679406+00:00', 'T/A KM3', 'LT255/85R16', 'LT255/85R16', ARRAY['LT255/85R16'], 'Standard LT255/85R16', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (111, '2026-03-12T06:52:04.604457+00:00', 'T/A KM3', '26570R16', '26570R16', ARRAY['26570R16'], 'Standard 26570R16', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (112, '2026-03-12T07:06:29.443603+00:00', '0PRT - Toyo Tires', 'LT265/70R17', 'LT265/70R17', ARRAY['LT265/70R17'], 'Standard LT265/70R17', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (113, '2026-03-12T07:07:12.020172+00:00', '0PRT - Toyo Tires', '235/70R16', '235/70R16', ARRAY['235/70R16'], 'Standard 235/70R16', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (114, '2026-03-12T07:38:33.023483+00:00', 'Terrain Contact A/T', '265/70R17', '265/70R17', ARRAY['265/70R17'], 'Standard 265/70R17', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (115, '2026-03-12T07:40:59.654739+00:00', 'Dynamo AT2 Extreme', 'LT265/65R18', 'LT265/65R18', ARRAY['LT265/65R18'], 'Standard LT265/65R18', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (116, '2026-03-12T07:56:36.278063+00:00', 'AZ670', '295/80R22.5', '295/80R22.5', ARRAY['295/80R22.5'], 'Standard 295/80R22.5', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (117, '2026-03-12T07:58:58.89761+00:00', 'A/T3W', 'LT235/75R15', 'LT235/75R15', ARRAY['LT235/75R15'], 'Standard LT235/75R15', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (118, '2026-03-12T08:01:20.970176+00:00', 'AT20', '225/70R17 C', '225/70R17 C', ARRAY['225/70R17 C'], 'Standard 225/70R17 C', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (119, '2026-03-16T03:36:25.026348+00:00', 'Fuel Wheel Nuts', 'M12 x 1.50', 'M12 x 1.50', ARRAY['M12 x 1.50'], 'Standard M12 x 1.50', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (120, '2026-03-16T03:37:16.252242+00:00', 'Fuel Wheel Nuts', 'M12 x 1.25', 'M12 x 1.25', ARRAY['M12 x 1.25'], 'Standard M12 x 1.25', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (121, '2026-03-16T03:44:49.763075+00:00', 'Rays Wheel Nuts', 'M14 x 1.5', 'M14 x 1.5', ARRAY['M14 x 1.5'], 'Standard M14 x 1.5', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (122, '2026-03-16T05:32:22.633793+00:00', 'Squadron Pro', 'Driving/Combo', 'Driving/Combo', ARRAY['Driving/Combo'], 'Standard Driving/Combo', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (123, '2026-03-16T05:48:12.670591+00:00', 'Squadron Sport - R', 'Wide Cornering', 'Wide Cornering', ARRAY['Wide Cornering'], 'Standard Wide Cornering', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (124, '2026-03-16T06:53:26.311944+00:00', 'C4 LED WORK LIGHTS', 'Diffused', 'Diffused', ARRAY['Diffused'], 'Standard Diffused', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (125, '2026-03-16T06:54:27.413834+00:00', 'C4 LED WORK LIGHTS', 'Flood', 'Flood', ARRAY['Flood'], 'Standard Flood', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (126, '2026-03-16T08:50:49.797623+00:00', 'ST3K 21.5 LED LIGHT BAR', '20', '20', ARRAY['20'], 'Standard 20', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (127, '2026-03-18T06:05:20.795206+00:00', 'DLAA Fog Light', 'H3', 'H3', ARRAY['H3'], 'Standard H3', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (128, '2026-03-18T06:50:32.550716+00:00', 'Rigid Ignite SM', 'Diffused', 'Diffused', ARRAY['Diffused'], 'Standard Diffused', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (129, '2026-03-18T06:52:06.820418+00:00', 'Rigid Ignite SM - Diffused', 'Diffused', 'Diffused', NULL, NULL, true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (130, '2026-03-18T06:52:07.13115+00:00', 'Rigid Ignite SM - Diffused', 'Diffused', 'Diffused', NULL, NULL, true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (131, '2026-03-18T07:49:41.461814+00:00', 'Rigid D-SS Pro ', 'Driving', 'Driving', ARRAY['Driving'], 'Standard Driving', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (132, '2026-03-18T07:57:52.573704+00:00', 'Rigid Ignite  - Diffused', 'Diffused', 'Diffused', NULL, NULL, true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (133, '2026-03-19T06:34:39.944478+00:00', 'Rigid Radiance', 'Spot', 'Spot', ARRAY['Spot'], 'Standard Spot', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (134, '2026-03-19T07:04:35.9358+00:00', 'PIAA LPW530', 'Wide Drive', 'Wide Drive', ARRAY['Wide Drive'], 'Standard Wide Drive', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (135, '2026-03-19T07:09:42.077358+00:00', 'Variant', 'Flood Beam', 'Flood Beam', ARRAY['Flood Beam'], 'Standard Flood Beam', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (136, '2026-03-20T06:32:39.966202+00:00', 'TJM Seeker Series', 'Work Lamp', 'Work Lamp', ARRAY['Work Lamp'], 'Standard Work Lamp', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (137, '2026-03-20T06:32:40.250733+00:00', 'TJM Seeker Series', 'Work Lamp', 'Work Lamp', ARRAY['Work Lamp'], 'Standard Work Lamp', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (138, '2026-03-20T06:33:16.989599+00:00', 'TJM Seeker Series - Work Lamp', 'Work Lamp', 'Work Lamp', NULL, NULL, true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (139, '2026-03-20T06:54:13.182671+00:00', 'KC FLEX LED SINGLE', 'Spread', 'Spread', ARRAY['Spread'], 'Standard Spread', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (140, '2026-03-20T07:14:37.398539+00:00', 'KC 7471 FE3 Toyota', 'Pocket', 'Pocket', ARRAY['Pocket'], 'Standard Pocket', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (141, '2026-03-20T07:57:57.611599+00:00', 'Variant', 'Fog Beam', 'Fog Beam', ARRAY['Fog Beam'], 'Standard Fog Beam', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (142, '2026-03-23T06:53:49.561758+00:00', 'Falken A/T4W', '235/75R15', '235/75R15', ARRAY['235/75R15'], 'Standard 235/75R15', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (143, '2026-03-23T07:55:14.325796+00:00', 'Variant', 'Auxiliary', 'Auxiliary', ARRAY['Auxiliary'], 'Standard Auxiliary', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (144, '2026-03-25T04:51:53.526163+00:00', 'Falken A/T4W', '265/75R16', '265/75R16', ARRAY['265/75R16'], 'Standard 265/75R16', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (145, '2026-03-26T08:41:34.734415+00:00', 'Bajaj Rock Guard', '66-8003', '66-8003', ARRAY['66-8003'], 'Standard 66-8003', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (146, '2026-03-26T08:42:12.87898+00:00', 'Bajaj Rock Guard', '66-8001', '66-8001', ARRAY['66-8001'], 'Standard 66-8001', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (147, '2026-03-28T06:38:21.884711+00:00', 'Fortuner Fog Light', 'Fog Light', 'Fog Light', ARRAY['Fog Light'], 'Standard Fog Light', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (148, '2026-03-28T06:42:21.94178+00:00', 'Falken A/T4W - 285/65R18', '285/65R18', '285/65R18', NULL, NULL, true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (149, '2026-03-28T07:31:51.645546+00:00', 'GTW-G38', 'Fog Lamp', 'Fog Lamp', ARRAY['Fog Lamp'], 'Standard Fog Lamp', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (150, '2026-04-09T05:32:25.060053+00:00', 'SR Chase Lights', 'Chase Lights', 'Chase Lights', ARRAY['Chase Lights'], 'Standard Chase Lights', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (151, '2026-04-09T06:18:36.53981+00:00', 'STEDI Type-X 7” Replacement Cover', '7”', '7”', ARRAY['7”'], 'Standard 7”', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (152, '2026-04-09T07:06:02.380332+00:00', 'Rigid Cover 10” E/RDS', '10”', '10”', ARRAY['10”'], 'Standard 10”', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (153, '2026-04-09T07:42:49.572978+00:00', 'Ironman 9” Comet', '9”', '9”', ARRAY['9”'], 'Standard 9”', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (154, '2026-04-16T06:51:39.856301+00:00', 'Cosmo Dual Light 20W', 'Dual (High: Spot / Low: Flood)', 'Dual (High: Spot / Low: Flood)', ARRAY['Dual (High: Spot / Low: Flood)'], 'Standard Dual (High: Spot / Low: Flood)', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (155, '2026-04-16T07:07:35.237286+00:00', '7" Combo Blast', 'Combo Beam', 'Combo Beam', ARRAY['Combo Beam'], 'Standard Combo Beam', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (156, '2026-04-16T07:32:00.287273+00:00', '9" Comet 42W', 'Broad Spot', 'Broad Spot', ARRAY['Broad Spot'], 'Standard Broad Spot', true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (157, '2026-04-24T06:02:48.735118+00:00', 'Falken A/T4W - 285/65R18', '285/65R18', '285/65R18', NULL, NULL, true) ON CONFLICT DO NOTHING;
-INSERT INTO public.variant_definitions ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES (158, '2026-04-29T08:11:32.461412+00:00', 'K&N Air Filter - 33-2387', '33-2387', '33-2387', NULL, NULL, true) ON CONFLICT DO NOTHING;
+-- Dumped from database version 17.6
+-- Dumped by pg_dump version 17.6
 
--- Table: category_metadata
-INSERT INTO public.category_metadata ("id", "category_id", "variant_type_label", "fields", "suggested_variant_types", "is_active", "created_at", "updated_at", "variant_dimensions") VALUES (24, 17, 'Model', '{}', '{}', true, '2026-03-10T07:35:05.392147+00:00', '2026-03-10T07:34:59.931+00:00', '[{"label":"Model","active":true,"column":"variant_type"},{"label":"Color","active":false,"column":"variant_color"},{"label":"Color Temp","active":false,"column":"color_temperature"}]'::jsonb) ON CONFLICT DO NOTHING;
-INSERT INTO public.category_metadata ("id", "category_id", "variant_type_label", "fields", "suggested_variant_types", "is_active", "created_at", "updated_at", "variant_dimensions") VALUES (25, 18, 'Size', '{}', '{}', true, '2026-03-12T05:20:39.526361+00:00', '2026-03-12T05:20:39.181+00:00', '[{"label":"Size","active":true,"column":"variant_type"},{"label":"Speed Rating","active":true,"column":"variant_color"},{"label":"Date Manu","active":true,"column":"color_temperature"}]'::jsonb) ON CONFLICT DO NOTHING;
-INSERT INTO public.category_metadata ("id", "category_id", "variant_type_label", "fields", "suggested_variant_types", "is_active", "created_at", "updated_at", "variant_dimensions") VALUES (26, 19, 'Thread Pitch', '{}', '{}', true, '2026-03-16T03:31:46.871717+00:00', '2026-03-16T03:31:45.191+00:00', '[{"label":"Thread Pitch","active":true,"column":"variant_type"},{"label":"Color","active":true,"column":"variant_color"},{"label":"Color Temp","active":false,"column":"color_temperature"}]'::jsonb) ON CONFLICT DO NOTHING;
-INSERT INTO public.category_metadata ("id", "category_id", "variant_type_label", "fields", "suggested_variant_types", "is_active", "created_at", "updated_at", "variant_dimensions") VALUES (27, 20, 'Type', '{}', '{}', true, '2026-03-16T05:27:03.577947+00:00', '2026-03-16T05:27:02.962+00:00', '[{"label":"Type","active":true,"column":"variant_type"},{"label":"Color","active":true,"column":"variant_color"},{"label":"Color Temp","active":false,"column":"color_temperature"}]'::jsonb) ON CONFLICT DO NOTHING;
-INSERT INTO public.category_metadata ("id", "category_id", "variant_type_label", "fields", "suggested_variant_types", "is_active", "created_at", "updated_at", "variant_dimensions") VALUES (28, 2, 'Socket', '{}', '{}', true, '2026-03-18T06:01:35.955436+00:00', '2026-03-18T06:12:42.890794+00:00', '[{"label":"Socket","active":true,"column":"variant_type"},{"label":"Color","active":true,"column":"variant_color"},{"label":"Shape","active":true,"column":"color_temperature"}]'::jsonb) ON CONFLICT DO NOTHING;
-INSERT INTO public.category_metadata ("id", "category_id", "variant_type_label", "fields", "suggested_variant_types", "is_active", "created_at", "updated_at", "variant_dimensions") VALUES (3, 1, 'Variant', '{}', '{}', true, '2026-02-22T08:05:41.25551+00:00', '2026-02-22T08:16:40.976865+00:00', '[{"label":"Variant","active":true,"column":"variant_type"},{"label":"Color","active":false,"column":"variant_color"},{"label":"Color Temp","active":true,"column":"color_temperature"}]'::jsonb) ON CONFLICT DO NOTHING;
-INSERT INTO public.category_metadata ("id", "category_id", "variant_type_label", "fields", "suggested_variant_types", "is_active", "created_at", "updated_at", "variant_dimensions") VALUES (30, 21, 'Size', '{}', '{}', true, '2026-03-26T08:38:30.115837+00:00', '2026-03-26T08:38:29.51+00:00', '[{"label":"Size","active":true,"column":"variant_type"},{"label":"Color","active":true,"column":"variant_color"},{"label":"Color Temp","active":false,"column":"color_temperature"}]'::jsonb) ON CONFLICT DO NOTHING;
-INSERT INTO public.category_metadata ("id", "category_id", "variant_type_label", "fields", "suggested_variant_types", "is_active", "created_at", "updated_at", "variant_dimensions") VALUES (22, 15, 'PCD', '{}', '{}', true, '2026-03-04T05:40:38.004586+00:00', '2026-03-28T06:53:05.954727+00:00', '[{"label":"PCD","active":true,"column":"variant_type"},{"label":"HUB","active":true,"column":"variant_color"},{"label":"Color Temp","active":false,"column":"color_temperature"}]'::jsonb) ON CONFLICT DO NOTHING;
-INSERT INTO public.category_metadata ("id", "category_id", "variant_type_label", "fields", "suggested_variant_types", "is_active", "created_at", "updated_at", "variant_dimensions") VALUES (32, 22, 'Size', '{}', '{}', true, '2026-04-09T06:15:26.04736+00:00', '2026-04-09T06:15:25.851+00:00', '[{"label":"Size","active":true,"column":"variant_type"},{"label":"Color","active":true,"column":"variant_color"},{"label":"Color Temp","active":false,"column":"color_temperature"}]'::jsonb) ON CONFLICT DO NOTHING;
-INSERT INTO public.category_metadata ("id", "category_id", "variant_type_label", "fields", "suggested_variant_types", "is_active", "created_at", "updated_at", "variant_dimensions") VALUES (16, 12, 'PCD', '{}', '{}', true, '2026-02-25T06:27:04.271853+00:00', '2026-02-25T06:31:09.138118+00:00', '[{"label":"PCD","active":true,"column":"variant_type"},{"label":"Size","active":true,"column":"variant_color"},{"label":"Color","active":true,"column":"color_temperature"},{"label":"Offset (ET)","active":true,"column":"spec_1772000809098"}]'::jsonb) ON CONFLICT DO NOTHING;
-INSERT INTO public.category_metadata ("id", "category_id", "variant_type_label", "fields", "suggested_variant_types", "is_active", "created_at", "updated_at", "variant_dimensions") VALUES (8, 6, 'Variant', '{}', '{}', true, '2026-02-22T08:13:40.970014+00:00', '2026-02-25T09:41:11.621384+00:00', '[{"label":"Variant","active":true,"column":"variant_type"},{"label":"Color","active":false,"column":"variant_color"},{"label":"Color Temp","active":true,"column":"color_temperature"}]'::jsonb) ON CONFLICT DO NOTHING;
-INSERT INTO public.category_metadata ("id", "category_id", "variant_type_label", "fields", "suggested_variant_types", "is_active", "created_at", "updated_at", "variant_dimensions") VALUES (20, 13, 'Code No.', '{}', '{}', true, '2026-03-04T02:54:49.044408+00:00', '2026-03-04T02:54:48.79+00:00', '[{"label":"Code No.","active":true,"column":"variant_type"},{"label":"Color","active":false,"column":"variant_color"},{"label":"Color Temp","active":false,"column":"color_temperature"}]'::jsonb) ON CONFLICT DO NOTHING;
-INSERT INTO public.category_metadata ("id", "category_id", "variant_type_label", "fields", "suggested_variant_types", "is_active", "created_at", "updated_at", "variant_dimensions") VALUES (21, 14, 'Code', '{}', '{}', true, '2026-03-04T03:50:18.073102+00:00', '2026-03-04T03:50:17.75+00:00', '[{"label":"Code","active":true,"column":"variant_type"},{"label":"Color","active":false,"column":"variant_color"},{"label":"Color Temp","active":false,"column":"color_temperature"}]'::jsonb) ON CONFLICT DO NOTHING;
-INSERT INTO public.category_metadata ("id", "category_id", "variant_type_label", "fields", "suggested_variant_types", "is_active", "created_at", "updated_at", "variant_dimensions") VALUES (23, 16, 'Lift Height', '{}', '{}', true, '2026-03-06T07:11:51.512733+00:00', '2026-03-06T07:11:51.223+00:00', '[{"label":"Lift Height","active":true,"column":"variant_type"},{"label":"Compatibility ","active":true,"column":"variant_color"},{"label":"Position","active":true,"column":"color_temperature"}]'::jsonb) ON CONFLICT DO NOTHING;
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET transaction_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
 
--- Table: products
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (71, '2026-03-04T02:56:25.712637+00:00', '2026-04-29T08:11:33.089257+00:00', 'K&N Air Filter', NULL, '', 'K&N', 13, NULL, NULL, 0, 0, 0, 0, 0, '', '', NULL, NULL, '', NULL, NULL, '{"tags":[],"color":"","internal_notes":"LC200","color_temperature":""}'::jsonb, true, 36) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (13, '2026-02-18T01:51:48.801259+00:00', '2026-04-25T23:07:31.529435+00:00', 'Hellsten X8', NULL, NULL, 'Hellsten', 1, NULL, NULL, 0, 0, 1, 1, 1, NULL, NULL, NULL, NULL, '', NULL, NULL, '{"socket":""}'::jsonb, true, 11) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (113, '2026-03-19T06:09:42.9499+00:00', '2026-04-25T23:07:31.529435+00:00', 'Rigid 360 Series', NULL, NULL, 'Aftermarket', 20, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 22) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (83, '2026-03-12T06:52:14.744852+00:00', '2026-05-08T07:05:22.061297+00:00', 'T/A KM3', NULL, NULL, 'BF Goodrich', 18, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, '', NULL, NULL, '{"tags":[],"color":"123/120Q","variant_color":"123/120Q","internal_notes":"","color_temperature":""}'::jsonb, true, 49) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (58, '2026-02-26T01:59:35.718244+00:00', '2026-04-25T23:07:31.529435+00:00', 'XD14078564718', NULL, NULL, 'KMC', 12, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 23) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (167, '2026-06-05T01:24:20.291159+00:00', '2026-06-05T01:27:21.549068+00:00', 'PIAA V-RF 20"', 'LIT-PIA-VRF-DRV-58K-20-SG', NULL, 'PIAA', 20, 28, NULL, 16500, 0, 1, 1, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[],"color":"5800K","socket":"Driving","internal_notes":""}'::jsonb, false, 20) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (106, '2026-03-18T06:50:48.326752+00:00', '2026-04-25T23:07:31.529435+00:00', 'Rigid Ignite SM', NULL, NULL, 'Rigid', 20, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[],"color":"Black","internal_notes":"","color_temperature":null}'::jsonb, true, 4) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (168, '2026-06-05T01:27:03.538727+00:00', '2026-06-05T01:27:03.538727+00:00', 'PIAA V-RF 40"', 'LIT-PIA-VRF-DRV-58K-40-SG', NULL, 'PIAA', 20, 28, NULL, 28000, 0, 1, 1, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[],"color":"5800K","socket":"Driving"}'::jsonb, false, 20) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (8, '2026-02-17T04:11:21.176012+00:00', '2026-04-25T23:07:31.529435+00:00', 'GPNE RS7 ', NULL, NULL, 'GPNE', 1, NULL, NULL, 0, 0, 1, 1, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[],"internal_notes":"PARENT"}'::jsonb, true, 45) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (37, '2026-02-25T07:30:05.38461+00:00', '2026-04-25T23:07:31.529435+00:00', 'Torque D690', NULL, NULL, 'Fuel', 12, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 26) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (50, '2026-02-26T01:38:41.069024+00:00', '2026-04-25T23:07:31.529435+00:00', 'ME002 MR701', NULL, NULL, 'Method', 12, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 35) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (38, '2026-02-25T07:31:46.065354+00:00', '2026-04-25T23:07:31.529435+00:00', 'Rebel', NULL, NULL, 'Fuel', 12, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 26) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (16, '2026-02-18T02:34:14.897203+00:00', '2026-04-25T23:07:31.529435+00:00', 'Keon Sondra', NULL, NULL, 'KSC', 1, NULL, NULL, 0, 0, 1, 1, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{}'::jsonb, true, 34) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (115, '2026-03-19T06:34:58.736449+00:00', '2026-04-25T23:07:31.529435+00:00', 'Rigid Radiance', NULL, NULL, 'Rigid', 20, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 4) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (17, '2026-02-18T02:37:48.164393+00:00', '2026-04-25T23:07:31.529435+00:00', 'LED Headlights ', NULL, NULL, 'Aftermarket', 1, NULL, NULL, 0, 0, 1, 1, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[],"internal_notes":"ZES"}'::jsonb, true, 22) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (18, '2026-02-18T02:50:37.167601+00:00', '2026-04-25T23:07:31.529435+00:00', 'Osram LED', NULL, NULL, 'Osram', 1, NULL, NULL, 0, 0, 1, 1, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{}'::jsonb, true, 1) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (19, '2026-02-18T02:52:36.666966+00:00', '2026-04-25T23:07:31.529435+00:00', 'Cobra LED Headlight ', NULL, NULL, 'Cobra', 1, NULL, NULL, 0, 0, 1, 1, 1, NULL, NULL, NULL, NULL, '', NULL, NULL, '{"socket":""}'::jsonb, true, 41) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (39, '2026-02-25T07:34:53.594402+00:00', '2026-04-25T23:07:31.529435+00:00', 'Flux', NULL, NULL, 'Fuel', 12, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 26) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (40, '2026-02-25T07:39:26.081724+00:00', '2026-04-25T23:07:31.529435+00:00', 'Vector 6', NULL, NULL, 'Icon', 12, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 30) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (41, '2026-02-25T07:41:27.182274+00:00', '2026-04-25T23:07:31.529435+00:00', 'XD 135 Grenade', NULL, NULL, 'KMC', 12, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 23) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (42, '2026-02-25T07:43:29.8516+00:00', '2026-04-25T23:07:31.529435+00:00', 'XD 818 Heist', NULL, NULL, 'KMC', 12, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 23) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (11, '2026-02-17T05:00:24.255216+00:00', '2026-04-25T23:07:31.529435+00:00', 'Osram Night Breaker', NULL, NULL, 'Osram', 1, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, '', NULL, NULL, '{"tags":[],"socket":null,"internal_notes":""}'::jsonb, true, 1) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (48, '2026-02-25T09:54:42.926563+00:00', '2026-04-25T23:07:31.529435+00:00', 'VLF S02B', NULL, NULL, 'VLF', 12, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Gunmetal Machined(PressG)', NULL, NULL, '{"tags":[],"color":"16x7","socket":null,"last_restock":{"date":"2026-02-17T23:21:56.532Z","quantity":1},"internal_notes":"set of 4","color_temperature":"Gunmetal Machined(PressG)","spec_1772000809098":"0"}'::jsonb, true, 8) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (15, '2026-02-18T02:17:38.55548+00:00', '2026-04-25T23:07:31.529435+00:00', 'STEDI Copper Head', NULL, NULL, 'STEDI', 1, NULL, NULL, 0, 0, 1, 1, 1, NULL, NULL, NULL, NULL, '5700', NULL, NULL, '{"tags":[],"color":"","internal_notes":""}'::jsonb, true, 46) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (22, '2026-02-25T04:26:29.946502+00:00', '2026-04-25T23:07:31.529435+00:00', '', NULL, NULL, 'Aftermarket', NULL, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 22) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (157, '2026-04-09T07:43:39.855582+00:00', '2026-04-25T23:07:31.529435+00:00', 'Ironman Cover Comet', NULL, '', 'Ironman', 21, NULL, NULL, 0, 0, 0, 0, 0, '', '', NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 24) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (159, '2026-04-16T06:37:44.492891+00:00', '2026-04-25T23:07:31.529435+00:00', 'Ironman Universal LED Light 16W', NULL, NULL, 'Ironman', 20, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 24) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (160, '2026-04-16T06:42:47.598897+00:00', '2026-04-25T23:07:31.529435+00:00', 'Ironman Modular LED Light 30W', NULL, NULL, 'Ironman', 20, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[],"color":"6000k","internal_notes":"","color_temperature":null}'::jsonb, true, 24) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (161, '2026-04-16T06:51:43.570093+00:00', '2026-04-25T23:07:31.529435+00:00', 'Cosmo Dual Light 20W', NULL, NULL, 'Ironman', 20, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 24) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (163, '2026-04-16T07:07:39.430912+00:00', '2026-04-25T23:07:31.529435+00:00', '7" Combo Blast', NULL, NULL, 'Ironman', 20, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[],"color":"6500K","internal_notes":"","color_temperature":null}'::jsonb, true, 24) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (165, '2026-04-16T07:32:01.52751+00:00', '2026-04-25T23:07:31.529435+00:00', '9" Comet 42W', NULL, NULL, 'Ironman', 20, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 24) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (164, '2026-04-16T07:16:57.486835+00:00', '2026-04-25T23:07:31.529435+00:00', '7" Blast Phase II Combo', NULL, NULL, 'Ironman', 20, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[],"color":"6000K","internal_notes":"","color_temperature":null}'::jsonb, true, 24) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (162, '2026-04-16T07:00:03.708449+00:00', '2026-04-25T23:07:31.529435+00:00', 'Comet 7" 30W', NULL, NULL, 'Ironman', 20, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[],"color":"6000k","internal_notes":"","color_temperature":null}'::jsonb, true, 24) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (84, '2026-03-12T07:07:16.710059+00:00', '2026-04-25T23:07:31.529435+00:00', '0PRT - Toyo Tires', NULL, NULL, 'Toyo Tires', 18, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[],"color":"106Q","internal_notes":"","color_temperature":null}'::jsonb, true, 31) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (80, '2026-03-12T05:36:03.387836+00:00', '2026-04-25T23:07:31.529435+00:00', 'Falken A/T4W', NULL, '', 'Falken', 18, NULL, NULL, 0, 0, 0, 0, 0, '', '', NULL, NULL, NULL, NULL, NULL, '{"tags":[],"color":"116/113R","internal_notes":"","color_temperature":null}'::jsonb, true, 16) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (166, '2026-04-24T06:31:11.837042+00:00', '2026-04-25T23:07:31.529435+00:00', 'Trail Terrain', NULL, NULL, 'BF Goodrich', 18, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 49) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (81, '2026-03-12T06:02:37.757715+00:00', '2026-04-25T23:07:31.529435+00:00', 'T/A KO3', NULL, '', 'BF Goodrich', 18, NULL, NULL, 0, 0, 0, 0, 0, '', '', NULL, NULL, NULL, NULL, NULL, '{"tags":[],"color":"128/125S","internal_notes":"Need Price","color_temperature":null}'::jsonb, true, 49) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (23, '2026-02-25T06:30:11.146234+00:00', '2026-04-25T23:07:31.529435+00:00', 'Alap J', NULL, NULL, 'Rays Engineering', 12, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Bronze', NULL, NULL, '{"tags":[],"color":"16x6","internal_notes":"","color_temperature":"Bronze","spec_1772000809098":"-5"}'::jsonb, true, 40) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (24, '2026-02-25T06:36:53.362193+00:00', '2026-04-25T23:07:31.529435+00:00', 'TE37-XT SL', NULL, NULL, 'Volk Racing', 12, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 28) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (25, '2026-02-25T06:36:53.689501+00:00', '2026-04-25T23:07:31.529435+00:00', 'TE37-XT SL', NULL, NULL, 'Volk Racing', 12, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 28) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (26, '2026-02-25T06:39:20.474982+00:00', '2026-04-25T23:07:31.529435+00:00', 'TE37 XT M-SPEC', NULL, NULL, 'Volk Racing', 12, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 28) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (28, '2026-02-25T06:46:31.165957+00:00', '2026-04-25T23:07:31.529435+00:00', 'Roku', NULL, NULL, 'Black Rhino', 12, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 10) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (43, '2026-02-25T07:45:43.877142+00:00', '2026-04-25T23:07:31.529435+00:00', 'MR313 Street Series', NULL, NULL, 'Method', 12, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 35) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (29, '2026-02-25T06:46:32.660928+00:00', '2026-04-25T23:07:31.529435+00:00', 'Roku', NULL, NULL, 'Black Rhino', 12, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 10) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (30, '2026-02-25T06:52:44.399093+00:00', '2026-04-25T23:07:31.529435+00:00', 'Chase', NULL, NULL, 'Black Rhino', 12, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 10) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (31, '2026-02-25T06:58:50.760873+00:00', '2026-04-25T23:07:31.529435+00:00', 'Stadium', NULL, NULL, 'Black Rhino', 12, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 10) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (32, '2026-02-25T07:08:32.783019+00:00', '2026-04-25T23:07:31.529435+00:00', 'Awol', NULL, NULL, 'Black Rhino', 12, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 10) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (33, '2026-02-25T07:11:14.707312+00:00', '2026-04-25T23:07:31.529435+00:00', 'BRO31', NULL, NULL, 'Black Rhino', 12, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 10) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (34, '2026-02-25T07:13:31.836035+00:00', '2026-04-25T23:07:31.529435+00:00', 'Sol', NULL, NULL, 'Black Rhino', 12, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Matte Black', NULL, NULL, '{"tags":[],"color":"17x8","internal_notes":"","color_temperature":"Matte Black","spec_1772000809098":"20"}'::jsonb, true, 10) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (35, '2026-02-25T07:25:49.384949+00:00', '2026-04-25T23:07:31.529435+00:00', 'Shogun', NULL, NULL, 'Black Rhino', 12, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 10) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (36, '2026-02-25T07:28:14.217823+00:00', '2026-04-25T23:07:31.529435+00:00', 'BRO17', NULL, NULL, 'Black Rhino', 12, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 10) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (44, '2026-02-25T09:20:31.148718+00:00', '2026-04-25T23:07:31.529435+00:00', 'Grid', NULL, NULL, 'Grid', 12, 26, NULL, 17500, 0, 4, 4, 4, NULL, NULL, NULL, NULL, 'Machined', NULL, NULL, '{"tags":[],"color":"N/A","socket":"Not Specified","color_temperature":"Machined","spec_1772000809098":"N/A"}'::jsonb, false, 5) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (45, '2026-02-25T09:22:59.440681+00:00', '2026-04-25T23:07:31.529435+00:00', 'Six', NULL, NULL, 'Rotiform', 12, 27, NULL, 18750, 0, 4, 4, 4, NULL, NULL, NULL, NULL, 'Black', NULL, NULL, '{"tags":[],"color":"20x9","socket":"6x139.7","internal_notes":"1 on Display","color_temperature":"Black","spec_1772000809098":"1"}'::jsonb, false, 39) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (46, '2026-02-25T09:25:09.0893+00:00', '2026-04-25T23:07:31.529435+00:00', 'Blaze 10', NULL, NULL, 'SCS', 12, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 43) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (12, '2026-02-17T23:21:20.810204+00:00', '2026-04-25T23:07:31.529435+00:00', 'Aero Vogue Flex', NULL, NULL, 'PIAA', 6, NULL, NULL, 0, 0, 1, 1, 1, NULL, NULL, NULL, NULL, 'Yellow', NULL, NULL, '{"tags":[],"color":"Green","last_restock":{"date":"2026-02-17T23:21:56.532Z","quantity":1},"variant_type":"","internal_notes":"","color_temperature":"Green"}'::jsonb, true, 20) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (47, '2026-02-25T09:51:45.530344+00:00', '2026-04-25T23:07:31.529435+00:00', 'Ray 10', NULL, NULL, 'SCS', 12, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 43) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (10, '2026-02-17T04:17:57.484314+00:00', '2026-04-25T23:07:31.529435+00:00', 'GPNE R3', NULL, NULL, 'GPNE', 1, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, '', NULL, NULL, '{"tags":[],"socket":null,"last_restock":{"date":"2026-02-17T04:18:19.295Z","quantity":1},"internal_notes":"PARENT"}'::jsonb, true, 45) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (49, '2026-02-26T01:35:01.375942+00:00', '2026-04-25T23:07:31.529435+00:00', ' Dynamic 8/Talladega/Classic 5', NULL, NULL, 'STEEL BEADLOCK', 12, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 27) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (52, '2026-02-26T01:44:43.009761+00:00', '2026-04-25T23:07:31.529435+00:00', 'ME003 MR704', NULL, NULL, 'Method', 12, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 35) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (53, '2026-02-26T01:47:38.820599+00:00', '2026-04-25T23:07:31.529435+00:00', 'ME008 MR702 BG', NULL, NULL, 'Method', 12, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 35) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (54, '2026-02-26T01:49:32.824288+00:00', '2026-04-25T23:07:31.529435+00:00', 'MR313 Street Series', NULL, NULL, 'Method', 12, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 35) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (55, '2026-02-26T01:52:06.278106+00:00', '2026-04-25T23:07:31.529435+00:00', 'MR321 Standard', NULL, NULL, 'Method', 12, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 35) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (56, '2026-02-26T01:54:54.95714+00:00', '2026-04-25T23:07:31.529435+00:00', 'KM725 Terra', NULL, NULL, 'KMC', 12, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 23) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (57, '2026-02-26T01:57:41.887514+00:00', '2026-04-25T23:07:31.529435+00:00', 'KM549 GRS', NULL, NULL, 'KMC', 12, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 23) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (51, '2026-02-26T01:41:37.545587+00:00', '2026-04-25T23:07:31.529435+00:00', 'ME007 MR703 BG', NULL, NULL, 'Method', 12, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[],"socket":null,"internal_notes":""}'::jsonb, true, 35) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (110, '2026-03-19T06:03:35.48524+00:00', '2026-04-25T23:07:31.529435+00:00', 'Rigid D-SS Pro', NULL, NULL, 'Rigid', 20, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 4) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (114, '2026-03-19T06:12:39.253427+00:00', '2026-04-25T23:07:31.529435+00:00', 'Rigid D-Series', NULL, NULL, 'Rigid', 20, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 4) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (61, '2026-02-26T02:19:55.609076+00:00', '2026-04-25T23:07:31.529435+00:00', 'Blak Trak 2/Bearcat', NULL, NULL, 'ROH', 12, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 42) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (60, '2026-02-26T02:18:00.012227+00:00', '2026-04-25T23:07:31.529435+00:00', 'Blak Trak 2', NULL, NULL, 'ROH', 12, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[],"socket":null,"internal_notes":""}'::jsonb, true, 42) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (62, '2026-02-26T02:25:40.428785+00:00', '2026-04-25T23:07:31.529435+00:00', 'Raid', NULL, NULL, 'ROH', 12, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 42) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (63, '2026-02-26T02:28:37.685813+00:00', '2026-04-25T23:07:31.529435+00:00', 'Vapour', NULL, NULL, 'ROH', 12, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 42) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (59, '2026-02-26T02:03:48.692017+00:00', '2026-04-25T23:07:31.529435+00:00', 'Dakarzero', NULL, NULL, 'EVO CORSE', 12, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Anthracite', NULL, NULL, '{"tags":[],"color":"15x7","internal_notes":"set of 5","color_temperature":"Anthracite","spec_1772000809098":"0"}'::jsonb, true, 37) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (64, '2026-02-26T02:33:59.320047+00:00', '2026-04-25T23:07:31.529435+00:00', 'Crawler', NULL, NULL, 'ROH', 12, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 42) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (65, '2026-02-26T02:39:37.348732+00:00', '2026-04-25T23:07:31.529435+00:00', 'Assault', NULL, NULL, 'ROH', 12, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 42) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (66, '2026-02-26T02:42:07.266503+00:00', '2026-04-25T23:07:31.529435+00:00', 'Trail Cross', NULL, NULL, 'ENKEI', 12, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 38) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (67, '2026-02-26T02:50:37.269687+00:00', '2026-04-25T23:07:31.529435+00:00', 'SC59', NULL, NULL, 'ENKEI', 12, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 38) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (68, '2026-02-26T02:53:05.961079+00:00', '2026-04-25T23:07:31.529435+00:00', 'Rally Racing', NULL, NULL, 'OZ RACING', 12, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 17) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (9, '2026-02-17T04:15:45.203966+00:00', '2026-04-25T23:07:31.529435+00:00', 'GPNE RS6X', NULL, NULL, 'GPNE', 1, NULL, NULL, 0, 0, 1, 5, 5, NULL, NULL, NULL, NULL, 'Dual Color', NULL, NULL, '{"tags":[],"internal_notes":"","color_temperature":"Dual Color "}'::jsonb, true, 45) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (70, '2026-02-26T06:39:13.858602+00:00', '2026-04-25T23:07:31.529435+00:00', 'VLF S16', NULL, NULL, 'VLF', 12, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Matte Black', NULL, NULL, '{"tags":[],"color":"15x7","internal_notes":"set of 4","color_temperature":"Matte Black","spec_1772000809098":"-6"}'::jsonb, true, 8) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (69, '2026-02-26T06:32:32.197759+00:00', '2026-04-25T23:07:31.529435+00:00', 'VLF S47B ', NULL, NULL, 'VLF', 12, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Silver Brush', NULL, NULL, '{"tags":[],"color":"17x8.5","internal_notes":"set of 4","color_temperature":"Silver Brush","spec_1772000809098":"-10"}'::jsonb, true, 8) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (99, '2026-03-16T06:09:12.182905+00:00', '2026-04-25T23:07:31.529435+00:00', 'LP6 PRO', NULL, NULL, 'Bajaj Designs', 20, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[],"color":"Clear","internal_notes":"","color_temperature":null}'::jsonb, true, 7) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (7, '2026-02-17T04:02:59.507517+00:00', '2026-04-25T23:07:31.529435+00:00', 'GPNE R6', NULL, NULL, 'GPNE', 1, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, '6000', NULL, NULL, '{"tags":[],"color":null,"socket":null,"last_restock":{"date":"2026-02-17T04:04:09.409Z","quantity":1},"internal_notes":"","color_temperature":"All Weather"}'::jsonb, true, 45) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (93, '2026-03-16T03:43:06.779299+00:00', '2026-04-25T23:07:31.529435+00:00', 'Rays Wheel Nuts', NULL, '', 'Rays Official', 19, NULL, NULL, 0, 0, 0, 0, 0, '', '', NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 18) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (102, '2026-03-16T08:51:01.660688+00:00', '2026-04-25T23:07:31.529435+00:00', 'ST3K 21.5 LED LIGHT BAR', NULL, NULL, 'STEDI', 20, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[],"color":"Clear","internal_notes":"Need Price","color_temperature":null}'::jsonb, true, 46) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (86, '2026-03-12T07:45:29.417015+00:00', '2026-04-25T23:07:31.529435+00:00', 'Dynamo AT2 Extreme', NULL, NULL, 'Hankook', 18, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[],"color":"10PR","internal_notes":"","color_temperature":null}'::jsonb, true, 21) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (89, '2026-03-12T07:59:03.860782+00:00', '2026-04-25T23:07:31.529435+00:00', 'A/T3W', NULL, NULL, 'Falken', 18, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[],"color":"104/101S","internal_notes":"","color_temperature":null}'::jsonb, true, 16) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (88, '2026-03-12T07:57:47.754864+00:00', '2026-04-25T23:07:31.529435+00:00', 'SL378', NULL, NULL, 'GOODRIDE', 18, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[],"color":"120/117Q","internal_notes":"","color_temperature":null}'::jsonb, true, 6) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (82, '2026-03-12T06:39:16.283974+00:00', '2026-04-25T23:07:31.529435+00:00', 'T/A KO2', NULL, NULL, 'BF Goodrich', 18, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[],"color":"123/120R","internal_notes":"","color_temperature":null}'::jsonb, true, 49) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (85, '2026-03-12T07:38:45.99983+00:00', '2026-04-25T23:07:31.529435+00:00', 'Terrain Contact A/T', NULL, NULL, 'Continental', 18, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[],"color":"115S","internal_notes":"","color_temperature":null}'::jsonb, true, 48) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (73, '2026-03-06T07:19:36.516399+00:00', '2026-04-25T23:07:31.529435+00:00', 'Tank Eng. Coil Spacer', NULL, NULL, 'Tank Engineering', 16, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Front', NULL, NULL, '{"tags":[],"color":"Hilux","internal_notes":"","color_temperature":"Front"}'::jsonb, true, 44) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (77, '2026-03-07T07:03:22.131138+00:00', '2026-04-25T23:07:31.529435+00:00', 'SR Coil Spacer', NULL, '', 'SR Performance', 16, NULL, NULL, 0, 0, 0, 0, 0, '', '', NULL, NULL, 'Front', NULL, NULL, '{"tags":[]}'::jsonb, true, 47) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (78, '2026-03-10T07:40:50.579079+00:00', '2026-04-25T23:07:31.529435+00:00', 'Top Speed Advance Accelerator Controller', NULL, NULL, 'Top Speed', 17, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 29) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (72, '2026-03-04T03:54:33.545845+00:00', '2026-04-25T23:07:31.529435+00:00', 'K&N Cabin Air Filter', NULL, '', 'K&N', 14, NULL, NULL, 0, 0, 0, 0, 0, '', '', NULL, NULL, NULL, NULL, NULL, '{"tags":[],"color":null,"internal_notes":"Lexus, FJ Cruiser, Prado, Mazda MPY","color_temperature":null}'::jsonb, true, 36) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (79, '2026-03-12T05:29:00.561091+00:00', '2026-04-25T23:07:31.529435+00:00', 'Falken HT01', NULL, '', 'Falken', 18, NULL, NULL, 0, 0, 0, 0, 0, '', '', NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 16) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (87, '2026-03-12T07:56:47.369494+00:00', '2026-04-25T23:07:31.529435+00:00', 'AZ670', NULL, NULL, 'GOODRIDE', 18, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 6) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (90, '2026-03-12T08:01:23.338877+00:00', '2026-04-25T23:07:31.529435+00:00', 'AT20', NULL, NULL, 'Dunlop', 18, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 33) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (92, '2026-03-16T03:38:41.785033+00:00', '2026-04-25T23:07:31.529435+00:00', 'Fuel Wheel Nuts', NULL, NULL, 'Fuel', 19, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 26) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (94, '2026-03-16T05:32:37.7301+00:00', '2026-04-25T23:07:31.529435+00:00', 'Squadron Pro', NULL, NULL, 'Bajaj Designs', 20, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 7) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (95, '2026-03-16T05:32:38.039817+00:00', '2026-04-25T23:07:31.529435+00:00', 'Squadron Pro', NULL, NULL, 'Bajaj Designs', 20, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 7) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (96, '2026-03-16T05:41:44.962276+00:00', '2026-04-25T23:07:31.529435+00:00', 'Squadron Sport', NULL, NULL, 'Bajaj Designs', 20, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 7) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (97, '2026-03-16T05:49:45.981924+00:00', '2026-04-25T23:07:31.529435+00:00', 'Squadron Sport - R', NULL, NULL, 'Bajaj Designs', 20, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 7) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (98, '2026-03-16T05:49:57.909911+00:00', '2026-04-25T23:07:31.529435+00:00', 'Squadron Sport - R', NULL, NULL, 'Bajaj Designs', 20, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 7) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (100, '2026-03-16T06:10:41.544631+00:00', '2026-04-25T23:07:31.529435+00:00', 'LP4 PRO', NULL, NULL, 'Bajaj Designs', 20, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 7) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (101, '2026-03-16T06:54:35.818052+00:00', '2026-04-25T23:07:31.529435+00:00', 'C4 LED WORK LIGHTS', NULL, NULL, 'STEDI', 20, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 46) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (103, '2026-03-16T08:51:01.833961+00:00', '2026-04-25T23:07:31.529435+00:00', 'ST3K 21.5 LED LIGHT BAR', NULL, NULL, 'STEDI', 20, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 46) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (104, '2026-03-16T08:51:02.425809+00:00', '2026-04-25T23:07:31.529435+00:00', 'ST3K 21.5 LED LIGHT BAR', NULL, NULL, 'STEDI', 20, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 46) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (105, '2026-03-18T06:15:32.403862+00:00', '2026-04-25T23:07:31.529435+00:00', 'DLAA Fog Light', NULL, NULL, 'DLAA', 2, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 25) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (111, '2026-03-19T06:09:33.626197+00:00', '2026-04-25T23:07:31.529435+00:00', 'Rigid 360 Series', NULL, NULL, 'Aftermarket', 20, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 22) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (108, '2026-03-18T07:49:44.393487+00:00', '2026-04-25T23:07:31.529435+00:00', 'Rigid D-SS Pro ', NULL, NULL, 'Rigid', 20, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 4) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (112, '2026-03-19T06:09:42.709483+00:00', '2026-04-25T23:07:31.529435+00:00', 'Rigid 360 Series', NULL, NULL, 'Aftermarket', 20, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 22) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (107, '2026-03-18T07:00:55.016378+00:00', '2026-04-25T23:07:31.529435+00:00', 'Rigid Ignite ', NULL, NULL, 'Rigid', 20, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[],"color":"Black","internal_notes":"","color_temperature":null}'::jsonb, true, 4) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (109, '2026-03-18T08:13:42.654571+00:00', '2026-04-25T23:07:31.529435+00:00', 'Rigid Sae D Series', NULL, '', 'Rigid', 20, NULL, NULL, 0, 0, 0, 0, 0, '', '', NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 4) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (116, '2026-03-19T06:36:52.453629+00:00', '2026-04-25T23:07:31.529435+00:00', 'Rigid Reflect Lamp', NULL, NULL, 'Rigid', 20, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 4) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (117, '2026-03-19T06:39:30.832796+00:00', '2026-04-25T23:07:31.529435+00:00', 'Rigid SR-L Series', NULL, NULL, 'Rigid', 20, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 4) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (118, '2026-03-19T07:02:38.12893+00:00', '2026-04-25T23:07:31.529435+00:00', 'Rigid Scene Light', NULL, NULL, 'Aftermarket', 20, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 22) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (119, '2026-03-19T07:04:57.708026+00:00', '2026-04-25T23:07:31.529435+00:00', 'PIAA LPW530', NULL, NULL, 'PIAA', 20, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 20) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (120, '2026-03-19T07:10:21.454992+00:00', '2026-04-25T23:07:31.529435+00:00', 'PIAA DKCL200 2000 Series', NULL, NULL, 'PIAA', 20, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 20) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (121, '2026-03-19T07:25:46.079163+00:00', '2026-04-25T23:07:31.529435+00:00', 'PIAA LPX570 7"', NULL, '', 'PIAA', 20, NULL, NULL, 0, 0, 0, 0, 0, '', '', NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 20) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (122, '2026-03-19T07:33:50.241104+00:00', '2026-04-25T23:07:31.529435+00:00', 'PIAA LP570 7"', NULL, NULL, 'PIAA', 20, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 20) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (123, '2026-03-19T08:28:38.573299+00:00', '2026-04-25T23:07:31.529435+00:00', 'PIAA LP530 3.5"', NULL, '', 'PIAA', 20, NULL, NULL, 0, 0, 0, 0, 0, '', '', NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 20) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (125, '2026-03-20T06:32:57.549946+00:00', '2026-04-25T23:07:31.529435+00:00', 'TJM Seeker Series', NULL, NULL, 'TJM', NULL, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[],"color":"Clear","internal_notes":"Need Price","color_temperature":null}'::jsonb, true, 9) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (126, '2026-03-20T06:43:46.264546+00:00', '2026-04-25T23:07:31.529435+00:00', 'KC FLEX ERA 3', NULL, NULL, 'KC', 20, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 15) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (127, '2026-03-20T06:54:19.529027+00:00', '2026-04-25T23:07:31.529435+00:00', 'KC FLEX LED SINGLE', NULL, NULL, 'KC', 20, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 15) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (128, '2026-03-20T06:58:30.063908+00:00', '2026-04-25T23:07:31.529435+00:00', 'KC C3 LED', NULL, NULL, 'KC', 20, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 15) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (129, '2026-03-20T07:15:17.250434+00:00', '2026-04-25T23:07:31.529435+00:00', 'KC 7471 FE3 Toyota', NULL, NULL, 'KC', 20, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 15) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (130, '2026-03-20T07:15:27.956183+00:00', '2026-04-25T23:07:31.529435+00:00', 'KC 7471 FE3 Toyota', NULL, NULL, 'KC', 20, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 15) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (131, '2026-03-20T07:57:59.297616+00:00', '2026-04-25T23:07:31.529435+00:00', 'KC 500 GRAVITY', NULL, '', 'KC', 20, NULL, NULL, 0, 0, 0, 0, 0, '', '', NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 15) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (132, '2026-03-23T06:24:40.81047+00:00', '2026-04-25T23:07:31.529435+00:00', 'KC 91305', NULL, NULL, 'KC', 20, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 15) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (91, '2026-03-16T03:38:41.784985+00:00', '2026-05-08T07:31:12.510373+00:00', 'Fuel Wheel Nuts', NULL, '', 'Fuel', 19, NULL, NULL, 0, 0, 0, 0, 0, '', '', NULL, NULL, '', NULL, NULL, '{"tags":[],"color":"Black","variant_color":"Black","internal_notes":"","color_temperature":""}'::jsonb, true, 26) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (133, '2026-03-23T06:27:19.637373+00:00', '2026-04-25T23:07:31.529435+00:00', 'LC 91305', NULL, NULL, 'KC', 20, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 15) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (134, '2026-03-23T07:34:28.380611+00:00', '2026-04-25T23:07:31.529435+00:00', 'ARB Intensity SOLIS', NULL, NULL, 'ARB', 20, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 13) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (135, '2026-03-23T07:44:24.435149+00:00', '2026-04-25T23:07:31.529435+00:00', 'ARB Nacho Quatro', NULL, NULL, 'ARB', 20, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 13) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (136, '2026-03-23T07:55:45.121756+00:00', '2026-04-25T23:07:31.529435+00:00', 'ARB Base Auxiliary Light', NULL, NULL, 'ARB', 20, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 13) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (14, '2026-02-18T02:09:41.39671+00:00', '2026-04-25T23:07:31.529435+00:00', 'Alo - F6', NULL, '', 'JO LED LIGHTS', 1, NULL, NULL, 0, 0, 0, 0, 0, '', '', NULL, NULL, '6000-6500', NULL, NULL, '{"tags":[]}'::jsonb, true, 19) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (137, '2026-03-26T07:51:49.782156+00:00', '2026-04-25T23:07:31.529435+00:00', 'SR Aux Lights', NULL, NULL, 'SR Lightings', 20, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 32) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (138, '2026-03-26T08:43:01.127412+00:00', '2026-04-25T23:07:31.529435+00:00', 'Bajaj Rock Guard', NULL, NULL, 'Baja Designs', 21, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 14) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (139, '2026-03-28T06:39:05.006008+00:00', '2026-04-25T23:07:31.529435+00:00', 'Fortuner Fog Light', NULL, NULL, 'Better Than Stock', 20, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 12) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (140, '2026-03-28T06:40:41.633306+00:00', '2026-04-25T23:07:31.529435+00:00', 'Nissan Fog Light', NULL, NULL, 'Better Than Stock', 20, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 12) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (142, '2026-03-28T06:47:58.444718+00:00', '2026-04-25T23:07:31.529435+00:00', 'Nissan 3 Fog Light', NULL, NULL, 'Better Than Stock', 20, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 12) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (141, '2026-03-28T06:46:19.846676+00:00', '2026-04-25T23:07:31.529435+00:00', 'Toyota Projector Fog Light', NULL, NULL, 'Better Than Stock', 20, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[],"color":"Yellow","internal_notes":"","color_temperature":null}'::jsonb, true, 12) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (143, '2026-03-28T07:16:14.791009+00:00', '2026-04-25T23:07:31.529435+00:00', 'Ford Fog Light', NULL, NULL, 'Better Than Stock', 20, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 12) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (144, '2026-03-28T07:23:11.375449+00:00', '2026-04-25T23:07:31.529435+00:00', 'Toyota Large Fog Light', NULL, NULL, 'Better Than Stock', 20, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 12) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (145, '2026-03-28T07:32:18.987395+00:00', '2026-04-25T23:07:31.529435+00:00', 'GTW-G38', NULL, NULL, 'Fearless of Darkness', 20, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 3) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (124, '2026-03-20T05:58:55.060702+00:00', '2026-04-25T23:07:31.529435+00:00', 'PIAA 220R', NULL, NULL, 'PIAA', 20, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[],"color":"White/Yellow","internal_notes":"","color_temperature":null}'::jsonb, true, 20) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (27, '2026-02-25T06:43:16.15155+00:00', '2026-04-25T23:07:31.529435+00:00', '57 Xrx - z2', NULL, NULL, 'Gram Lights', 12, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, 'Dark Bronze', NULL, NULL, '{"tags":[],"color":"17x8","internal_notes":"","color_temperature":"Dark Bronze","spec_1772000809098":"0"}'::jsonb, true, 2) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (146, '2026-04-09T05:23:28.163023+00:00', '2026-04-25T23:07:31.529435+00:00', 'PIAA S-RF Series VM Led Lightbar 6”', NULL, NULL, 'PIAA', 20, 28, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[],"color":"5600K","socket":"Driving"}'::jsonb, true, 20) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (148, '2026-04-09T05:28:41.408071+00:00', '2026-04-25T23:07:31.529435+00:00', 'PIAA S-RF Series 9”', NULL, NULL, 'PIAA', 20, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 20) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (149, '2026-04-09T05:32:25.573616+00:00', '2026-04-25T23:07:31.529435+00:00', 'SR Chase Lights', NULL, NULL, 'SR Lightings', 20, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 32) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (150, '2026-04-09T06:19:49.56399+00:00', '2026-04-25T23:07:31.529435+00:00', 'STEDI Type-X 7” Replacement Cover', NULL, NULL, 'STEDI', 21, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 46) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (151, '2026-04-09T06:21:57.277177+00:00', '2026-04-25T23:07:31.529435+00:00', 'STEDI Quad Pro Smiley', NULL, NULL, 'STEDI', 21, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 46) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (152, '2026-04-09T06:23:54.109391+00:00', '2026-04-25T23:07:31.529435+00:00', 'STEDI Type-X Evo Smiley', NULL, NULL, 'STEDI', 21, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 46) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (153, '2026-04-09T06:25:31.595738+00:00', '2026-04-25T23:07:31.529435+00:00', 'STEDI Type-X Smiley', NULL, NULL, 'STEDI', 21, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 46) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (154, '2026-04-09T06:37:11.671538+00:00', '2026-04-25T23:07:31.529435+00:00', 'Rigid Cover D- Series 201913', NULL, NULL, 'Rigid', 21, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[],"color":"Black","internal_notes":"","color_temperature":null}'::jsonb, true, 4) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (155, '2026-04-09T07:06:04.321745+00:00', '2026-04-25T23:07:31.529435+00:00', 'Rigid Cover 10” E/RDS', NULL, NULL, 'Rigid', 21, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 4) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (156, '2026-04-09T07:08:59.256645+00:00', '2026-04-25T23:07:31.529435+00:00', 'PIAA Lamp Cover LP570 LED', NULL, NULL, 'PIAA', 21, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 20) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (158, '2026-04-09T07:45:16.461788+00:00', '2026-04-25T23:07:31.529435+00:00', 'Ironman Cover Blast', NULL, NULL, 'Ironman', 21, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[]}'::jsonb, true, 24) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (147, '2026-04-09T05:26:05.968379+00:00', '2026-06-05T01:24:39.983116+00:00', 'PIAA V-RF 10” ', NULL, NULL, 'PIAA', 20, NULL, NULL, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL, '', NULL, NULL, '{"tags":[],"color":"5800K","variant_color":"5800K","internal_notes":"","color_temperature":""}'::jsonb, true, 20) ON CONFLICT DO NOTHING;
-INSERT INTO public.products ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES (169, '2026-06-05T01:35:13.121967+00:00', '2026-06-05T01:35:13.121967+00:00', 'Blaze Pro', 'LIT-HEL-BZP-4IN-YEL-SG', NULL, 'Hellsten', 20, 29, NULL, 7500, 0, 2, 2, 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags":[],"color":"Amber","socket":"Spot"}'::jsonb, false, 11) ON CONFLICT DO NOTHING;
+--
+-- Data for Name: admins; Type: TABLE DATA; Schema: public; Owner: postgres
+--
 
--- Table: product_variants
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (186, '2026-03-10T06:19:58.960182+00:00', 77, 85, '50mm', '6000', NULL, NULL, 5700, 0, 2, 5, false, NULL, 0, 'Montero', '{"color":"Montero","internal_notes":null,"color_temperature":"Rear"}'::jsonb, 'color_temperature=rear|variant_type=50mm', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (156, '2026-03-04T03:54:34.064756+00:00', 72, 69, 'VF2002', NULL, NULL, NULL, 4200, 0, 1, 5, false, NULL, 0, NULL, '{"tags":[],"color":null,"internal_notes":"Lexus, FJ Cruiser, Prado, Mazda MPY","color_temperature":null}'::jsonb, 'variant_type=vf2002', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (208, '2026-03-12T06:34:13.951398+00:00', 81, 105, 'LT285/70R27', NULL, NULL, NULL, 0, 0, 4, 5, false, NULL, 0, '121/118S', '{"color":"121/118S","internal_notes":"Need Price","color_temperature":null}'::jsonb, 'variant_type=lt285/70r27', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (226, '2026-03-16T03:38:42.189973+00:00', 91, 119, 'M12 x 1.50', NULL, NULL, NULL, 2000, 0, 3, 5, false, '', 0, 'Black', '{"color":"Black","internal_notes":"","color_temperature":null}'::jsonb, 'variant_type=m12 x 1.50', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (227, '2026-03-16T03:38:42.189973+00:00', 91, 120, 'M12 x 1.25', NULL, NULL, NULL, 2000, 0, 4, 5, false, '', 0, 'Black', '{"color":"Black","internal_notes":"","color_temperature":null}'::jsonb, 'variant_type=m12 x 1.25', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (267, '2026-03-19T06:34:59.101144+00:00', 115, 133, 'Spot', NULL, 'LIT-RIG-RAD-WHT-PR', NULL, 11000, 0, 1, 5, false, '', 0, 'White', '{"color":"White","internal_notes":"","color_temperature":null}'::jsonb, 'variant_type=spot', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (272, '2026-03-19T07:10:21.738297+00:00', 120, 135, 'Flood Beam', NULL, 'LIT-PIA-2K-IY-PR', NULL, 10463, 0, 1, 1, false, '', 0, 'Ion Yellow', '{"color":"Ion Yellow","internal_notes":"","color_temperature":null}'::jsonb, 'variant_type=flood beam', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (280, '2026-03-20T06:58:30.434339+00:00', 128, 135, 'Flood Beam', NULL, 'LIT-KC-C3-FLD-BLK-PR', NULL, 14080, 0, 2, 5, false, '', 0, 'Black', '{"color":"Black","internal_notes":"","color_temperature":null}'::jsonb, 'variant_type=flood beam', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (283, '2026-03-20T07:57:59.612794+00:00', 131, 141, 'Fog Beam', NULL, 'LIT-KC-500-GRVT-FG-CLR-PR', NULL, 25850, 0, 1, 1, false, '', 0, 'Clear', '{"color":"Clear","internal_notes":"","color_temperature":null}'::jsonb, 'variant_type=fog beam', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (290, '2026-03-23T07:34:28.906018+00:00', 134, 133, 'Spot', NULL, 'LIT-ARB-INT-SOL7-SPT-SG', NULL, 17000, 0, 3, 2, false, '', 0, 'Clear', '{"color":"Clear","internal_notes":"","color_temperature":null}'::jsonb, 'variant_type=spot', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (179, '2026-03-07T07:03:22.705323+00:00', 77, 80, '32mm', 'Front', NULL, NULL, 4000, 0, 1, 5, false, NULL, 0, 'Navara/Terra', '{"tags":[],"color":"Navara/Terra","internal_notes":"","color_temperature":"Front"}'::jsonb, NULL, NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (294, '2026-03-26T06:53:04.792203+00:00', 14, 22, '9005 (HB3)', '6000-6500', NULL, NULL, 3200, 0, 5, 3, false, NULL, 0, NULL, '{"color":null,"internal_notes":null,"color_temperature":"6000-6500"}'::jsonb, NULL, NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (299, '2026-03-26T08:43:01.39994+00:00', 138, 145, '66-8003', NULL, NULL, NULL, 1000, 0, 4, 3, false, '', 0, 'Black', '{"color":"Black","internal_notes":"","color_temperature":null}'::jsonb, 'variant_type=66-8003', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (304, '2026-03-28T06:47:58.754083+00:00', 142, 147, 'Fog Light', NULL, 'LIT-BTS-NS3-FOG-YELL-PR', NULL, 0, 0, 1, 1, false, '', 0, 'Yellow', '{"color":"Yellow","internal_notes":"","color_temperature":null}'::jsonb, 'variant_type=fog light', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (180, '2026-03-07T07:03:22.705323+00:00', 77, 80, '32mm', '3000K', NULL, NULL, 4000, 0, 1, 5, false, NULL, 0, 'Hilux', '{"tags":[],"color":"Hilux","internal_notes":"Need Price","color_temperature":"Front"}'::jsonb, NULL, NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (36, '2026-02-17T23:21:21.200279+00:00', 12, 32, '19"', 'Red', 'null-36', NULL, 1100, 0, 2, 5, false, NULL, 0, 'RedK', '{"tags":[],"color":"Yellow","last_restock":{"date":"2026-02-17T23:21:56.532Z","quantity":1},"variant_type":"","internal_notes":"","color_temperature":"Red"}'::jsonb, 'variant_type=19"|color_temperature=red', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (300, '2026-03-26T08:43:01.39994+00:00', 138, 146, '66-8001', NULL, NULL, NULL, 1000, 0, 1, 2, false, '', 0, 'Black', '{"color":"Black","internal_notes":"","color_temperature":null}'::jsonb, 'variant_type=66-8001', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (318, '2026-04-09T06:25:32.024234+00:00', 153, 81, 'N/A', NULL, NULL, NULL, 2800, 0, 4, 5, false, '', 0, 'Black ', '{"color":"Black ","internal_notes":"","color_temperature":null}'::jsonb, 'variant_type=n/a', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (323, '2026-04-09T07:43:40.288798+00:00', 157, 153, '9”', NULL, NULL, NULL, 900, 0, 2, 5, false, '', 0, 'Amber', '{"color":"Amber","internal_notes":"","color_temperature":null}'::jsonb, 'variant_type=9”', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (234, '2026-03-16T03:47:05.208305+00:00', 91, 121, 'M14 x 1.5', NULL, NULL, NULL, 2000, 0, 1, 5, false, NULL, 0, 'Black', '{"tags":"[]","color":"Black","variant_color":"Black","internal_notes":"","color_temperature":""}'::jsonb, 'variant_type=m14 x 1.5', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (327, '2026-04-16T06:42:47.899246+00:00', 160, 135, 'Flood Beam', NULL, 'LIT-IM-MOD-30W-WHT-FLD-SG', 'LIT-IM-MOD-30W-WHT-SPT-SG', 5000, 0, 2, 1, false, NULL, 0, '6000k', '{"tags":[],"color":"6000k","internal_notes":"","color_temperature":null}'::jsonb, 'variant_type=spot', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (330, '2026-04-16T07:07:39.748301+00:00', 163, 155, 'Combo Beam', NULL, 'LIT-IRN-BST-7-48W-CB', 'LIT-IRN-BST-7-48W-CB', 12800, 0, 2, 1, false, NULL, 0, '6500K', '{"tags":[],"color":"6500K","internal_notes":"","color_temperature":null}'::jsonb, 'variant_type=combo beam', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (331, '2026-04-16T07:16:57.830864+00:00', 164, 155, 'Combo Beam', NULL, 'LIT-IRN-BST2-7-CB', 'LIT-IRN-BST2-7-CB', 12000, 0, 2, 2, false, NULL, 0, '6000K', '{"tags":[],"color":"6000K","internal_notes":"","color_temperature":null}'::jsonb, 'variant_type=combo beam', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (221, '2026-03-12T07:57:48.000805+00:00', 88, 108, 'LT265/65R17', NULL, NULL, NULL, 9519, 0, 4, 4, false, NULL, 0, '120/117Q', '{"tags":[],"color":"120/117Q","internal_notes":"","color_temperature":null}'::jsonb, 'variant_type=lt265/65r17', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (286, '2026-03-23T06:47:31.707488+00:00', 81, 102, 'LT285/70R17', NULL, NULL, NULL, 16750, 0, 8, 4, false, NULL, 0, '121/118S', '{"tags":[],"color":"121/118S","internal_notes":"","color_temperature":null}'::jsonb, 'variant_type=lt285/70r17', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (255, '2026-03-18T06:15:33.080152+00:00', 105, 127, 'H3', 'Round', 'FOG-DLA-RND-WHT-H3-PR', NULL, 1800, 0, 3, 5, false, '', 0, 'White', '{"color":"White","internal_notes":"","color_temperature":"Round"}'::jsonb, 'color_temperature=round|variant_type=h3', 2) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (29, '2026-02-17T04:17:57.707266+00:00', 10, 24, 'H1', '4300', 'null-29', NULL, 5000, 0, 1, 5, false, NULL, 0, NULL, '{}'::jsonb, 'variant_type=h1|color_temperature=4300', 1) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (276, '2026-03-20T05:58:55.439238+00:00', 124, 131, 'Driving', NULL, 'LIT-PIA-220R-DRV-WY-PR', 'LIT-PIA-220R-DRV-WY-PR', 5700, 0, 1, 1, false, NULL, 0, 'White/Yellow', '{"tags":[],"color":"White/Yellow","internal_notes":"","color_temperature":null}'::jsonb, 'variant_type=driving', 28) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (314, '2026-04-09T05:28:41.730067+00:00', 148, 131, 'Driving', NULL, 'LIT-PIA-SRF-DRV-56K-9-SG', NULL, 10000, 0, 2, 5, false, '', 0, '5600k', '{"color":"5600k","internal_notes":"","color_temperature":null}'::jsonb, 'variant_type=driving', 28) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (67, '2026-02-18T02:17:38.865909+00:00', 15, 24, 'H1', '5700', NULL, NULL, 7500, 0, 1, 5, false, '', 0, '5700K', '{}'::jsonb, 'variant_type=h1|color_temperature=5700', 1) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (213, '2026-03-12T06:52:14.980112+00:00', 83, 110, 'LT255/85R16', NULL, NULL, NULL, 21950, 0, 4, 5, false, NULL, 0, '123/120Q', '{"tags":"[]","color":"123/120Q","variant_color":"123/120Q","internal_notes":"","color_temperature":""}'::jsonb, 'variant_type=lt255/85r16', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (311, '2026-04-08T08:45:13.646293+00:00', 93, 121, 'M14 x 1.5', NULL, NULL, NULL, 16000, 0, 0, 1, false, NULL, 0, 'Chrome', '{"color":"Chrome","internal_notes":null,"color_temperature":null}'::jsonb, NULL, NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (181, '2026-03-09T03:00:03.554128+00:00', 77, 80, '32mm', 'Front', NULL, NULL, 4000, 0, 1, 5, false, NULL, 0, 'Triton/Montero', '{"color":"Triton/Montero","internal_notes":null,"color_temperature":"Front"}'::jsonb, 'color_temperature=front|variant_type=32mm', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (187, '2026-03-10T06:23:31.343224+00:00', 77, 85, '50mm', 'Rear', NULL, NULL, 5700, 0, 5, 5, false, NULL, 0, 'Fortuner/innova', '{"color":"Fortuner/innova","internal_notes":null,"color_temperature":"Rear"}'::jsonb, 'color_temperature=rear|variant_type=50mm', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (201, '2026-03-12T05:29:01.059779+00:00', 79, 99, '265/65R17', NULL, NULL, NULL, 0, 0, 4, 5, false, '', 0, '112s', '{"color":"112s","internal_notes":"Need price","color_temperature":null}'::jsonb, 'variant_type=265/65r17', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (228, '2026-03-16T03:43:07.014373+00:00', 93, 120, 'M12 x 1.25', NULL, NULL, NULL, 2000, 0, 6, 5, false, '', 0, 'Black', '{"color":"Black","internal_notes":"","color_temperature":null}'::jsonb, 'variant_type=m12 x 1.25', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (229, '2026-03-16T03:43:07.014373+00:00', 93, 120, 'M12 x 1.25', NULL, NULL, NULL, 0, 0, 4, 5, false, '', 0, 'Chrome', '{"color":"Chrome","internal_notes":"","color_temperature":null}'::jsonb, 'variant_type=m12 x 1.25', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (230, '2026-03-16T03:43:07.014373+00:00', 93, 119, 'M12 x 1.50', NULL, NULL, NULL, 2000, 0, 2, 5, false, '', 0, 'Chrome', '{"color":"Chrome","internal_notes":"","color_temperature":null}'::jsonb, 'variant_type=m12 x 1.50', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (235, '2026-03-16T05:32:38.397224+00:00', 95, 122, 'Driving/Combo', NULL, 'LIT-BAJ-SQP-DC-AMB-PR', NULL, 30000, 0, 1, 2, false, '', 0, 'Amber', '{"color":"Amber","internal_notes":"","color_temperature":null}'::jsonb, 'variant_type=driving/combo', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (256, '2026-03-18T06:50:48.697485+00:00', 106, 130, 'Diffused', NULL, 'LIT-IGN-BLK-SM-DF-SG', 'LIT-IGN-BLK-DF-SG', 0, 0, 3, 5, false, NULL, 0, 'Black', '{"tags":[],"color":"Black","internal_notes":"","color_temperature":null}'::jsonb, 'variant_type=diffused', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (268, '2026-03-19T06:36:52.955673+00:00', 116, 81, 'N/A', NULL, 'LIT-RIG-RFL-CLR-PR', NULL, 34000, 0, 1, 1, false, '', 0, 'Clear', '{"color":"Clear","internal_notes":"","color_temperature":null}'::jsonb, 'variant_type=n/a', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (273, '2026-03-19T07:25:46.442279+00:00', 121, 133, 'Spot', NULL, 'LIT-PIA-LPX-570-7IN-SPT-YLW-PR', NULL, 29650, 0, 1, 1, false, '', 0, 'Yellow', '{"color":"Yellow","internal_notes":"","color_temperature":null}'::jsonb, 'variant_type=spot', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (277, '2026-03-20T06:32:57.852868+00:00', 125, 138, 'Work Lamp', NULL, 'LIT-SEKR-WRK-CLR-SG', 'LIT-SEKR-WRK-CLR-SG', 0, 0, 2, 5, false, NULL, 0, 'Clear', '{"tags":[],"color":"Clear","internal_notes":"Need Price","color_temperature":null}'::jsonb, 'variant_type=work lamp', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (281, '2026-03-20T07:15:28.077961+00:00', 129, 140, 'Pocket', NULL, 'LIT-KC-7471-PCKT-FE3-SG', NULL, 0, 0, 2, 2, false, '', 0, 'n/a', '{"color":"n/a","internal_notes":"Need Price","color_temperature":null}'::jsonb, 'variant_type=pocket', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (291, '2026-03-23T07:44:24.807996+00:00', 135, 122, 'Driving/Combo', NULL, 'LIT-ARB-QUAT-DC-CLR-PR', NULL, 30000, 0, 1, 1, false, '', 0, 'Clear', '{"color":"Clear","internal_notes":"","color_temperature":null}'::jsonb, 'variant_type=driving/combo', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (295, '2026-03-26T06:53:58.303101+00:00', 14, 25, '9006 (HB4)', '6000-6500k', NULL, NULL, 3200, 0, 5, 3, false, NULL, 0, NULL, '{"color":null,"internal_notes":null,"color_temperature":"6000-6500k"}'::jsonb, NULL, NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (301, '2026-03-28T06:39:05.562837+00:00', 139, 147, 'Fog Light', NULL, 'LIT-BTS-FOR-FOG-YEL-PR', NULL, 6000, 0, 3, 3, false, '', 0, 'Yellow', '{"color":"Yellow","internal_notes":"","color_temperature":null}'::jsonb, 'variant_type=fog light', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (306, '2026-03-28T07:16:15.197275+00:00', 143, 147, 'Fog Light', NULL, 'LIT-BTS-FD-FOG-TRI-PR', NULL, 7000, 0, 1, 1, false, '', 0, 'Tri Color', '{"color":"Tri Color","internal_notes":"","color_temperature":null}'::jsonb, 'variant_type=fog light', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (307, '2026-03-28T07:16:15.197275+00:00', 143, 147, 'Fog Light', NULL, 'LIT-BTS-FD-FOG-YELL-PR', NULL, 6000, 0, 1, 1, false, '', 0, 'Yellow', '{"color":"Yellow","internal_notes":"","color_temperature":null}'::jsonb, 'variant_type=fog light', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (315, '2026-04-09T06:19:49.916052+00:00', 150, 151, '7”', NULL, NULL, NULL, 2800, 0, 4, 5, false, '', 0, 'Black', '{"color":"Black","internal_notes":"","color_temperature":null}'::jsonb, 'variant_type=7”', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (248, '2026-03-16T06:09:12.554119+00:00', 99, 122, 'Driving/Combo', NULL, 'LIT-BAJ-LP6P-DC-CLR-PR', 'LIT-BAJ-LP6P-DC-CLR-PR', 56000, 0, 0, 5, false, NULL, 0, 'Clear', '{"tags":[],"color":"Clear","internal_notes":"","color_temperature":null}'::jsonb, 'variant_type=driving/combo', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (319, '2026-04-09T06:37:12.160887+00:00', 154, 81, 'n/a', NULL, NULL, NULL, 1000, 0, 5, 5, false, NULL, 0, 'Black', '{"tags":[],"color":"Black","internal_notes":"","color_temperature":null}'::jsonb, 'variant_type=n/a', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (324, '2026-04-09T07:45:16.87067+00:00', 158, 151, '7”', NULL, NULL, NULL, 0, 0, 14, 5, false, '', 0, 'Clear', '{"color":"Clear","internal_notes":"Need Price","color_temperature":null}'::jsonb, 'variant_type=7”', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (328, '2026-04-16T06:51:43.924096+00:00', 161, 154, 'Dual (High: Spot / Low: Flood)', NULL, 'LIT-IRN-CSM-DUAL-20W', NULL, 11000, 0, 1, 1, false, '', 0, '6000k', '{"color":"6000k","internal_notes":"","color_temperature":null}'::jsonb, 'variant_type=dual (high: spot / low: flood)', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (332, '2026-04-16T07:32:01.935554+00:00', 165, 156, 'Broad Spot', NULL, 'LIT-IRN-CMT-9-42W', NULL, 10000, 0, 1, 1, false, '', 0, '6000K', '{"color":"6000K","internal_notes":"","color_temperature":null}'::jsonb, 'variant_type=broad spot', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (57, '2026-02-17T23:41:09.700261+00:00', 12, 40, '11"', 'Yellow', 'null-57', NULL, 1050, 0, 4, 5, false, NULL, 0, NULL, '{"tags":[],"color":"Yellow","last_restock":{"date":"2026-02-17T23:21:56.532Z","quantity":1},"internal_notes":""}'::jsonb, 'variant_type=11"|color_temperature=yellow', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (222, '2026-03-12T07:59:04.068493+00:00', 89, 117, 'LT235/75R15', NULL, NULL, NULL, 11024, 0, 1, 5, false, NULL, 0, '104/101S', '{"tags":[],"color":"104/101S","internal_notes":"","color_temperature":null}'::jsonb, 'variant_type=lt235/75r15', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (216, '2026-03-12T07:07:16.995345+00:00', 84, 113, '235/70R16', NULL, NULL, NULL, 14500, 0, 5, 4, false, NULL, 0, '106Q', '{"tags":[],"color":"106Q","internal_notes":"","color_temperature":null}'::jsonb, 'variant_type=235/70r16', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (215, '2026-03-12T07:07:16.995345+00:00', 84, 112, 'LT265/70R17', NULL, NULL, NULL, 18000, 0, 2, 4, false, NULL, 0, '112Q', '{"tags":[],"color":"112Q","internal_notes":"","color_temperature":null}'::jsonb, 'variant_type=lt265/70r17', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (287, '2026-03-23T06:48:46.566836+00:00', 81, 112, 'LT265/70R17', NULL, NULL, NULL, 17750, 0, 4, 4, false, NULL, 0, '118/115S(121R)', '{"tags":[],"color":"118/115S(121R)","internal_notes":"","color_temperature":null}'::jsonb, 'variant_type=lt265/70r17', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (209, '2026-03-12T06:35:24.742445+00:00', 81, 106, 'LT275/70R17', NULL, NULL, NULL, 20500, 0, 3, 5, false, NULL, 0, '124/121S', '{"tags":[],"color":"124/121S","internal_notes":"Need Price","color_temperature":null}'::jsonb, 'variant_type=lt275/70r17', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (261, '2026-03-19T06:09:42.99685+00:00', 112, 131, 'Driving', NULL, 'LIT-RIG-360-SAE-4IN-DRV-CLR-PR', NULL, 0, 0, 1, 1, false, '', 0, 'Clear', '{"color":"Clear","internal_notes":"","color_temperature":null}'::jsonb, 'variant_type=driving', 28) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (28, '2026-02-17T04:15:45.483932+00:00', 9, 58, 'H4', 'Dual Color', 'null-28', 'null-28', 6000, 0, 5, 5, false, NULL, 0, NULL, '{"tags":[],"internal_notes":"","color_temperature":"Dual Color "}'::jsonb, 'variant_type=h4|color_temperature=dual color', 3) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (182, '2026-03-09T03:00:50.879418+00:00', 77, 83, '10mm', 'Front', NULL, NULL, 4000, 0, 3, 5, false, NULL, 0, 'Navara', '{"tags":[],"color":"Navara","internal_notes":"","color_temperature":"Front"}'::jsonb, 'color_temperature=front|variant_type=10mm', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (188, '2026-03-10T06:26:52.808567+00:00', 77, 85, '50mm', 'Rear', NULL, NULL, 5700, 0, 4, 5, false, NULL, 0, 'Everest', '{"color":"Everest","internal_notes":null,"color_temperature":"Rear"}'::jsonb, 'color_temperature=rear|variant_type=50mm', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (202, '2026-03-12T05:30:19.641601+00:00', 79, 100, '265/60R18', NULL, NULL, NULL, 0, 0, 4, 5, false, NULL, 0, '110H', '{"color":"110H","internal_notes":"Need price","color_temperature":null}'::jsonb, 'variant_type=265/60r18', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (223, '2026-03-12T08:01:23.555845+00:00', 90, 118, '225/70R17 C', NULL, NULL, NULL, 0, 0, 4, 4, false, '', 0, '108/106S', '{"color":"108/106S","internal_notes":"Need Price","color_temperature":null}'::jsonb, 'variant_type=225/70r17 c', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (231, '2026-03-16T03:44:50.127209+00:00', 93, 121, 'M14 x 1.5', NULL, NULL, NULL, 14000, 0, 1, 5, false, NULL, 0, 'Black', '{"color":"Black","internal_notes":"Original","color_temperature":null}'::jsonb, 'variant_type=m14 x 1.5', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (249, '2026-03-16T06:10:41.909525+00:00', 100, 122, 'Driving/Combo', NULL, 'LIT-BAJ-LP4P-DC-AMB-PR', NULL, 55000, 0, 1, 5, false, '', 0, 'Amber', '{"color":"Amber","internal_notes":"with Harness","color_temperature":null}'::jsonb, 'variant_type=driving/combo', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (269, '2026-03-19T06:39:31.318898+00:00', 117, 81, 'N/A', NULL, 'LIT-RIG-SRL-RED-PR', NULL, 21000, 0, 2, 2, false, '', 0, 'Red', '{"color":"Red","internal_notes":"","color_temperature":null}'::jsonb, 'variant_type=n/a', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (278, '2026-03-20T06:43:46.609353+00:00', 126, 122, 'Driving/Combo', NULL, 'LIT-KC-FLEX3-DC-AMB-PR', NULL, 31900, 0, 1, 5, false, '', 0, 'Amber', '{"color":"Amber","internal_notes":"","color_temperature":null}'::jsonb, 'variant_type=driving/combo', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (153, '2026-03-04T03:37:21.849929+00:00', 71, 66, '33-2443', NULL, NULL, NULL, 4600, 0, 1, 5, false, NULL, 0, NULL, '{"color":null,"internal_notes":"Montero Strada","color_temperature":null}'::jsonb, 'variant_type=33-2443', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (292, '2026-03-23T07:55:45.50185+00:00', 136, 143, 'Auxiliary', NULL, 'LIT-ARB-BASE-AUX-TRI-SG', NULL, 0, 0, 5, 4, false, '', 0, 'Tri-Colour', '{"color":"Tri-Colour","internal_notes":"","color_temperature":null}'::jsonb, 'variant_type=auxiliary', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (257, '2026-03-18T07:00:55.348685+00:00', 107, 132, 'Diffused', NULL, 'LIT-RIG-IGN-SM-DF-PR', 'LIT-RIG-IGN-SM-DM-PR', 11000, 0, 1, 5, false, NULL, 0, 'Black', '{"tags":[],"color":"Black","internal_notes":"","color_temperature":null}'::jsonb, 'variant_type=diffused', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (302, '2026-03-28T06:40:41.890469+00:00', 140, 147, 'Fog Light', NULL, 'LIT-BTS-NIS-FOG-YELL-PR', NULL, 6000, 0, 1, 2, false, '', 0, 'Yellow', '{"color":"Yellow","internal_notes":"","color_temperature":null}'::jsonb, 'variant_type=fog light', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (308, '2026-03-28T07:23:11.828546+00:00', 144, 147, 'Fog Light', NULL, 'LIT-BTS-TY-FOG-YELL-PR', NULL, 7000, 0, 2, 2, false, '', 0, 'Yellow', '{"color":"Yellow","internal_notes":"","color_temperature":null}'::jsonb, 'variant_type=fog light', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (309, '2026-03-28T07:23:11.828546+00:00', 144, 147, 'Fog Light', NULL, 'LIT-BTS-HLX-FOG-YELL-PR', NULL, 7000, 0, 1, 1, false, '', 0, 'Yellow', '{"color":"Yellow","internal_notes":"HILUX","color_temperature":null}'::jsonb, 'variant_type=fog light', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (316, '2026-04-09T06:21:57.569366+00:00', 151, 81, 'N/A', NULL, NULL, NULL, 2800, 0, 6, 5, false, '', 0, 'Black', '{"color":"Black","internal_notes":"","color_temperature":null}'::jsonb, 'variant_type=n/a', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (320, '2026-04-09T07:06:04.729119+00:00', 155, 152, '10”', NULL, NULL, NULL, 1300, 0, 3, 5, false, '', 0, 'Black', '{"color":"Black","internal_notes":"","color_temperature":null}'::jsonb, 'variant_type=10”', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (325, '2026-04-09T07:46:19.893566+00:00', 157, 153, '9”', NULL, NULL, NULL, 900, 0, 1, 5, false, NULL, 0, 'Clear', '{"color":"Clear","internal_notes":null,"color_temperature":null}'::jsonb, NULL, NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (329, '2026-04-16T07:00:03.997239+00:00', 162, 133, 'Spot', NULL, 'LIT-IRN-CMT-7-30W', 'LIT-IRN-CMT-7-30W', 9300, 0, 2, 2, false, NULL, 0, '6000k', '{"tags":[],"color":"6000k","internal_notes":"","color_temperature":null}'::jsonb, 'variant_type=spot', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (333, '2026-04-24T06:31:12.236805+00:00', 166, 114, '265/70R17', NULL, NULL, NULL, 11550, 0, 4, 2, false, '', 0, '112T', '{"color":"112T","internal_notes":"","color_temperature":null}'::jsonb, 'variant_type=265/70r17', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (288, '2026-03-23T06:50:32.409114+00:00', 81, 115, 'LT265/65R18', NULL, NULL, NULL, 16800, 0, 4, 4, false, NULL, 0, '117/114S', '{"tags":[],"color":"117/114S","internal_notes":"Need Price","color_temperature":null}'::jsonb, 'variant_type=lt265/65r18', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (210, '2026-03-12T06:36:17.675204+00:00', 81, 107, 'LT285/75R17', NULL, NULL, NULL, 21500, 0, 4, 5, false, NULL, 0, '128/125S', '{"tags":[],"color":"128/125S","internal_notes":"Need Price","color_temperature":null}'::jsonb, 'variant_type=lt285/75r17', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (217, '2026-03-12T07:38:46.23533+00:00', 85, 114, '265/70R17', NULL, NULL, NULL, 17351, 0, 4, 5, false, NULL, 0, '115S', '{"tags":[],"color":"115S","internal_notes":"","color_temperature":null}'::jsonb, 'variant_type=265/70r17', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (264, '2026-03-19T06:09:43.181662+00:00', 113, 131, 'Driving', NULL, 'LIT-RIG-360-4IN-RND-DRV-CLR-PR', NULL, 28000, 0, 1, 1, false, '', 0, 'Clear', '{"color":"Clear","internal_notes":"","color_temperature":null}'::jsonb, 'variant_type=driving', 28) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (274, '2026-03-19T07:33:50.472473+00:00', 122, 131, 'Driving', NULL, 'LIT-PIA-LP-570-7IN-DRV-CLR-PR', NULL, 25800, 0, 1, 1, false, '', 0, 'Clear', '{"color":"Clear","internal_notes":"","color_temperature":null}'::jsonb, 'variant_type=driving', 28) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (296, '2026-03-26T06:54:55.218274+00:00', 14, 27, 'H4', '6000-6500k', NULL, NULL, 3200, 0, 5, 3, false, NULL, 0, NULL, '{"color":null,"internal_notes":null,"color_temperature":"6000-6500k"}'::jsonb, NULL, 3) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (183, '2026-03-09T03:02:08.627415+00:00', 77, 85, '50mm', 'Rear', NULL, NULL, 5700, 0, 5, 5, false, NULL, 0, 'Fj Cruiser', '{"color":"Fj Cruiser","internal_notes":null,"color_temperature":"Rear"}'::jsonb, 'color_temperature=rear|variant_type=50mm', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (189, '2026-03-10T06:27:51.754948+00:00', 77, 85, '50mm', 'Rear', NULL, NULL, 5700, 0, 4, 5, false, NULL, 0, 'Navara', '{"color":"Navara","internal_notes":null,"color_temperature":"Rear"}'::jsonb, 'color_temperature=rear|variant_type=50mm', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (203, '2026-03-12T05:36:03.826873+00:00', 80, 157, '285/65R18', NULL, NULL, NULL, 22751, 0, 4, 4, false, NULL, 0, '116T', '{"tags":[],"color":"116T","internal_notes":"","color_temperature":null}'::jsonb, 'variant_type=285/65r18', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (232, '2026-03-16T03:45:25.146462+00:00', 93, 119, 'M12 x 1.50', NULL, NULL, NULL, 11000, 0, 1, 5, false, NULL, 0, 'Black', '{"color":"Black","internal_notes":"Original","color_temperature":null}'::jsonb, 'variant_type=m12 x 1.50', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (250, '2026-03-16T06:54:36.295515+00:00', 101, 124, 'Diffused', NULL, 'LIT-STE-C4-BLK-DF-57K', NULL, 6000, 0, 5, 5, false, '', 0, 'Black', '{"color":"Black","internal_notes":"","color_temperature":null}'::jsonb, 'variant_type=diffused', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (251, '2026-03-16T06:54:36.295515+00:00', 101, 125, 'Flood', NULL, 'LIT-STE-C4-BLK-FL-57K', NULL, 6000, 0, 1, 5, false, '', 0, 'Black', '{"color":"Black","internal_notes":"","color_temperature":null}'::jsonb, 'variant_type=flood', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (270, '2026-03-19T07:02:38.408425+00:00', 118, 81, 'N/A', NULL, 'LIT-RIG-SCN-WHT-SG', NULL, 6800, 0, 2, 2, false, '', 0, 'White', '{"color":"White","internal_notes":"","color_temperature":null}'::jsonb, 'variant_type=n/a', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (279, '2026-03-20T06:54:19.762798+00:00', 127, 139, 'Spread', NULL, 'LIT-KC-FLEX-SPRD-CLR-PR', NULL, 20680, 0, 1, 5, false, '', 0, 'Clear', '{"color":"Clear","internal_notes":"","color_temperature":null}'::jsonb, 'variant_type=spread', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (284, '2026-03-23T06:27:19.918735+00:00', 133, 134, 'Wide Drive', NULL, 'LIT-KC-GRVT-91305-WD-CLR-PR', NULL, 40700, 0, 1, 1, false, '', 0, 'Clear', '{"color":"Clear","internal_notes":"","color_temperature":null}'::jsonb, 'variant_type=wide drive', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (285, '2026-03-23T06:27:19.918735+00:00', 133, 133, 'Spot', NULL, 'LIT-KC-GRVT-91305-CLR-SPT-PR', NULL, 40700, 0, 1, 1, false, '', 0, 'Clear', '{"color":"Clear","internal_notes":"","color_temperature":null}'::jsonb, 'variant_type=spot', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (297, '2026-03-26T07:51:50.294959+00:00', 137, 143, 'Auxiliary', NULL, 'LIT-SR-AUX-WA-SPT-SG', NULL, 1500, 0, 7, 3, false, '', 0, 'White/Amber', '{"color":"White/Amber","internal_notes":"","color_temperature":null}'::jsonb, 'variant_type=auxiliary', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (205, '2026-03-12T05:36:03.826873+00:00', 80, 102, 'LT285/70R17', NULL, NULL, NULL, 21329, 0, 4, 5, false, NULL, 0, '116/113R', '{"tags":[],"color":"116/113R","internal_notes":"","color_temperature":null}'::jsonb, 'variant_type=lt285/70r17', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (293, '2026-03-25T04:51:53.881493+00:00', 80, 144, '265/75R16', NULL, NULL, NULL, 14567, 0, 0, 4, false, NULL, 0, '116T', '{"tags":[],"color":"116T","internal_notes":"","color_temperature":null}'::jsonb, NULL, NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (62, '2026-02-18T02:09:41.986286+00:00', 14, 42, 'H8/H9/H11', '3000', NULL, NULL, 3200, 0, 2, 2, false, NULL, 0, '3000K', '{"color":"3000K","internal_notes":null,"color_temperature":"3000"}'::jsonb, 'variant_type=h8/h9/h11|color_temperature=3000', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (64, '2026-02-18T02:09:41.986286+00:00', 14, 42, 'H8/H9/H11', '6000-6500', NULL, NULL, 3200, 0, 3, 3, false, NULL, 0, '6000-6500K', '{"color":"6000-6500K","internal_notes":null,"color_temperature":"6000-6500"}'::jsonb, 'variant_type=h8/h9/h11|color_temperature=6000-6500', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (298, '2026-03-26T07:51:50.294959+00:00', 137, 143, 'Auxiliary', NULL, 'LIT-SR-AUX-WHT-SPT-SG', NULL, 1300, 0, 1, 1, false, '', 0, 'White', '{"color":"White","internal_notes":"","color_temperature":null}'::jsonb, 'variant_type=auxiliary', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (237, '2026-03-16T05:41:45.308431+00:00', 96, 122, 'Driving/Combo', NULL, 'LIT-BAJ-SQS-DC-CLR-PR', NULL, 20000, 0, 1, 5, false, '', 0, 'Clear', '{"color":"Clear","internal_notes":"","color_temperature":null}'::jsonb, 'variant_type=driving/combo', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (303, '2026-03-28T06:46:20.134935+00:00', 141, 147, 'Fog Light', NULL, 'LIT-BTS-TY-PROJ-FOG-YELL-PR', NULL, 6500, 0, 2, 1, false, NULL, 0, 'Yellow', '{"tags":[],"color":"Yellow","internal_notes":"","color_temperature":null}'::jsonb, 'variant_type=fog light', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (310, '2026-03-28T07:32:19.398562+00:00', 145, 149, 'Fog Lamp', NULL, 'LIT-FOD-NS-G38-FOG-TRI-PR', NULL, 7000, 0, 2, 2, false, '', 0, 'Tri Color', '{"color":"Tri Color","internal_notes":"","color_temperature":null}'::jsonb, 'variant_type=fog lamp', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (317, '2026-04-09T06:23:54.397383+00:00', 152, 81, 'N/A', NULL, NULL, NULL, 2800, 0, 4, 5, false, '', 0, 'Black', '{"color":"Black","internal_notes":"","color_temperature":null}'::jsonb, 'variant_type=n/a', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (219, '2026-03-12T07:45:29.700062+00:00', 86, 99, '265/65R17', NULL, NULL, NULL, 11725.99, 0, 4, 4, false, NULL, 0, '112T', '{"tags":[],"color":"112T","internal_notes":"","color_temperature":null}'::jsonb, 'variant_type=265/65r17', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (321, '2026-04-09T07:08:59.665271+00:00', 156, 81, 'N/A', NULL, NULL, NULL, 2200, 0, 4, 5, false, '', 0, 'Black', '{"color":"Black","internal_notes":"","color_temperature":null}'::jsonb, 'variant_type=n/a', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (322, '2026-04-09T07:08:59.665271+00:00', 156, 81, 'N/A', NULL, NULL, NULL, 2200, 0, 2, 5, false, '', 0, 'Amber', '{"color":"Amber","internal_notes":"","color_temperature":null}'::jsonb, 'variant_type=n/a', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (238, '2026-03-16T05:41:45.308431+00:00', 96, 122, 'Driving/Combo', NULL, 'LIT-BAJ-SQS-DC-AMB-PR', NULL, 20000, 0, 2, 5, false, '', 0, 'Amber', '{"color":"Amber","internal_notes":"","color_temperature":null}'::jsonb, 'variant_type=driving/combo', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (326, '2026-04-16T06:37:44.833868+00:00', 159, 133, 'Spot', NULL, 'LIT-IRN-UNI-16W-SPT-WHT-SG', NULL, 5625, 0, 2, 1, false, '', 0, '6000k', '{"color":"6000k","internal_notes":"","color_temperature":null}'::jsonb, 'variant_type=spot', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (218, '2026-03-12T07:45:29.700062+00:00', 86, 115, 'LT265/65R18', NULL, NULL, NULL, 15947, 0, 4, 4, false, NULL, 0, '10PR', '{"tags":[],"color":"10PR","internal_notes":"","color_temperature":null}'::jsonb, 'variant_type=lt265/65r18', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (204, '2026-03-12T05:36:03.826873+00:00', 80, 101, '285/55R20', NULL, NULL, NULL, 24119, 0, 8, 5, false, NULL, 0, '114T', '{"tags":[],"color":"114T","internal_notes":"","color_temperature":null}'::jsonb, 'variant_type=285/55r20', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (289, '2026-03-23T06:53:49.825834+00:00', 80, 142, '235/75R15', NULL, NULL, NULL, 14590, 0, 0, 5, false, NULL, 0, '109T', '{"tags":[],"color":"109T","internal_notes":"","color_temperature":null}'::jsonb, 'variant_type=235/75r15', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (211, '2026-03-12T06:37:28.79906+00:00', 81, 108, 'LT265/65R17', NULL, NULL, NULL, 16500, 0, 4, 5, false, NULL, 0, '116/113S', '{"tags":[],"color":"116/113S","internal_notes":"Need Price","color_temperature":null}'::jsonb, 'variant_type=lt265/65r17', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (305, '2026-03-28T07:16:15.197275+00:00', 143, 131, 'Driving', NULL, NULL, NULL, 6000, 0, 1, 1, false, 'LIT-BTS-FD-FOG-DRV-YELL-PR', 0, 'Yellow', '{"color":"Yellow","internal_notes":"Fog Light","color_temperature":null}'::jsonb, 'variant_type=driving', 28) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (184, '2026-03-09T03:04:53.597605+00:00', 77, 84, '60mm', 'Front/Rear', NULL, NULL, 3000, 0, 17, 5, false, NULL, 0, 'Jimny', '{"tags":[],"color":"Jimny","internal_notes":"","color_temperature":"Front/Rear"}'::jsonb, 'color_temperature=front/rear|variant_type=60mm', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (190, '2026-03-10T07:40:50.876823+00:00', 78, 86, 'AT622', NULL, NULL, NULL, 10000, 0, 1, 5, false, '', 0, NULL, '{"color":null,"internal_notes":"","color_temperature":null}'::jsonb, 'variant_type=at622', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (68, '2026-02-18T02:17:38.865909+00:00', 15, 22, '9005 (HB3)', '5700', NULL, NULL, 7500, 0, 1, 5, false, '', 0, '5700K', '{}'::jsonb, 'variant_type=9005 (hb3)|color_temperature=5700', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (69, '2026-02-18T02:34:15.650503+00:00', 16, 25, '9006 (HB4)', '4300', NULL, NULL, 6900, 0, 2, 5, false, '', 0, '4300K', '{}'::jsonb, 'variant_type=9006 (hb4)|color_temperature=4300', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (66, '2026-02-18T02:17:38.865909+00:00', 15, 25, '9006 (HB4)', '5700', 'null-66', NULL, 7500, 0, 3, 5, false, NULL, 0, '5700K', '{"color":"","internal_notes":""}'::jsonb, 'variant_type=9006 (hb4)|color_temperature=5700', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (38, '2026-02-17T23:21:21.200279+00:00', 12, 34, '22"', 'Red', NULL, NULL, 1200, 0, 5, 5, false, '', 0, 'RedK', '{}'::jsonb, 'variant_type=22"|color_temperature=red', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (39, '2026-02-17T23:21:21.200279+00:00', 12, 35, '24"', 'Red', NULL, NULL, 1300, 0, 5, 5, false, '', 0, 'RedK', '{}'::jsonb, 'variant_type=24"|color_temperature=red', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (40, '2026-02-17T23:21:21.200279+00:00', 12, 36, '26"', 'Red', NULL, NULL, 1300, 0, 4, 5, false, '', 0, 'RedK', '{}'::jsonb, 'variant_type=26"|color_temperature=red', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (70, '2026-02-18T02:34:15.650503+00:00', 16, 25, '9006 (HB4)', '6000', NULL, NULL, 6900, 0, 1, 5, false, '', 0, '6000K', '{}'::jsonb, 'variant_type=9006 (hb4)|color_temperature=6000', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (24, '2026-02-17T04:02:59.920591+00:00', 7, 26, 'H27', '6000', 'null-24', 'null-24', 6000, 0, 2, 5, false, NULL, 0, NULL, '{"tags":[],"color":"","last_restock":{"date":"2026-02-17T04:04:09.409Z","quantity":1},"internal_notes":""}'::jsonb, 'variant_type=h27|color_temperature=6000', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (34, '2026-02-17T23:21:21.200279+00:00', 12, 30, '17"', 'Red', 'null-34', NULL, 1100, 0, 5, 5, false, NULL, 0, 'RedK', '{"tags":[],"color":"Red","last_restock":{"date":"2026-02-17T23:21:56.532Z","quantity":1},"internal_notes":""}'::jsonb, 'variant_type=17"|color_temperature=red', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (23, '2026-02-17T04:02:59.920591+00:00', 7, 26, 'H27', '4300', 'null-23', NULL, 6000, 0, 1, 5, false, NULL, 0, NULL, '{}'::jsonb, 'variant_type=h27|color_temperature=4300', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (26, '2026-02-17T04:11:21.427321+00:00', 8, 22, '9005 (HB3)', '6000', 'null-26', NULL, 8500, 0, 1, 5, false, NULL, 0, NULL, '{}'::jsonb, 'variant_type=9005 (hb3)|color_temperature=6000', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (25, '2026-02-17T04:11:21.427321+00:00', 8, 25, '9006 (HB4)', '6000', 'null-25', NULL, 8500, 0, 1, 5, false, NULL, 0, NULL, '{}'::jsonb, 'variant_type=9006 (hb4)|color_temperature=6000', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (73, '2026-02-18T02:34:15.650503+00:00', 16, 43, 'H8/H9/H11/H16', '5000', NULL, NULL, 0, 0, 1, 5, false, '', 0, '5000K', '{}'::jsonb, 'variant_type=h8/h9/h11/h16|color_temperature=5000', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (35, '2026-02-17T23:21:21.200279+00:00', 12, 31, '18"', 'Red', 'null-35', NULL, 1100, 0, 12, 5, false, NULL, 0, 'RedK', '{"tags":[],"color":"","last_restock":{"date":"2026-02-17T23:21:56.532Z","quantity":1},"internal_notes":""}'::jsonb, 'variant_type=18"|color_temperature=red', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (46, '2026-02-17T23:29:24.32874+00:00', 12, 33, '20"', 'Purple', 'null-46', NULL, 1500, 0, 3, 5, false, NULL, 0, 'Purple', '{}'::jsonb, 'variant_type=20"|color_temperature=purple', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (47, '2026-02-17T23:30:12.504051+00:00', 12, 34, '22"', 'Purple', 'null-47', NULL, 1400, 0, 5, 5, false, NULL, 0, 'Purple', '{}'::jsonb, 'variant_type=22"|color_temperature=purple', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (48, '2026-02-17T23:30:59.20278+00:00', 12, 35, '24"', 'Purple', 'null-48', NULL, 1600, 0, 8, 5, false, NULL, 0, 'Purple', '{}'::jsonb, 'variant_type=24"|color_temperature=purple', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (49, '2026-02-17T23:33:28.968284+00:00', 12, 38, '28"', 'Purple', 'null-49', NULL, 1800, 0, 5, 5, false, NULL, 0, 'Purple', '{}'::jsonb, 'variant_type=28"|color_temperature=purple', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (74, '2026-02-18T02:37:48.683063+00:00', 17, 44, 'H15', '5000-5700', 'null-74', NULL, 3000, 0, 3, 5, false, NULL, 0, 'ZES', '{}'::jsonb, 'variant_type=h15|color_temperature=5000-5700', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (15, '2026-02-17T04:02:59.920591+00:00', 7, 25, '9006 (HB4)', '4300', 'null-15', 'null-15', 6000, NULL, 9, 5, false, NULL, 0, NULL, '{"tags":[],"color":"4300","last_restock":{"date":"2026-02-17T04:04:09.409Z","quantity":1},"internal_notes":""}'::jsonb, 'variant_type=9006 (hb4)|color_temperature=4300', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (27, '2026-02-17T04:15:45.483932+00:00', 9, 22, '9005 (HB3)', 'Dual Color', 'null-27', 'null-27', 6000, 0, 3, 5, false, NULL, 0, NULL, '{"tags":[],"internal_notes":"","color_temperature":"Dual Color "}'::jsonb, 'variant_type=9005 (hb3)|color_temperature=dual color', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (32, '2026-02-17T23:21:21.200279+00:00', 12, 28, '12"', 'Red', 'null-32', 'null-32', 1100, 0, 5, 5, false, NULL, 0, 'RedK', '{"tags":[],"color":"Red","last_restock":{"date":"2026-02-17T23:21:56.532Z","quantity":1},"internal_notes":""}'::jsonb, 'variant_type=12"|color_temperature=red', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (191, '2026-03-10T07:40:50.876823+00:00', 78, 87, 'AT171', NULL, NULL, NULL, 10000, 0, 2, 5, false, '', 0, NULL, '{"color":null,"internal_notes":"","color_temperature":null}'::jsonb, 'variant_type=at171', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (21, '2026-02-17T04:02:59.920591+00:00', 7, 23, '9012 (HIR2)', '6000', 'null-21', NULL, 6000, 0, 5, 5, false, NULL, 0, NULL, '{}'::jsonb, 'variant_type=9012 (hir2)|color_temperature=6000', 25) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (20, '2026-02-17T04:02:59.920591+00:00', 7, 22, '9005 (HB3)', '4300', 'null-20', 'null-20', 6000, 0, 6, 5, false, NULL, 0, NULL, '{"tags":[],"color":"","socket":null,"last_restock":{"date":"2026-02-17T04:04:09.409Z","quantity":1},"internal_notes":"","color_temperature":"All Weather"}'::jsonb, 'variant_type=9005 (hb3)|color_temperature=4300', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (37, '2026-02-17T23:21:21.200279+00:00', 12, 33, '20"', 'Red', NULL, NULL, 1200, 0, 4, 5, false, '', 0, 'RedK', '{}'::jsonb, 'variant_type=20"|color_temperature=red', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (17, '2026-02-17T04:02:59.920591+00:00', 7, 25, '9006 (HB4)', '6000', 'null-17', NULL, 6000, 0, 4, 5, false, NULL, 0, NULL, '{}'::jsonb, 'variant_type=9006 (hb4)|color_temperature=6000', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (16, '2026-02-17T04:02:59.920591+00:00', 7, 24, 'H1', '6000', 'null-16', NULL, 6000, 6000, 2, 5, false, NULL, 0, NULL, '{}'::jsonb, 'variant_type=h1|color_temperature=6000', 1) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (41, '2026-02-17T23:24:42.748564+00:00', 12, 37, '14"', 'Purple', 'null-41', 'null-41', 1200, 0, 7, 5, false, NULL, 0, NULL, '{"tags":[],"color":"Purple","last_restock":{"date":"2026-02-17T23:21:56.532Z","quantity":1},"internal_notes":""}'::jsonb, 'variant_type=14"|color_temperature=purple', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (33, '2026-02-17T23:21:21.200279+00:00', 12, 29, '16"', 'Red', 'null-33', NULL, 1100, 0, 3, 5, false, NULL, 0, 'RedK', '{"tags":[],"color":"Red","last_restock":{"date":"2026-02-17T23:21:56.532Z","quantity":1},"internal_notes":""}'::jsonb, 'variant_type=16"|color_temperature=red', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (55, '2026-02-17T23:39:56.375832+00:00', 12, 35, '24"', 'Green', 'null-55', NULL, 1600, 0, 5, 5, false, NULL, 0, NULL, '{"tags":[],"color":"Green","last_restock":{"date":"2026-02-17T23:21:56.532Z","quantity":1},"variant_type":"","internal_notes":""}'::jsonb, 'variant_type=24"|color_temperature=green', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (45, '2026-02-17T23:28:35.061509+00:00', 12, 32, '19"', 'Purple', 'null-45', 'null-45', 1400, 0, 4, 5, false, NULL, 0, NULL, '{"tags":[],"color":"Yellow","last_restock":{"date":"2026-02-17T23:21:56.532Z","quantity":1},"variant_type":"","internal_notes":""}'::jsonb, 'variant_type=19"|color_temperature=purple', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (44, '2026-02-17T23:28:06.916971+00:00', 12, 31, '18"', 'Purple', 'null-44', NULL, 1400, 0, 4, 5, false, NULL, 0, NULL, '{"tags":[],"color":"Purple","last_restock":{"date":"2026-02-17T23:21:56.532Z","quantity":1},"internal_notes":""}'::jsonb, 'variant_type=18"|color_temperature=purple', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (51, '2026-02-17T23:37:55.388727+00:00', 12, 29, '16"', 'Green', 'null-51', NULL, 1200, 0, 5, 5, false, NULL, 0, NULL, '{"tags":[],"color":"Green","last_restock":{"date":"2026-02-17T23:21:56.532Z","quantity":1},"variant_type":"","internal_notes":""}'::jsonb, 'variant_type=16"|color_temperature=green', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (59, '2026-02-17T23:42:27.987196+00:00', 12, 41, '13"', 'Yellow', 'null-59', NULL, 1150, 0, 5, 5, false, NULL, 0, NULL, '{"tags":[],"color":"Yellow","last_restock":{"date":"2026-02-17T23:21:56.532Z","quantity":1},"variant_type":"","internal_notes":""}'::jsonb, 'variant_type=13"|color_temperature=yellow', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (88, '2026-02-25T06:52:44.723265+00:00', 30, 51, '6x114.3', 'Matte Black', NULL, NULL, 12500, 0, 4, 4, false, '', 0, '18x9', '{"color":"18x9","internal_notes":"","color_temperature":"Matte Black","spec_1772000809098":"12"}'::jsonb, 'variant_type=6x114.3|color_temperature=matte black', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (42, '2026-02-17T23:25:59.28453+00:00', 12, 29, '16"', 'Purple', 'null-42', NULL, 1300, 0, 5, 5, false, NULL, 0, NULL, '{"tags":[],"color":"Yellow","last_restock":{"date":"2026-02-17T23:21:56.532Z","quantity":1},"variant_type":"","internal_notes":""}'::jsonb, 'variant_type=16"|color_temperature=purple', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (52, '2026-02-17T23:38:19.991003+00:00', 12, 32, '19"', 'Green', 'null-52', NULL, 1400, 0, 2, 5, false, NULL, 0, NULL, '{"tags":[],"color":"Yellow","last_restock":{"date":"2026-02-17T23:21:56.532Z","quantity":1},"variant_type":"","internal_notes":""}'::jsonb, 'variant_type=19"|color_temperature=green', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (43, '2026-02-17T23:27:29.406148+00:00', 12, 30, '17"', 'Purple', 'null-43', 'null-43', 1350, 0, 1, 5, false, NULL, 0, NULL, '{"tags":[],"color":"Yellow","last_restock":{"date":"2026-02-17T23:21:56.532Z","quantity":1},"variant_type":"","internal_notes":"","color_temperature":"Yellow"}'::jsonb, 'variant_type=17"|color_temperature=purple', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (58, '2026-02-17T23:41:34.741267+00:00', 12, 28, '12"', 'Yellow', 'null-58', 'null-58', 1100, 0, 5, 5, false, NULL, 0, 'Yellow', '{"tags":[],"color":"Yellow","last_restock":{"date":"2026-02-17T23:21:56.532Z","quantity":1},"variant_type":"","internal_notes":"","color_temperature":"Yellow"}'::jsonb, 'variant_type=12"|color_temperature=yellow', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (54, '2026-02-17T23:39:22.984673+00:00', 12, 34, '22"', 'Green', 'null-54', 'null-54', 1500, 0, 9, 5, false, NULL, 0, NULL, '{"tags":[],"color":"Yellow","last_restock":{"date":"2026-02-17T23:21:56.532Z","quantity":1},"variant_type":"","internal_notes":"","color_temperature":"Yellow"}'::jsonb, 'variant_type=22"|color_temperature=green', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (53, '2026-02-17T23:39:03.677297+00:00', 12, 33, '20"', 'Green', 'null-53', 'null-53', 1500, 0, 4, 5, false, NULL, 0, 'Green', '{"tags":[],"color":"Green","last_restock":{"date":"2026-02-17T23:21:56.532Z","quantity":1},"variant_type":"","internal_notes":"","color_temperature":"Green"}'::jsonb, 'variant_type=20"|color_temperature=green', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (81, '2026-02-25T06:30:11.557862+00:00', 23, 54, '5x139.7', 'Bronze', 'null-81', NULL, 30000, 0, 5, 5, false, NULL, 0, '16x6', '{"tags":[],"color":"16x6","internal_notes":"","color_temperature":"Bronze","spec_1772000809098":"-5"}'::jsonb, 'variant_type=5x139.7|color_temperature=bronze', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (93, '2026-02-25T07:11:14.968697+00:00', 33, 51, '6x114.3', 'Gloss Silver', NULL, NULL, 15000, 0, 4, 4, false, '', 0, '17x9', '{"color":"17x9","internal_notes":"","color_temperature":"Gloss Silver","spec_1772000809098":"12"}'::jsonb, 'variant_type=6x114.3|color_temperature=gloss silver', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (89, '2026-02-25T06:52:44.723265+00:00', 30, 53, '6x139.7', 'Black with Machined', NULL, NULL, 11000, 0, 4, 4, false, '', 0, '17', '{"color":"17","internal_notes":"","color_temperature":"Black with Machined","spec_1772000809098":"n/a"}'::jsonb, 'variant_type=6x139.7|color_temperature=black with machined', 27) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (82, '2026-02-25T06:36:53.767118+00:00', 24, 53, '6x139.7', 'Pressed Graphite', NULL, NULL, 42500, 0, 4, 4, false, '', 0, '17x8.5', '{"color":"17x8.5","internal_notes":"","color_temperature":"Pressed Graphite","spec_1772000809098":"-10"}'::jsonb, 'variant_type=6x139.7|color_temperature=pressed graphite', 27) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (98, '2026-02-25T07:31:47.088042+00:00', 38, 51, '6x114.3', 'Gunmetal Grey', NULL, NULL, 15000, 0, 4, 4, false, '', 0, '20x9.5', '{"color":"20x9.5","internal_notes":"From Warwin","color_temperature":"Gunmetal Grey","spec_1772000809098":"1"}'::jsonb, 'variant_type=6x114.3|color_temperature=gunmetal grey', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (101, '2026-02-25T07:41:27.437237+00:00', 41, 51, '6x114.3', 'Gunmetal Grey', NULL, NULL, 20000, 0, 4, 4, false, '', 0, '20x9', '{"color":"20x9","internal_notes":"1 on Display","color_temperature":"Gunmetal Grey","spec_1772000809098":"18"}'::jsonb, 'variant_type=6x114.3|color_temperature=gunmetal grey', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (102, '2026-02-25T07:43:30.126288+00:00', 42, 51, '6x114.3', 'Gloss Black Milled', NULL, NULL, 20000, 0, 4, 4, false, '', 0, '20x9', '{"color":"20x9","internal_notes":"1 on Display, 1 with JK","color_temperature":"Gloss Black Milled","spec_1772000809098":"30"}'::jsonb, 'variant_type=6x114.3|color_temperature=gloss black milled', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (56, '2026-02-17T23:40:35.69054+00:00', 12, 39, '10"', 'Yellow', 'null-56', 'null-56', 1000, 0, 5, 5, false, NULL, 0, NULL, '{"tags":[],"color":"Green","last_restock":{"date":"2026-02-17T23:21:56.532Z","quantity":1},"variant_type":"","internal_notes":"","color_temperature":"Green"}'::jsonb, 'variant_type=10"|color_temperature=yellow', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (110, '2026-02-26T01:38:41.381616+00:00', 50, 55, '5x127', 'Matte Black', NULL, NULL, 21250, 0, 4, 4, false, '', 0, '17x8.5', '{"color":"17x8.5","internal_notes":"Jeep PCD","color_temperature":"Matte Black","spec_1772000809098":"0"}'::jsonb, 'variant_type=5x127|color_temperature=matte black', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (121, '2026-02-26T01:59:36.070613+00:00', 58, 51, '6x114.3', 'Satin Black', NULL, NULL, 15000, 0, 4, 4, false, '', 0, '17x8.5', '{"color":"17x8.5","internal_notes":"set of 4","color_temperature":"Satin Black","spec_1772000809098":"18"}'::jsonb, 'variant_type=6x114.3|color_temperature=satin black', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (123, '2026-02-26T02:03:49.113158+00:00', 59, 51, '6x114.3', 'Matte Anthracite', NULL, NULL, 21000, 0, 4, 4, false, '', 0, '17x8', '{"color":"17x8","internal_notes":"set of 4","color_temperature":"Matte Anthracite","spec_1772000809098":"30"}'::jsonb, 'variant_type=6x114.3|color_temperature=matte anthracite', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (125, '2026-02-26T02:19:55.947642+00:00', 61, 54, '5x139.7', 'Black/White', NULL, NULL, 6500, 0, 4, 4, false, '', 0, '16x6', '{"color":"16x6","internal_notes":"Bearcat/Black","color_temperature":"Black/White","spec_1772000809098":"0"}'::jsonb, 'variant_type=5x139.7|color_temperature=black/white', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (122, '2026-02-26T02:03:49.113158+00:00', 59, 56, '5x139', 'Anthracite', NULL, NULL, 18000, 0, 5, 5, false, NULL, 0, '15x7', '{"tags":[],"color":"15x7","internal_notes":"set of 5","color_temperature":"Anthracite","spec_1772000809098":"0"}'::jsonb, 'variant_type=5x139|color_temperature=anthracite', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (132, '2026-02-26T02:44:11.577001+00:00', 66, 57, '6x139', 'Bronze', NULL, NULL, 20250, 0, 4, 4, false, NULL, 0, '18x9', '{"color":"18x9","internal_notes":null,"color_temperature":"Bronze","spec_1772000809098":"20"}'::jsonb, 'variant_type=6x139|color_temperature=bronze', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (138, '2026-02-26T02:50:37.691894+00:00', 67, 57, '6x139', 'Inner Black/Outer Black', NULL, NULL, 20000, 0, 4, 4, false, '', 0, '18x9', '{"color":"18x9","internal_notes":"","color_temperature":"Inner Black/Outer Black","spec_1772000809098":"0"}'::jsonb, 'variant_type=6x139|color_temperature=inner black/outer black', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (139, '2026-02-26T02:53:06.219066+00:00', 68, 54, '5x139.7', 'White', NULL, NULL, 22000, 0, 4, 4, false, '', 0, '16x6', '{"color":"16x6","internal_notes":"","color_temperature":"White","spec_1772000809098":"-5"}'::jsonb, 'variant_type=5x139.7|color_temperature=white', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (159, '2026-03-04T04:00:41.180407+00:00', 71, 72, '33-2472', NULL, NULL, NULL, 4700, 0, 1, 5, false, NULL, 0, NULL, '{"color":null,"internal_notes":"Accent","color_temperature":null}'::jsonb, 'variant_type=33-2472', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (145, '2026-02-26T06:36:37.93746+00:00', 48, 54, '5x139.7', 'Gunmetal Machined(PressG)', NULL, NULL, 10750, 0, 4, 4, false, NULL, 0, '16x7', '{"tags":[],"color":"16x7","socket":null,"last_restock":{"date":"2026-02-17T23:21:56.532Z","quantity":1},"internal_notes":"set of 4","color_temperature":"Gunmetal Machined(PressG)","spec_1772000809098":"0"}'::jsonb, 'variant_type=5x139.7|color_temperature=gunmetal machined(pressg)', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (146, '2026-02-26T06:39:14.14488+00:00', 70, 54, '5x139.7', 'Matte Black', NULL, NULL, 9750, 0, 4, 4, false, NULL, 0, '15x7', '{"tags":[],"color":"15x7","internal_notes":"set of 4","color_temperature":"Matte Black","spec_1772000809098":"-6"}'::jsonb, 'variant_type=5x139.7|color_temperature=matte black', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (147, '2026-03-04T02:56:26.280835+00:00', 71, 60, '33-3185', NULL, NULL, NULL, 6000, 0, 5, 5, false, '', 0, NULL, '{"color":null,"internal_notes":"New Gen Raptor","color_temperature":null}'::jsonb, 'variant_type=33-3185', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (148, '2026-03-04T03:29:24.069686+00:00', 71, 61, '33-3059', NULL, NULL, NULL, 5500, 0, 3, 5, false, NULL, 0, NULL, '{"color":null,"internal_notes":"Nissan Terra","color_temperature":null}'::jsonb, 'variant_type=33-3059', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (149, '2026-03-04T03:32:36.387734+00:00', 71, 62, '33-3045', NULL, NULL, NULL, 6500, 0, 5, 5, false, NULL, 0, NULL, '{"color":null,"internal_notes":"Hilux","color_temperature":null}'::jsonb, 'variant_type=33-3045', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (150, '2026-03-04T03:34:47.395839+00:00', 71, 63, '33-3062', NULL, NULL, NULL, 5100, 0, 1, 5, false, NULL, 0, NULL, '{"color":null,"internal_notes":"15-19 Toyota Land Cruiser/Prado 2.8L","color_temperature":null}'::jsonb, 'variant_type=33-3062', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (154, '2026-03-04T03:38:38.827917+00:00', 71, 67, '33-2146', NULL, NULL, NULL, 4600, 0, 4, 5, false, NULL, 0, NULL, '{"color":null,"internal_notes":"Lexus LX470, LC/LC Prado","color_temperature":null}'::jsonb, 'variant_type=33-2146', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (155, '2026-03-04T03:54:34.064756+00:00', 72, 68, 'VF2052', NULL, NULL, NULL, 4000, 0, 2, 5, false, '', 0, NULL, '{"color":null,"internal_notes":"Ford Ranger/Everest/Raptor","color_temperature":null}'::jsonb, 'variant_type=vf2052', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (131, '2026-02-26T02:42:07.603916+00:00', 66, 57, '6x139', 'Black', NULL, NULL, 18000, 0, 0, 4, false, '', 0, '17x9', '{"color":"17x9","internal_notes":"","color_temperature":"Black","spec_1772000809098":"20"}'::jsonb, 'variant_type=6x139|color_temperature=black', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (124, '2026-02-26T02:18:00.364099+00:00', 60, 53, '6x139.7', 'Black', NULL, NULL, 6000, 0, 4, 4, false, '', 0, '15x8', '{"color":"15x8","internal_notes":"Trak 2/Black","color_temperature":"Black","spec_1772000809098":"-22"}'::jsonb, 'variant_type=6x139.7|color_temperature=black', 27) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (126, '2026-02-26T02:21:33.693615+00:00', 60, 53, '6x139.7', 'Black/White', NULL, NULL, 6500, 0, 4, 4, false, NULL, 0, '16x8', '{"color":"16x8","internal_notes":"Trak 2/Black","color_temperature":"Black/White","spec_1772000809098":"0"}'::jsonb, 'variant_type=6x139.7|color_temperature=black/white', 27) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (151, '2026-03-04T03:35:49.141656+00:00', 71, 158, '33-2387', NULL, NULL, NULL, 6000, 0, 1, 1, false, NULL, 0, NULL, '{"tags":"[]","color":"","internal_notes":"LC200","color_temperature":""}'::jsonb, 'variant_type=33-2387', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (142, '2026-02-26T06:21:24.068681+00:00', 7, 22, '9005 (HB3)', '6000', NULL, NULL, 6000, 0, 2, 5, false, NULL, 0, NULL, '{"color":null,"internal_notes":null,"color_temperature":"6000"}'::jsonb, 'variant_type=9005 (hb3)|color_temperature=6000', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (157, '2026-03-04T03:57:24.927174+00:00', 72, 70, 'VF2033', NULL, NULL, NULL, 6000, 0, 1, 5, false, NULL, 0, NULL, '{"color":null,"internal_notes":"Honda","color_temperature":null}'::jsonb, 'variant_type=vf2033', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (158, '2026-03-04T03:58:25.217558+00:00', 72, 71, 'VF1001', NULL, NULL, NULL, 7300, 0, 1, 5, false, NULL, 0, NULL, '{"color":null,"internal_notes":"Navara, NP300, Nissan Frontier","color_temperature":null}'::jsonb, 'variant_type=vf1001', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (160, '2026-03-04T04:01:39.031584+00:00', 71, 73, '33-2360', NULL, NULL, NULL, 4300, 0, 1, 5, false, NULL, 0, NULL, '{"color":null,"internal_notes":"Vios Gen 2","color_temperature":null}'::jsonb, 'variant_type=33-2360', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (161, '2026-03-04T04:02:38.422657+00:00', 71, 74, '33-3018', NULL, NULL, NULL, 5500, 0, 1, 5, false, NULL, 0, NULL, '{"color":null,"internal_notes":"Vios 2016","color_temperature":null}'::jsonb, 'variant_type=33-3018', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (162, '2026-03-04T04:03:49.245318+00:00', 71, 75, '33-2162', NULL, NULL, NULL, 3900, 0, 2, 5, false, NULL, 0, NULL, '{"color":null,"internal_notes":"Jimny 1.3","color_temperature":null}'::jsonb, 'variant_type=33-2162', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (163, '2026-03-04T04:05:09.360506+00:00', 71, 76, '33-2974', NULL, NULL, NULL, 4500, 0, 1, 5, false, NULL, 0, NULL, '{"color":null,"internal_notes":"Swift 1.2 2016 & 2017","color_temperature":null}'::jsonb, 'variant_type=33-2974', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (164, '2026-03-04T04:06:56.38983+00:00', 71, 77, '33-2342', NULL, NULL, NULL, 4700, 0, 1, 5, false, NULL, 0, NULL, '{"color":null,"internal_notes":"Civic 1.8 2011","color_temperature":null}'::jsonb, 'variant_type=33-2342', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (167, '2026-03-06T07:19:36.939129+00:00', 73, 80, '32mm', 'Front', NULL, NULL, 3800, 0, 1, 5, false, '', 0, 'Ranger', '{"color":"Ranger","internal_notes":"","color_temperature":"Front"}'::jsonb, 'variant_type=32mm|color_temperature=front', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (168, '2026-03-06T07:19:36.939129+00:00', 73, 81, 'n/a', 'Front', NULL, NULL, 5000, 0, 2, 5, false, '', 0, 'LC200', '{"color":"LC200","internal_notes":"","color_temperature":"Front"}'::jsonb, 'variant_type=n/a|color_temperature=front', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (166, '2026-03-06T07:19:36.939129+00:00', 73, 79, '25mm', 'Front', NULL, NULL, 4000, 0, 4, 5, false, NULL, 0, 'Hilux', '{"tags":[],"color":"Hilux","internal_notes":"","color_temperature":"Front"}'::jsonb, 'variant_type=25mm|color_temperature=front', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (192, '2026-03-10T07:40:50.876823+00:00', 78, 88, 'AT901', NULL, NULL, NULL, 10000, 0, 1, 5, false, '', 0, NULL, '{"color":null,"internal_notes":"","color_temperature":null}'::jsonb, 'variant_type=at901', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (193, '2026-03-10T07:40:50.876823+00:00', 78, 89, 'AT173', NULL, NULL, NULL, 10000, 0, 3, 5, false, '', 0, NULL, '{"color":null,"internal_notes":"","color_temperature":null}'::jsonb, 'variant_type=at173', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (194, '2026-03-10T07:40:50.876823+00:00', 78, 90, 'AT931', NULL, NULL, NULL, 10000, 0, 3, 5, false, '', 0, NULL, '{"color":null,"internal_notes":"","color_temperature":null}'::jsonb, 'variant_type=at931', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (195, '2026-03-10T07:40:50.876823+00:00', 78, 91, 'AT313', NULL, NULL, NULL, 10000, 0, 2, 5, false, '', 0, NULL, '{"color":null,"internal_notes":"","color_temperature":null}'::jsonb, 'variant_type=at313', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (196, '2026-03-10T07:40:50.876823+00:00', 78, 92, 'AT804', NULL, NULL, NULL, 10000, 0, 3, 5, false, '', 0, NULL, '{"color":null,"internal_notes":"","color_temperature":null}'::jsonb, 'variant_type=at804', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (197, '2026-03-10T07:40:50.876823+00:00', 78, 93, 'AT301', NULL, NULL, NULL, 10000, 0, 1, 5, false, '', 0, NULL, '{"color":null,"internal_notes":"","color_temperature":null}'::jsonb, 'variant_type=at301', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (198, '2026-03-10T07:40:50.876823+00:00', 78, 94, 'AT301', NULL, NULL, NULL, 10000, 0, 1, 5, false, '', 0, NULL, '{"color":null,"internal_notes":"","color_temperature":null}'::jsonb, 'variant_type=at301', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (199, '2026-03-10T07:40:50.876823+00:00', 78, 95, 'AT161', NULL, NULL, NULL, 0, 0, 1, 5, false, '', 0, NULL, '{"color":null,"internal_notes":"","color_temperature":null}'::jsonb, 'variant_type=at161', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (200, '2026-03-10T07:40:50.876823+00:00', 78, 96, 'AT711', NULL, NULL, NULL, 10000, 0, 1, 5, false, '', 0, NULL, '{"color":null,"internal_notes":"","color_temperature":null}'::jsonb, 'variant_type=at711', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (220, '2026-03-12T07:56:47.66648+00:00', 87, 116, '295/80R22.5', NULL, NULL, NULL, 0, 0, 4, 4, false, '', 0, '152/149M', '{"color":"152/149M","internal_notes":"Need Price","color_temperature":null}'::jsonb, 'variant_type=295/80r22.5', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (224, '2026-03-16T03:38:42.173821+00:00', 92, 119, 'M12 x 1.50', NULL, NULL, NULL, 2000, 0, 3, 5, false, '', 0, 'Black', '{"color":"Black","internal_notes":"","color_temperature":null}'::jsonb, 'variant_type=m12 x 1.50', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (225, '2026-03-16T03:38:42.173821+00:00', 92, 120, 'M12 x 1.25', NULL, NULL, NULL, 2000, 0, 4, 5, false, '', 0, 'Black', '{"color":"Black","internal_notes":"","color_temperature":null}'::jsonb, 'variant_type=m12 x 1.25', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (233, '2026-03-16T03:46:03.371944+00:00', 93, 119, 'M12 x 1.50', NULL, NULL, NULL, 0, 0, 1, 5, false, NULL, 0, 'Chrome', '{"color":"Chrome","internal_notes":"Original","color_temperature":null}'::jsonb, 'variant_type=m12 x 1.50', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (239, '2026-03-16T05:49:46.371079+00:00', 97, 122, 'Driving/Combo', NULL, 'LIT-BAJ-SQSR-DC-CLR-PR', NULL, 20000, 0, 4, 4, false, '', 0, 'Clear', '{"color":"Clear","internal_notes":"","color_temperature":null}'::jsonb, 'variant_type=driving/combo', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (240, '2026-03-16T05:49:46.371079+00:00', 97, 123, 'Wide Cornering', NULL, 'LIT-BAJ-SQSR-WC-AMB-PR', NULL, 20000, 0, 1, 5, false, '', 0, 'Amber', '{"color":"Amber","internal_notes":"","color_temperature":null}'::jsonb, 'variant_type=wide cornering', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (241, '2026-03-16T05:49:46.371079+00:00', 97, 122, 'Driving/Combo', NULL, 'LIT-BAJ-SQSR-DC-AMB-PR', NULL, 20000, 0, 2, 5, false, '', 0, 'Amber', '{"color":"Amber","internal_notes":"","color_temperature":null}'::jsonb, 'variant_type=driving/combo', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (206, '2026-03-12T06:02:38.379236+00:00', 81, 103, 'LT265/60R18', NULL, NULL, NULL, 16500, 0, 0, 5, false, NULL, 0, '114/110s ', '{"tags":[],"color":"114/110s ","internal_notes":"Need price","color_temperature":null}'::jsonb, 'variant_type=lt265/60r18', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (266, '2026-03-19T06:31:06.211186+00:00', 109, 124, 'Diffused', NULL, 'LIT-RIG-D-DFF-SM-CLR-PR', NULL, 15000, 0, 1, 5, false, NULL, 0, 'Clear', '{"color":"Clear","internal_notes":null,"color_temperature":null}'::jsonb, 'variant_type=diffused', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (271, '2026-03-19T07:04:57.997127+00:00', 119, 134, 'Wide Drive', NULL, 'LIT-PIA-530-WD-WY-PR', NULL, 18500, 0, 1, 1, false, '', 0, 'White/Yellow', '{"color":"White/Yellow","internal_notes":"","color_temperature":null}'::jsonb, 'variant_type=wide drive', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (207, '2026-03-12T06:02:38.379236+00:00', 81, 104, 'LT285/65R18', NULL, NULL, NULL, 21500, 0, 4, 5, false, NULL, 0, '125/122s', '{"tags":[],"color":"125/122s","internal_notes":"Need price","color_temperature":null}'::jsonb, 'variant_type=lt285/65r18', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (252, '2026-03-16T08:51:01.975578+00:00', 102, 126, '20', NULL, 'LIT-STE-ST3K-21-20L', 'LIT-STE-ST3K-21-20L', 13000, 0, 0, 5, false, NULL, 0, 'Clear', '{"tags":[],"color":"Clear","internal_notes":"Need Price","color_temperature":null}'::jsonb, 'variant_type=20', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (212, '2026-03-12T06:39:16.578429+00:00', 82, 109, 'LT275/65R17', NULL, NULL, NULL, 19500, 0, 1, 5, false, NULL, 0, '123/120R', '{"tags":[],"color":"123/120R","internal_notes":"","color_temperature":null}'::jsonb, 'variant_type=lt275/65r17', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (259, '2026-03-18T08:13:43.116254+00:00', 109, 131, 'Driving', NULL, 'LIT-RIG-D-SAE-FG-CLR-PR', NULL, 19000, 0, 1, 5, false, '', 0, 'Clear', '{"color":"Clear","internal_notes":"","color_temperature":null}'::jsonb, 'variant_type=driving', 28) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (165, '2026-03-04T04:08:45.857294+00:00', 71, 78, '33-3086', NULL, NULL, NULL, 0, 0, 1, 5, false, NULL, 0, NULL, '{"tags":"[]","color":"","internal_notes":"Needs Price\nRaptor (Old)","color_temperature":""}'::jsonb, 'variant_type=33-3086', NULL) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (141, '2026-02-26T06:19:52.879725+00:00', 7, 18, 'H11', 'All Weather', NULL, NULL, 6000, 0, 2, 5, false, NULL, 0, NULL, '{"tags":[],"color":null,"socket":null,"last_restock":{"date":"2026-02-17T04:04:09.409Z","quantity":1},"internal_notes":"","color_temperature":"All Weather"}'::jsonb, 'variant_type=h11|color_temperature=all weather', 7) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (312, '2026-04-09T05:23:28.553949+00:00', 146, 131, 'Driving', NULL, 'LIT-PIA-SRF-DRV-56k-6-SG', NULL, 0, 0, 1, 5, false, '', 0, '5600K', '{"color":"5600K","internal_notes":"Need Price","color_temperature":null}'::jsonb, 'variant_type=driving', 28) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (103, '2026-02-25T07:45:44.188559+00:00', 43, 53, '6x139.7', 'Gloss Titanium', NULL, NULL, 17500, 0, 4, 4, false, '', 0, '17x8.5', '{"color":"17x8.5","internal_notes":"","color_temperature":"Gloss Titanium","spec_1772000809098":"0"}'::jsonb, 'variant_type=6x139.7|color_temperature=gloss titanium', 27) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (104, '2026-02-25T09:25:09.407703+00:00', 46, 53, '6x139.7', 'BZ4 (Gloss Dark Bronze)', NULL, NULL, 20625, 0, 4, 4, false, '', 0, '17x8.5', '{"color":"17x8.5","internal_notes":"","color_temperature":"BZ4 (Gloss Dark Bronze)","spec_1772000809098":"-10"}'::jsonb, 'variant_type=6x139.7|color_temperature=bz4 (gloss dark bronze)', 27) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (265, '2026-03-19T06:12:39.495291+00:00', 114, 131, 'Driving', NULL, 'LIT-RIG-D-SAE-FG-CLR-PR', NULL, 19000, 0, 1, 1, false, '', 0, 'Clear', '{"color":"Clear","internal_notes":"","color_temperature":null}'::jsonb, 'variant_type=driving', 28) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (275, '2026-03-19T08:28:39.300401+00:00', 123, 131, 'Driving', NULL, 'LIT-PIA-LP-530-DRV-WHT-PR', NULL, 15000, 0, 1, 1, false, '', 0, 'White', '{"color":"White","internal_notes":"","color_temperature":null}'::jsonb, 'variant_type=driving', 28) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (258, '2026-03-18T07:49:44.842392+00:00', 108, 131, 'Driving', NULL, 'LIT-RIG-DSS-DRV-CLR-PR', NULL, 20000, 0, 1, 5, false, '', 0, 'Clear', '{"color":"Clear","internal_notes":"","color_temperature":null}'::jsonb, 'variant_type=driving', 28) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (19, '2026-02-17T04:02:59.920591+00:00', 7, 3, 'H7', '4300', 'null-19', NULL, 6000, 0, 2, 5, false, NULL, 0, NULL, '{}'::jsonb, 'variant_type=h7|color_temperature=4300', 4) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (72, '2026-02-18T02:34:15.650503+00:00', 16, 3, 'H7', '5000', NULL, NULL, 0, 0, 1, 5, false, '', 0, '5000K', '{}'::jsonb, 'variant_type=h7|color_temperature=5000', 4) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (75, '2026-02-18T02:50:37.887515+00:00', 18, 3, 'H7', '4200', NULL, NULL, 6500, 0, 2, 5, false, '', 0, '4200K', '{}'::jsonb, 'variant_type=h7|color_temperature=4200', 4) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (76, '2026-02-18T02:52:37.055325+00:00', 19, 27, 'H4', '3000', NULL, NULL, 4500, 0, 1, 5, false, '', 0, '3000K', '{}'::jsonb, 'variant_type=h4|color_temperature=3000', 3) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (61, '2026-02-18T01:51:49.178165+00:00', 13, 48, 'H4', '6000', 'null-61', NULL, 5000, 0, 1, 5, false, NULL, 0, '6000K', '{}'::jsonb, 'variant_type=h4|color_temperature=6000', 3) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (60, '2026-02-18T01:51:49.178165+00:00', 13, 24, 'H1', '6000', 'null-60', NULL, 5000, 0, 2, 5, false, NULL, 0, '6000K', '{}'::jsonb, 'variant_type=h1|color_temperature=6000', 1) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (63, '2026-02-18T02:09:41.986286+00:00', 14, 3, 'H7', '6000-6500', 'null-63', NULL, 3200, 0, 1, 5, false, NULL, 0, '6000-6500K', '{"internal_notes":"","color_temperature":"6000-6500K"}'::jsonb, 'variant_type=h7|color_temperature=6000-6500', 4) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (77, '2026-02-18T03:13:54.22144+00:00', 11, 18, 'H11', NULL, 'null-77', NULL, 3750, 0, 5, 5, false, NULL, 0, 'universal', '{}'::jsonb, 'variant_type=h11', 7) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (30, '2026-02-17T05:00:24.721951+00:00', 11, 50, 'H4', NULL, 'null-30', 'null-30', 3750, 0, 23, 5, false, NULL, 0, 'universal
-', '{"tags":[],"internal_notes":""}'::jsonb, 'variant_type=h4', 3) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (84, '2026-02-25T06:39:20.7352+00:00', 26, 53, '6x139.7', 'Gunmetal', NULL, NULL, 50000, 0, 4, 4, false, '', 0, '18x9 ', '{"color":"18x9 ","internal_notes":"","color_temperature":"Gunmetal","spec_1772000809098":"0"}'::jsonb, 'variant_type=6x139.7|color_temperature=gunmetal', 27) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (86, '2026-02-25T06:46:32.351616+00:00', 28, 53, '6x139.7', 'Gunblack', NULL, NULL, 15000, 0, 4, 4, false, '', 0, '20x9.5', '{"color":"20x9.5","internal_notes":"1 on Display","color_temperature":"Gunblack","spec_1772000809098":"12"}'::jsonb, 'variant_type=6x139.7|color_temperature=gunblack', 27) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (90, '2026-02-25T06:58:51.051115+00:00', 31, 53, '6x139.7', 'Bronze', NULL, NULL, 11000, 0, 4, 4, false, '', 0, '17x9.5', '{"color":"17x9.5","internal_notes":"2 on Display, 1 with JK","color_temperature":"Bronze","spec_1772000809098":"-18"}'::jsonb, 'variant_type=6x139.7|color_temperature=bronze', 27) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (94, '2026-02-25T07:13:32.106905+00:00', 34, 53, '6x139.7', 'Matte Black', 'null-94', NULL, 15000, 15000, 4, 4, false, NULL, 0, '17x8', '{"tags":[],"color":"17x8","internal_notes":"","color_temperature":"Matte Black","spec_1772000809098":"20"}'::jsonb, 'variant_type=6x139.7|color_temperature=matte black', 27) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (85, '2026-02-25T06:43:16.501988+00:00', 27, 53, '6x139.7', 'Dark Bronze', NULL, NULL, 23750, 0, 4, 4, false, NULL, 0, '17x8', '{"tags":[],"color":"17x8","internal_notes":"","color_temperature":"Dark Bronze","spec_1772000809098":"0"}'::jsonb, 'variant_type=6x139.7|color_temperature=bronze', 27) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (95, '2026-02-25T07:25:49.73047+00:00', 35, 53, '6x139.7', 'Hyper Silver', NULL, NULL, 15000, 0, 4, 4, false, '', 0, '17x8.5', '{"color":"17x8.5","internal_notes":"","color_temperature":"Hyper Silver","spec_1772000809098":"20"}'::jsonb, 'variant_type=6x139.7|color_temperature=hyper silver', 27) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (97, '2026-02-25T07:30:06.016543+00:00', 37, 53, '6x139.7', 'Bronze', NULL, NULL, 13750, 0, 4, 4, false, '', 0, '17x9', '{"color":"17x9","internal_notes":"","color_temperature":"Bronze","spec_1772000809098":"1"}'::jsonb, 'variant_type=6x139.7|color_temperature=bronze', 27) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (99, '2026-02-25T07:34:53.870718+00:00', 39, 53, '6x139.7', 'Blackout', NULL, NULL, 17500, 0, 4, 4, false, '', 0, '18x9', '{"color":"18x9","internal_notes":"","color_temperature":"Blackout","spec_1772000809098":"20"}'::jsonb, 'variant_type=6x139.7|color_temperature=blackout', 27) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (100, '2026-02-25T07:39:26.331067+00:00', 40, 53, '6x139.7', 'Titanium Matte', NULL, NULL, 15000, 0, 4, 4, false, '', 0, '17x8.5', '{"color":"17x8.5","internal_notes":"1 with JK","color_temperature":"Titanium Matte","spec_1772000809098":"0"}'::jsonb, 'variant_type=6x139.7|color_temperature=titanium matte', 27) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (92, '2026-02-25T07:08:33.159337+00:00', 32, 53, '6x139.7', 'Silver w/machined', NULL, NULL, 15000, 0, 0, 4, false, '', 0, '17x8.5', '{"color":"17x8.5","internal_notes":"","color_temperature":"Silver w/machined","spec_1772000809098":"-10"}'::jsonb, 'variant_type=6x139.7|color_temperature=silver w/machined', 27) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (105, '2026-02-25T09:51:45.91821+00:00', 47, 53, '6x139.7', 'Matte Dark Bronze', NULL, NULL, 20625, 0, 4, 4, false, '', 0, '17x8.5', '{"color":"17x8.5","internal_notes":"","color_temperature":"Matte Dark Bronze","spec_1772000809098":"-10"}'::jsonb, 'variant_type=6x139.7|color_temperature=matte dark bronze', 27) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (106, '2026-02-25T09:54:43.252356+00:00', 48, 53, '6x139.7', 'Matte Black', NULL, NULL, 10500, 0, 4, 4, false, '', 0, '16x8', '{"color":"16x8","internal_notes":"","color_temperature":"Matte Black","spec_1772000809098":"-20"}'::jsonb, 'variant_type=6x139.7|color_temperature=matte black', 27) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (91, '2026-02-25T07:08:33.159337+00:00', 32, 53, '6x139.7', 'Gloss White', NULL, NULL, 15000, 0, 3, 4, false, '', 0, '17x8.5', '{"color":"17x8.5","internal_notes":"","color_temperature":"Gloss White","spec_1772000809098":"-10"}'::jsonb, 'variant_type=6x139.7|color_temperature=gloss white', 27) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (140, '2026-02-26T06:18:57.745488+00:00', 7, 59, 'H4', 'All Weather', NULL, NULL, 6000, 0, 8, 5, false, NULL, 0, NULL, '{"tags":[],"color":null,"socket":null,"last_restock":{"date":"2026-02-17T04:04:09.409Z","quantity":1},"internal_notes":"","color_temperature":"All Weather"}'::jsonb, 'variant_type=h4|color_temperature=all weather', 3) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (65, '2026-02-18T02:09:41.986286+00:00', 14, 23, '9012 (HIR2)', '6000-6500', NULL, NULL, 3200, 0, 0, 3, false, NULL, 0, '6000-6500K', '{"color":"6000-6500K","internal_notes":null,"color_temperature":"6000-6500"}'::jsonb, 'variant_type=9012 (hir2)|color_temperature=6000-6500', 25) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (313, '2026-04-09T05:26:06.280654+00:00', 147, 131, 'Driving', NULL, 'LIT-PIA-VRF-DRV-58K-10-SG', 'LIT-PIA-VRF-DRV-58K-10-SG', 12000, 0, 2, 2, false, NULL, 0, '5800K', '{"tags":"[]","color":"5800K","variant_color":"5800K","internal_notes":"","color_temperature":""}'::jsonb, 'variant_type=driving', 28) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (107, '2026-02-25T09:56:53.807016+00:00', 48, 53, '6x139.7', 'Matte Gunmetal', NULL, NULL, 10500, 0, 4, 4, false, NULL, 0, '16x8', '{"color":"16x8","internal_notes":null,"color_temperature":"Matte Gunmetal","spec_1772000809098":"-20"}'::jsonb, 'variant_type=6x139.7|color_temperature=matte gunmetal', 27) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (108, '2026-02-26T01:35:01.734945+00:00', 49, 53, '6x139.7', 'Black w/ Silver Ring', NULL, NULL, 7125, 0, 5, 4, false, '', 0, '16x10', '{"color":"16x10","internal_notes":"","color_temperature":"Black w/ Silver Ring","spec_1772000809098":"-44"}'::jsonb, 'variant_type=6x139.7|color_temperature=black w/ silver ring', 27) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (109, '2026-02-26T01:38:41.381616+00:00', 50, 53, '6x139.7', 'Matte Black', NULL, NULL, 21250, 0, 4, 4, false, '', 0, '17x8.5', '{"color":"17x8.5","internal_notes":"set of 4","color_temperature":"Matte Black","spec_1772000809098":"0"}'::jsonb, 'variant_type=6x139.7|color_temperature=matte black', 27) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (111, '2026-02-26T01:41:37.852015+00:00', 51, 53, '6x139.7', 'Gloss Titanium', NULL, NULL, 21250, 0, 4, 4, false, '', 0, '17x8.5', '{"color":"17x8.5","internal_notes":"with Toyota","color_temperature":"Gloss Titanium","spec_1772000809098":"0"}'::jsonb, 'variant_type=6x139.7|color_temperature=gloss titanium', 27) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (113, '2026-02-26T01:44:43.463629+00:00', 52, 53, '6x139.7', 'Matte Black', NULL, NULL, 21250, 0, 8, 4, false, '', 0, '17x8.5', '{"color":"17x8.5","internal_notes":"set of 4","color_temperature":"Matte Black","spec_1772000809098":"0"}'::jsonb, 'variant_type=6x139.7|color_temperature=matte black', 27) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (114, '2026-02-26T01:44:43.463629+00:00', 52, 53, '6x139.7', 'Matte Titanium', NULL, NULL, 21250, 0, 4, 4, false, '', 0, '17x8.5', '{"color":"17x8.5","internal_notes":"set of 4","color_temperature":"Matte Titanium","spec_1772000809098":"0"}'::jsonb, 'variant_type=6x139.7|color_temperature=matte titanium', 27) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (115, '2026-02-26T01:47:39.068712+00:00', 53, 53, '6x139.7', 'Matte Bronze', NULL, NULL, 21250, 0, 4, 4, false, '', 0, '17x8.5', '{"color":"17x8.5","internal_notes":"set of 4","color_temperature":"Matte Bronze","spec_1772000809098":"0"}'::jsonb, 'variant_type=6x139.7|color_temperature=matte bronze', 27) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (116, '2026-02-26T01:47:39.068712+00:00', 53, 53, '6x139.7', 'Matte Black', NULL, NULL, 21250, 0, 4, 4, false, '', 0, '17x8.5', '{"color":"17x8.5","internal_notes":"set of 4","color_temperature":"Matte Black","spec_1772000809098":"0"}'::jsonb, 'variant_type=6x139.7|color_temperature=matte black', 27) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (117, '2026-02-26T01:49:33.128622+00:00', 54, 53, '6x139.7', 'Gloss Titanium', NULL, NULL, 17500, 0, 4, 4, false, '', 0, '17x8.5', '{"color":"17x8.5","internal_notes":"set of 4","color_temperature":"Gloss Titanium","spec_1772000809098":"0"}'::jsonb, 'variant_type=6x139.7|color_temperature=gloss titanium', 27) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (118, '2026-02-26T01:52:06.64326+00:00', 55, 53, '6x139.7', 'Gloss Black', NULL, NULL, 18000, 0, 4, 4, false, '', 0, '17x8.5', '{"color":"17x8.5","internal_notes":"set of 4","color_temperature":"Gloss Black","spec_1772000809098":"0"}'::jsonb, 'variant_type=6x139.7|color_temperature=gloss black', 27) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (119, '2026-02-26T01:54:55.213921+00:00', 56, 53, '6x139.7', 'Satin Black', NULL, NULL, 15000, 0, 4, 4, false, '', 0, '17x8.5', '{"color":"17x8.5","internal_notes":"set of 4","color_temperature":"Satin Black","spec_1772000809098":"-10"}'::jsonb, 'variant_type=6x139.7|color_temperature=satin black', 27) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (120, '2026-02-26T01:57:42.210303+00:00', 57, 53, '6x139.7', 'Machined w/ Satin Black lip', NULL, NULL, 15000, 0, 4, 4, false, '', 0, '17x9', '{"color":"17x9","internal_notes":"set of 4","color_temperature":"Machined w/ Satin Black lip","spec_1772000809098":"0"}'::jsonb, 'variant_type=6x139.7|color_temperature=machined w/ satin black lip', 27) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (127, '2026-02-26T02:25:40.827416+00:00', 62, 53, '6x139.7', 'Matte Black+ Black Bolts', NULL, NULL, 12500, 0, 4, 4, false, '', 0, '17x9', '{"color":"17x9","internal_notes":"","color_temperature":"Matte Black+ Black Bolts","spec_1772000809098":"12"}'::jsonb, 'variant_type=6x139.7|color_temperature=matte black+ black bolts', 27) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (128, '2026-02-26T02:28:38.019524+00:00', 63, 53, '6x139.7', 'Matte Black,  milled rivet flange-silver bolt', NULL, NULL, 13750, 0, 4, 4, false, '', 0, '18x9', '{"color":"18x9","internal_notes":"","color_temperature":"Matte Black,  milled rivet flange-silver bolt","spec_1772000809098":"12"}'::jsonb, 'variant_type=6x139.7|color_temperature=matte black,  milled rivet flange-silver bolt', 27) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (130, '2026-02-26T02:39:37.696527+00:00', 65, 53, '6x139.7', 'Silver Full Machined, Silver Cap', NULL, NULL, 12500, 0, 4, 1, false, '', 0, '17x9', '{"color":"17x9","internal_notes":"","color_temperature":"Silver Full Machined, Silver Cap","spec_1772000809098":"12"}'::jsonb, 'variant_type=6x139.7|color_temperature=silver full machined, silver cap', 27) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (129, '2026-02-26T02:33:59.741332+00:00', 64, 53, '6x139.7', 'Matte Black+ Black Bolts', NULL, NULL, 12500, 0, 0, 4, false, '', 0, '17x9', '{"color":"17x9","internal_notes":"","color_temperature":"Matte Black+ Black Bolts","spec_1772000809098":"25"}'::jsonb, 'variant_type=6x139.7|color_temperature=matte black+ black bolts', 27) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (144, '2026-02-26T06:32:32.59082+00:00', 69, 53, '6x139.7', 'Silver Brush', NULL, NULL, 13000, 0, 4, 4, false, NULL, 0, '17x8.5', '{"tags":[],"color":"17x8.5","internal_notes":"set of 4","color_temperature":"Silver Brush","spec_1772000809098":"-10"}'::jsonb, 'variant_type=6x139.7|color_temperature=silver brush', 27) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (112, '2026-02-26T01:41:37.852015+00:00', 51, 53, '6x139.7', 'Machined Clear Coat', NULL, NULL, 21250, 0, 8, 4, false, NULL, 0, '17x8.5', '{"color":"17x8.5","internal_notes":"set of 4","color_temperature":"Machined Clear Coat","spec_1772000809098":"0"}'::jsonb, 'variant_type=6x139.7|color_temperature=machined clear coat', 27) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (22, '2026-02-17T04:02:59.920591+00:00', 7, 23, '9012 (HIR2)', '4300', 'null-22', NULL, 6000, 0, 4, 5, false, NULL, 0, NULL, '{}'::jsonb, 'variant_type=9012 (hir2)|color_temperature=4300', 25) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (18, '2026-02-17T04:02:59.920591+00:00', 7, 3, 'H7', '6000', 'null-18', 'null-18', 6000, 0, 1, 5, false, NULL, 0, NULL, '{"tags":[],"color":null,"socket":null,"last_restock":{"date":"2026-02-17T04:04:09.409Z","quantity":1},"internal_notes":"","color_temperature":"All Weather"}'::jsonb, 'variant_type=h7|color_temperature=6000', 4) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (143, '2026-02-26T06:25:36.97464+00:00', 7, 18, 'H11', '6000', NULL, NULL, 6000, 0, 2, 5, false, NULL, 0, NULL, '{"color":null,"internal_notes":null,"color_temperature":"6000"}'::jsonb, 'variant_type=h11|color_temperature=6000', 7) ON CONFLICT DO NOTHING;
-INSERT INTO public.product_variants ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES (96, '2026-02-25T07:28:14.475147+00:00', 36, 53, '6x139.7', 'Matte Black', NULL, NULL, 15000, 0, 3, 4, false, '', 0, '17x8.5', '{"color":"17x8.5","internal_notes":"","color_temperature":"Matte Black","spec_1772000809098":"20"}'::jsonb, 'variant_type=6x139.7|color_temperature=matte black', 27) ON CONFLICT DO NOTHING;
+INSERT INTO "public"."admins" ("id", "email", "password_hash", "full_name", "role", "is_active", "created_at", "updated_at") VALUES
+	('377c371a-8174-43a4-888c-3db452e19c0d', 'shaqleeambagan101@gmail.com', '$2a$06$OkQUIz32.AXvtA.lrUl8hOiWtvHHLYBstqH7dHlJE842fnGPq2uWK', 'System Owner', 'super_admin', true, '2026-02-13 08:37:25.227332+00', '2026-04-29 08:09:15.93094+00'),
+	('00000000-0000-0000-0000-000000000001', 'admin@example.com', 'seeded_password', 'Sample Admin', 'admin', true, '2026-04-29 08:01:44.594032+00', '2026-04-29 08:09:15.93094+00'),
+	('4d3e52a4-2bea-4240-b1ff-a2dfce10664b', 'brian@kensgarage.com', 'supabase-auth-managed', 'Brian (Ken''s Garage)', 'admin', true, '2026-04-29 08:09:49.744995+00', '2026-04-29 08:09:49.744995+00');
 
--- Table: store_settings
-INSERT INTO public.store_settings ("id", "store_name", "tax_rate", "low_stock_threshold", "currency", "updated_at") VALUES (1, 'KENS GARAGE', 0, 2, 'PHP', '2026-04-24T06:33:14.989+00:00') ON CONFLICT DO NOTHING;
 
--- Table: admins
-INSERT INTO public.admins ("id", "email", "password_hash", "full_name", "role", "is_active", "created_at", "updated_at") VALUES ('377c371a-8174-43a4-888c-3db452e19c0d', 'shaqleeambagan101@gmail.com', '$2a$06$OkQUIz32.AXvtA.lrUl8hOiWtvHHLYBstqH7dHlJE842fnGPq2uWK', 'System Owner', 'super_admin', true, '2026-02-13T08:37:25.227332+00:00', '2026-04-29T08:09:15.93094+00:00') ON CONFLICT DO NOTHING;
-INSERT INTO public.admins ("id", "email", "password_hash", "full_name", "role", "is_active", "created_at", "updated_at") VALUES ('00000000-0000-0000-0000-000000000001', 'admin@example.com', 'seeded_password', 'Sample Admin', 'admin', true, '2026-04-29T08:01:44.594032+00:00', '2026-04-29T08:09:15.93094+00:00') ON CONFLICT DO NOTHING;
-INSERT INTO public.admins ("id", "email", "password_hash", "full_name", "role", "is_active", "created_at", "updated_at") VALUES ('4d3e52a4-2bea-4240-b1ff-a2dfce10664b', 'brian@kensgarage.com', 'supabase-auth-managed', 'Brian (Ken''s Garage)', 'admin', true, '2026-04-29T08:09:49.744995+00:00', '2026-04-29T08:09:49.744995+00:00') ON CONFLICT DO NOTHING;
+--
+-- Data for Name: brands; Type: TABLE DATA; Schema: public; Owner: postgres
+--
 
--- Reset Sequences
-SELECT setval('public.product_categories_id_seq', COALESCE((SELECT MAX(id) + 1 FROM public.product_categories), 1), false);
-SELECT setval('public.bulb_types_id_seq', COALESCE((SELECT MAX(id) + 1 FROM public.variant_categories), 1), false);
-SELECT setval('public.bulb_type_variants_id_seq', COALESCE((SELECT MAX(id) + 1 FROM public.variant_definitions), 1), false);
-SELECT setval('public.category_metadata_id_seq', COALESCE((SELECT MAX(id) + 1 FROM public.category_metadata), 1), false);
-SELECT setval('public.suppliers_id_seq', COALESCE((SELECT MAX(id) + 1 FROM public.suppliers), 1), false);
-SELECT setval('public.products_id_seq', COALESCE((SELECT MAX(id) + 1 FROM public.products), 1), false);
-SELECT setval('public.product_bulb_variants_id_seq', COALESCE((SELECT MAX(id) + 1 FROM public.product_variants), 1), false);
-SELECT setval('public.store_settings_id_seq', COALESCE((SELECT MAX(id) + 1 FROM public.store_settings), 1), false);
+INSERT INTO "public"."brands" ("id", "name", "created_at") VALUES
+	(1, 'Osram', '2026-04-25 23:07:31.529435+00'),
+	(2, 'Gram Lights', '2026-04-25 23:07:31.529435+00'),
+	(3, 'Fearless of Darkness', '2026-04-25 23:07:31.529435+00'),
+	(4, 'Rigid', '2026-04-25 23:07:31.529435+00'),
+	(5, 'Grid', '2026-04-25 23:07:31.529435+00'),
+	(6, 'GOODRIDE', '2026-04-25 23:07:31.529435+00'),
+	(7, 'Bajaj Designs', '2026-04-25 23:07:31.529435+00'),
+	(8, 'VLF', '2026-04-25 23:07:31.529435+00'),
+	(9, 'TJM', '2026-04-25 23:07:31.529435+00'),
+	(10, 'Black Rhino', '2026-04-25 23:07:31.529435+00'),
+	(12, 'Better Than Stock', '2026-04-25 23:07:31.529435+00'),
+	(13, 'ARB', '2026-04-25 23:07:31.529435+00'),
+	(14, 'Baja Designs', '2026-04-25 23:07:31.529435+00'),
+	(15, 'KC', '2026-04-25 23:07:31.529435+00'),
+	(16, 'Falken', '2026-04-25 23:07:31.529435+00'),
+	(17, 'OZ RACING', '2026-04-25 23:07:31.529435+00'),
+	(18, 'Rays Official', '2026-04-25 23:07:31.529435+00'),
+	(19, 'JO LED LIGHTS', '2026-04-25 23:07:31.529435+00'),
+	(21, 'Hankook', '2026-04-25 23:07:31.529435+00'),
+	(22, 'Aftermarket', '2026-04-25 23:07:31.529435+00'),
+	(23, 'KMC', '2026-04-25 23:07:31.529435+00'),
+	(24, 'Ironman', '2026-04-25 23:07:31.529435+00'),
+	(25, 'DLAA', '2026-04-25 23:07:31.529435+00'),
+	(26, 'Fuel', '2026-04-25 23:07:31.529435+00'),
+	(27, 'STEEL BEADLOCK', '2026-04-25 23:07:31.529435+00'),
+	(28, 'Volk Racing', '2026-04-25 23:07:31.529435+00'),
+	(29, 'Top Speed', '2026-04-25 23:07:31.529435+00'),
+	(30, 'Icon', '2026-04-25 23:07:31.529435+00'),
+	(31, 'Toyo Tires', '2026-04-25 23:07:31.529435+00'),
+	(32, 'SR Lightings', '2026-04-25 23:07:31.529435+00'),
+	(33, 'Dunlop', '2026-04-25 23:07:31.529435+00'),
+	(34, 'KSC', '2026-04-25 23:07:31.529435+00'),
+	(35, 'Method', '2026-04-25 23:07:31.529435+00'),
+	(36, 'K&N', '2026-04-25 23:07:31.529435+00'),
+	(37, 'EVO CORSE', '2026-04-25 23:07:31.529435+00'),
+	(38, 'ENKEI', '2026-04-25 23:07:31.529435+00'),
+	(39, 'Rotiform', '2026-04-25 23:07:31.529435+00'),
+	(40, 'Rays Engineering', '2026-04-25 23:07:31.529435+00'),
+	(41, 'Cobra', '2026-04-25 23:07:31.529435+00'),
+	(42, 'ROH', '2026-04-25 23:07:31.529435+00'),
+	(43, 'SCS', '2026-04-25 23:07:31.529435+00'),
+	(44, 'Tank Engineering', '2026-04-25 23:07:31.529435+00'),
+	(45, 'GPNE', '2026-04-25 23:07:31.529435+00'),
+	(46, 'STEDI', '2026-04-25 23:07:31.529435+00'),
+	(47, 'SR Performance', '2026-04-25 23:07:31.529435+00'),
+	(48, 'Continental', '2026-04-25 23:07:31.529435+00'),
+	(49, 'BF Goodrich', '2026-04-25 23:07:31.529435+00'),
+	(20, 'PIAA', '2026-04-25 23:07:31.529435+00'),
+	(11, 'Hellsten', '2026-04-25 23:07:31.529435+00'),
+	(53, 'HELLA', '2026-06-11 04:47:11.450263+00');
 
+
+--
+-- Data for Name: product_categories; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO "public"."product_categories" ("id", "created_at", "name", "description") VALUES
+	(1, '2026-02-15 12:12:09.933322+00', 'Headlight', 'Main front lighting'),
+	(2, '2026-02-15 12:12:09.933322+00', 'Fog Light', 'Auxiliary fog lights'),
+	(3, '2026-02-15 12:12:09.933322+00', 'Signal Light', 'Turn signals'),
+	(4, '2026-02-15 12:12:09.933322+00', 'Interior Light', 'Cabin lighting'),
+	(5, '2026-02-15 12:12:09.933322+00', 'Brake Light', 'Rear brake lights'),
+	(6, '2026-02-15 12:12:09.933322+00', 'Wiper', 'Windshield wipers'),
+	(7, '2026-02-15 12:12:09.933322+00', 'Horn', 'Automotive horns'),
+	(8, '2026-02-15 12:12:09.933322+00', 'Work Light', 'Off-road work lights'),
+	(12, '2026-02-25 06:26:00.73996+00', 'Wheels', NULL),
+	(13, '2026-03-04 02:54:19.459802+00', 'Air Filter', NULL),
+	(14, '2026-03-04 03:50:06.809026+00', 'Cabin Filter', NULL),
+	(15, '2026-03-04 05:40:10.225343+00', 'Wheel spacers', NULL),
+	(16, '2026-03-06 07:11:08.059617+00', 'Coil Spacer', NULL),
+	(17, '2026-03-10 07:33:10.111348+00', 'Throttle Controller', NULL),
+	(18, '2026-03-12 05:19:52.155196+00', 'Tires', NULL),
+	(19, '2026-03-16 03:29:47.809049+00', 'Wheel Nuts', NULL),
+	(20, '2026-03-16 05:25:47.238251+00', 'LED Lights', NULL),
+	(21, '2026-03-26 08:38:03.172091+00', 'LED Covers', NULL),
+	(22, '2026-04-09 06:14:50.344138+00', 'Led Lights Cover', NULL);
+
+
+--
+-- Data for Name: category_metadata; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO "public"."category_metadata" ("id", "category_id", "variant_type_label", "fields", "suggested_variant_types", "is_active", "created_at", "updated_at", "variant_dimensions") VALUES
+	(24, 17, 'Model', '[]', '{}', true, '2026-03-10 07:35:05.392147+00', '2026-03-10 07:34:59.931+00', '[{"label": "Model", "active": true, "column": "variant_type"}, {"label": "Color", "active": false, "column": "variant_color"}, {"label": "Color Temp", "active": false, "column": "color_temperature"}]'),
+	(25, 18, 'Size', '[]', '{}', true, '2026-03-12 05:20:39.526361+00', '2026-03-12 05:20:39.181+00', '[{"label": "Size", "active": true, "column": "variant_type"}, {"label": "Speed Rating", "active": true, "column": "variant_color"}, {"label": "Date Manu", "active": true, "column": "color_temperature"}]'),
+	(26, 19, 'Thread Pitch', '[]', '{}', true, '2026-03-16 03:31:46.871717+00', '2026-03-16 03:31:45.191+00', '[{"label": "Thread Pitch", "active": true, "column": "variant_type"}, {"label": "Color", "active": true, "column": "variant_color"}, {"label": "Color Temp", "active": false, "column": "color_temperature"}]'),
+	(27, 20, 'Type', '[]', '{}', true, '2026-03-16 05:27:03.577947+00', '2026-03-16 05:27:02.962+00', '[{"label": "Type", "active": true, "column": "variant_type"}, {"label": "Color", "active": true, "column": "variant_color"}, {"label": "Color Temp", "active": false, "column": "color_temperature"}]'),
+	(28, 2, 'Socket', '[]', '{}', true, '2026-03-18 06:01:35.955436+00', '2026-03-18 06:12:42.890794+00', '[{"label": "Socket", "active": true, "column": "variant_type"}, {"label": "Color", "active": true, "column": "variant_color"}, {"label": "Shape", "active": true, "column": "color_temperature"}]'),
+	(3, 1, 'Variant', '[]', '{}', true, '2026-02-22 08:05:41.25551+00', '2026-02-22 08:16:40.976865+00', '[{"label": "Variant", "active": true, "column": "variant_type"}, {"label": "Color", "active": false, "column": "variant_color"}, {"label": "Color Temp", "active": true, "column": "color_temperature"}]'),
+	(30, 21, 'Size', '[]', '{}', true, '2026-03-26 08:38:30.115837+00', '2026-03-26 08:38:29.51+00', '[{"label": "Size", "active": true, "column": "variant_type"}, {"label": "Color", "active": true, "column": "variant_color"}, {"label": "Color Temp", "active": false, "column": "color_temperature"}]'),
+	(22, 15, 'PCD', '[]', '{}', true, '2026-03-04 05:40:38.004586+00', '2026-03-28 06:53:05.954727+00', '[{"label": "PCD", "active": true, "column": "variant_type"}, {"label": "HUB", "active": true, "column": "variant_color"}, {"label": "Color Temp", "active": false, "column": "color_temperature"}]'),
+	(32, 22, 'Size', '[]', '{}', true, '2026-04-09 06:15:26.04736+00', '2026-04-09 06:15:25.851+00', '[{"label": "Size", "active": true, "column": "variant_type"}, {"label": "Color", "active": true, "column": "variant_color"}, {"label": "Color Temp", "active": false, "column": "color_temperature"}]'),
+	(16, 12, 'PCD', '[]', '{}', true, '2026-02-25 06:27:04.271853+00', '2026-02-25 06:31:09.138118+00', '[{"label": "PCD", "active": true, "column": "variant_type"}, {"label": "Size", "active": true, "column": "variant_color"}, {"label": "Color", "active": true, "column": "color_temperature"}, {"label": "Offset (ET)", "active": true, "column": "spec_1772000809098"}]'),
+	(8, 6, 'Variant', '[]', '{}', true, '2026-02-22 08:13:40.970014+00', '2026-02-25 09:41:11.621384+00', '[{"label": "Variant", "active": true, "column": "variant_type"}, {"label": "Color", "active": false, "column": "variant_color"}, {"label": "Color Temp", "active": true, "column": "color_temperature"}]'),
+	(20, 13, 'Code No.', '[]', '{}', true, '2026-03-04 02:54:49.044408+00', '2026-03-04 02:54:48.79+00', '[{"label": "Code No.", "active": true, "column": "variant_type"}, {"label": "Color", "active": false, "column": "variant_color"}, {"label": "Color Temp", "active": false, "column": "color_temperature"}]'),
+	(21, 14, 'Code', '[]', '{}', true, '2026-03-04 03:50:18.073102+00', '2026-03-04 03:50:17.75+00', '[{"label": "Code", "active": true, "column": "variant_type"}, {"label": "Color", "active": false, "column": "variant_color"}, {"label": "Color Temp", "active": false, "column": "color_temperature"}]'),
+	(23, 16, 'Lift Height', '[]', '{}', true, '2026-03-06 07:11:51.512733+00', '2026-03-06 07:11:51.223+00', '[{"label": "Lift Height", "active": true, "column": "variant_type"}, {"label": "Compatibility ", "active": true, "column": "variant_color"}, {"label": "Position", "active": true, "column": "color_temperature"}]');
+
+
+--
+-- Data for Name: suppliers; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+
+
+--
+-- Data for Name: variant_categories; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO "public"."variant_categories" ("id", "created_at", "code", "description") VALUES
+	(1, '2026-02-15 12:12:09.933322+00', 'H1', 'Single filament'),
+	(2, '2026-02-15 12:12:09.933322+00', 'H3', 'Fog light type'),
+	(3, '2026-02-15 12:12:09.933322+00', 'H4', 'Dual filament Hi/Lo'),
+	(4, '2026-02-15 12:12:09.933322+00', 'H7', 'Single filament'),
+	(5, '2026-02-15 12:12:09.933322+00', 'H8', 'Fog light type'),
+	(6, '2026-02-15 12:12:09.933322+00', 'H9', 'High beam type'),
+	(7, '2026-02-15 12:12:09.933322+00', 'H11', 'Single filament'),
+	(8, '2026-02-15 12:12:09.933322+00', 'H16', 'Low wattage fog'),
+	(9, '2026-02-15 12:12:09.933322+00', '9005', 'HB3 High beam'),
+	(10, '2026-02-15 12:12:09.933322+00', '9006', 'HB4 Low beam'),
+	(11, '2026-02-15 12:12:09.933322+00', '9012', 'HIR2'),
+	(12, '2026-02-15 12:12:09.933322+00', '880', 'Fog light'),
+	(13, '2026-02-15 12:12:09.933322+00', '881', 'Fog light'),
+	(14, '2026-02-15 12:12:09.933322+00', 'D1S', 'HID Xenon'),
+	(15, '2026-02-15 12:12:09.933322+00', 'D2S', 'HID Xenon'),
+	(16, '2026-02-15 12:12:09.933322+00', 'D3S', 'HID Xenon'),
+	(17, '2026-02-15 12:12:09.933322+00', 'D4S', 'HID Xenon'),
+	(18, '2026-02-15 12:12:09.933322+00', 'T10', 'W5W Wedge'),
+	(19, '2026-02-15 12:12:09.933322+00', 'T15', 'W16W Wedge'),
+	(20, '2026-02-15 12:12:09.933322+00', 'T20', '7440/7443 Wedge'),
+	(21, '2026-02-15 12:12:09.933322+00', 'T25', '3156/3157 Wedge'),
+	(22, '2026-02-15 12:12:09.933322+00', '1156', 'BA15S Bayonet'),
+	(23, '2026-02-15 12:12:09.933322+00', '1157', 'BAY15D Bayonet'),
+	(24, '2026-02-15 16:15:43.192829+00', 'H13', 'Created via App'),
+	(25, '2026-02-16 01:42:21.081737+00', '9012 (HIR2)', 'Created via App'),
+	(26, '2026-02-25 09:20:30.848373+00', 'Not Specified', 'Created via App'),
+	(27, '2026-02-25 09:22:59.119909+00', '6x139.7', 'Created via App'),
+	(28, '2026-04-09 05:23:27.686948+00', 'Driving', 'Created via App'),
+	(29, '2026-06-05 01:35:12.821328+00', 'Spot', 'Created via App');
+
+
+--
+-- Data for Name: products; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO "public"."products" ("id", "created_at", "updated_at", "name", "sku", "barcode", "brand", "category_id", "variant_type_id", "supplier_id", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "reorder_level", "description", "image_url", "voltage", "wattage", "color_temperature", "lumens", "beam_type", "specifications", "has_variants", "brand_id") VALUES
+	(71, '2026-03-04 02:56:25.712637+00', '2026-04-29 08:11:33.089257+00', 'K&N Air Filter', NULL, '', 'K&N', 13, NULL, NULL, 0.00, 0.00, 0, 0, 0, '', '', NULL, NULL, '', NULL, NULL, '{"tags": [], "color": "", "internal_notes": "LC200", "color_temperature": ""}', true, 36),
+	(7, '2026-02-17 04:02:59.507517+00', '2026-06-05 05:22:46.848878+00', 'GPNE R6', NULL, NULL, 'GPNE', 1, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, '4300', NULL, NULL, '{"tags": [], "color": "4300", "socket": "", "last_restock": "{\"date\": \"2026-02-17T04:04:09.409Z\", \"quantity\": 1}", "internal_notes": "", "color_temperature": "4300"}', true, 45),
+	(13, '2026-02-18 01:51:48.801259+00', '2026-04-25 23:07:31.529435+00', 'Hellsten X8', NULL, NULL, 'Hellsten', 1, NULL, NULL, 0.00, 0.00, 1, 1, 1, NULL, NULL, NULL, NULL, '', NULL, NULL, '{"socket": ""}', true, 11),
+	(113, '2026-03-19 06:09:42.9499+00', '2026-04-25 23:07:31.529435+00', 'Rigid 360 Series', NULL, NULL, 'Aftermarket', 20, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 22),
+	(83, '2026-03-12 06:52:14.744852+00', '2026-06-09 04:02:38.821721+00', 'T/A KM3', NULL, NULL, 'BF Goodrich', 18, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, '', NULL, NULL, '{"tags": [], "color": "123/120Q", "variant_color": "123/120Q", "internal_notes": "", "color_temperature": ""}', true, 49),
+	(170, '2026-06-11 04:47:12.225635+00', '2026-06-11 04:47:57.207851+00', 'Hella Comet 500 ', NULL, '', 'HELLA', 20, NULL, NULL, 0.00, 0.00, 0, 0, 0, '', '', NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 53),
+	(58, '2026-02-26 01:59:35.718244+00', '2026-04-25 23:07:31.529435+00', 'XD14078564718', NULL, NULL, 'KMC', 12, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 23),
+	(167, '2026-06-05 01:24:20.291159+00', '2026-06-05 01:27:21.549068+00', 'PIAA V-RF 20"', 'LIT-PIA-VRF-DRV-58K-20-SG', NULL, 'PIAA', 20, 28, NULL, 16500.00, 0.00, 1, 1, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": [], "color": "5800K", "socket": "Driving", "internal_notes": ""}', false, 20),
+	(171, '2026-06-11 04:54:37.056628+00', '2026-06-11 04:55:43.948089+00', 'Hella Comet 550', NULL, NULL, 'HELLA', 20, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": [], "color": "Yellow", "internal_notes": "", "color_temperature": null}', true, 53),
+	(106, '2026-03-18 06:50:48.326752+00', '2026-04-25 23:07:31.529435+00', 'Rigid Ignite SM', NULL, NULL, 'Rigid', 20, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": [], "color": "Black", "internal_notes": "", "color_temperature": null}', true, 4),
+	(168, '2026-06-05 01:27:03.538727+00', '2026-06-05 01:27:03.538727+00', 'PIAA V-RF 40"', 'LIT-PIA-VRF-DRV-58K-40-SG', NULL, 'PIAA', 20, 28, NULL, 28000.00, 0.00, 1, 1, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": [], "color": "5800K", "socket": "Driving"}', false, 20),
+	(84, '2026-03-12 07:07:16.710059+00', '2026-06-09 03:33:31.497984+00', '0PRT - Toyo Tires', NULL, NULL, 'Toyo Tires', 18, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, '', NULL, NULL, '{"tags": [], "color": "106Q", "variant_color": "106Q", "internal_notes": "", "color_temperature": ""}', true, 31),
+	(81, '2026-03-12 06:02:37.757715+00', '2026-06-09 04:00:44.638786+00', 'T/A KO3', NULL, '', 'BF Goodrich', 18, NULL, NULL, 0.00, 0.00, 0, 0, 0, '', '', NULL, NULL, '', NULL, NULL, '{"tags": [], "color": "128/125S", "internal_notes": "", "color_temperature": ""}', true, 49),
+	(172, '2026-06-11 05:10:45.713319+00', '2026-06-11 05:10:45.713319+00', 'Hella Comet 450', NULL, NULL, 'HELLA', 20, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 53),
+	(80, '2026-03-12 05:36:03.387836+00', '2026-06-16 06:59:21.602487+00', 'Falken A/T4W', NULL, '', 'Falken', 18, NULL, NULL, 0.00, 0.00, 0, 0, 0, '', '', NULL, NULL, '', NULL, NULL, '{"tags": [], "color": "116/113R", "internal_notes": "", "color_temperature": ""}', true, 16),
+	(8, '2026-02-17 04:11:21.176012+00', '2026-04-25 23:07:31.529435+00', 'GPNE RS7 ', NULL, NULL, 'GPNE', 1, NULL, NULL, 0.00, 0.00, 1, 1, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": [], "internal_notes": "PARENT"}', true, 45),
+	(37, '2026-02-25 07:30:05.38461+00', '2026-04-25 23:07:31.529435+00', 'Torque D690', NULL, NULL, 'Fuel', 12, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 26),
+	(50, '2026-02-26 01:38:41.069024+00', '2026-04-25 23:07:31.529435+00', 'ME002 MR701', NULL, NULL, 'Method', 12, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 35),
+	(38, '2026-02-25 07:31:46.065354+00', '2026-04-25 23:07:31.529435+00', 'Rebel', NULL, NULL, 'Fuel', 12, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 26),
+	(16, '2026-02-18 02:34:14.897203+00', '2026-04-25 23:07:31.529435+00', 'Keon Sondra', NULL, NULL, 'KSC', 1, NULL, NULL, 0.00, 0.00, 1, 1, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{}', true, 34),
+	(115, '2026-03-19 06:34:58.736449+00', '2026-04-25 23:07:31.529435+00', 'Rigid Radiance', NULL, NULL, 'Rigid', 20, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 4),
+	(17, '2026-02-18 02:37:48.164393+00', '2026-04-25 23:07:31.529435+00', 'LED Headlights ', NULL, NULL, 'Aftermarket', 1, NULL, NULL, 0.00, 0.00, 1, 1, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": [], "internal_notes": "ZES"}', true, 22),
+	(18, '2026-02-18 02:50:37.167601+00', '2026-04-25 23:07:31.529435+00', 'Osram LED', NULL, NULL, 'Osram', 1, NULL, NULL, 0.00, 0.00, 1, 1, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{}', true, 1),
+	(19, '2026-02-18 02:52:36.666966+00', '2026-04-25 23:07:31.529435+00', 'Cobra LED Headlight ', NULL, NULL, 'Cobra', 1, NULL, NULL, 0.00, 0.00, 1, 1, 1, NULL, NULL, NULL, NULL, '', NULL, NULL, '{"socket": ""}', true, 41),
+	(39, '2026-02-25 07:34:53.594402+00', '2026-04-25 23:07:31.529435+00', 'Flux', NULL, NULL, 'Fuel', 12, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 26),
+	(40, '2026-02-25 07:39:26.081724+00', '2026-04-25 23:07:31.529435+00', 'Vector 6', NULL, NULL, 'Icon', 12, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 30),
+	(41, '2026-02-25 07:41:27.182274+00', '2026-04-25 23:07:31.529435+00', 'XD 135 Grenade', NULL, NULL, 'KMC', 12, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 23),
+	(42, '2026-02-25 07:43:29.8516+00', '2026-04-25 23:07:31.529435+00', 'XD 818 Heist', NULL, NULL, 'KMC', 12, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 23),
+	(11, '2026-02-17 05:00:24.255216+00', '2026-04-25 23:07:31.529435+00', 'Osram Night Breaker', NULL, NULL, 'Osram', 1, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, '', NULL, NULL, '{"tags": [], "socket": null, "internal_notes": ""}', true, 1),
+	(48, '2026-02-25 09:54:42.926563+00', '2026-04-25 23:07:31.529435+00', 'VLF S02B', NULL, NULL, 'VLF', 12, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, 'Gunmetal Machined(PressG)', NULL, NULL, '{"tags": [], "color": "16x7", "socket": null, "last_restock": {"date": "2026-02-17T23:21:56.532Z", "quantity": 1}, "internal_notes": "set of 4", "color_temperature": "Gunmetal Machined(PressG)", "spec_1772000809098": "0"}', true, 8),
+	(15, '2026-02-18 02:17:38.55548+00', '2026-04-25 23:07:31.529435+00', 'STEDI Copper Head', NULL, NULL, 'STEDI', 1, NULL, NULL, 0.00, 0.00, 1, 1, 1, NULL, NULL, NULL, NULL, '5700', NULL, NULL, '{"tags": [], "color": "", "internal_notes": ""}', true, 46),
+	(22, '2026-02-25 04:26:29.946502+00', '2026-04-25 23:07:31.529435+00', '', NULL, NULL, 'Aftermarket', NULL, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 22),
+	(157, '2026-04-09 07:43:39.855582+00', '2026-04-25 23:07:31.529435+00', 'Ironman Cover Comet', NULL, '', 'Ironman', 21, NULL, NULL, 0.00, 0.00, 0, 0, 0, '', '', NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 24),
+	(159, '2026-04-16 06:37:44.492891+00', '2026-04-25 23:07:31.529435+00', 'Ironman Universal LED Light 16W', NULL, NULL, 'Ironman', 20, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 24),
+	(160, '2026-04-16 06:42:47.598897+00', '2026-04-25 23:07:31.529435+00', 'Ironman Modular LED Light 30W', NULL, NULL, 'Ironman', 20, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": [], "color": "6000k", "internal_notes": "", "color_temperature": null}', true, 24),
+	(161, '2026-04-16 06:51:43.570093+00', '2026-04-25 23:07:31.529435+00', 'Cosmo Dual Light 20W', NULL, NULL, 'Ironman', 20, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 24),
+	(163, '2026-04-16 07:07:39.430912+00', '2026-04-25 23:07:31.529435+00', '7" Combo Blast', NULL, NULL, 'Ironman', 20, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": [], "color": "6500K", "internal_notes": "", "color_temperature": null}', true, 24),
+	(165, '2026-04-16 07:32:01.52751+00', '2026-04-25 23:07:31.529435+00', '9" Comet 42W', NULL, NULL, 'Ironman', 20, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 24),
+	(164, '2026-04-16 07:16:57.486835+00', '2026-04-25 23:07:31.529435+00', '7" Blast Phase II Combo', NULL, NULL, 'Ironman', 20, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": [], "color": "6000K", "internal_notes": "", "color_temperature": null}', true, 24),
+	(162, '2026-04-16 07:00:03.708449+00', '2026-04-25 23:07:31.529435+00', 'Comet 7" 30W', NULL, NULL, 'Ironman', 20, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": [], "color": "6000k", "internal_notes": "", "color_temperature": null}', true, 24),
+	(166, '2026-04-24 06:31:11.837042+00', '2026-04-25 23:07:31.529435+00', 'Trail Terrain', NULL, NULL, 'BF Goodrich', 18, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 49),
+	(24, '2026-02-25 06:36:53.362193+00', '2026-04-25 23:07:31.529435+00', 'TE37-XT SL', NULL, NULL, 'Volk Racing', 12, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 28),
+	(25, '2026-02-25 06:36:53.689501+00', '2026-04-25 23:07:31.529435+00', 'TE37-XT SL', NULL, NULL, 'Volk Racing', 12, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 28),
+	(43, '2026-02-25 07:45:43.877142+00', '2026-04-25 23:07:31.529435+00', 'MR313 Street Series', NULL, NULL, 'Method', 12, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 35),
+	(29, '2026-02-25 06:46:32.660928+00', '2026-04-25 23:07:31.529435+00', 'Roku', NULL, NULL, 'Black Rhino', 12, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 10),
+	(30, '2026-02-25 06:52:44.399093+00', '2026-04-25 23:07:31.529435+00', 'Chase', NULL, NULL, 'Black Rhino', 12, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 10),
+	(31, '2026-02-25 06:58:50.760873+00', '2026-04-25 23:07:31.529435+00', 'Stadium', NULL, NULL, 'Black Rhino', 12, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 10),
+	(32, '2026-02-25 07:08:32.783019+00', '2026-04-25 23:07:31.529435+00', 'Awol', NULL, NULL, 'Black Rhino', 12, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 10),
+	(33, '2026-02-25 07:11:14.707312+00', '2026-04-25 23:07:31.529435+00', 'BRO31', NULL, NULL, 'Black Rhino', 12, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 10),
+	(34, '2026-02-25 07:13:31.836035+00', '2026-04-25 23:07:31.529435+00', 'Sol', NULL, NULL, 'Black Rhino', 12, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, 'Matte Black', NULL, NULL, '{"tags": [], "color": "17x8", "internal_notes": "", "color_temperature": "Matte Black", "spec_1772000809098": "20"}', true, 10),
+	(35, '2026-02-25 07:25:49.384949+00', '2026-04-25 23:07:31.529435+00', 'Shogun', NULL, NULL, 'Black Rhino', 12, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 10),
+	(36, '2026-02-25 07:28:14.217823+00', '2026-04-25 23:07:31.529435+00', 'BRO17', NULL, NULL, 'Black Rhino', 12, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 10),
+	(44, '2026-02-25 09:20:31.148718+00', '2026-04-25 23:07:31.529435+00', 'Grid', NULL, NULL, 'Grid', 12, 26, NULL, 17500.00, 0.00, 4, 4, 4, NULL, NULL, NULL, NULL, 'Machined', NULL, NULL, '{"tags": [], "color": "N/A", "socket": "Not Specified", "color_temperature": "Machined", "spec_1772000809098": "N/A"}', false, 5),
+	(45, '2026-02-25 09:22:59.440681+00', '2026-04-25 23:07:31.529435+00', 'Six', NULL, NULL, 'Rotiform', 12, 27, NULL, 18750.00, 0.00, 4, 4, 4, NULL, NULL, NULL, NULL, 'Black', NULL, NULL, '{"tags": [], "color": "20x9", "socket": "6x139.7", "internal_notes": "1 on Display", "color_temperature": "Black", "spec_1772000809098": "1"}', false, 39),
+	(46, '2026-02-25 09:25:09.0893+00', '2026-04-25 23:07:31.529435+00', 'Blaze 10', NULL, NULL, 'SCS', 12, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 43),
+	(12, '2026-02-17 23:21:20.810204+00', '2026-04-25 23:07:31.529435+00', 'Aero Vogue Flex', NULL, NULL, 'PIAA', 6, NULL, NULL, 0.00, 0.00, 1, 1, 1, NULL, NULL, NULL, NULL, 'Yellow', NULL, NULL, '{"tags": [], "color": "Green", "last_restock": {"date": "2026-02-17T23:21:56.532Z", "quantity": 1}, "variant_type": "", "internal_notes": "", "color_temperature": "Green"}', true, 20),
+	(47, '2026-02-25 09:51:45.530344+00', '2026-04-25 23:07:31.529435+00', 'Ray 10', NULL, NULL, 'SCS', 12, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 43),
+	(49, '2026-02-26 01:35:01.375942+00', '2026-04-25 23:07:31.529435+00', ' Dynamic 8/Talladega/Classic 5', NULL, NULL, 'STEEL BEADLOCK', 12, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 27),
+	(52, '2026-02-26 01:44:43.009761+00', '2026-04-25 23:07:31.529435+00', 'ME003 MR704', NULL, NULL, 'Method', 12, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 35),
+	(53, '2026-02-26 01:47:38.820599+00', '2026-04-25 23:07:31.529435+00', 'ME008 MR702 BG', NULL, NULL, 'Method', 12, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 35),
+	(54, '2026-02-26 01:49:32.824288+00', '2026-04-25 23:07:31.529435+00', 'MR313 Street Series', NULL, NULL, 'Method', 12, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 35),
+	(55, '2026-02-26 01:52:06.278106+00', '2026-04-25 23:07:31.529435+00', 'MR321 Standard', NULL, NULL, 'Method', 12, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 35),
+	(56, '2026-02-26 01:54:54.95714+00', '2026-04-25 23:07:31.529435+00', 'KM725 Terra', NULL, NULL, 'KMC', 12, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 23),
+	(57, '2026-02-26 01:57:41.887514+00', '2026-04-25 23:07:31.529435+00', 'KM549 GRS', NULL, NULL, 'KMC', 12, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 23),
+	(51, '2026-02-26 01:41:37.545587+00', '2026-04-25 23:07:31.529435+00', 'ME007 MR703 BG', NULL, NULL, 'Method', 12, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": [], "socket": null, "internal_notes": ""}', true, 35),
+	(110, '2026-03-19 06:03:35.48524+00', '2026-04-25 23:07:31.529435+00', 'Rigid D-SS Pro', NULL, NULL, 'Rigid', 20, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 4),
+	(114, '2026-03-19 06:12:39.253427+00', '2026-04-25 23:07:31.529435+00', 'Rigid D-Series', NULL, NULL, 'Rigid', 20, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 4),
+	(61, '2026-02-26 02:19:55.609076+00', '2026-04-25 23:07:31.529435+00', 'Blak Trak 2/Bearcat', NULL, NULL, 'ROH', 12, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 42),
+	(60, '2026-02-26 02:18:00.012227+00', '2026-04-25 23:07:31.529435+00', 'Blak Trak 2', NULL, NULL, 'ROH', 12, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": [], "socket": null, "internal_notes": ""}', true, 42),
+	(62, '2026-02-26 02:25:40.428785+00', '2026-04-25 23:07:31.529435+00', 'Raid', NULL, NULL, 'ROH', 12, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 42),
+	(63, '2026-02-26 02:28:37.685813+00', '2026-04-25 23:07:31.529435+00', 'Vapour', NULL, NULL, 'ROH', 12, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 42),
+	(59, '2026-02-26 02:03:48.692017+00', '2026-04-25 23:07:31.529435+00', 'Dakarzero', NULL, NULL, 'EVO CORSE', 12, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, 'Anthracite', NULL, NULL, '{"tags": [], "color": "15x7", "internal_notes": "set of 5", "color_temperature": "Anthracite", "spec_1772000809098": "0"}', true, 37),
+	(64, '2026-02-26 02:33:59.320047+00', '2026-04-25 23:07:31.529435+00', 'Crawler', NULL, NULL, 'ROH', 12, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 42),
+	(65, '2026-02-26 02:39:37.348732+00', '2026-04-25 23:07:31.529435+00', 'Assault', NULL, NULL, 'ROH', 12, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 42),
+	(66, '2026-02-26 02:42:07.266503+00', '2026-04-25 23:07:31.529435+00', 'Trail Cross', NULL, NULL, 'ENKEI', 12, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 38),
+	(67, '2026-02-26 02:50:37.269687+00', '2026-04-25 23:07:31.529435+00', 'SC59', NULL, NULL, 'ENKEI', 12, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 38),
+	(68, '2026-02-26 02:53:05.961079+00', '2026-04-25 23:07:31.529435+00', 'Rally Racing', NULL, NULL, 'OZ RACING', 12, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 17),
+	(9, '2026-02-17 04:15:45.203966+00', '2026-04-25 23:07:31.529435+00', 'GPNE RS6X', NULL, NULL, 'GPNE', 1, NULL, NULL, 0.00, 0.00, 1, 5, 5, NULL, NULL, NULL, NULL, 'Dual Color', NULL, NULL, '{"tags": [], "internal_notes": "", "color_temperature": "Dual Color "}', true, 45),
+	(70, '2026-02-26 06:39:13.858602+00', '2026-04-25 23:07:31.529435+00', 'VLF S16', NULL, NULL, 'VLF', 12, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, 'Matte Black', NULL, NULL, '{"tags": [], "color": "15x7", "internal_notes": "set of 4", "color_temperature": "Matte Black", "spec_1772000809098": "-6"}', true, 8),
+	(69, '2026-02-26 06:32:32.197759+00', '2026-04-25 23:07:31.529435+00', 'VLF S47B ', NULL, NULL, 'VLF', 12, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, 'Silver Brush', NULL, NULL, '{"tags": [], "color": "17x8.5", "internal_notes": "set of 4", "color_temperature": "Silver Brush", "spec_1772000809098": "-10"}', true, 8),
+	(99, '2026-03-16 06:09:12.182905+00', '2026-04-25 23:07:31.529435+00', 'LP6 PRO', NULL, NULL, 'Bajaj Designs', 20, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": [], "color": "Clear", "internal_notes": "", "color_temperature": null}', true, 7),
+	(10, '2026-02-17 04:17:57.484314+00', '2026-06-09 03:32:56.502145+00', 'GPNE R3', NULL, NULL, 'GPNE', 1, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, '4300', NULL, NULL, '{"tags": [], "socket": "", "last_restock": "{\"date\": \"2026-02-17T04:18:19.295Z\", \"quantity\": 1}", "internal_notes": "", "color_temperature": "4300"}', true, 45),
+	(23, '2026-02-25 06:30:11.146234+00', '2026-06-12 02:51:30.106632+00', 'Alap J', NULL, NULL, 'Rays Engineering', 12, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, 'Bronze', NULL, NULL, '{"tags": [], "color": "16x6", "variant_color": "16x6", "internal_notes": "", "color_temperature": "Bronze", "spec_1772000809098": "-5"}', true, 40),
+	(28, '2026-02-25 06:46:31.165957+00', '2026-06-12 02:52:28.228736+00', 'Roku', NULL, NULL, 'Black Rhino', 12, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, 'Gunblack', NULL, NULL, '{"tags": [], "color": "20x9.5", "variant_color": "20x9.5", "internal_notes": "1 on Display", "color_temperature": "Gunblack", "spec_1772000809098": "12"}', true, 10),
+	(93, '2026-03-16 03:43:06.779299+00', '2026-04-25 23:07:31.529435+00', 'Rays Wheel Nuts', NULL, '', 'Rays Official', 19, NULL, NULL, 0.00, 0.00, 0, 0, 0, '', '', NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 18),
+	(102, '2026-03-16 08:51:01.660688+00', '2026-04-25 23:07:31.529435+00', 'ST3K 21.5 LED LIGHT BAR', NULL, NULL, 'STEDI', 20, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": [], "color": "Clear", "internal_notes": "Need Price", "color_temperature": null}', true, 46),
+	(86, '2026-03-12 07:45:29.417015+00', '2026-04-25 23:07:31.529435+00', 'Dynamo AT2 Extreme', NULL, NULL, 'Hankook', 18, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": [], "color": "10PR", "internal_notes": "", "color_temperature": null}', true, 21),
+	(89, '2026-03-12 07:59:03.860782+00', '2026-04-25 23:07:31.529435+00', 'A/T3W', NULL, NULL, 'Falken', 18, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": [], "color": "104/101S", "internal_notes": "", "color_temperature": null}', true, 16),
+	(88, '2026-03-12 07:57:47.754864+00', '2026-04-25 23:07:31.529435+00', 'SL378', NULL, NULL, 'GOODRIDE', 18, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": [], "color": "120/117Q", "internal_notes": "", "color_temperature": null}', true, 6),
+	(82, '2026-03-12 06:39:16.283974+00', '2026-04-25 23:07:31.529435+00', 'T/A KO2', NULL, NULL, 'BF Goodrich', 18, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": [], "color": "123/120R", "internal_notes": "", "color_temperature": null}', true, 49),
+	(85, '2026-03-12 07:38:45.99983+00', '2026-04-25 23:07:31.529435+00', 'Terrain Contact A/T', NULL, NULL, 'Continental', 18, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": [], "color": "115S", "internal_notes": "", "color_temperature": null}', true, 48),
+	(73, '2026-03-06 07:19:36.516399+00', '2026-04-25 23:07:31.529435+00', 'Tank Eng. Coil Spacer', NULL, NULL, 'Tank Engineering', 16, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, 'Front', NULL, NULL, '{"tags": [], "color": "Hilux", "internal_notes": "", "color_temperature": "Front"}', true, 44),
+	(77, '2026-03-07 07:03:22.131138+00', '2026-04-25 23:07:31.529435+00', 'SR Coil Spacer', NULL, '', 'SR Performance', 16, NULL, NULL, 0.00, 0.00, 0, 0, 0, '', '', NULL, NULL, 'Front', NULL, NULL, '{"tags": []}', true, 47),
+	(78, '2026-03-10 07:40:50.579079+00', '2026-04-25 23:07:31.529435+00', 'Top Speed Advance Accelerator Controller', NULL, NULL, 'Top Speed', 17, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 29),
+	(72, '2026-03-04 03:54:33.545845+00', '2026-04-25 23:07:31.529435+00', 'K&N Cabin Air Filter', NULL, '', 'K&N', 14, NULL, NULL, 0.00, 0.00, 0, 0, 0, '', '', NULL, NULL, NULL, NULL, NULL, '{"tags": [], "color": null, "internal_notes": "Lexus, FJ Cruiser, Prado, Mazda MPY", "color_temperature": null}', true, 36),
+	(79, '2026-03-12 05:29:00.561091+00', '2026-04-25 23:07:31.529435+00', 'Falken HT01', NULL, '', 'Falken', 18, NULL, NULL, 0.00, 0.00, 0, 0, 0, '', '', NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 16),
+	(87, '2026-03-12 07:56:47.369494+00', '2026-04-25 23:07:31.529435+00', 'AZ670', NULL, NULL, 'GOODRIDE', 18, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 6),
+	(90, '2026-03-12 08:01:23.338877+00', '2026-04-25 23:07:31.529435+00', 'AT20', NULL, NULL, 'Dunlop', 18, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 33),
+	(92, '2026-03-16 03:38:41.785033+00', '2026-04-25 23:07:31.529435+00', 'Fuel Wheel Nuts', NULL, NULL, 'Fuel', 19, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 26),
+	(94, '2026-03-16 05:32:37.7301+00', '2026-04-25 23:07:31.529435+00', 'Squadron Pro', NULL, NULL, 'Bajaj Designs', 20, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 7),
+	(95, '2026-03-16 05:32:38.039817+00', '2026-04-25 23:07:31.529435+00', 'Squadron Pro', NULL, NULL, 'Bajaj Designs', 20, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 7),
+	(96, '2026-03-16 05:41:44.962276+00', '2026-04-25 23:07:31.529435+00', 'Squadron Sport', NULL, NULL, 'Bajaj Designs', 20, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 7),
+	(97, '2026-03-16 05:49:45.981924+00', '2026-04-25 23:07:31.529435+00', 'Squadron Sport - R', NULL, NULL, 'Bajaj Designs', 20, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 7),
+	(98, '2026-03-16 05:49:57.909911+00', '2026-04-25 23:07:31.529435+00', 'Squadron Sport - R', NULL, NULL, 'Bajaj Designs', 20, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 7),
+	(100, '2026-03-16 06:10:41.544631+00', '2026-04-25 23:07:31.529435+00', 'LP4 PRO', NULL, NULL, 'Bajaj Designs', 20, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 7),
+	(101, '2026-03-16 06:54:35.818052+00', '2026-04-25 23:07:31.529435+00', 'C4 LED WORK LIGHTS', NULL, NULL, 'STEDI', 20, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 46),
+	(103, '2026-03-16 08:51:01.833961+00', '2026-04-25 23:07:31.529435+00', 'ST3K 21.5 LED LIGHT BAR', NULL, NULL, 'STEDI', 20, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 46),
+	(104, '2026-03-16 08:51:02.425809+00', '2026-04-25 23:07:31.529435+00', 'ST3K 21.5 LED LIGHT BAR', NULL, NULL, 'STEDI', 20, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 46),
+	(105, '2026-03-18 06:15:32.403862+00', '2026-04-25 23:07:31.529435+00', 'DLAA Fog Light', NULL, NULL, 'DLAA', 2, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 25),
+	(111, '2026-03-19 06:09:33.626197+00', '2026-04-25 23:07:31.529435+00', 'Rigid 360 Series', NULL, NULL, 'Aftermarket', 20, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 22),
+	(108, '2026-03-18 07:49:44.393487+00', '2026-04-25 23:07:31.529435+00', 'Rigid D-SS Pro ', NULL, NULL, 'Rigid', 20, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 4),
+	(112, '2026-03-19 06:09:42.709483+00', '2026-04-25 23:07:31.529435+00', 'Rigid 360 Series', NULL, NULL, 'Aftermarket', 20, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 22),
+	(107, '2026-03-18 07:00:55.016378+00', '2026-04-25 23:07:31.529435+00', 'Rigid Ignite ', NULL, NULL, 'Rigid', 20, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": [], "color": "Black", "internal_notes": "", "color_temperature": null}', true, 4),
+	(109, '2026-03-18 08:13:42.654571+00', '2026-04-25 23:07:31.529435+00', 'Rigid Sae D Series', NULL, '', 'Rigid', 20, NULL, NULL, 0.00, 0.00, 0, 0, 0, '', '', NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 4),
+	(116, '2026-03-19 06:36:52.453629+00', '2026-04-25 23:07:31.529435+00', 'Rigid Reflect Lamp', NULL, NULL, 'Rigid', 20, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 4),
+	(117, '2026-03-19 06:39:30.832796+00', '2026-04-25 23:07:31.529435+00', 'Rigid SR-L Series', NULL, NULL, 'Rigid', 20, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 4),
+	(118, '2026-03-19 07:02:38.12893+00', '2026-04-25 23:07:31.529435+00', 'Rigid Scene Light', NULL, NULL, 'Aftermarket', 20, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 22),
+	(119, '2026-03-19 07:04:57.708026+00', '2026-04-25 23:07:31.529435+00', 'PIAA LPW530', NULL, NULL, 'PIAA', 20, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 20),
+	(120, '2026-03-19 07:10:21.454992+00', '2026-04-25 23:07:31.529435+00', 'PIAA DKCL200 2000 Series', NULL, NULL, 'PIAA', 20, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 20),
+	(121, '2026-03-19 07:25:46.079163+00', '2026-04-25 23:07:31.529435+00', 'PIAA LPX570 7"', NULL, '', 'PIAA', 20, NULL, NULL, 0.00, 0.00, 0, 0, 0, '', '', NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 20),
+	(122, '2026-03-19 07:33:50.241104+00', '2026-04-25 23:07:31.529435+00', 'PIAA LP570 7"', NULL, NULL, 'PIAA', 20, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 20),
+	(123, '2026-03-19 08:28:38.573299+00', '2026-04-25 23:07:31.529435+00', 'PIAA LP530 3.5"', NULL, '', 'PIAA', 20, NULL, NULL, 0.00, 0.00, 0, 0, 0, '', '', NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 20),
+	(125, '2026-03-20 06:32:57.549946+00', '2026-04-25 23:07:31.529435+00', 'TJM Seeker Series', NULL, NULL, 'TJM', NULL, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": [], "color": "Clear", "internal_notes": "Need Price", "color_temperature": null}', true, 9),
+	(126, '2026-03-20 06:43:46.264546+00', '2026-04-25 23:07:31.529435+00', 'KC FLEX ERA 3', NULL, NULL, 'KC', 20, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 15),
+	(127, '2026-03-20 06:54:19.529027+00', '2026-04-25 23:07:31.529435+00', 'KC FLEX LED SINGLE', NULL, NULL, 'KC', 20, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 15),
+	(128, '2026-03-20 06:58:30.063908+00', '2026-04-25 23:07:31.529435+00', 'KC C3 LED', NULL, NULL, 'KC', 20, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 15),
+	(129, '2026-03-20 07:15:17.250434+00', '2026-04-25 23:07:31.529435+00', 'KC 7471 FE3 Toyota', NULL, NULL, 'KC', 20, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 15),
+	(130, '2026-03-20 07:15:27.956183+00', '2026-04-25 23:07:31.529435+00', 'KC 7471 FE3 Toyota', NULL, NULL, 'KC', 20, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 15),
+	(131, '2026-03-20 07:57:59.297616+00', '2026-04-25 23:07:31.529435+00', 'KC 500 GRAVITY', NULL, '', 'KC', 20, NULL, NULL, 0.00, 0.00, 0, 0, 0, '', '', NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 15),
+	(132, '2026-03-23 06:24:40.81047+00', '2026-04-25 23:07:31.529435+00', 'KC 91305', NULL, NULL, 'KC', 20, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 15),
+	(91, '2026-03-16 03:38:41.784985+00', '2026-05-08 07:31:12.510373+00', 'Fuel Wheel Nuts', NULL, '', 'Fuel', 19, NULL, NULL, 0.00, 0.00, 0, 0, 0, '', '', NULL, NULL, '', NULL, NULL, '{"tags": [], "color": "Black", "variant_color": "Black", "internal_notes": "", "color_temperature": ""}', true, 26),
+	(133, '2026-03-23 06:27:19.637373+00', '2026-04-25 23:07:31.529435+00', 'LC 91305', NULL, NULL, 'KC', 20, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 15),
+	(134, '2026-03-23 07:34:28.380611+00', '2026-04-25 23:07:31.529435+00', 'ARB Intensity SOLIS', NULL, NULL, 'ARB', 20, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 13),
+	(135, '2026-03-23 07:44:24.435149+00', '2026-04-25 23:07:31.529435+00', 'ARB Nacho Quatro', NULL, NULL, 'ARB', 20, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 13),
+	(136, '2026-03-23 07:55:45.121756+00', '2026-04-25 23:07:31.529435+00', 'ARB Base Auxiliary Light', NULL, NULL, 'ARB', 20, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 13),
+	(14, '2026-02-18 02:09:41.39671+00', '2026-04-25 23:07:31.529435+00', 'Alo - F6', NULL, '', 'JO LED LIGHTS', 1, NULL, NULL, 0.00, 0.00, 0, 0, 0, '', '', NULL, NULL, '6000-6500', NULL, NULL, '{"tags": []}', true, 19),
+	(137, '2026-03-26 07:51:49.782156+00', '2026-04-25 23:07:31.529435+00', 'SR Aux Lights', NULL, NULL, 'SR Lightings', 20, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 32),
+	(138, '2026-03-26 08:43:01.127412+00', '2026-04-25 23:07:31.529435+00', 'Bajaj Rock Guard', NULL, NULL, 'Baja Designs', 21, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 14),
+	(139, '2026-03-28 06:39:05.006008+00', '2026-04-25 23:07:31.529435+00', 'Fortuner Fog Light', NULL, NULL, 'Better Than Stock', 20, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 12),
+	(140, '2026-03-28 06:40:41.633306+00', '2026-04-25 23:07:31.529435+00', 'Nissan Fog Light', NULL, NULL, 'Better Than Stock', 20, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 12),
+	(142, '2026-03-28 06:47:58.444718+00', '2026-04-25 23:07:31.529435+00', 'Nissan 3 Fog Light', NULL, NULL, 'Better Than Stock', 20, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 12),
+	(141, '2026-03-28 06:46:19.846676+00', '2026-04-25 23:07:31.529435+00', 'Toyota Projector Fog Light', NULL, NULL, 'Better Than Stock', 20, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": [], "color": "Yellow", "internal_notes": "", "color_temperature": null}', true, 12),
+	(143, '2026-03-28 07:16:14.791009+00', '2026-04-25 23:07:31.529435+00', 'Ford Fog Light', NULL, NULL, 'Better Than Stock', 20, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 12),
+	(144, '2026-03-28 07:23:11.375449+00', '2026-04-25 23:07:31.529435+00', 'Toyota Large Fog Light', NULL, NULL, 'Better Than Stock', 20, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 12),
+	(145, '2026-03-28 07:32:18.987395+00', '2026-04-25 23:07:31.529435+00', 'GTW-G38', NULL, NULL, 'Fearless of Darkness', 20, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 3),
+	(124, '2026-03-20 05:58:55.060702+00', '2026-04-25 23:07:31.529435+00', 'PIAA 220R', NULL, NULL, 'PIAA', 20, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": [], "color": "White/Yellow", "internal_notes": "", "color_temperature": null}', true, 20),
+	(27, '2026-02-25 06:43:16.15155+00', '2026-04-25 23:07:31.529435+00', '57 Xrx - z2', NULL, NULL, 'Gram Lights', 12, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, 'Dark Bronze', NULL, NULL, '{"tags": [], "color": "17x8", "internal_notes": "", "color_temperature": "Dark Bronze", "spec_1772000809098": "0"}', true, 2),
+	(146, '2026-04-09 05:23:28.163023+00', '2026-04-25 23:07:31.529435+00', 'PIAA S-RF Series VM Led Lightbar 6”', NULL, NULL, 'PIAA', 20, 28, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": [], "color": "5600K", "socket": "Driving"}', true, 20),
+	(148, '2026-04-09 05:28:41.408071+00', '2026-04-25 23:07:31.529435+00', 'PIAA S-RF Series 9”', NULL, NULL, 'PIAA', 20, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 20),
+	(149, '2026-04-09 05:32:25.573616+00', '2026-04-25 23:07:31.529435+00', 'SR Chase Lights', NULL, NULL, 'SR Lightings', 20, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 32),
+	(150, '2026-04-09 06:19:49.56399+00', '2026-04-25 23:07:31.529435+00', 'STEDI Type-X 7” Replacement Cover', NULL, NULL, 'STEDI', 21, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 46),
+	(151, '2026-04-09 06:21:57.277177+00', '2026-04-25 23:07:31.529435+00', 'STEDI Quad Pro Smiley', NULL, NULL, 'STEDI', 21, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 46),
+	(152, '2026-04-09 06:23:54.109391+00', '2026-04-25 23:07:31.529435+00', 'STEDI Type-X Evo Smiley', NULL, NULL, 'STEDI', 21, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 46),
+	(153, '2026-04-09 06:25:31.595738+00', '2026-04-25 23:07:31.529435+00', 'STEDI Type-X Smiley', NULL, NULL, 'STEDI', 21, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 46),
+	(154, '2026-04-09 06:37:11.671538+00', '2026-04-25 23:07:31.529435+00', 'Rigid Cover D- Series 201913', NULL, NULL, 'Rigid', 21, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": [], "color": "Black", "internal_notes": "", "color_temperature": null}', true, 4),
+	(155, '2026-04-09 07:06:04.321745+00', '2026-04-25 23:07:31.529435+00', 'Rigid Cover 10” E/RDS', NULL, NULL, 'Rigid', 21, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 4),
+	(156, '2026-04-09 07:08:59.256645+00', '2026-04-25 23:07:31.529435+00', 'PIAA Lamp Cover LP570 LED', NULL, NULL, 'PIAA', 21, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 20),
+	(158, '2026-04-09 07:45:16.461788+00', '2026-04-25 23:07:31.529435+00', 'Ironman Cover Blast', NULL, NULL, 'Ironman', 21, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": []}', true, 24),
+	(147, '2026-04-09 05:26:05.968379+00', '2026-06-05 01:24:39.983116+00', 'PIAA V-RF 10” ', NULL, NULL, 'PIAA', 20, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, '', NULL, NULL, '{"tags": [], "color": "5800K", "variant_color": "5800K", "internal_notes": "", "color_temperature": ""}', true, 20),
+	(169, '2026-06-05 01:35:13.121967+00', '2026-06-05 01:35:13.121967+00', 'Blaze Pro', 'LIT-HEL-BZP-4IN-YEL-SG', NULL, 'Hellsten', 20, 29, NULL, 7500.00, 0.00, 2, 2, 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '{"tags": [], "color": "Amber", "socket": "Spot"}', false, 11),
+	(26, '2026-02-25 06:39:20.474982+00', '2026-06-12 02:52:42.874983+00', 'TE37 XT M-SPEC', NULL, NULL, 'Volk Racing', 12, NULL, NULL, 0.00, 0.00, 0, 0, 0, NULL, NULL, NULL, NULL, 'Gunmetal', NULL, NULL, '{"tags": [], "color": "18x9 ", "variant_color": "18x9 ", "internal_notes": "", "color_temperature": "Gunmetal", "spec_1772000809098": "0"}', true, 28);
+
+
+--
+-- Data for Name: product_specifications; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO "public"."product_specifications" ("id", "product_id", "spec_key", "spec_value", "created_at") VALUES
+	(1, 13, 'color_temperature', '', '2026-04-25 23:07:49.37457+00'),
+	(2, 19, 'color_temperature', '', '2026-04-25 23:07:49.37457+00'),
+	(3, 11, 'color_temperature', '', '2026-04-25 23:07:49.37457+00'),
+	(4, 48, 'color_temperature', 'Gunmetal Machined(PressG)', '2026-04-25 23:07:49.37457+00'),
+	(5, 15, 'color_temperature', '5700', '2026-04-25 23:07:49.37457+00'),
+	(6, 23, 'color_temperature', 'Bronze', '2026-04-25 23:07:49.37457+00'),
+	(7, 34, 'color_temperature', 'Matte Black', '2026-04-25 23:07:49.37457+00'),
+	(8, 44, 'color_temperature', 'Machined', '2026-04-25 23:07:49.37457+00'),
+	(9, 45, 'color_temperature', 'Black', '2026-04-25 23:07:49.37457+00'),
+	(10, 12, 'color_temperature', 'Yellow', '2026-04-25 23:07:49.37457+00'),
+	(12, 59, 'color_temperature', 'Anthracite', '2026-04-25 23:07:49.37457+00'),
+	(13, 9, 'color_temperature', 'Dual Color', '2026-04-25 23:07:49.37457+00'),
+	(14, 70, 'color_temperature', 'Matte Black', '2026-04-25 23:07:49.37457+00'),
+	(15, 69, 'color_temperature', 'Silver Brush', '2026-04-25 23:07:49.37457+00'),
+	(17, 73, 'color_temperature', 'Front', '2026-04-25 23:07:49.37457+00'),
+	(18, 77, 'color_temperature', 'Front', '2026-04-25 23:07:49.37457+00'),
+	(19, 14, 'color_temperature', '6000-6500', '2026-04-25 23:07:49.37457+00'),
+	(20, 27, 'color_temperature', 'Dark Bronze', '2026-04-25 23:07:49.37457+00'),
+	(21, 13, 'socket', '', '2026-04-25 23:07:49.37457+00'),
+	(22, 113, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(23, 58, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(24, 106, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(25, 106, 'color', 'Black', '2026-04-25 23:07:49.37457+00'),
+	(26, 106, 'internal_notes', '', '2026-04-25 23:07:49.37457+00'),
+	(27, 106, 'color_temperature', '', '2026-04-25 23:07:49.37457+00'),
+	(28, 8, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(29, 8, 'internal_notes', 'PARENT', '2026-04-25 23:07:49.37457+00'),
+	(30, 37, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(31, 50, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(32, 38, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(33, 115, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(34, 17, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(35, 17, 'internal_notes', 'ZES', '2026-04-25 23:07:49.37457+00'),
+	(36, 19, 'socket', '', '2026-04-25 23:07:49.37457+00'),
+	(37, 39, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(38, 40, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(39, 41, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(40, 42, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(41, 11, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(42, 11, 'socket', '', '2026-04-25 23:07:49.37457+00'),
+	(43, 11, 'internal_notes', '', '2026-04-25 23:07:49.37457+00'),
+	(44, 48, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(45, 48, 'color', '16x7', '2026-04-25 23:07:49.37457+00'),
+	(46, 48, 'socket', '', '2026-04-25 23:07:49.37457+00'),
+	(47, 48, 'last_restock', '{"date": "2026-02-17T23:21:56.532Z", "quantity": 1}', '2026-04-25 23:07:49.37457+00'),
+	(48, 48, 'internal_notes', 'set of 4', '2026-04-25 23:07:49.37457+00'),
+	(50, 48, 'spec_1772000809098', '0', '2026-04-25 23:07:49.37457+00'),
+	(51, 15, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(52, 15, 'color', '', '2026-04-25 23:07:49.37457+00'),
+	(53, 15, 'internal_notes', '', '2026-04-25 23:07:49.37457+00'),
+	(54, 22, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(55, 157, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(56, 159, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(57, 160, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(58, 160, 'color', '6000k', '2026-04-25 23:07:49.37457+00'),
+	(59, 160, 'internal_notes', '', '2026-04-25 23:07:49.37457+00'),
+	(60, 160, 'color_temperature', '', '2026-04-25 23:07:49.37457+00'),
+	(61, 161, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(62, 163, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(63, 163, 'color', '6500K', '2026-04-25 23:07:49.37457+00'),
+	(64, 163, 'internal_notes', '', '2026-04-25 23:07:49.37457+00'),
+	(65, 163, 'color_temperature', '', '2026-04-25 23:07:49.37457+00'),
+	(66, 165, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(67, 164, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(68, 164, 'color', '6000K', '2026-04-25 23:07:49.37457+00'),
+	(69, 164, 'internal_notes', '', '2026-04-25 23:07:49.37457+00'),
+	(70, 164, 'color_temperature', '', '2026-04-25 23:07:49.37457+00'),
+	(71, 162, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(72, 162, 'color', '6000k', '2026-04-25 23:07:49.37457+00'),
+	(73, 162, 'internal_notes', '', '2026-04-25 23:07:49.37457+00'),
+	(74, 162, 'color_temperature', '', '2026-04-25 23:07:49.37457+00'),
+	(75, 84, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(76, 84, 'color', '106Q', '2026-04-25 23:07:49.37457+00'),
+	(77, 84, 'internal_notes', '', '2026-04-25 23:07:49.37457+00'),
+	(79, 80, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(80, 80, 'color', '116/113R', '2026-04-25 23:07:49.37457+00'),
+	(81, 80, 'internal_notes', '', '2026-04-25 23:07:49.37457+00'),
+	(83, 166, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(84, 81, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(85, 81, 'color', '128/125S', '2026-04-25 23:07:49.37457+00'),
+	(86, 81, 'internal_notes', 'Need Price', '2026-04-25 23:07:49.37457+00'),
+	(88, 23, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(89, 23, 'color', '16x6', '2026-04-25 23:07:49.37457+00'),
+	(90, 23, 'internal_notes', '', '2026-04-25 23:07:49.37457+00'),
+	(92, 23, 'spec_1772000809098', '-5', '2026-04-25 23:07:49.37457+00'),
+	(93, 24, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(94, 25, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(95, 26, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(96, 28, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(97, 43, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(98, 29, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(99, 30, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(100, 31, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(101, 32, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(102, 33, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(103, 34, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(104, 34, 'color', '17x8', '2026-04-25 23:07:49.37457+00'),
+	(105, 34, 'internal_notes', '', '2026-04-25 23:07:49.37457+00'),
+	(107, 34, 'spec_1772000809098', '20', '2026-04-25 23:07:49.37457+00'),
+	(108, 35, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(109, 36, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(110, 44, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(111, 44, 'color', 'N/A', '2026-04-25 23:07:49.37457+00'),
+	(112, 44, 'socket', 'Not Specified', '2026-04-25 23:07:49.37457+00'),
+	(114, 44, 'spec_1772000809098', 'N/A', '2026-04-25 23:07:49.37457+00'),
+	(115, 45, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(116, 45, 'color', '20x9', '2026-04-25 23:07:49.37457+00'),
+	(117, 45, 'socket', '6x139.7', '2026-04-25 23:07:49.37457+00'),
+	(118, 45, 'internal_notes', '1 on Display', '2026-04-25 23:07:49.37457+00'),
+	(120, 45, 'spec_1772000809098', '1', '2026-04-25 23:07:49.37457+00'),
+	(121, 46, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(122, 12, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(123, 12, 'color', 'Green', '2026-04-25 23:07:49.37457+00'),
+	(82, 80, 'color_temperature', '', '2026-04-25 23:07:49.37457+00'),
+	(78, 84, 'color_temperature', '', '2026-04-25 23:07:49.37457+00'),
+	(11, 10, 'color_temperature', '4300', '2026-04-25 23:07:49.37457+00'),
+	(87, 81, 'color_temperature', '', '2026-04-25 23:07:49.37457+00'),
+	(124, 12, 'last_restock', '{"date": "2026-02-17T23:21:56.532Z", "quantity": 1}', '2026-04-25 23:07:49.37457+00'),
+	(125, 12, 'variant_type', '', '2026-04-25 23:07:49.37457+00'),
+	(126, 12, 'internal_notes', '', '2026-04-25 23:07:49.37457+00'),
+	(128, 47, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(129, 10, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(130, 10, 'socket', '', '2026-04-25 23:07:49.37457+00'),
+	(131, 10, 'last_restock', '{"date": "2026-02-17T04:18:19.295Z", "quantity": 1}', '2026-04-25 23:07:49.37457+00'),
+	(132, 10, 'internal_notes', 'PARENT', '2026-04-25 23:07:49.37457+00'),
+	(133, 49, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(134, 52, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(135, 53, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(136, 54, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(137, 55, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(138, 56, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(139, 57, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(140, 51, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(141, 51, 'socket', '', '2026-04-25 23:07:49.37457+00'),
+	(142, 51, 'internal_notes', '', '2026-04-25 23:07:49.37457+00'),
+	(143, 110, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(144, 114, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(145, 61, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(146, 60, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(147, 60, 'socket', '', '2026-04-25 23:07:49.37457+00'),
+	(148, 60, 'internal_notes', '', '2026-04-25 23:07:49.37457+00'),
+	(149, 62, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(150, 63, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(151, 59, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(152, 59, 'color', '15x7', '2026-04-25 23:07:49.37457+00'),
+	(153, 59, 'internal_notes', 'set of 5', '2026-04-25 23:07:49.37457+00'),
+	(155, 59, 'spec_1772000809098', '0', '2026-04-25 23:07:49.37457+00'),
+	(156, 64, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(157, 65, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(158, 66, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(159, 67, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(160, 68, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(161, 9, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(162, 9, 'internal_notes', '', '2026-04-25 23:07:49.37457+00'),
+	(164, 70, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(165, 70, 'color', '15x7', '2026-04-25 23:07:49.37457+00'),
+	(166, 70, 'internal_notes', 'set of 4', '2026-04-25 23:07:49.37457+00'),
+	(168, 70, 'spec_1772000809098', '-6', '2026-04-25 23:07:49.37457+00'),
+	(169, 69, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(170, 69, 'color', '17x8.5', '2026-04-25 23:07:49.37457+00'),
+	(171, 69, 'internal_notes', 'set of 4', '2026-04-25 23:07:49.37457+00'),
+	(173, 69, 'spec_1772000809098', '-10', '2026-04-25 23:07:49.37457+00'),
+	(174, 99, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(175, 99, 'color', 'Clear', '2026-04-25 23:07:49.37457+00'),
+	(176, 99, 'internal_notes', '', '2026-04-25 23:07:49.37457+00'),
+	(177, 99, 'color_temperature', '', '2026-04-25 23:07:49.37457+00'),
+	(178, 7, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(179, 7, 'color', '', '2026-04-25 23:07:49.37457+00'),
+	(180, 7, 'socket', '', '2026-04-25 23:07:49.37457+00'),
+	(181, 7, 'last_restock', '{"date": "2026-02-17T04:04:09.409Z", "quantity": 1}', '2026-04-25 23:07:49.37457+00'),
+	(182, 7, 'internal_notes', '', '2026-04-25 23:07:49.37457+00'),
+	(184, 93, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(185, 102, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(186, 102, 'color', 'Clear', '2026-04-25 23:07:49.37457+00'),
+	(187, 102, 'internal_notes', 'Need Price', '2026-04-25 23:07:49.37457+00'),
+	(188, 102, 'color_temperature', '', '2026-04-25 23:07:49.37457+00'),
+	(189, 86, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(190, 86, 'color', '10PR', '2026-04-25 23:07:49.37457+00'),
+	(191, 86, 'internal_notes', '', '2026-04-25 23:07:49.37457+00'),
+	(192, 86, 'color_temperature', '', '2026-04-25 23:07:49.37457+00'),
+	(193, 89, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(194, 89, 'color', '104/101S', '2026-04-25 23:07:49.37457+00'),
+	(195, 89, 'internal_notes', '', '2026-04-25 23:07:49.37457+00'),
+	(196, 89, 'color_temperature', '', '2026-04-25 23:07:49.37457+00'),
+	(197, 88, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(198, 88, 'color', '120/117Q', '2026-04-25 23:07:49.37457+00'),
+	(199, 88, 'internal_notes', '', '2026-04-25 23:07:49.37457+00'),
+	(200, 88, 'color_temperature', '', '2026-04-25 23:07:49.37457+00'),
+	(201, 71, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(202, 83, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(203, 82, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(204, 82, 'color', '123/120R', '2026-04-25 23:07:49.37457+00'),
+	(205, 82, 'internal_notes', '', '2026-04-25 23:07:49.37457+00'),
+	(206, 82, 'color_temperature', '', '2026-04-25 23:07:49.37457+00'),
+	(207, 85, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(208, 85, 'color', '115S', '2026-04-25 23:07:49.37457+00'),
+	(209, 85, 'internal_notes', '', '2026-04-25 23:07:49.37457+00'),
+	(210, 85, 'color_temperature', '', '2026-04-25 23:07:49.37457+00'),
+	(211, 73, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(212, 73, 'color', 'Hilux', '2026-04-25 23:07:49.37457+00'),
+	(213, 73, 'internal_notes', '', '2026-04-25 23:07:49.37457+00'),
+	(215, 77, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(216, 78, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(217, 72, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(218, 72, 'color', '', '2026-04-25 23:07:49.37457+00'),
+	(219, 72, 'internal_notes', 'Lexus, FJ Cruiser, Prado, Mazda MPY', '2026-04-25 23:07:49.37457+00'),
+	(220, 72, 'color_temperature', '', '2026-04-25 23:07:49.37457+00'),
+	(221, 79, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(222, 87, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(223, 90, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(224, 92, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(225, 91, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(226, 94, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(227, 95, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(228, 96, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(229, 97, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(230, 98, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(231, 100, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(232, 101, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(233, 103, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(234, 104, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(235, 105, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(236, 111, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(237, 108, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(238, 112, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(239, 107, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(240, 107, 'color', 'Black', '2026-04-25 23:07:49.37457+00'),
+	(241, 107, 'internal_notes', '', '2026-04-25 23:07:49.37457+00'),
+	(242, 107, 'color_temperature', '', '2026-04-25 23:07:49.37457+00'),
+	(243, 109, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(244, 116, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(245, 117, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(246, 118, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(247, 119, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(248, 120, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(249, 121, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(250, 122, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(251, 123, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(252, 125, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(253, 125, 'color', 'Clear', '2026-04-25 23:07:49.37457+00'),
+	(254, 125, 'internal_notes', 'Need Price', '2026-04-25 23:07:49.37457+00'),
+	(255, 125, 'color_temperature', '', '2026-04-25 23:07:49.37457+00'),
+	(256, 126, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(257, 127, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(258, 128, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(259, 129, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(260, 130, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(261, 131, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(262, 132, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(263, 133, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(264, 134, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(265, 135, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(266, 136, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(267, 14, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(268, 137, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(269, 138, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(270, 139, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(271, 140, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(272, 142, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(273, 141, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(274, 141, 'color', 'Yellow', '2026-04-25 23:07:49.37457+00'),
+	(275, 141, 'internal_notes', '', '2026-04-25 23:07:49.37457+00'),
+	(276, 141, 'color_temperature', '', '2026-04-25 23:07:49.37457+00'),
+	(277, 143, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(278, 144, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(279, 145, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(280, 124, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(281, 124, 'color', 'White/Yellow', '2026-04-25 23:07:49.37457+00'),
+	(282, 124, 'internal_notes', '', '2026-04-25 23:07:49.37457+00'),
+	(283, 124, 'color_temperature', '', '2026-04-25 23:07:49.37457+00'),
+	(284, 27, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(285, 27, 'color', '17x8', '2026-04-25 23:07:49.37457+00'),
+	(286, 27, 'internal_notes', '', '2026-04-25 23:07:49.37457+00'),
+	(288, 27, 'spec_1772000809098', '0', '2026-04-25 23:07:49.37457+00'),
+	(289, 146, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(290, 146, 'color', '5600K', '2026-04-25 23:07:49.37457+00'),
+	(291, 146, 'socket', 'Driving', '2026-04-25 23:07:49.37457+00'),
+	(292, 147, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(293, 148, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(294, 149, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(295, 150, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(296, 151, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(297, 152, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(298, 153, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(299, 154, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(300, 154, 'color', 'Black', '2026-04-25 23:07:49.37457+00'),
+	(301, 154, 'internal_notes', '', '2026-04-25 23:07:49.37457+00'),
+	(302, 154, 'color_temperature', '', '2026-04-25 23:07:49.37457+00'),
+	(303, 155, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(304, 156, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(305, 158, 'tags', '[]', '2026-04-25 23:07:49.37457+00'),
+	(306, 71, 'color_temperature', '', '2026-04-29 06:45:37.924103+00'),
+	(307, 83, 'color_temperature', '', '2026-05-08 07:05:22.061297+00'),
+	(308, 91, 'color_temperature', '', '2026-05-08 07:31:12.510373+00'),
+	(309, 147, 'color_temperature', '', '2026-06-05 01:24:39.983116+00'),
+	(16, 7, 'color_temperature', '4300', '2026-04-25 23:07:49.37457+00'),
+	(315, 28, 'color_temperature', 'Gunblack', '2026-06-12 02:52:28.228736+00'),
+	(316, 26, 'color_temperature', 'Gunmetal', '2026-06-12 02:52:42.874983+00');
+
+
+--
+-- Data for Name: variant_definitions; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO "public"."variant_definitions" ("id", "created_at", "base_name", "variant_name", "display_name", "compatibility_list", "description", "is_active") VALUES
+	(1, '2026-02-15 12:12:09.933322+00', 'LED Headlight Kit', 'H4/H7/9005/9006', 'Universal Kit (H4/H7/9005/9006)', '{H4,H7,9005,9006}', 'Fits multiple sockets with adapters', true),
+	(2, '2026-02-15 12:12:09.933322+00', 'LED Headlight Kit', 'H4/Hb2/9003', 'Hi/Lo Beam (H4)', '{H4,Hb2,9003}', 'Standard high/low beam', true),
+	(3, '2026-02-15 12:12:09.933322+00', 'LED Headlight Kit', 'H7', 'Low Beam (H7)', '{H7}', 'Standard low beam', true),
+	(4, '2026-02-15 12:12:09.933322+00', 'LED Headlight Kit', 'H11/H8/H9', 'Single Beam (H11)', '{H11,H8,H9}', 'Standard single beam', true),
+	(5, '2026-02-15 12:12:09.933322+00', 'LED Headlight Kit', '9005/HB3', 'High Beam (9005)', '{9005,HB3}', 'Standard high beam', true),
+	(6, '2026-02-15 12:12:09.933322+00', 'LED Headlight Kit', '9006/HB4', 'Low Beam (9006)', '{9006,HB4}', 'Standard low beam', true),
+	(7, '2026-02-15 12:12:09.933322+00', 'LED Headlight Kit', '9012/HIR2', 'Single Beam (9012)', '{9012,HIR2}', 'Accessory light', true),
+	(8, '2026-02-15 12:12:09.933322+00', 'LED Fog Light', 'H11/H8/H16', 'Fog Universal (H11/H8/H16)', '{H11,H8,H16}', 'Universal fog light fitment', true),
+	(9, '2026-02-15 12:12:09.933322+00', 'LED Fog Light', '880/881', 'Fog (880/881)', '{880,881}', 'Small fog light', true),
+	(10, '2026-02-15 12:12:09.933322+00', 'LED Signal', '1156/BA15S', 'Single Contact (1156)', '{1156,BA15S}', 'Turn signal / Reverse', true),
+	(11, '2026-02-15 12:12:09.933322+00', 'LED Signal', '7440/T20', 'Wedge Base (7440)', '{7440,T20}', 'Turn signal', true),
+	(12, '2026-02-15 12:12:09.933322+00', 'LED Brake', '1157/BAY15D', 'Double Contact (1157)', '{1157,BAY15D}', 'Brake/Tail light', true),
+	(13, '2026-02-15 12:12:09.933322+00', 'LED Brake', '7443/T20', 'Wedge Double (7443)', '{7443,T20}', 'Brake/Tail light', true),
+	(14, '2026-02-15 12:12:09.933322+00', 'Interior LED', 'T10/194/168', 'Wedge T10 (Universal)', '{T10,194,168}', 'Parking/Interior/Plate', true),
+	(15, '2026-02-15 12:12:09.933322+00', 'Interior LED', 'Festoon 31mm', 'Festoon 31mm', '{31mm}', 'Dome light', true),
+	(16, '2026-02-15 12:12:09.933322+00', 'Interior LED', 'Festoon 36mm', 'Festoon 36mm', '{36mm}', 'Dome light', true),
+	(17, '2026-02-15 16:02:47.309202+00', 'Simple Bulb', 'H13', 'H13', '{H13}', 'Standard H13', true),
+	(18, '2026-02-15 16:14:45.801102+00', 'Simple Bulb', 'H11', 'H11', '{H11}', 'Standard H11', true),
+	(19, '2026-02-15 16:15:38.740664+00', 'Simple Bulb', 'Festoon 41mm', 'Festoon 41mm', '{"Festoon 41mm"}', 'Standard Festoon 41mm', true),
+	(20, '2026-02-16 01:42:51.462139+00', 'Simple Bulb', 'D2S', 'D2S', '{D2S}', 'Standard D2S', true),
+	(21, '2026-02-16 01:43:42.742359+00', 'Simple Bulb', 'D1S', 'D1S', '{D1S}', 'Standard D1S', true),
+	(22, '2026-02-16 04:02:01.892255+00', 'Simple Bulb', '9005 (HB3)', '9005 (HB3)', '{"9005 (HB3)"}', 'Standard 9005 (HB3)', true),
+	(23, '2026-02-16 05:39:09.432152+00', 'Simple Bulb', '9012 (HIR2)', '9012 (HIR2)', '{"9012 (HIR2)"}', 'Standard 9012 (HIR2)', true),
+	(24, '2026-02-17 03:57:53.340187+00', 'Simple Bulb', 'H1', 'H1', '{H1}', 'Standard H1', true),
+	(25, '2026-02-17 03:58:47.351891+00', 'Simple Bulb', '9006 (HB4)', '9006 (HB4)', '{"9006 (HB4)"}', 'Standard 9006 (HB4)', true),
+	(26, '2026-02-17 04:02:21.484399+00', 'Simple Bulb', 'H27', 'H27', '{H27}', 'Standard H27', true),
+	(27, '2026-02-17 04:15:43.76334+00', 'Simple Bulb', 'H4', 'H4', '{H4}', 'Standard H4', true),
+	(28, '2026-02-17 23:12:03.507824+00', 'Simple Variant', '12"', '12"', '{"12\""}', 'Standard 12"', true),
+	(29, '2026-02-17 23:12:49.697065+00', 'Simple Variant', '16"', '16"', '{"16\""}', 'Standard 16"', true),
+	(30, '2026-02-17 23:13:24.789725+00', 'Simple Variant', '17"', '17"', '{"17\""}', 'Standard 17"', true),
+	(31, '2026-02-17 23:13:44.575145+00', 'Simple Variant', '18"', '18"', '{"18\""}', 'Standard 18"', true),
+	(32, '2026-02-17 23:14:03.960222+00', 'Simple Variant', '19"', '19"', '{"19\""}', 'Standard 19"', true),
+	(33, '2026-02-17 23:14:33.445326+00', 'Simple Variant', '20"', '20"', '{"20\""}', 'Standard 20"', true),
+	(34, '2026-02-17 23:15:07.52315+00', 'Simple Variant', '22"', '22"', '{"22\""}', 'Standard 22"', true),
+	(35, '2026-02-17 23:15:30.764856+00', 'Simple Variant', '24"', '24"', '{"24\""}', 'Standard 24"', true),
+	(36, '2026-02-17 23:16:00.635179+00', 'Simple Variant', '26"', '26"', '{"26\""}', 'Standard 26"', true),
+	(37, '2026-02-17 23:24:42.040657+00', 'Simple Variant', '14"', '14"', '{"14\""}', 'Standard 14"', true),
+	(38, '2026-02-17 23:33:26.320003+00', 'Simple Variant', '28"', '28"', '{"28\""}', 'Standard 28"', true),
+	(39, '2026-02-17 23:40:35.038579+00', 'Simple Variant', '10"', '10"', '{"10\""}', 'Standard 10"', true),
+	(40, '2026-02-17 23:41:09.010751+00', 'Simple Variant', '11"', '11"', '{"11\""}', 'Standard 11"', true),
+	(41, '2026-02-17 23:42:27.15767+00', 'Simple Variant', '13"', '13"', '{"13\""}', 'Standard 13"', true),
+	(42, '2026-02-18 02:05:33.075152+00', 'Simple Variant', 'H8/H9/H11', 'H8/H9/H11', '{H8/H9/H11}', 'Standard H8/H9/H11', true),
+	(43, '2026-02-18 02:32:11.970569+00', 'Simple Variant', 'H8/H9/H11/H16', 'H8/H9/H11/H16', '{H8/H9/H11/H16}', 'Standard H8/H9/H11/H16', true),
+	(44, '2026-02-18 02:37:31.97448+00', 'Simple Variant', 'H15', 'H15', '{H15}', 'Standard H15', true),
+	(45, '2026-02-18 03:06:51.222228+00', 'Simple Bulb', 'H4', 'H4', NULL, NULL, true),
+	(46, '2026-02-18 03:06:51.46566+00', 'Simple Bulb', 'H4', 'H4', NULL, NULL, true),
+	(47, '2026-02-18 03:06:52.034952+00', 'Simple Bulb', 'H4', 'H4', NULL, NULL, true),
+	(48, '2026-02-18 03:06:52.3715+00', 'Simple Bulb', 'H4', 'H4', NULL, NULL, true),
+	(49, '2026-02-18 03:12:55.25354+00', 'Simple Bulb', 'H4', 'H4', NULL, NULL, true),
+	(50, '2026-02-21 01:27:05.708954+00', 'Osram Night Breaker', 'H4', 'H4', NULL, NULL, true),
+	(51, '2026-02-21 03:08:38.494266+00', 'XD818 HEIST', '6x114.3', '6x114.3', '{6x114.3}', 'Standard 6x114.3', true),
+	(52, '2026-02-21 03:52:43.465761+00', 'Variant', 'Lol', 'Lol', '{Lol}', 'Standard Lol', true),
+	(53, '2026-02-25 04:26:27.696081+00', 'Variant', '6x139.7', '6x139.7', '{6x139.7}', 'Standard 6x139.7', true),
+	(54, '2026-02-25 06:29:15.219387+00', 'Alap J', '5x139.7', '5x139.7', '{5x139.7}', 'Standard 5x139.7', true),
+	(55, '2026-02-26 01:38:36.679485+00', 'ME002 MR701', '5x127', '5x127', '{5x127}', 'Standard 5x127', true),
+	(56, '2026-02-26 02:01:55.844883+00', 'Dakarzero', '5x139', '5x139', '{5x139}', 'Standard 5x139', true),
+	(57, '2026-02-26 02:42:01.409154+00', 'Trail Cross', '6x139', '6x139', '{6x139}', 'Standard 6x139', true),
+	(58, '2026-02-26 06:14:33.440629+00', 'GPNE RS6X - H4', 'H4', 'H4', NULL, NULL, true),
+	(59, '2026-02-26 06:42:45.451191+00', 'GPNE R6 - H4', 'H4', 'H4', NULL, NULL, true),
+	(60, '2026-03-04 02:56:16.572244+00', 'K&N Air Filter', '33-3185', '33-3185', '{33-3185}', 'Standard 33-3185', true),
+	(61, '2026-03-04 03:00:30.11301+00', 'K&N Air Filter', '33-3059', '33-3059', '{33-3059}', 'Standard 33-3059', true),
+	(62, '2026-03-04 03:32:35.893927+00', 'K&N Air Filter', '33-3045', '33-3045', '{33-3045}', 'Standard 33-3045', true),
+	(63, '2026-03-04 03:34:46.853005+00', 'K&N Air Filter', '33-3062', '33-3062', '{33-3062}', 'Standard 33-3062', true),
+	(65, '2026-03-04 03:35:48.309414+00', 'K&N Air Filter', '33-2387', '33-2387', '{33-2387}', 'Standard 33-2387', true),
+	(64, '2026-03-04 03:35:48.310022+00', 'K&N Air Filter', '33-2387', '33-2387', '{33-2387}', 'Standard 33-2387', true),
+	(66, '2026-03-04 03:37:21.274458+00', 'K&N Air Filter', '33-2443', '33-2443', '{33-2443}', 'Standard 33-2443', true),
+	(67, '2026-03-04 03:38:38.064395+00', 'K&N Air Filter', '33-2146', '33-2146', '{33-2146}', 'Standard 33-2146', true),
+	(68, '2026-03-04 03:52:46.457032+00', 'K&N Cabin Air Filter', 'VF2052', 'VF2052', '{VF2052}', 'Standard VF2052', true),
+	(69, '2026-03-04 03:53:55.525182+00', 'K&N Cabin Air Filter', 'VF2002', 'VF2002', '{VF2002}', 'Standard VF2002', true),
+	(70, '2026-03-04 03:57:24.18952+00', 'K&N Cabin Air Filter', 'VF2033', 'VF2033', '{VF2033}', 'Standard VF2033', true),
+	(71, '2026-03-04 03:58:24.575456+00', 'K&N Cabin Air Filter', 'VF1001', 'VF1001', '{VF1001}', 'Standard VF1001', true),
+	(72, '2026-03-04 04:00:40.454453+00', 'K&N Air Filter', '33-2472', '33-2472', '{33-2472}', 'Standard 33-2472', true),
+	(73, '2026-03-04 04:01:38.424539+00', 'K&N Air Filter', '33-2360', '33-2360', '{33-2360}', 'Standard 33-2360', true),
+	(74, '2026-03-04 04:02:37.900217+00', 'K&N Air Filter', '33-3018', '33-3018', '{33-3018}', 'Standard 33-3018', true),
+	(75, '2026-03-04 04:03:48.64846+00', 'K&N Air Filter', '33-2162', '33-2162', '{33-2162}', 'Standard 33-2162', true),
+	(76, '2026-03-04 04:05:08.864392+00', 'K&N Air Filter', '33-2974', '33-2974', '{33-2974}', 'Standard 33-2974', true),
+	(77, '2026-03-04 04:06:55.876484+00', 'K&N Air Filter', '33-2342', '33-2342', '{33-2342}', 'Standard 33-2342', true),
+	(78, '2026-03-04 04:08:45.241464+00', 'K&N Air Filter', '33-3086', '33-3086', '{33-3086}', 'Standard 33-3086', true),
+	(79, '2026-03-06 07:13:26.822065+00', 'Variant', '25mm', '25mm', '{25mm}', 'Standard 25mm', true),
+	(80, '2026-03-06 07:14:03.369878+00', 'Variant', '32mm', '32mm', '{32mm}', 'Standard 32mm', true),
+	(81, '2026-03-06 07:15:58.562544+00', 'Variant', 'n/a', 'n/a', '{n/a}', 'Standard n/a', true),
+	(82, '2026-03-06 07:19:13.750727+00', 'Variant', '40mm', '40mm', '{40mm}', 'Standard 40mm', true),
+	(83, '2026-03-06 07:27:12.405523+00', 'SR Coil Spacer', '10mm', '10mm', '{10mm}', 'Standard 10mm', true),
+	(84, '2026-03-06 08:07:30.896715+00', 'SR Coil Spacer', '60mm', '60mm', '{60mm}', 'Standard 60mm', true),
+	(85, '2026-03-06 08:11:47.426004+00', 'SR Coil Spacer', '50mm', '50mm', '{50mm}', 'Standard 50mm', true),
+	(86, '2026-03-10 07:36:27.307745+00', 'Top Speed Advance Accelerator Controller', 'AT622', 'AT622', '{AT622}', 'Standard AT622', true),
+	(87, '2026-03-10 07:36:55.507826+00', 'Top Speed Advance Accelerator Controller', 'AT171', 'AT171', '{AT171}', 'Standard AT171', true),
+	(88, '2026-03-10 07:37:12.270417+00', 'Top Speed Advance Accelerator Controller', 'AT901', 'AT901', '{AT901}', 'Standard AT901', true),
+	(89, '2026-03-10 07:37:47.271169+00', 'Top Speed Advance Accelerator Controller', 'AT173', 'AT173', '{AT173}', 'Standard AT173', true),
+	(90, '2026-03-10 07:38:38.17753+00', 'Top Speed Advance Accelerator Controller', 'AT931', 'AT931', '{AT931}', 'Standard AT931', true),
+	(91, '2026-03-10 07:39:00.664114+00', 'Top Speed Advance Accelerator Controller', 'AT313', 'AT313', '{AT313}', 'Standard AT313', true),
+	(92, '2026-03-10 07:39:19.997273+00', 'Top Speed Advance Accelerator Controller', 'AT804', 'AT804', '{AT804}', 'Standard AT804', true),
+	(93, '2026-03-10 07:40:12.856529+00', 'Top Speed Advance Accelerator Controller', 'AT301', 'AT301', '{AT301}', 'Standard AT301', true),
+	(94, '2026-03-10 07:40:12.905918+00', 'Top Speed Advance Accelerator Controller', 'AT301', 'AT301', '{AT301}', 'Standard AT301', true),
+	(95, '2026-03-10 07:40:30.939659+00', 'Top Speed Advance Accelerator Controller', 'AT161', 'AT161', '{AT161}', 'Standard AT161', true),
+	(96, '2026-03-10 07:40:48.769599+00', 'Top Speed Advance Accelerator Controller', 'AT711', 'AT711', '{AT711}', 'Standard AT711', true),
+	(97, '2026-03-12 05:24:51.901254+00', 'Falken A/T4W', '285/65R18', '285/65R18', '{285/65R18}', 'Standard 285/65R18', true),
+	(98, '2026-03-12 05:24:51.974852+00', 'Falken A/T4W', '285/65R18', '285/65R18', '{285/65R18}', 'Standard 285/65R18', true),
+	(99, '2026-03-12 05:28:44.518222+00', 'Falken HT01', '265/65R17', '265/65R17', '{265/65R17}', 'Standard 265/65R17', true),
+	(100, '2026-03-12 05:30:18.95378+00', 'Falken HT01', '265/60R18', '265/60R18', '{265/60R18}', 'Standard 265/60R18', true),
+	(101, '2026-03-12 05:34:31.610912+00', 'Falken A/T4W', '285/55R20', '285/55R20', '{285/55R20}', 'Standard 285/55R20', true),
+	(102, '2026-03-12 05:36:00.493318+00', 'Falken A/T4W', 'LT285/70R17', 'LT285/70R17', '{LT285/70R17}', 'Standard LT285/70R17', true),
+	(103, '2026-03-12 06:01:22.594655+00', 'T/A KO3', 'LT265/60R18', 'LT265/60R18', '{LT265/60R18}', 'Standard LT265/60R18', true),
+	(104, '2026-03-12 06:02:20.07282+00', 'T/A KO3', 'LT285/65R18', 'LT285/65R18', '{LT285/65R18}', 'Standard LT285/65R18', true),
+	(105, '2026-03-12 06:34:13.666501+00', 'T/A KO3', 'LT285/70R27', 'LT285/70R27', '{LT285/70R27}', 'Standard LT285/70R27', true),
+	(106, '2026-03-12 06:35:24.433613+00', 'T/A KO3', 'LT275/70R17', 'LT275/70R17', '{LT275/70R17}', 'Standard LT275/70R17', true),
+	(107, '2026-03-12 06:36:17.413467+00', 'T/A KO3', 'LT285/75R17', 'LT285/75R17', '{LT285/75R17}', 'Standard LT285/75R17', true),
+	(108, '2026-03-12 06:37:28.561455+00', 'T/A KO3', 'LT265/65R17', 'LT265/65R17', '{LT265/65R17}', 'Standard LT265/65R17', true),
+	(109, '2026-03-12 06:39:10.660656+00', 'T/A KO2', 'LT275/65R17', 'LT275/65R17', '{LT275/65R17}', 'Standard LT275/65R17', true),
+	(110, '2026-03-12 06:41:24.679406+00', 'T/A KM3', 'LT255/85R16', 'LT255/85R16', '{LT255/85R16}', 'Standard LT255/85R16', true),
+	(111, '2026-03-12 06:52:04.604457+00', 'T/A KM3', '26570R16', '26570R16', '{26570R16}', 'Standard 26570R16', true),
+	(112, '2026-03-12 07:06:29.443603+00', '0PRT - Toyo Tires', 'LT265/70R17', 'LT265/70R17', '{LT265/70R17}', 'Standard LT265/70R17', true),
+	(113, '2026-03-12 07:07:12.020172+00', '0PRT - Toyo Tires', '235/70R16', '235/70R16', '{235/70R16}', 'Standard 235/70R16', true),
+	(114, '2026-03-12 07:38:33.023483+00', 'Terrain Contact A/T', '265/70R17', '265/70R17', '{265/70R17}', 'Standard 265/70R17', true),
+	(115, '2026-03-12 07:40:59.654739+00', 'Dynamo AT2 Extreme', 'LT265/65R18', 'LT265/65R18', '{LT265/65R18}', 'Standard LT265/65R18', true),
+	(116, '2026-03-12 07:56:36.278063+00', 'AZ670', '295/80R22.5', '295/80R22.5', '{295/80R22.5}', 'Standard 295/80R22.5', true),
+	(117, '2026-03-12 07:58:58.89761+00', 'A/T3W', 'LT235/75R15', 'LT235/75R15', '{LT235/75R15}', 'Standard LT235/75R15', true),
+	(118, '2026-03-12 08:01:20.970176+00', 'AT20', '225/70R17 C', '225/70R17 C', '{"225/70R17 C"}', 'Standard 225/70R17 C', true),
+	(119, '2026-03-16 03:36:25.026348+00', 'Fuel Wheel Nuts', 'M12 x 1.50', 'M12 x 1.50', '{"M12 x 1.50"}', 'Standard M12 x 1.50', true),
+	(120, '2026-03-16 03:37:16.252242+00', 'Fuel Wheel Nuts', 'M12 x 1.25', 'M12 x 1.25', '{"M12 x 1.25"}', 'Standard M12 x 1.25', true),
+	(121, '2026-03-16 03:44:49.763075+00', 'Rays Wheel Nuts', 'M14 x 1.5', 'M14 x 1.5', '{"M14 x 1.5"}', 'Standard M14 x 1.5', true),
+	(122, '2026-03-16 05:32:22.633793+00', 'Squadron Pro', 'Driving/Combo', 'Driving/Combo', '{Driving/Combo}', 'Standard Driving/Combo', true),
+	(123, '2026-03-16 05:48:12.670591+00', 'Squadron Sport - R', 'Wide Cornering', 'Wide Cornering', '{"Wide Cornering"}', 'Standard Wide Cornering', true),
+	(124, '2026-03-16 06:53:26.311944+00', 'C4 LED WORK LIGHTS', 'Diffused', 'Diffused', '{Diffused}', 'Standard Diffused', true),
+	(125, '2026-03-16 06:54:27.413834+00', 'C4 LED WORK LIGHTS', 'Flood', 'Flood', '{Flood}', 'Standard Flood', true),
+	(126, '2026-03-16 08:50:49.797623+00', 'ST3K 21.5 LED LIGHT BAR', '20', '20', '{20}', 'Standard 20', true),
+	(127, '2026-03-18 06:05:20.795206+00', 'DLAA Fog Light', 'H3', 'H3', '{H3}', 'Standard H3', true),
+	(128, '2026-03-18 06:50:32.550716+00', 'Rigid Ignite SM', 'Diffused', 'Diffused', '{Diffused}', 'Standard Diffused', true),
+	(129, '2026-03-18 06:52:06.820418+00', 'Rigid Ignite SM - Diffused', 'Diffused', 'Diffused', NULL, NULL, true),
+	(130, '2026-03-18 06:52:07.13115+00', 'Rigid Ignite SM - Diffused', 'Diffused', 'Diffused', NULL, NULL, true),
+	(131, '2026-03-18 07:49:41.461814+00', 'Rigid D-SS Pro ', 'Driving', 'Driving', '{Driving}', 'Standard Driving', true),
+	(132, '2026-03-18 07:57:52.573704+00', 'Rigid Ignite  - Diffused', 'Diffused', 'Diffused', NULL, NULL, true),
+	(133, '2026-03-19 06:34:39.944478+00', 'Rigid Radiance', 'Spot', 'Spot', '{Spot}', 'Standard Spot', true),
+	(134, '2026-03-19 07:04:35.9358+00', 'PIAA LPW530', 'Wide Drive', 'Wide Drive', '{"Wide Drive"}', 'Standard Wide Drive', true),
+	(135, '2026-03-19 07:09:42.077358+00', 'Variant', 'Flood Beam', 'Flood Beam', '{"Flood Beam"}', 'Standard Flood Beam', true),
+	(136, '2026-03-20 06:32:39.966202+00', 'TJM Seeker Series', 'Work Lamp', 'Work Lamp', '{"Work Lamp"}', 'Standard Work Lamp', true),
+	(137, '2026-03-20 06:32:40.250733+00', 'TJM Seeker Series', 'Work Lamp', 'Work Lamp', '{"Work Lamp"}', 'Standard Work Lamp', true),
+	(138, '2026-03-20 06:33:16.989599+00', 'TJM Seeker Series - Work Lamp', 'Work Lamp', 'Work Lamp', NULL, NULL, true),
+	(139, '2026-03-20 06:54:13.182671+00', 'KC FLEX LED SINGLE', 'Spread', 'Spread', '{Spread}', 'Standard Spread', true),
+	(140, '2026-03-20 07:14:37.398539+00', 'KC 7471 FE3 Toyota', 'Pocket', 'Pocket', '{Pocket}', 'Standard Pocket', true),
+	(141, '2026-03-20 07:57:57.611599+00', 'Variant', 'Fog Beam', 'Fog Beam', '{"Fog Beam"}', 'Standard Fog Beam', true),
+	(142, '2026-03-23 06:53:49.561758+00', 'Falken A/T4W', '235/75R15', '235/75R15', '{235/75R15}', 'Standard 235/75R15', true),
+	(143, '2026-03-23 07:55:14.325796+00', 'Variant', 'Auxiliary', 'Auxiliary', '{Auxiliary}', 'Standard Auxiliary', true),
+	(144, '2026-03-25 04:51:53.526163+00', 'Falken A/T4W', '265/75R16', '265/75R16', '{265/75R16}', 'Standard 265/75R16', true),
+	(145, '2026-03-26 08:41:34.734415+00', 'Bajaj Rock Guard', '66-8003', '66-8003', '{66-8003}', 'Standard 66-8003', true),
+	(146, '2026-03-26 08:42:12.87898+00', 'Bajaj Rock Guard', '66-8001', '66-8001', '{66-8001}', 'Standard 66-8001', true),
+	(147, '2026-03-28 06:38:21.884711+00', 'Fortuner Fog Light', 'Fog Light', 'Fog Light', '{"Fog Light"}', 'Standard Fog Light', true),
+	(148, '2026-03-28 06:42:21.94178+00', 'Falken A/T4W - 285/65R18', '285/65R18', '285/65R18', NULL, NULL, true),
+	(149, '2026-03-28 07:31:51.645546+00', 'GTW-G38', 'Fog Lamp', 'Fog Lamp', '{"Fog Lamp"}', 'Standard Fog Lamp', true),
+	(150, '2026-04-09 05:32:25.060053+00', 'SR Chase Lights', 'Chase Lights', 'Chase Lights', '{"Chase Lights"}', 'Standard Chase Lights', true),
+	(151, '2026-04-09 06:18:36.53981+00', 'STEDI Type-X 7” Replacement Cover', '7”', '7”', '{7”}', 'Standard 7”', true),
+	(152, '2026-04-09 07:06:02.380332+00', 'Rigid Cover 10” E/RDS', '10”', '10”', '{10”}', 'Standard 10”', true),
+	(153, '2026-04-09 07:42:49.572978+00', 'Ironman 9” Comet', '9”', '9”', '{9”}', 'Standard 9”', true),
+	(154, '2026-04-16 06:51:39.856301+00', 'Cosmo Dual Light 20W', 'Dual (High: Spot / Low: Flood)', 'Dual (High: Spot / Low: Flood)', '{"Dual (High: Spot / Low: Flood)"}', 'Standard Dual (High: Spot / Low: Flood)', true),
+	(155, '2026-04-16 07:07:35.237286+00', '7" Combo Blast', 'Combo Beam', 'Combo Beam', '{"Combo Beam"}', 'Standard Combo Beam', true),
+	(156, '2026-04-16 07:32:00.287273+00', '9" Comet 42W', 'Broad Spot', 'Broad Spot', '{"Broad Spot"}', 'Standard Broad Spot', true),
+	(157, '2026-04-24 06:02:48.735118+00', 'Falken A/T4W - 285/65R18', '285/65R18', '285/65R18', NULL, NULL, true),
+	(158, '2026-04-29 08:11:32.461412+00', 'K&N Air Filter - 33-2387', '33-2387', '33-2387', NULL, NULL, true),
+	(159, '2026-06-09 03:41:48.655068+00', 'Falken A/T4W - 285/65R18', '285/65R18', '285/65R18', NULL, NULL, true),
+	(160, '2026-06-09 03:59:45.176384+00', 'T/A KO3', 'LT235/70R16', 'LT235/70R16', '{LT235/70R16}', 'Standard LT235/70R16', true),
+	(161, '2026-06-11 04:54:15.626888+00', 'Hella Comet 550', 'Lamp', 'Lamp', '{Lamp}', 'Standard Lamp', true);
+
+
+--
+-- Data for Name: product_variants; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO "public"."product_variants" ("id", "created_at", "product_id", "variant_id", "variant_type", "color_temperature", "variant_sku", "variant_barcode", "selling_price", "cost_price", "stock_quantity", "min_stock_level", "is_primary", "description", "price_adjustment", "variant_color", "specifications", "spec_key", "variant_category_id") VALUES
+	(186, '2026-03-10 06:19:58.960182+00', 77, 85, '50mm', '6000', NULL, NULL, 5700.00, 0.00, 2, 5, false, NULL, 0.00, 'Montero', '{"color": "Montero", "internal_notes": null, "color_temperature": "Rear"}', 'color_temperature=rear|variant_type=50mm', NULL),
+	(156, '2026-03-04 03:54:34.064756+00', 72, 69, 'VF2002', NULL, NULL, NULL, 4200.00, 0.00, 1, 5, false, NULL, 0.00, NULL, '{"tags": [], "color": null, "internal_notes": "Lexus, FJ Cruiser, Prado, Mazda MPY", "color_temperature": null}', 'variant_type=vf2002', NULL),
+	(208, '2026-03-12 06:34:13.951398+00', 81, 105, 'LT285/70R27', NULL, NULL, NULL, 0.00, 0.00, 4, 5, false, NULL, 0.00, '121/118S', '{"color": "121/118S", "internal_notes": "Need Price", "color_temperature": null}', 'variant_type=lt285/70r27', NULL),
+	(226, '2026-03-16 03:38:42.189973+00', 91, 119, 'M12 x 1.50', NULL, NULL, NULL, 2000.00, 0.00, 3, 5, false, '', 0.00, 'Black', '{"color": "Black", "internal_notes": "", "color_temperature": null}', 'variant_type=m12 x 1.50', NULL),
+	(227, '2026-03-16 03:38:42.189973+00', 91, 120, 'M12 x 1.25', NULL, NULL, NULL, 2000.00, 0.00, 4, 5, false, '', 0.00, 'Black', '{"color": "Black", "internal_notes": "", "color_temperature": null}', 'variant_type=m12 x 1.25', NULL),
+	(267, '2026-03-19 06:34:59.101144+00', 115, 133, 'Spot', NULL, 'LIT-RIG-RAD-WHT-PR', NULL, 11000.00, 0.00, 1, 5, false, '', 0.00, 'White', '{"color": "White", "internal_notes": "", "color_temperature": null}', 'variant_type=spot', NULL),
+	(272, '2026-03-19 07:10:21.738297+00', 120, 135, 'Flood Beam', NULL, 'LIT-PIA-2K-IY-PR', NULL, 10463.00, 0.00, 1, 1, false, '', 0.00, 'Ion Yellow', '{"color": "Ion Yellow", "internal_notes": "", "color_temperature": null}', 'variant_type=flood beam', NULL),
+	(280, '2026-03-20 06:58:30.434339+00', 128, 135, 'Flood Beam', NULL, 'LIT-KC-C3-FLD-BLK-PR', NULL, 14080.00, 0.00, 2, 5, false, '', 0.00, 'Black', '{"color": "Black", "internal_notes": "", "color_temperature": null}', 'variant_type=flood beam', NULL),
+	(283, '2026-03-20 07:57:59.612794+00', 131, 141, 'Fog Beam', NULL, 'LIT-KC-500-GRVT-FG-CLR-PR', NULL, 25850.00, 0.00, 1, 1, false, '', 0.00, 'Clear', '{"color": "Clear", "internal_notes": "", "color_temperature": null}', 'variant_type=fog beam', NULL),
+	(290, '2026-03-23 07:34:28.906018+00', 134, 133, 'Spot', NULL, 'LIT-ARB-INT-SOL7-SPT-SG', NULL, 17000.00, 0.00, 3, 2, false, '', 0.00, 'Clear', '{"color": "Clear", "internal_notes": "", "color_temperature": null}', 'variant_type=spot', NULL),
+	(179, '2026-03-07 07:03:22.705323+00', 77, 80, '32mm', 'Front', NULL, NULL, 4000.00, 0.00, 1, 5, false, NULL, 0.00, 'Navara/Terra', '{"tags": [], "color": "Navara/Terra", "internal_notes": "", "color_temperature": "Front"}', NULL, NULL),
+	(294, '2026-03-26 06:53:04.792203+00', 14, 22, '9005 (HB3)', '6000-6500', NULL, NULL, 3200.00, 0.00, 5, 3, false, NULL, 0.00, NULL, '{"color": null, "internal_notes": null, "color_temperature": "6000-6500"}', NULL, NULL),
+	(299, '2026-03-26 08:43:01.39994+00', 138, 145, '66-8003', NULL, NULL, NULL, 1000.00, 0.00, 4, 3, false, '', 0.00, 'Black', '{"color": "Black", "internal_notes": "", "color_temperature": null}', 'variant_type=66-8003', NULL),
+	(304, '2026-03-28 06:47:58.754083+00', 142, 147, 'Fog Light', NULL, 'LIT-BTS-NS3-FOG-YELL-PR', NULL, 0.00, 0.00, 1, 1, false, '', 0.00, 'Yellow', '{"color": "Yellow", "internal_notes": "", "color_temperature": null}', 'variant_type=fog light', NULL),
+	(180, '2026-03-07 07:03:22.705323+00', 77, 80, '32mm', '3000K', NULL, NULL, 4000.00, 0.00, 1, 5, false, NULL, 0.00, 'Hilux', '{"tags": [], "color": "Hilux", "internal_notes": "Need Price", "color_temperature": "Front"}', NULL, NULL),
+	(36, '2026-02-17 23:21:21.200279+00', 12, 32, '19"', 'Red', 'null-36', NULL, 1100.00, 0.00, 2, 5, false, NULL, 0.00, 'RedK', '{"tags": [], "color": "Yellow", "last_restock": {"date": "2026-02-17T23:21:56.532Z", "quantity": 1}, "variant_type": "", "internal_notes": "", "color_temperature": "Red"}', 'variant_type=19"|color_temperature=red', NULL),
+	(300, '2026-03-26 08:43:01.39994+00', 138, 146, '66-8001', NULL, NULL, NULL, 1000.00, 0.00, 1, 2, false, '', 0.00, 'Black', '{"color": "Black", "internal_notes": "", "color_temperature": null}', 'variant_type=66-8001', NULL),
+	(318, '2026-04-09 06:25:32.024234+00', 153, 81, 'N/A', NULL, NULL, NULL, 2800.00, 0.00, 4, 5, false, '', 0.00, 'Black ', '{"color": "Black ", "internal_notes": "", "color_temperature": null}', 'variant_type=n/a', NULL),
+	(323, '2026-04-09 07:43:40.288798+00', 157, 153, '9”', NULL, NULL, NULL, 900.00, 0.00, 2, 5, false, '', 0.00, 'Amber', '{"color": "Amber", "internal_notes": "", "color_temperature": null}', 'variant_type=9”', NULL),
+	(234, '2026-03-16 03:47:05.208305+00', 91, 121, 'M14 x 1.5', NULL, NULL, NULL, 2000.00, 0.00, 1, 5, false, NULL, 0.00, 'Black', '{"tags": "[]", "color": "Black", "variant_color": "Black", "internal_notes": "", "color_temperature": ""}', 'variant_type=m14 x 1.5', NULL),
+	(327, '2026-04-16 06:42:47.899246+00', 160, 135, 'Flood Beam', NULL, 'LIT-IM-MOD-30W-WHT-FLD-SG', 'LIT-IM-MOD-30W-WHT-SPT-SG', 5000.00, 0.00, 2, 1, false, NULL, 0.00, '6000k', '{"tags": [], "color": "6000k", "internal_notes": "", "color_temperature": null}', 'variant_type=spot', NULL),
+	(330, '2026-04-16 07:07:39.748301+00', 163, 155, 'Combo Beam', NULL, 'LIT-IRN-BST-7-48W-CB', 'LIT-IRN-BST-7-48W-CB', 12800.00, 0.00, 2, 1, false, NULL, 0.00, '6500K', '{"tags": [], "color": "6500K", "internal_notes": "", "color_temperature": null}', 'variant_type=combo beam', NULL),
+	(331, '2026-04-16 07:16:57.830864+00', 164, 155, 'Combo Beam', NULL, 'LIT-IRN-BST2-7-CB', 'LIT-IRN-BST2-7-CB', 12000.00, 0.00, 2, 2, false, NULL, 0.00, '6000K', '{"tags": [], "color": "6000K", "internal_notes": "", "color_temperature": null}', 'variant_type=combo beam', NULL),
+	(221, '2026-03-12 07:57:48.000805+00', 88, 108, 'LT265/65R17', NULL, NULL, NULL, 9519.00, 0.00, 4, 4, false, NULL, 0.00, '120/117Q', '{"tags": [], "color": "120/117Q", "internal_notes": "", "color_temperature": null}', 'variant_type=lt265/65r17', NULL),
+	(213, '2026-03-12 06:52:14.980112+00', 83, 110, 'LT255/85R16', NULL, NULL, NULL, 21950.00, 0.00, 4, 5, false, NULL, 0.00, '123/120Q', '{"tags": "[]", "color": "123/120Q", "variant_color": "123/120Q", "internal_notes": "", "color_temperature": ""}', 'variant_type=lt255/85r16', NULL),
+	(29, '2026-02-17 04:17:57.707266+00', 10, 24, 'H1', '4300', 'null-29', 'null-29', 5000.00, 0.00, 1, 5, false, NULL, 0.00, NULL, '{"tags": "[]", "socket": "", "last_restock": "{\"date\": \"2026-02-17T04:18:19.295Z\", \"quantity\": 1}", "internal_notes": "", "color_temperature": "4300"}', 'variant_type=h1|color_temperature=4300', 1),
+	(255, '2026-03-18 06:15:33.080152+00', 105, 127, 'H3', 'Round', 'FOG-DLA-RND-WHT-H3-PR', NULL, 1800.00, 0.00, 3, 5, false, '', 0.00, 'White', '{"color": "White", "internal_notes": "", "color_temperature": "Round"}', 'color_temperature=round|variant_type=h3', 2),
+	(286, '2026-03-23 06:47:31.707488+00', 81, 102, 'LT285/70R17', NULL, NULL, NULL, 16750.00, 0.00, 4, 4, false, NULL, 0.00, '121/118S', '{"tags": [], "color": "121/118S", "internal_notes": "", "color_temperature": null}', 'variant_type=lt285/70r17', NULL),
+	(276, '2026-03-20 05:58:55.439238+00', 124, 131, 'Driving', NULL, 'LIT-PIA-220R-DRV-WY-PR', 'LIT-PIA-220R-DRV-WY-PR', 5700.00, 0.00, 1, 1, false, NULL, 0.00, 'White/Yellow', '{"tags": [], "color": "White/Yellow", "internal_notes": "", "color_temperature": null}', 'variant_type=driving', 28),
+	(314, '2026-04-09 05:28:41.730067+00', 148, 131, 'Driving', NULL, 'LIT-PIA-SRF-DRV-56K-9-SG', NULL, 10000.00, 0.00, 2, 5, false, '', 0.00, '5600k', '{"color": "5600k", "internal_notes": "", "color_temperature": null}', 'variant_type=driving', 28),
+	(67, '2026-02-18 02:17:38.865909+00', 15, 24, 'H1', '5700', NULL, NULL, 7500.00, 0.00, 1, 5, false, '', 0.00, '5700K', '{}', 'variant_type=h1|color_temperature=5700', 1),
+	(311, '2026-04-08 08:45:13.646293+00', 93, 121, 'M14 x 1.5', NULL, NULL, NULL, 16000.00, 0.00, 0, 1, false, NULL, 0.00, 'Chrome', '{"color": "Chrome", "internal_notes": null, "color_temperature": null}', NULL, NULL),
+	(181, '2026-03-09 03:00:03.554128+00', 77, 80, '32mm', 'Front', NULL, NULL, 4000.00, 0.00, 1, 5, false, NULL, 0.00, 'Triton/Montero', '{"color": "Triton/Montero", "internal_notes": null, "color_temperature": "Front"}', 'color_temperature=front|variant_type=32mm', NULL),
+	(187, '2026-03-10 06:23:31.343224+00', 77, 85, '50mm', 'Rear', NULL, NULL, 5700.00, 0.00, 5, 5, false, NULL, 0.00, 'Fortuner/innova', '{"color": "Fortuner/innova", "internal_notes": null, "color_temperature": "Rear"}', 'color_temperature=rear|variant_type=50mm', NULL),
+	(201, '2026-03-12 05:29:01.059779+00', 79, 99, '265/65R17', NULL, NULL, NULL, 0.00, 0.00, 4, 5, false, '', 0.00, '112s', '{"color": "112s", "internal_notes": "Need price", "color_temperature": null}', 'variant_type=265/65r17', NULL),
+	(228, '2026-03-16 03:43:07.014373+00', 93, 120, 'M12 x 1.25', NULL, NULL, NULL, 2000.00, 0.00, 6, 5, false, '', 0.00, 'Black', '{"color": "Black", "internal_notes": "", "color_temperature": null}', 'variant_type=m12 x 1.25', NULL),
+	(229, '2026-03-16 03:43:07.014373+00', 93, 120, 'M12 x 1.25', NULL, NULL, NULL, 0.00, 0.00, 4, 5, false, '', 0.00, 'Chrome', '{"color": "Chrome", "internal_notes": "", "color_temperature": null}', 'variant_type=m12 x 1.25', NULL),
+	(230, '2026-03-16 03:43:07.014373+00', 93, 119, 'M12 x 1.50', NULL, NULL, NULL, 2000.00, 0.00, 2, 5, false, '', 0.00, 'Chrome', '{"color": "Chrome", "internal_notes": "", "color_temperature": null}', 'variant_type=m12 x 1.50', NULL),
+	(235, '2026-03-16 05:32:38.397224+00', 95, 122, 'Driving/Combo', NULL, 'LIT-BAJ-SQP-DC-AMB-PR', NULL, 30000.00, 0.00, 1, 2, false, '', 0.00, 'Amber', '{"color": "Amber", "internal_notes": "", "color_temperature": null}', 'variant_type=driving/combo', NULL),
+	(256, '2026-03-18 06:50:48.697485+00', 106, 130, 'Diffused', NULL, 'LIT-IGN-BLK-SM-DF-SG', 'LIT-IGN-BLK-DF-SG', 0.00, 0.00, 3, 5, false, NULL, 0.00, 'Black', '{"tags": [], "color": "Black", "internal_notes": "", "color_temperature": null}', 'variant_type=diffused', NULL),
+	(268, '2026-03-19 06:36:52.955673+00', 116, 81, 'N/A', NULL, 'LIT-RIG-RFL-CLR-PR', NULL, 34000.00, 0.00, 1, 1, false, '', 0.00, 'Clear', '{"color": "Clear", "internal_notes": "", "color_temperature": null}', 'variant_type=n/a', NULL),
+	(273, '2026-03-19 07:25:46.442279+00', 121, 133, 'Spot', NULL, 'LIT-PIA-LPX-570-7IN-SPT-YLW-PR', NULL, 29650.00, 0.00, 1, 1, false, '', 0.00, 'Yellow', '{"color": "Yellow", "internal_notes": "", "color_temperature": null}', 'variant_type=spot', NULL),
+	(277, '2026-03-20 06:32:57.852868+00', 125, 138, 'Work Lamp', NULL, 'LIT-SEKR-WRK-CLR-SG', 'LIT-SEKR-WRK-CLR-SG', 0.00, 0.00, 2, 5, false, NULL, 0.00, 'Clear', '{"tags": [], "color": "Clear", "internal_notes": "Need Price", "color_temperature": null}', 'variant_type=work lamp', NULL),
+	(281, '2026-03-20 07:15:28.077961+00', 129, 140, 'Pocket', NULL, 'LIT-KC-7471-PCKT-FE3-SG', NULL, 0.00, 0.00, 2, 2, false, '', 0.00, 'n/a', '{"color": "n/a", "internal_notes": "Need Price", "color_temperature": null}', 'variant_type=pocket', NULL),
+	(291, '2026-03-23 07:44:24.807996+00', 135, 122, 'Driving/Combo', NULL, 'LIT-ARB-QUAT-DC-CLR-PR', NULL, 30000.00, 0.00, 1, 1, false, '', 0.00, 'Clear', '{"color": "Clear", "internal_notes": "", "color_temperature": null}', 'variant_type=driving/combo', NULL),
+	(295, '2026-03-26 06:53:58.303101+00', 14, 25, '9006 (HB4)', '6000-6500k', NULL, NULL, 3200.00, 0.00, 5, 3, false, NULL, 0.00, NULL, '{"color": null, "internal_notes": null, "color_temperature": "6000-6500k"}', NULL, NULL),
+	(301, '2026-03-28 06:39:05.562837+00', 139, 147, 'Fog Light', NULL, 'LIT-BTS-FOR-FOG-YEL-PR', NULL, 6000.00, 0.00, 3, 3, false, '', 0.00, 'Yellow', '{"color": "Yellow", "internal_notes": "", "color_temperature": null}', 'variant_type=fog light', NULL),
+	(306, '2026-03-28 07:16:15.197275+00', 143, 147, 'Fog Light', NULL, 'LIT-BTS-FD-FOG-TRI-PR', NULL, 7000.00, 0.00, 1, 1, false, '', 0.00, 'Tri Color', '{"color": "Tri Color", "internal_notes": "", "color_temperature": null}', 'variant_type=fog light', NULL),
+	(307, '2026-03-28 07:16:15.197275+00', 143, 147, 'Fog Light', NULL, 'LIT-BTS-FD-FOG-YELL-PR', NULL, 6000.00, 0.00, 1, 1, false, '', 0.00, 'Yellow', '{"color": "Yellow", "internal_notes": "", "color_temperature": null}', 'variant_type=fog light', NULL),
+	(315, '2026-04-09 06:19:49.916052+00', 150, 151, '7”', NULL, NULL, NULL, 2800.00, 0.00, 4, 5, false, '', 0.00, 'Black', '{"color": "Black", "internal_notes": "", "color_temperature": null}', 'variant_type=7”', NULL),
+	(248, '2026-03-16 06:09:12.554119+00', 99, 122, 'Driving/Combo', NULL, 'LIT-BAJ-LP6P-DC-CLR-PR', 'LIT-BAJ-LP6P-DC-CLR-PR', 56000.00, 0.00, 0, 5, false, NULL, 0.00, 'Clear', '{"tags": [], "color": "Clear", "internal_notes": "", "color_temperature": null}', 'variant_type=driving/combo', NULL),
+	(319, '2026-04-09 06:37:12.160887+00', 154, 81, 'n/a', NULL, NULL, NULL, 1000.00, 0.00, 5, 5, false, NULL, 0.00, 'Black', '{"tags": [], "color": "Black", "internal_notes": "", "color_temperature": null}', 'variant_type=n/a', NULL),
+	(324, '2026-04-09 07:45:16.87067+00', 158, 151, '7”', NULL, NULL, NULL, 0.00, 0.00, 14, 5, false, '', 0.00, 'Clear', '{"color": "Clear", "internal_notes": "Need Price", "color_temperature": null}', 'variant_type=7”', NULL),
+	(328, '2026-04-16 06:51:43.924096+00', 161, 154, 'Dual (High: Spot / Low: Flood)', NULL, 'LIT-IRN-CSM-DUAL-20W', NULL, 11000.00, 0.00, 1, 1, false, '', 0.00, '6000k', '{"color": "6000k", "internal_notes": "", "color_temperature": null}', 'variant_type=dual (high: spot / low: flood)', NULL),
+	(332, '2026-04-16 07:32:01.935554+00', 165, 156, 'Broad Spot', NULL, 'LIT-IRN-CMT-9-42W', NULL, 10000.00, 0.00, 1, 1, false, '', 0.00, '6000K', '{"color": "6000K", "internal_notes": "", "color_temperature": null}', 'variant_type=broad spot', NULL),
+	(57, '2026-02-17 23:41:09.700261+00', 12, 40, '11"', 'Yellow', 'null-57', NULL, 1050.00, 0.00, 4, 5, false, NULL, 0.00, NULL, '{"tags": [], "color": "Yellow", "last_restock": {"date": "2026-02-17T23:21:56.532Z", "quantity": 1}, "internal_notes": ""}', 'variant_type=11"|color_temperature=yellow', NULL),
+	(222, '2026-03-12 07:59:04.068493+00', 89, 117, 'LT235/75R15', NULL, NULL, NULL, 11024.00, 0.00, 1, 5, false, NULL, 0.00, '104/101S', '{"tags": [], "color": "104/101S", "internal_notes": "", "color_temperature": null}', 'variant_type=lt235/75r15', NULL),
+	(209, '2026-03-12 06:35:24.742445+00', 81, 106, 'LT275/70R17', NULL, NULL, NULL, 20500.00, 0.00, 4, 5, false, NULL, 0.00, '124/121S', '{"tags": "[]", "color": "124/121S", "variant_color": "124/121S", "internal_notes": "Need Price", "color_temperature": ""}', 'variant_type=lt275/70r17', NULL),
+	(287, '2026-03-23 06:48:46.566836+00', 81, 112, 'LT265/70R17', NULL, NULL, NULL, 17750.00, 0.00, 4, 4, false, NULL, 0.00, '118/115S(121R)', '{"tags": [], "color": "118/115S(121R)", "internal_notes": "", "color_temperature": null}', 'variant_type=lt265/70r17', NULL),
+	(261, '2026-03-19 06:09:42.99685+00', 112, 131, 'Driving', NULL, 'LIT-RIG-360-SAE-4IN-DRV-CLR-PR', NULL, 0.00, 0.00, 1, 1, false, '', 0.00, 'Clear', '{"color": "Clear", "internal_notes": "", "color_temperature": null}', 'variant_type=driving', 28),
+	(28, '2026-02-17 04:15:45.483932+00', 9, 58, 'H4', 'Dual Color', 'null-28', 'null-28', 6000.00, 0.00, 5, 5, false, NULL, 0.00, NULL, '{"tags": [], "internal_notes": "", "color_temperature": "Dual Color "}', 'variant_type=h4|color_temperature=dual color', 3),
+	(216, '2026-03-12 07:07:16.995345+00', 84, 113, '235/70R16', NULL, NULL, NULL, 14500.00, 0.00, 0, 4, false, NULL, 0.00, '106Q', '{"tags": "[]", "color": "106Q", "variant_color": "106Q", "internal_notes": "", "color_temperature": ""}', 'variant_type=235/70r16', NULL),
+	(215, '2026-03-12 07:07:16.995345+00', 84, 112, 'LT265/70R17', NULL, NULL, NULL, 18000.00, 0.00, 0, 4, false, NULL, 0.00, '112Q', '{"tags": [], "color": "112Q", "internal_notes": "", "color_temperature": null}', 'variant_type=lt265/70r17', NULL),
+	(182, '2026-03-09 03:00:50.879418+00', 77, 83, '10mm', 'Front', NULL, NULL, 4000.00, 0.00, 3, 5, false, NULL, 0.00, 'Navara', '{"tags": [], "color": "Navara", "internal_notes": "", "color_temperature": "Front"}', 'color_temperature=front|variant_type=10mm', NULL),
+	(188, '2026-03-10 06:26:52.808567+00', 77, 85, '50mm', 'Rear', NULL, NULL, 5700.00, 0.00, 4, 5, false, NULL, 0.00, 'Everest', '{"color": "Everest", "internal_notes": null, "color_temperature": "Rear"}', 'color_temperature=rear|variant_type=50mm', NULL),
+	(202, '2026-03-12 05:30:19.641601+00', 79, 100, '265/60R18', NULL, NULL, NULL, 0.00, 0.00, 4, 5, false, NULL, 0.00, '110H', '{"color": "110H", "internal_notes": "Need price", "color_temperature": null}', 'variant_type=265/60r18', NULL),
+	(223, '2026-03-12 08:01:23.555845+00', 90, 118, '225/70R17 C', NULL, NULL, NULL, 0.00, 0.00, 4, 4, false, '', 0.00, '108/106S', '{"color": "108/106S", "internal_notes": "Need Price", "color_temperature": null}', 'variant_type=225/70r17 c', NULL),
+	(231, '2026-03-16 03:44:50.127209+00', 93, 121, 'M14 x 1.5', NULL, NULL, NULL, 14000.00, 0.00, 1, 5, false, NULL, 0.00, 'Black', '{"color": "Black", "internal_notes": "Original", "color_temperature": null}', 'variant_type=m14 x 1.5', NULL),
+	(249, '2026-03-16 06:10:41.909525+00', 100, 122, 'Driving/Combo', NULL, 'LIT-BAJ-LP4P-DC-AMB-PR', NULL, 55000.00, 0.00, 1, 5, false, '', 0.00, 'Amber', '{"color": "Amber", "internal_notes": "with Harness", "color_temperature": null}', 'variant_type=driving/combo', NULL),
+	(269, '2026-03-19 06:39:31.318898+00', 117, 81, 'N/A', NULL, 'LIT-RIG-SRL-RED-PR', NULL, 21000.00, 0.00, 2, 2, false, '', 0.00, 'Red', '{"color": "Red", "internal_notes": "", "color_temperature": null}', 'variant_type=n/a', NULL),
+	(278, '2026-03-20 06:43:46.609353+00', 126, 122, 'Driving/Combo', NULL, 'LIT-KC-FLEX3-DC-AMB-PR', NULL, 31900.00, 0.00, 1, 5, false, '', 0.00, 'Amber', '{"color": "Amber", "internal_notes": "", "color_temperature": null}', 'variant_type=driving/combo', NULL),
+	(153, '2026-03-04 03:37:21.849929+00', 71, 66, '33-2443', NULL, NULL, NULL, 4600.00, 0.00, 1, 5, false, NULL, 0.00, NULL, '{"color": null, "internal_notes": "Montero Strada", "color_temperature": null}', 'variant_type=33-2443', NULL),
+	(292, '2026-03-23 07:55:45.50185+00', 136, 143, 'Auxiliary', NULL, 'LIT-ARB-BASE-AUX-TRI-SG', NULL, 0.00, 0.00, 5, 4, false, '', 0.00, 'Tri-Colour', '{"color": "Tri-Colour", "internal_notes": "", "color_temperature": null}', 'variant_type=auxiliary', NULL),
+	(257, '2026-03-18 07:00:55.348685+00', 107, 132, 'Diffused', NULL, 'LIT-RIG-IGN-SM-DF-PR', 'LIT-RIG-IGN-SM-DM-PR', 11000.00, 0.00, 1, 5, false, NULL, 0.00, 'Black', '{"tags": [], "color": "Black", "internal_notes": "", "color_temperature": null}', 'variant_type=diffused', NULL),
+	(302, '2026-03-28 06:40:41.890469+00', 140, 147, 'Fog Light', NULL, 'LIT-BTS-NIS-FOG-YELL-PR', NULL, 6000.00, 0.00, 1, 2, false, '', 0.00, 'Yellow', '{"color": "Yellow", "internal_notes": "", "color_temperature": null}', 'variant_type=fog light', NULL),
+	(308, '2026-03-28 07:23:11.828546+00', 144, 147, 'Fog Light', NULL, 'LIT-BTS-TY-FOG-YELL-PR', NULL, 7000.00, 0.00, 2, 2, false, '', 0.00, 'Yellow', '{"color": "Yellow", "internal_notes": "", "color_temperature": null}', 'variant_type=fog light', NULL),
+	(309, '2026-03-28 07:23:11.828546+00', 144, 147, 'Fog Light', NULL, 'LIT-BTS-HLX-FOG-YELL-PR', NULL, 7000.00, 0.00, 1, 1, false, '', 0.00, 'Yellow', '{"color": "Yellow", "internal_notes": "HILUX", "color_temperature": null}', 'variant_type=fog light', NULL),
+	(316, '2026-04-09 06:21:57.569366+00', 151, 81, 'N/A', NULL, NULL, NULL, 2800.00, 0.00, 6, 5, false, '', 0.00, 'Black', '{"color": "Black", "internal_notes": "", "color_temperature": null}', 'variant_type=n/a', NULL),
+	(320, '2026-04-09 07:06:04.729119+00', 155, 152, '10”', NULL, NULL, NULL, 1300.00, 0.00, 3, 5, false, '', 0.00, 'Black', '{"color": "Black", "internal_notes": "", "color_temperature": null}', 'variant_type=10”', NULL),
+	(325, '2026-04-09 07:46:19.893566+00', 157, 153, '9”', NULL, NULL, NULL, 900.00, 0.00, 1, 5, false, NULL, 0.00, 'Clear', '{"color": "Clear", "internal_notes": null, "color_temperature": null}', NULL, NULL),
+	(329, '2026-04-16 07:00:03.997239+00', 162, 133, 'Spot', NULL, 'LIT-IRN-CMT-7-30W', 'LIT-IRN-CMT-7-30W', 9300.00, 0.00, 2, 2, false, NULL, 0.00, '6000k', '{"tags": [], "color": "6000k", "internal_notes": "", "color_temperature": null}', 'variant_type=spot', NULL),
+	(333, '2026-04-24 06:31:12.236805+00', 166, 114, '265/70R17', NULL, NULL, NULL, 11550.00, 0.00, 4, 2, false, '', 0.00, '112T', '{"color": "112T", "internal_notes": "", "color_temperature": null}', 'variant_type=265/70r17', NULL),
+	(288, '2026-03-23 06:50:32.409114+00', 81, 115, 'LT265/65R18', NULL, NULL, NULL, 16800.00, 0.00, 4, 4, false, NULL, 0.00, '117/114S', '{"tags": [], "color": "117/114S", "internal_notes": "Need Price", "color_temperature": null}', 'variant_type=lt265/65r18', NULL),
+	(217, '2026-03-12 07:38:46.23533+00', 85, 114, '265/70R17', NULL, NULL, NULL, 17351.00, 0.00, 0, 5, false, NULL, 0.00, '115S', '{"tags": [], "color": "115S", "internal_notes": "", "color_temperature": null}', 'variant_type=265/70r17', NULL),
+	(347, '2026-06-11 05:10:46.103136+00', 172, 131, 'Driving', NULL, 'LIT-HEL-CM450-YEL-H3-SG', NULL, 0.00, 0.00, 2, 5, false, '', 0.00, 'Yellow', '{"color": "Yellow", "internal_notes": "", "color_temperature": null}', 'variant_type=driving', NULL),
+	(264, '2026-03-19 06:09:43.181662+00', 113, 131, 'Driving', NULL, 'LIT-RIG-360-4IN-RND-DRV-CLR-PR', NULL, 28000.00, 0.00, 1, 1, false, '', 0.00, 'Clear', '{"color": "Clear", "internal_notes": "", "color_temperature": null}', 'variant_type=driving', 28),
+	(274, '2026-03-19 07:33:50.472473+00', 122, 131, 'Driving', NULL, 'LIT-PIA-LP-570-7IN-DRV-CLR-PR', NULL, 25800.00, 0.00, 1, 1, false, '', 0.00, 'Clear', '{"color": "Clear", "internal_notes": "", "color_temperature": null}', 'variant_type=driving', 28),
+	(344, '2026-06-11 04:47:12.666683+00', 170, 131, 'Driving', NULL, 'LIT-HEL-CM500-YEL-H3⁠-SG', NULL, 3000.00, 0.00, 1, 5, false, '', 0.00, 'Yellow', '{"color": "Yellow", "internal_notes": "", "color_temperature": null}', 'variant_type=driving', NULL),
+	(210, '2026-03-12 06:36:17.675204+00', 81, 107, 'LT285/75R17', NULL, NULL, NULL, 21500.00, 0.00, 4, 5, false, NULL, 0.00, '128/125S', '{"tags": "[]", "color": "128/125S", "variant_color": "128/125S", "internal_notes": "Need Price", "color_temperature": ""}', 'variant_type=lt285/75r17', NULL),
+	(341, '2026-06-09 03:58:01.821529+00', 81, 117, 'LT235/75R15', NULL, NULL, NULL, 0.00, 0.00, 10, 5, false, NULL, 0.00, '110/107S', '{"color": "110/107S", "internal_notes": null, "color_temperature": null}', NULL, NULL),
+	(342, '2026-06-09 03:59:45.451673+00', 81, 160, 'LT235/70R16', NULL, NULL, NULL, 0.00, 0.00, 10, 5, false, NULL, 0.00, '110/107S', '{"tags": "[]", "color": "128/125S", "internal_notes": "", "color_temperature": ""}', NULL, NULL),
+	(345, '2026-06-11 04:47:51.997133+00', 170, 131, 'Driving', NULL, 'LIT-HEL-CM500-WHT-H3⁠-SG', NULL, 3000.00, 0.00, 1, 5, false, NULL, 0.00, 'White', '{"color": "White", "internal_notes": null, "color_temperature": null}', NULL, NULL),
+	(346, '2026-06-11 04:54:37.480708+00', 171, 161, 'Lamp', NULL, 'LIT-HEL-CM550-YEL-H3⁠-SG', 'LIT-HEL-CM550-YEL-H3⁠-SG', 0.00, 0.00, 2, 5, false, 'Need price', 0.00, 'Yellow', '{"tags": [], "color": "Yellow", "internal_notes": "", "color_temperature": null}', 'variant_type=lamp', NULL),
+	(296, '2026-03-26 06:54:55.218274+00', 14, 27, 'H4', '6000-6500k', NULL, NULL, 3200.00, 0.00, 3, 3, false, NULL, 0.00, NULL, '{"color": null, "internal_notes": null, "color_temperature": "6000-6500k"}', NULL, 3),
+	(343, '2026-06-09 04:06:21.857726+00', 80, 160, 'LT235/70R16', NULL, NULL, NULL, 11771.00, 0.00, 5, 5, false, NULL, 0.00, '109T', '{"tags": "[]", "color": "116/113R", "internal_notes": "", "color_temperature": ""}', NULL, NULL),
+	(183, '2026-03-09 03:02:08.627415+00', 77, 85, '50mm', 'Rear', NULL, NULL, 5700.00, 0.00, 5, 5, false, NULL, 0.00, 'Fj Cruiser', '{"color": "Fj Cruiser", "internal_notes": null, "color_temperature": "Rear"}', 'color_temperature=rear|variant_type=50mm', NULL),
+	(189, '2026-03-10 06:27:51.754948+00', 77, 85, '50mm', 'Rear', NULL, NULL, 5700.00, 0.00, 4, 5, false, NULL, 0.00, 'Navara', '{"color": "Navara", "internal_notes": null, "color_temperature": "Rear"}', 'color_temperature=rear|variant_type=50mm', NULL),
+	(232, '2026-03-16 03:45:25.146462+00', 93, 119, 'M12 x 1.50', NULL, NULL, NULL, 11000.00, 0.00, 1, 5, false, NULL, 0.00, 'Black', '{"color": "Black", "internal_notes": "Original", "color_temperature": null}', 'variant_type=m12 x 1.50', NULL),
+	(250, '2026-03-16 06:54:36.295515+00', 101, 124, 'Diffused', NULL, 'LIT-STE-C4-BLK-DF-57K', NULL, 6000.00, 0.00, 5, 5, false, '', 0.00, 'Black', '{"color": "Black", "internal_notes": "", "color_temperature": null}', 'variant_type=diffused', NULL),
+	(251, '2026-03-16 06:54:36.295515+00', 101, 125, 'Flood', NULL, 'LIT-STE-C4-BLK-FL-57K', NULL, 6000.00, 0.00, 1, 5, false, '', 0.00, 'Black', '{"color": "Black", "internal_notes": "", "color_temperature": null}', 'variant_type=flood', NULL),
+	(270, '2026-03-19 07:02:38.408425+00', 118, 81, 'N/A', NULL, 'LIT-RIG-SCN-WHT-SG', NULL, 6800.00, 0.00, 2, 2, false, '', 0.00, 'White', '{"color": "White", "internal_notes": "", "color_temperature": null}', 'variant_type=n/a', NULL),
+	(279, '2026-03-20 06:54:19.762798+00', 127, 139, 'Spread', NULL, 'LIT-KC-FLEX-SPRD-CLR-PR', NULL, 20680.00, 0.00, 1, 5, false, '', 0.00, 'Clear', '{"color": "Clear", "internal_notes": "", "color_temperature": null}', 'variant_type=spread', NULL),
+	(284, '2026-03-23 06:27:19.918735+00', 133, 134, 'Wide Drive', NULL, 'LIT-KC-GRVT-91305-WD-CLR-PR', NULL, 40700.00, 0.00, 1, 1, false, '', 0.00, 'Clear', '{"color": "Clear", "internal_notes": "", "color_temperature": null}', 'variant_type=wide drive', NULL),
+	(285, '2026-03-23 06:27:19.918735+00', 133, 133, 'Spot', NULL, 'LIT-KC-GRVT-91305-CLR-SPT-PR', NULL, 40700.00, 0.00, 1, 1, false, '', 0.00, 'Clear', '{"color": "Clear", "internal_notes": "", "color_temperature": null}', 'variant_type=spot', NULL),
+	(297, '2026-03-26 07:51:50.294959+00', 137, 143, 'Auxiliary', NULL, 'LIT-SR-AUX-WA-SPT-SG', NULL, 1500.00, 0.00, 7, 3, false, '', 0.00, 'White/Amber', '{"color": "White/Amber", "internal_notes": "", "color_temperature": null}', 'variant_type=auxiliary', NULL),
+	(289, '2026-03-23 06:53:49.825834+00', 80, 142, '235/75R15', NULL, NULL, NULL, 14590.00, 0.00, 4, 5, false, NULL, 0.00, '109T', '{"tags": "[]", "color": "109T", "variant_color": "109T", "internal_notes": "", "color_temperature": ""}', 'variant_type=235/75r15', NULL),
+	(293, '2026-03-25 04:51:53.881493+00', 80, 144, '265/75R16', NULL, NULL, NULL, 14567.00, 0.00, 0, 4, false, NULL, 0.00, '116T', '{"tags": [], "color": "116T", "internal_notes": "", "color_temperature": null}', NULL, NULL),
+	(298, '2026-03-26 07:51:50.294959+00', 137, 143, 'Auxiliary', NULL, 'LIT-SR-AUX-WHT-SPT-SG', NULL, 1300.00, 0.00, 1, 1, false, '', 0.00, 'White', '{"color": "White", "internal_notes": "", "color_temperature": null}', 'variant_type=auxiliary', NULL),
+	(237, '2026-03-16 05:41:45.308431+00', 96, 122, 'Driving/Combo', NULL, 'LIT-BAJ-SQS-DC-CLR-PR', NULL, 20000.00, 0.00, 1, 5, false, '', 0.00, 'Clear', '{"color": "Clear", "internal_notes": "", "color_temperature": null}', 'variant_type=driving/combo', NULL),
+	(303, '2026-03-28 06:46:20.134935+00', 141, 147, 'Fog Light', NULL, 'LIT-BTS-TY-PROJ-FOG-YELL-PR', NULL, 6500.00, 0.00, 2, 1, false, NULL, 0.00, 'Yellow', '{"tags": [], "color": "Yellow", "internal_notes": "", "color_temperature": null}', 'variant_type=fog light', NULL),
+	(310, '2026-03-28 07:32:19.398562+00', 145, 149, 'Fog Lamp', NULL, 'LIT-FOD-NS-G38-FOG-TRI-PR', NULL, 7000.00, 0.00, 2, 2, false, '', 0.00, 'Tri Color', '{"color": "Tri Color", "internal_notes": "", "color_temperature": null}', 'variant_type=fog lamp', NULL),
+	(317, '2026-04-09 06:23:54.397383+00', 152, 81, 'N/A', NULL, NULL, NULL, 2800.00, 0.00, 4, 5, false, '', 0.00, 'Black', '{"color": "Black", "internal_notes": "", "color_temperature": null}', 'variant_type=n/a', NULL),
+	(203, '2026-03-12 05:36:03.826873+00', 80, 159, '285/65R18', NULL, NULL, NULL, 22751.00, 0.00, 8, 4, false, NULL, 0.00, '116T', '{"tags": "[]", "color": "116T", "variant_color": "116T", "internal_notes": "", "color_temperature": ""}', 'variant_type=285/65r18', NULL),
+	(321, '2026-04-09 07:08:59.665271+00', 156, 81, 'N/A', NULL, NULL, NULL, 2200.00, 0.00, 4, 5, false, '', 0.00, 'Black', '{"color": "Black", "internal_notes": "", "color_temperature": null}', 'variant_type=n/a', NULL),
+	(322, '2026-04-09 07:08:59.665271+00', 156, 81, 'N/A', NULL, NULL, NULL, 2200.00, 0.00, 2, 5, false, '', 0.00, 'Amber', '{"color": "Amber", "internal_notes": "", "color_temperature": null}', 'variant_type=n/a', NULL),
+	(238, '2026-03-16 05:41:45.308431+00', 96, 122, 'Driving/Combo', NULL, 'LIT-BAJ-SQS-DC-AMB-PR', NULL, 20000.00, 0.00, 2, 5, false, '', 0.00, 'Amber', '{"color": "Amber", "internal_notes": "", "color_temperature": null}', 'variant_type=driving/combo', NULL),
+	(326, '2026-04-16 06:37:44.833868+00', 159, 133, 'Spot', NULL, 'LIT-IRN-UNI-16W-SPT-WHT-SG', NULL, 5625.00, 0.00, 2, 1, false, '', 0.00, '6000k', '{"color": "6000k", "internal_notes": "", "color_temperature": null}', 'variant_type=spot', NULL),
+	(205, '2026-03-12 05:36:03.826873+00', 80, 102, 'LT285/70R17', NULL, NULL, NULL, 21329.00, 0.00, 8, 4, false, NULL, 0.00, '116/113R', '{"tags": "[]", "color": "116/113R", "variant_color": "116/113R", "internal_notes": "", "color_temperature": ""}', 'variant_type=lt285/70r17', NULL),
+	(211, '2026-03-12 06:37:28.79906+00', 81, 108, 'LT265/65R17', NULL, NULL, NULL, 16500.00, 0.00, 0, 5, false, NULL, 0.00, '116/113S', '{"tags": [], "color": "116/113S", "internal_notes": "Need Price", "color_temperature": null}', 'variant_type=lt265/65r17', NULL),
+	(218, '2026-03-12 07:45:29.700062+00', 86, 115, 'LT265/65R18', NULL, NULL, NULL, 15947.00, 0.00, 0, 4, false, NULL, 0.00, '10PR', '{"tags": [], "color": "10PR", "internal_notes": "", "color_temperature": null}', 'variant_type=lt265/65r18', NULL),
+	(62, '2026-02-18 02:09:41.986286+00', 14, 42, 'H8/H9/H11', '3000', NULL, NULL, 3200.00, 0.00, 0, 2, false, NULL, 0.00, '3000K', '{"color": "3000K", "internal_notes": null, "color_temperature": "3000"}', 'variant_type=h8/h9/h11|color_temperature=3000', NULL),
+	(305, '2026-03-28 07:16:15.197275+00', 143, 131, 'Driving', NULL, NULL, NULL, 6000.00, 0.00, 1, 1, false, 'LIT-BTS-FD-FOG-DRV-YELL-PR', 0.00, 'Yellow', '{"color": "Yellow", "internal_notes": "Fog Light", "color_temperature": null}', 'variant_type=driving', 28),
+	(219, '2026-03-12 07:45:29.700062+00', 86, 99, '265/65R17', NULL, NULL, NULL, 11725.99, 0.00, 0, 4, false, NULL, 0.00, '112T', '{"tags": [], "color": "112T", "internal_notes": "", "color_temperature": null}', 'variant_type=265/65r17', NULL),
+	(204, '2026-03-12 05:36:03.826873+00', 80, 101, '285/55R20', NULL, NULL, NULL, 24119.00, 0.00, 4, 5, false, NULL, 0.00, '114T', '{"tags": [], "color": "114T", "internal_notes": "", "color_temperature": null}', 'variant_type=285/55r20', NULL),
+	(64, '2026-02-18 02:09:41.986286+00', 14, 42, 'H8/H9/H11', '6000-6500', NULL, NULL, 3200.00, 0.00, 1, 3, false, NULL, 0.00, '6000-6500K', '{"color": "6000-6500K", "internal_notes": null, "color_temperature": "6000-6500"}', 'variant_type=h8/h9/h11|color_temperature=6000-6500', NULL),
+	(184, '2026-03-09 03:04:53.597605+00', 77, 84, '60mm', 'Front/Rear', NULL, NULL, 3000.00, 0.00, 17, 5, false, NULL, 0.00, 'Jimny', '{"tags": [], "color": "Jimny", "internal_notes": "", "color_temperature": "Front/Rear"}', 'color_temperature=front/rear|variant_type=60mm', NULL),
+	(190, '2026-03-10 07:40:50.876823+00', 78, 86, 'AT622', NULL, NULL, NULL, 10000.00, 0.00, 1, 5, false, '', 0.00, NULL, '{"color": null, "internal_notes": "", "color_temperature": null}', 'variant_type=at622', NULL),
+	(68, '2026-02-18 02:17:38.865909+00', 15, 22, '9005 (HB3)', '5700', NULL, NULL, 7500.00, 0.00, 1, 5, false, '', 0.00, '5700K', '{}', 'variant_type=9005 (hb3)|color_temperature=5700', NULL),
+	(69, '2026-02-18 02:34:15.650503+00', 16, 25, '9006 (HB4)', '4300', NULL, NULL, 6900.00, 0.00, 2, 5, false, '', 0.00, '4300K', '{}', 'variant_type=9006 (hb4)|color_temperature=4300', NULL),
+	(66, '2026-02-18 02:17:38.865909+00', 15, 25, '9006 (HB4)', '5700', 'null-66', NULL, 7500.00, 0.00, 3, 5, false, NULL, 0.00, '5700K', '{"color": "", "internal_notes": ""}', 'variant_type=9006 (hb4)|color_temperature=5700', NULL),
+	(38, '2026-02-17 23:21:21.200279+00', 12, 34, '22"', 'Red', NULL, NULL, 1200.00, 0.00, 5, 5, false, '', 0.00, 'RedK', '{}', 'variant_type=22"|color_temperature=red', NULL),
+	(39, '2026-02-17 23:21:21.200279+00', 12, 35, '24"', 'Red', NULL, NULL, 1300.00, 0.00, 5, 5, false, '', 0.00, 'RedK', '{}', 'variant_type=24"|color_temperature=red', NULL),
+	(40, '2026-02-17 23:21:21.200279+00', 12, 36, '26"', 'Red', NULL, NULL, 1300.00, 0.00, 4, 5, false, '', 0.00, 'RedK', '{}', 'variant_type=26"|color_temperature=red', NULL),
+	(70, '2026-02-18 02:34:15.650503+00', 16, 25, '9006 (HB4)', '6000', NULL, NULL, 6900.00, 0.00, 1, 5, false, '', 0.00, '6000K', '{}', 'variant_type=9006 (hb4)|color_temperature=6000', NULL),
+	(24, '2026-02-17 04:02:59.920591+00', 7, 26, 'H27', '6000', 'null-24', 'null-24', 6000.00, 0.00, 2, 5, false, NULL, 0.00, NULL, '{"tags": [], "color": "", "last_restock": {"date": "2026-02-17T04:04:09.409Z", "quantity": 1}, "internal_notes": ""}', 'variant_type=h27|color_temperature=6000', NULL),
+	(34, '2026-02-17 23:21:21.200279+00', 12, 30, '17"', 'Red', 'null-34', NULL, 1100.00, 0.00, 5, 5, false, NULL, 0.00, 'RedK', '{"tags": [], "color": "Red", "last_restock": {"date": "2026-02-17T23:21:56.532Z", "quantity": 1}, "internal_notes": ""}', 'variant_type=17"|color_temperature=red', NULL),
+	(26, '2026-02-17 04:11:21.427321+00', 8, 22, '9005 (HB3)', '6000', 'null-26', NULL, 8500.00, 0.00, 1, 5, false, NULL, 0.00, NULL, '{}', 'variant_type=9005 (hb3)|color_temperature=6000', NULL),
+	(25, '2026-02-17 04:11:21.427321+00', 8, 25, '9006 (HB4)', '6000', 'null-25', NULL, 8500.00, 0.00, 1, 5, false, NULL, 0.00, NULL, '{}', 'variant_type=9006 (hb4)|color_temperature=6000', NULL),
+	(73, '2026-02-18 02:34:15.650503+00', 16, 43, 'H8/H9/H11/H16', '5000', NULL, NULL, 0.00, 0.00, 1, 5, false, '', 0.00, '5000K', '{}', 'variant_type=h8/h9/h11/h16|color_temperature=5000', NULL),
+	(35, '2026-02-17 23:21:21.200279+00', 12, 31, '18"', 'Red', 'null-35', NULL, 1100.00, 0.00, 12, 5, false, NULL, 0.00, 'RedK', '{"tags": [], "color": "", "last_restock": {"date": "2026-02-17T23:21:56.532Z", "quantity": 1}, "internal_notes": ""}', 'variant_type=18"|color_temperature=red', NULL),
+	(46, '2026-02-17 23:29:24.32874+00', 12, 33, '20"', 'Purple', 'null-46', NULL, 1500.00, 0.00, 3, 5, false, NULL, 0.00, 'Purple', '{}', 'variant_type=20"|color_temperature=purple', NULL),
+	(47, '2026-02-17 23:30:12.504051+00', 12, 34, '22"', 'Purple', 'null-47', NULL, 1400.00, 0.00, 5, 5, false, NULL, 0.00, 'Purple', '{}', 'variant_type=22"|color_temperature=purple', NULL),
+	(48, '2026-02-17 23:30:59.20278+00', 12, 35, '24"', 'Purple', 'null-48', NULL, 1600.00, 0.00, 8, 5, false, NULL, 0.00, 'Purple', '{}', 'variant_type=24"|color_temperature=purple', NULL),
+	(49, '2026-02-17 23:33:28.968284+00', 12, 38, '28"', 'Purple', 'null-49', NULL, 1800.00, 0.00, 5, 5, false, NULL, 0.00, 'Purple', '{}', 'variant_type=28"|color_temperature=purple', NULL),
+	(74, '2026-02-18 02:37:48.683063+00', 17, 44, 'H15', '5000-5700', 'null-74', NULL, 3000.00, 0.00, 3, 5, false, NULL, 0.00, 'ZES', '{}', 'variant_type=h15|color_temperature=5000-5700', NULL),
+	(27, '2026-02-17 04:15:45.483932+00', 9, 22, '9005 (HB3)', 'Dual Color', 'null-27', 'null-27', 6000.00, 0.00, 3, 5, false, NULL, 0.00, NULL, '{"tags": [], "internal_notes": "", "color_temperature": "Dual Color "}', 'variant_type=9005 (hb3)|color_temperature=dual color', NULL),
+	(32, '2026-02-17 23:21:21.200279+00', 12, 28, '12"', 'Red', 'null-32', 'null-32', 1100.00, 0.00, 5, 5, false, NULL, 0.00, 'RedK', '{"tags": [], "color": "Red", "last_restock": {"date": "2026-02-17T23:21:56.532Z", "quantity": 1}, "internal_notes": ""}', 'variant_type=12"|color_temperature=red', NULL),
+	(191, '2026-03-10 07:40:50.876823+00', 78, 87, 'AT171', NULL, NULL, NULL, 10000.00, 0.00, 2, 5, false, '', 0.00, NULL, '{"color": null, "internal_notes": "", "color_temperature": null}', 'variant_type=at171', NULL),
+	(21, '2026-02-17 04:02:59.920591+00', 7, 23, '9012 (HIR2)', '6000', 'null-21', NULL, 6000.00, 0.00, 5, 5, false, NULL, 0.00, NULL, '{}', 'variant_type=9012 (hir2)|color_temperature=6000', 25),
+	(37, '2026-02-17 23:21:21.200279+00', 12, 33, '20"', 'Red', NULL, NULL, 1200.00, 0.00, 4, 5, false, '', 0.00, 'RedK', '{}', 'variant_type=20"|color_temperature=red', NULL),
+	(17, '2026-02-17 04:02:59.920591+00', 7, 25, '9006 (HB4)', '6000', 'null-17', NULL, 6000.00, 0.00, 4, 5, false, NULL, 0.00, NULL, '{}', 'variant_type=9006 (hb4)|color_temperature=6000', NULL),
+	(16, '2026-02-17 04:02:59.920591+00', 7, 24, 'H1', '6000', 'null-16', NULL, 6000.00, 6000.00, 2, 5, false, NULL, 0.00, NULL, '{}', 'variant_type=h1|color_temperature=6000', 1),
+	(20, '2026-02-17 04:02:59.920591+00', 7, 22, '9005 (HB3)', '4300', 'null-20', 'null-20', 6000.00, 0.00, 5, 5, false, NULL, 0.00, NULL, '{"tags": [], "color": "", "socket": null, "last_restock": {"date": "2026-02-17T04:04:09.409Z", "quantity": 1}, "internal_notes": "", "color_temperature": "All Weather"}', 'variant_type=9005 (hb3)|color_temperature=4300', NULL),
+	(23, '2026-02-17 04:02:59.920591+00', 7, 26, 'H27', '4300', 'null-23', NULL, 6000.00, 0.00, 0, 5, false, NULL, 0.00, NULL, '{}', 'variant_type=h27|color_temperature=4300', NULL),
+	(15, '2026-02-17 04:02:59.920591+00', 7, 25, '9006 (HB4)', '4300', 'null-15', 'null-15', 6000.00, 0.00, 9, 5, false, NULL, 0.00, NULL, '{"tags": "[]", "color": "4300", "socket": "", "last_restock": "{\"date\": \"2026-02-17T04:04:09.409Z\", \"quantity\": 1}", "internal_notes": "", "color_temperature": "4300"}', 'variant_type=9006 (hb4)|color_temperature=4300', NULL),
+	(41, '2026-02-17 23:24:42.748564+00', 12, 37, '14"', 'Purple', 'null-41', 'null-41', 1200.00, 0.00, 7, 5, false, NULL, 0.00, NULL, '{"tags": [], "color": "Purple", "last_restock": {"date": "2026-02-17T23:21:56.532Z", "quantity": 1}, "internal_notes": ""}', 'variant_type=14"|color_temperature=purple', NULL),
+	(33, '2026-02-17 23:21:21.200279+00', 12, 29, '16"', 'Red', 'null-33', NULL, 1100.00, 0.00, 3, 5, false, NULL, 0.00, 'RedK', '{"tags": [], "color": "Red", "last_restock": {"date": "2026-02-17T23:21:56.532Z", "quantity": 1}, "internal_notes": ""}', 'variant_type=16"|color_temperature=red', NULL),
+	(55, '2026-02-17 23:39:56.375832+00', 12, 35, '24"', 'Green', 'null-55', NULL, 1600.00, 0.00, 5, 5, false, NULL, 0.00, NULL, '{"tags": [], "color": "Green", "last_restock": {"date": "2026-02-17T23:21:56.532Z", "quantity": 1}, "variant_type": "", "internal_notes": ""}', 'variant_type=24"|color_temperature=green', NULL),
+	(45, '2026-02-17 23:28:35.061509+00', 12, 32, '19"', 'Purple', 'null-45', 'null-45', 1400.00, 0.00, 4, 5, false, NULL, 0.00, NULL, '{"tags": [], "color": "Yellow", "last_restock": {"date": "2026-02-17T23:21:56.532Z", "quantity": 1}, "variant_type": "", "internal_notes": ""}', 'variant_type=19"|color_temperature=purple', NULL),
+	(44, '2026-02-17 23:28:06.916971+00', 12, 31, '18"', 'Purple', 'null-44', NULL, 1400.00, 0.00, 4, 5, false, NULL, 0.00, NULL, '{"tags": [], "color": "Purple", "last_restock": {"date": "2026-02-17T23:21:56.532Z", "quantity": 1}, "internal_notes": ""}', 'variant_type=18"|color_temperature=purple', NULL),
+	(51, '2026-02-17 23:37:55.388727+00', 12, 29, '16"', 'Green', 'null-51', NULL, 1200.00, 0.00, 5, 5, false, NULL, 0.00, NULL, '{"tags": [], "color": "Green", "last_restock": {"date": "2026-02-17T23:21:56.532Z", "quantity": 1}, "variant_type": "", "internal_notes": ""}', 'variant_type=16"|color_temperature=green', NULL),
+	(59, '2026-02-17 23:42:27.987196+00', 12, 41, '13"', 'Yellow', 'null-59', NULL, 1150.00, 0.00, 5, 5, false, NULL, 0.00, NULL, '{"tags": [], "color": "Yellow", "last_restock": {"date": "2026-02-17T23:21:56.532Z", "quantity": 1}, "variant_type": "", "internal_notes": ""}', 'variant_type=13"|color_temperature=yellow', NULL),
+	(88, '2026-02-25 06:52:44.723265+00', 30, 51, '6x114.3', 'Matte Black', NULL, NULL, 12500.00, 0.00, 4, 4, false, '', 0.00, '18x9', '{"color": "18x9", "internal_notes": "", "color_temperature": "Matte Black", "spec_1772000809098": "12"}', 'variant_type=6x114.3|color_temperature=matte black', NULL),
+	(42, '2026-02-17 23:25:59.28453+00', 12, 29, '16"', 'Purple', 'null-42', NULL, 1300.00, 0.00, 5, 5, false, NULL, 0.00, NULL, '{"tags": [], "color": "Yellow", "last_restock": {"date": "2026-02-17T23:21:56.532Z", "quantity": 1}, "variant_type": "", "internal_notes": ""}', 'variant_type=16"|color_temperature=purple', NULL),
+	(52, '2026-02-17 23:38:19.991003+00', 12, 32, '19"', 'Green', 'null-52', NULL, 1400.00, 0.00, 2, 5, false, NULL, 0.00, NULL, '{"tags": [], "color": "Yellow", "last_restock": {"date": "2026-02-17T23:21:56.532Z", "quantity": 1}, "variant_type": "", "internal_notes": ""}', 'variant_type=19"|color_temperature=green', NULL),
+	(43, '2026-02-17 23:27:29.406148+00', 12, 30, '17"', 'Purple', 'null-43', 'null-43', 1350.00, 0.00, 1, 5, false, NULL, 0.00, NULL, '{"tags": [], "color": "Yellow", "last_restock": {"date": "2026-02-17T23:21:56.532Z", "quantity": 1}, "variant_type": "", "internal_notes": "", "color_temperature": "Yellow"}', 'variant_type=17"|color_temperature=purple', NULL),
+	(58, '2026-02-17 23:41:34.741267+00', 12, 28, '12"', 'Yellow', 'null-58', 'null-58', 1100.00, 0.00, 5, 5, false, NULL, 0.00, 'Yellow', '{"tags": [], "color": "Yellow", "last_restock": {"date": "2026-02-17T23:21:56.532Z", "quantity": 1}, "variant_type": "", "internal_notes": "", "color_temperature": "Yellow"}', 'variant_type=12"|color_temperature=yellow', NULL),
+	(54, '2026-02-17 23:39:22.984673+00', 12, 34, '22"', 'Green', 'null-54', 'null-54', 1500.00, 0.00, 9, 5, false, NULL, 0.00, NULL, '{"tags": [], "color": "Yellow", "last_restock": {"date": "2026-02-17T23:21:56.532Z", "quantity": 1}, "variant_type": "", "internal_notes": "", "color_temperature": "Yellow"}', 'variant_type=22"|color_temperature=green', NULL),
+	(53, '2026-02-17 23:39:03.677297+00', 12, 33, '20"', 'Green', 'null-53', 'null-53', 1500.00, 0.00, 4, 5, false, NULL, 0.00, 'Green', '{"tags": [], "color": "Green", "last_restock": {"date": "2026-02-17T23:21:56.532Z", "quantity": 1}, "variant_type": "", "internal_notes": "", "color_temperature": "Green"}', 'variant_type=20"|color_temperature=green', NULL),
+	(93, '2026-02-25 07:11:14.968697+00', 33, 51, '6x114.3', 'Gloss Silver', NULL, NULL, 15000.00, 0.00, 4, 4, false, '', 0.00, '17x9', '{"color": "17x9", "internal_notes": "", "color_temperature": "Gloss Silver", "spec_1772000809098": "12"}', 'variant_type=6x114.3|color_temperature=gloss silver', NULL),
+	(89, '2026-02-25 06:52:44.723265+00', 30, 53, '6x139.7', 'Black with Machined', NULL, NULL, 11000.00, 0.00, 4, 4, false, '', 0.00, '17', '{"color": "17", "internal_notes": "", "color_temperature": "Black with Machined", "spec_1772000809098": "n/a"}', 'variant_type=6x139.7|color_temperature=black with machined', 27),
+	(82, '2026-02-25 06:36:53.767118+00', 24, 53, '6x139.7', 'Pressed Graphite', NULL, NULL, 42500.00, 0.00, 4, 4, false, '', 0.00, '17x8.5', '{"color": "17x8.5", "internal_notes": "", "color_temperature": "Pressed Graphite", "spec_1772000809098": "-10"}', 'variant_type=6x139.7|color_temperature=pressed graphite', 27),
+	(81, '2026-02-25 06:30:11.557862+00', 23, 54, '5x139.7', 'Bronze', 'null-81', 'null-81', 30000.00, 0.00, 0, 5, false, NULL, 0.00, '16x6', '{"tags": "[]", "color": "16x6", "variant_color": "16x6", "internal_notes": "", "color_temperature": "Bronze", "spec_1772000809098": "-5"}', 'variant_type=5x139.7|color_temperature=bronze', NULL),
+	(98, '2026-02-25 07:31:47.088042+00', 38, 51, '6x114.3', 'Gunmetal Grey', NULL, NULL, 15000.00, 0.00, 4, 4, false, '', 0.00, '20x9.5', '{"color": "20x9.5", "internal_notes": "From Warwin", "color_temperature": "Gunmetal Grey", "spec_1772000809098": "1"}', 'variant_type=6x114.3|color_temperature=gunmetal grey', NULL),
+	(101, '2026-02-25 07:41:27.437237+00', 41, 51, '6x114.3', 'Gunmetal Grey', NULL, NULL, 20000.00, 0.00, 4, 4, false, '', 0.00, '20x9', '{"color": "20x9", "internal_notes": "1 on Display", "color_temperature": "Gunmetal Grey", "spec_1772000809098": "18"}', 'variant_type=6x114.3|color_temperature=gunmetal grey', NULL),
+	(102, '2026-02-25 07:43:30.126288+00', 42, 51, '6x114.3', 'Gloss Black Milled', NULL, NULL, 20000.00, 0.00, 4, 4, false, '', 0.00, '20x9', '{"color": "20x9", "internal_notes": "1 on Display, 1 with JK", "color_temperature": "Gloss Black Milled", "spec_1772000809098": "30"}', 'variant_type=6x114.3|color_temperature=gloss black milled', NULL),
+	(56, '2026-02-17 23:40:35.69054+00', 12, 39, '10"', 'Yellow', 'null-56', 'null-56', 1000.00, 0.00, 5, 5, false, NULL, 0.00, NULL, '{"tags": [], "color": "Green", "last_restock": {"date": "2026-02-17T23:21:56.532Z", "quantity": 1}, "variant_type": "", "internal_notes": "", "color_temperature": "Green"}', 'variant_type=10"|color_temperature=yellow', NULL),
+	(110, '2026-02-26 01:38:41.381616+00', 50, 55, '5x127', 'Matte Black', NULL, NULL, 21250.00, 0.00, 4, 4, false, '', 0.00, '17x8.5', '{"color": "17x8.5", "internal_notes": "Jeep PCD", "color_temperature": "Matte Black", "spec_1772000809098": "0"}', 'variant_type=5x127|color_temperature=matte black', NULL),
+	(121, '2026-02-26 01:59:36.070613+00', 58, 51, '6x114.3', 'Satin Black', NULL, NULL, 15000.00, 0.00, 4, 4, false, '', 0.00, '17x8.5', '{"color": "17x8.5", "internal_notes": "set of 4", "color_temperature": "Satin Black", "spec_1772000809098": "18"}', 'variant_type=6x114.3|color_temperature=satin black', NULL),
+	(123, '2026-02-26 02:03:49.113158+00', 59, 51, '6x114.3', 'Matte Anthracite', NULL, NULL, 21000.00, 0.00, 4, 4, false, '', 0.00, '17x8', '{"color": "17x8", "internal_notes": "set of 4", "color_temperature": "Matte Anthracite", "spec_1772000809098": "30"}', 'variant_type=6x114.3|color_temperature=matte anthracite', NULL),
+	(125, '2026-02-26 02:19:55.947642+00', 61, 54, '5x139.7', 'Black/White', NULL, NULL, 6500.00, 0.00, 4, 4, false, '', 0.00, '16x6', '{"color": "16x6", "internal_notes": "Bearcat/Black", "color_temperature": "Black/White", "spec_1772000809098": "0"}', 'variant_type=5x139.7|color_temperature=black/white', NULL),
+	(122, '2026-02-26 02:03:49.113158+00', 59, 56, '5x139', 'Anthracite', NULL, NULL, 18000.00, 0.00, 5, 5, false, NULL, 0.00, '15x7', '{"tags": [], "color": "15x7", "internal_notes": "set of 5", "color_temperature": "Anthracite", "spec_1772000809098": "0"}', 'variant_type=5x139|color_temperature=anthracite', NULL),
+	(132, '2026-02-26 02:44:11.577001+00', 66, 57, '6x139', 'Bronze', NULL, NULL, 20250.00, 0.00, 4, 4, false, NULL, 0.00, '18x9', '{"color": "18x9", "internal_notes": null, "color_temperature": "Bronze", "spec_1772000809098": "20"}', 'variant_type=6x139|color_temperature=bronze', NULL),
+	(138, '2026-02-26 02:50:37.691894+00', 67, 57, '6x139', 'Inner Black/Outer Black', NULL, NULL, 20000.00, 0.00, 4, 4, false, '', 0.00, '18x9', '{"color": "18x9", "internal_notes": "", "color_temperature": "Inner Black/Outer Black", "spec_1772000809098": "0"}', 'variant_type=6x139|color_temperature=inner black/outer black', NULL),
+	(139, '2026-02-26 02:53:06.219066+00', 68, 54, '5x139.7', 'White', NULL, NULL, 22000.00, 0.00, 4, 4, false, '', 0.00, '16x6', '{"color": "16x6", "internal_notes": "", "color_temperature": "White", "spec_1772000809098": "-5"}', 'variant_type=5x139.7|color_temperature=white', NULL),
+	(159, '2026-03-04 04:00:41.180407+00', 71, 72, '33-2472', NULL, NULL, NULL, 4700.00, 0.00, 1, 5, false, NULL, 0.00, NULL, '{"color": null, "internal_notes": "Accent", "color_temperature": null}', 'variant_type=33-2472', NULL),
+	(145, '2026-02-26 06:36:37.93746+00', 48, 54, '5x139.7', 'Gunmetal Machined(PressG)', NULL, NULL, 10750.00, 0.00, 4, 4, false, NULL, 0.00, '16x7', '{"tags": [], "color": "16x7", "socket": null, "last_restock": {"date": "2026-02-17T23:21:56.532Z", "quantity": 1}, "internal_notes": "set of 4", "color_temperature": "Gunmetal Machined(PressG)", "spec_1772000809098": "0"}', 'variant_type=5x139.7|color_temperature=gunmetal machined(pressg)', NULL),
+	(146, '2026-02-26 06:39:14.14488+00', 70, 54, '5x139.7', 'Matte Black', NULL, NULL, 9750.00, 0.00, 4, 4, false, NULL, 0.00, '15x7', '{"tags": [], "color": "15x7", "internal_notes": "set of 4", "color_temperature": "Matte Black", "spec_1772000809098": "-6"}', 'variant_type=5x139.7|color_temperature=matte black', NULL),
+	(147, '2026-03-04 02:56:26.280835+00', 71, 60, '33-3185', NULL, NULL, NULL, 6000.00, 0.00, 5, 5, false, '', 0.00, NULL, '{"color": null, "internal_notes": "New Gen Raptor", "color_temperature": null}', 'variant_type=33-3185', NULL),
+	(148, '2026-03-04 03:29:24.069686+00', 71, 61, '33-3059', NULL, NULL, NULL, 5500.00, 0.00, 3, 5, false, NULL, 0.00, NULL, '{"color": null, "internal_notes": "Nissan Terra", "color_temperature": null}', 'variant_type=33-3059', NULL),
+	(149, '2026-03-04 03:32:36.387734+00', 71, 62, '33-3045', NULL, NULL, NULL, 6500.00, 0.00, 5, 5, false, NULL, 0.00, NULL, '{"color": null, "internal_notes": "Hilux", "color_temperature": null}', 'variant_type=33-3045', NULL),
+	(150, '2026-03-04 03:34:47.395839+00', 71, 63, '33-3062', NULL, NULL, NULL, 5100.00, 0.00, 1, 5, false, NULL, 0.00, NULL, '{"color": null, "internal_notes": "15-19 Toyota Land Cruiser/Prado 2.8L", "color_temperature": null}', 'variant_type=33-3062', NULL),
+	(154, '2026-03-04 03:38:38.827917+00', 71, 67, '33-2146', NULL, NULL, NULL, 4600.00, 0.00, 4, 5, false, NULL, 0.00, NULL, '{"color": null, "internal_notes": "Lexus LX470, LC/LC Prado", "color_temperature": null}', 'variant_type=33-2146', NULL),
+	(155, '2026-03-04 03:54:34.064756+00', 72, 68, 'VF2052', NULL, NULL, NULL, 4000.00, 0.00, 2, 5, false, '', 0.00, NULL, '{"color": null, "internal_notes": "Ford Ranger/Everest/Raptor", "color_temperature": null}', 'variant_type=vf2052', NULL),
+	(131, '2026-02-26 02:42:07.603916+00', 66, 57, '6x139', 'Black', NULL, NULL, 18000.00, 0.00, 0, 4, false, '', 0.00, '17x9', '{"color": "17x9", "internal_notes": "", "color_temperature": "Black", "spec_1772000809098": "20"}', 'variant_type=6x139|color_temperature=black', NULL),
+	(124, '2026-02-26 02:18:00.364099+00', 60, 53, '6x139.7', 'Black', NULL, NULL, 6000.00, 0.00, 4, 4, false, '', 0.00, '15x8', '{"color": "15x8", "internal_notes": "Trak 2/Black", "color_temperature": "Black", "spec_1772000809098": "-22"}', 'variant_type=6x139.7|color_temperature=black', 27),
+	(126, '2026-02-26 02:21:33.693615+00', 60, 53, '6x139.7', 'Black/White', NULL, NULL, 6500.00, 0.00, 4, 4, false, NULL, 0.00, '16x8', '{"color": "16x8", "internal_notes": "Trak 2/Black", "color_temperature": "Black/White", "spec_1772000809098": "0"}', 'variant_type=6x139.7|color_temperature=black/white', 27),
+	(151, '2026-03-04 03:35:49.141656+00', 71, 158, '33-2387', NULL, NULL, NULL, 6000.00, 0.00, 1, 1, false, NULL, 0.00, NULL, '{"tags": "[]", "color": "", "internal_notes": "LC200", "color_temperature": ""}', 'variant_type=33-2387', NULL),
+	(142, '2026-02-26 06:21:24.068681+00', 7, 22, '9005 (HB3)', '6000', NULL, NULL, 6000.00, 0.00, 2, 5, false, NULL, 0.00, NULL, '{"color": null, "internal_notes": null, "color_temperature": "6000"}', 'variant_type=9005 (hb3)|color_temperature=6000', NULL),
+	(157, '2026-03-04 03:57:24.927174+00', 72, 70, 'VF2033', NULL, NULL, NULL, 6000.00, 0.00, 1, 5, false, NULL, 0.00, NULL, '{"color": null, "internal_notes": "Honda", "color_temperature": null}', 'variant_type=vf2033', NULL),
+	(158, '2026-03-04 03:58:25.217558+00', 72, 71, 'VF1001', NULL, NULL, NULL, 7300.00, 0.00, 1, 5, false, NULL, 0.00, NULL, '{"color": null, "internal_notes": "Navara, NP300, Nissan Frontier", "color_temperature": null}', 'variant_type=vf1001', NULL),
+	(160, '2026-03-04 04:01:39.031584+00', 71, 73, '33-2360', NULL, NULL, NULL, 4300.00, 0.00, 1, 5, false, NULL, 0.00, NULL, '{"color": null, "internal_notes": "Vios Gen 2", "color_temperature": null}', 'variant_type=33-2360', NULL),
+	(161, '2026-03-04 04:02:38.422657+00', 71, 74, '33-3018', NULL, NULL, NULL, 5500.00, 0.00, 1, 5, false, NULL, 0.00, NULL, '{"color": null, "internal_notes": "Vios 2016", "color_temperature": null}', 'variant_type=33-3018', NULL),
+	(162, '2026-03-04 04:03:49.245318+00', 71, 75, '33-2162', NULL, NULL, NULL, 3900.00, 0.00, 2, 5, false, NULL, 0.00, NULL, '{"color": null, "internal_notes": "Jimny 1.3", "color_temperature": null}', 'variant_type=33-2162', NULL),
+	(163, '2026-03-04 04:05:09.360506+00', 71, 76, '33-2974', NULL, NULL, NULL, 4500.00, 0.00, 1, 5, false, NULL, 0.00, NULL, '{"color": null, "internal_notes": "Swift 1.2 2016 & 2017", "color_temperature": null}', 'variant_type=33-2974', NULL),
+	(164, '2026-03-04 04:06:56.38983+00', 71, 77, '33-2342', NULL, NULL, NULL, 4700.00, 0.00, 1, 5, false, NULL, 0.00, NULL, '{"color": null, "internal_notes": "Civic 1.8 2011", "color_temperature": null}', 'variant_type=33-2342', NULL),
+	(167, '2026-03-06 07:19:36.939129+00', 73, 80, '32mm', 'Front', NULL, NULL, 3800.00, 0.00, 1, 5, false, '', 0.00, 'Ranger', '{"color": "Ranger", "internal_notes": "", "color_temperature": "Front"}', 'variant_type=32mm|color_temperature=front', NULL),
+	(168, '2026-03-06 07:19:36.939129+00', 73, 81, 'n/a', 'Front', NULL, NULL, 5000.00, 0.00, 2, 5, false, '', 0.00, 'LC200', '{"color": "LC200", "internal_notes": "", "color_temperature": "Front"}', 'variant_type=n/a|color_temperature=front', NULL),
+	(166, '2026-03-06 07:19:36.939129+00', 73, 79, '25mm', 'Front', NULL, NULL, 4000.00, 0.00, 4, 5, false, NULL, 0.00, 'Hilux', '{"tags": [], "color": "Hilux", "internal_notes": "", "color_temperature": "Front"}', 'variant_type=25mm|color_temperature=front', NULL),
+	(192, '2026-03-10 07:40:50.876823+00', 78, 88, 'AT901', NULL, NULL, NULL, 10000.00, 0.00, 1, 5, false, '', 0.00, NULL, '{"color": null, "internal_notes": "", "color_temperature": null}', 'variant_type=at901', NULL),
+	(193, '2026-03-10 07:40:50.876823+00', 78, 89, 'AT173', NULL, NULL, NULL, 10000.00, 0.00, 3, 5, false, '', 0.00, NULL, '{"color": null, "internal_notes": "", "color_temperature": null}', 'variant_type=at173', NULL),
+	(194, '2026-03-10 07:40:50.876823+00', 78, 90, 'AT931', NULL, NULL, NULL, 10000.00, 0.00, 3, 5, false, '', 0.00, NULL, '{"color": null, "internal_notes": "", "color_temperature": null}', 'variant_type=at931', NULL),
+	(195, '2026-03-10 07:40:50.876823+00', 78, 91, 'AT313', NULL, NULL, NULL, 10000.00, 0.00, 2, 5, false, '', 0.00, NULL, '{"color": null, "internal_notes": "", "color_temperature": null}', 'variant_type=at313', NULL),
+	(196, '2026-03-10 07:40:50.876823+00', 78, 92, 'AT804', NULL, NULL, NULL, 10000.00, 0.00, 3, 5, false, '', 0.00, NULL, '{"color": null, "internal_notes": "", "color_temperature": null}', 'variant_type=at804', NULL),
+	(197, '2026-03-10 07:40:50.876823+00', 78, 93, 'AT301', NULL, NULL, NULL, 10000.00, 0.00, 1, 5, false, '', 0.00, NULL, '{"color": null, "internal_notes": "", "color_temperature": null}', 'variant_type=at301', NULL),
+	(198, '2026-03-10 07:40:50.876823+00', 78, 94, 'AT301', NULL, NULL, NULL, 10000.00, 0.00, 1, 5, false, '', 0.00, NULL, '{"color": null, "internal_notes": "", "color_temperature": null}', 'variant_type=at301', NULL),
+	(199, '2026-03-10 07:40:50.876823+00', 78, 95, 'AT161', NULL, NULL, NULL, 0.00, 0.00, 1, 5, false, '', 0.00, NULL, '{"color": null, "internal_notes": "", "color_temperature": null}', 'variant_type=at161', NULL),
+	(200, '2026-03-10 07:40:50.876823+00', 78, 96, 'AT711', NULL, NULL, NULL, 10000.00, 0.00, 1, 5, false, '', 0.00, NULL, '{"color": null, "internal_notes": "", "color_temperature": null}', 'variant_type=at711', NULL),
+	(220, '2026-03-12 07:56:47.66648+00', 87, 116, '295/80R22.5', NULL, NULL, NULL, 0.00, 0.00, 4, 4, false, '', 0.00, '152/149M', '{"color": "152/149M", "internal_notes": "Need Price", "color_temperature": null}', 'variant_type=295/80r22.5', NULL),
+	(224, '2026-03-16 03:38:42.173821+00', 92, 119, 'M12 x 1.50', NULL, NULL, NULL, 2000.00, 0.00, 3, 5, false, '', 0.00, 'Black', '{"color": "Black", "internal_notes": "", "color_temperature": null}', 'variant_type=m12 x 1.50', NULL),
+	(225, '2026-03-16 03:38:42.173821+00', 92, 120, 'M12 x 1.25', NULL, NULL, NULL, 2000.00, 0.00, 4, 5, false, '', 0.00, 'Black', '{"color": "Black", "internal_notes": "", "color_temperature": null}', 'variant_type=m12 x 1.25', NULL),
+	(233, '2026-03-16 03:46:03.371944+00', 93, 119, 'M12 x 1.50', NULL, NULL, NULL, 0.00, 0.00, 1, 5, false, NULL, 0.00, 'Chrome', '{"color": "Chrome", "internal_notes": "Original", "color_temperature": null}', 'variant_type=m12 x 1.50', NULL),
+	(239, '2026-03-16 05:49:46.371079+00', 97, 122, 'Driving/Combo', NULL, 'LIT-BAJ-SQSR-DC-CLR-PR', NULL, 20000.00, 0.00, 4, 4, false, '', 0.00, 'Clear', '{"color": "Clear", "internal_notes": "", "color_temperature": null}', 'variant_type=driving/combo', NULL),
+	(240, '2026-03-16 05:49:46.371079+00', 97, 123, 'Wide Cornering', NULL, 'LIT-BAJ-SQSR-WC-AMB-PR', NULL, 20000.00, 0.00, 1, 5, false, '', 0.00, 'Amber', '{"color": "Amber", "internal_notes": "", "color_temperature": null}', 'variant_type=wide cornering', NULL),
+	(241, '2026-03-16 05:49:46.371079+00', 97, 122, 'Driving/Combo', NULL, 'LIT-BAJ-SQSR-DC-AMB-PR', NULL, 20000.00, 0.00, 2, 5, false, '', 0.00, 'Amber', '{"color": "Amber", "internal_notes": "", "color_temperature": null}', 'variant_type=driving/combo', NULL),
+	(206, '2026-03-12 06:02:38.379236+00', 81, 103, 'LT265/60R18', NULL, NULL, NULL, 16500.00, 0.00, 0, 5, false, NULL, 0.00, '114/110s ', '{"tags": [], "color": "114/110s ", "internal_notes": "Need price", "color_temperature": null}', 'variant_type=lt265/60r18', NULL),
+	(266, '2026-03-19 06:31:06.211186+00', 109, 124, 'Diffused', NULL, 'LIT-RIG-D-DFF-SM-CLR-PR', NULL, 15000.00, 0.00, 1, 5, false, NULL, 0.00, 'Clear', '{"color": "Clear", "internal_notes": null, "color_temperature": null}', 'variant_type=diffused', NULL),
+	(271, '2026-03-19 07:04:57.997127+00', 119, 134, 'Wide Drive', NULL, 'LIT-PIA-530-WD-WY-PR', NULL, 18500.00, 0.00, 1, 1, false, '', 0.00, 'White/Yellow', '{"color": "White/Yellow", "internal_notes": "", "color_temperature": null}', 'variant_type=wide drive', NULL),
+	(207, '2026-03-12 06:02:38.379236+00', 81, 104, 'LT285/65R18', NULL, NULL, NULL, 21500.00, 0.00, 4, 5, false, NULL, 0.00, '125/122s', '{"tags": [], "color": "125/122s", "internal_notes": "Need price", "color_temperature": null}', 'variant_type=lt285/65r18', NULL),
+	(252, '2026-03-16 08:51:01.975578+00', 102, 126, '20', NULL, 'LIT-STE-ST3K-21-20L', 'LIT-STE-ST3K-21-20L', 13000.00, 0.00, 0, 5, false, NULL, 0.00, 'Clear', '{"tags": [], "color": "Clear", "internal_notes": "Need Price", "color_temperature": null}', 'variant_type=20', NULL),
+	(212, '2026-03-12 06:39:16.578429+00', 82, 109, 'LT275/65R17', NULL, NULL, NULL, 19500.00, 0.00, 1, 5, false, NULL, 0.00, '123/120R', '{"tags": [], "color": "123/120R", "internal_notes": "", "color_temperature": null}', 'variant_type=lt275/65r17', NULL),
+	(141, '2026-02-26 06:19:52.879725+00', 7, 18, 'H11', 'All Weather', NULL, NULL, 6000.00, 0.00, 1, 5, false, NULL, 0.00, NULL, '{"tags": [], "color": null, "socket": null, "last_restock": {"date": "2026-02-17T04:04:09.409Z", "quantity": 1}, "internal_notes": "", "color_temperature": "All Weather"}', 'variant_type=h11|color_temperature=all weather', 7),
+	(259, '2026-03-18 08:13:43.116254+00', 109, 131, 'Driving', NULL, 'LIT-RIG-D-SAE-FG-CLR-PR', NULL, 19000.00, 0.00, 1, 5, false, '', 0.00, 'Clear', '{"color": "Clear", "internal_notes": "", "color_temperature": null}', 'variant_type=driving', 28),
+	(165, '2026-03-04 04:08:45.857294+00', 71, 78, '33-3086', NULL, NULL, NULL, 0.00, 0.00, 1, 5, false, NULL, 0.00, NULL, '{"tags": "[]", "color": "", "internal_notes": "Needs Price\nRaptor (Old)", "color_temperature": ""}', 'variant_type=33-3086', NULL),
+	(312, '2026-04-09 05:23:28.553949+00', 146, 131, 'Driving', NULL, 'LIT-PIA-SRF-DRV-56k-6-SG', NULL, 0.00, 0.00, 1, 5, false, '', 0.00, '5600K', '{"color": "5600K", "internal_notes": "Need Price", "color_temperature": null}', 'variant_type=driving', 28),
+	(103, '2026-02-25 07:45:44.188559+00', 43, 53, '6x139.7', 'Gloss Titanium', NULL, NULL, 17500.00, 0.00, 4, 4, false, '', 0.00, '17x8.5', '{"color": "17x8.5", "internal_notes": "", "color_temperature": "Gloss Titanium", "spec_1772000809098": "0"}', 'variant_type=6x139.7|color_temperature=gloss titanium', 27),
+	(104, '2026-02-25 09:25:09.407703+00', 46, 53, '6x139.7', 'BZ4 (Gloss Dark Bronze)', NULL, NULL, 20625.00, 0.00, 4, 4, false, '', 0.00, '17x8.5', '{"color": "17x8.5", "internal_notes": "", "color_temperature": "BZ4 (Gloss Dark Bronze)", "spec_1772000809098": "-10"}', 'variant_type=6x139.7|color_temperature=bz4 (gloss dark bronze)', 27),
+	(265, '2026-03-19 06:12:39.495291+00', 114, 131, 'Driving', NULL, 'LIT-RIG-D-SAE-FG-CLR-PR', NULL, 19000.00, 0.00, 1, 1, false, '', 0.00, 'Clear', '{"color": "Clear", "internal_notes": "", "color_temperature": null}', 'variant_type=driving', 28),
+	(275, '2026-03-19 08:28:39.300401+00', 123, 131, 'Driving', NULL, 'LIT-PIA-LP-530-DRV-WHT-PR', NULL, 15000.00, 0.00, 1, 1, false, '', 0.00, 'White', '{"color": "White", "internal_notes": "", "color_temperature": null}', 'variant_type=driving', 28),
+	(258, '2026-03-18 07:49:44.842392+00', 108, 131, 'Driving', NULL, 'LIT-RIG-DSS-DRV-CLR-PR', NULL, 20000.00, 0.00, 1, 5, false, '', 0.00, 'Clear', '{"color": "Clear", "internal_notes": "", "color_temperature": null}', 'variant_type=driving', 28),
+	(19, '2026-02-17 04:02:59.920591+00', 7, 3, 'H7', '4300', 'null-19', NULL, 6000.00, 0.00, 2, 5, false, NULL, 0.00, NULL, '{}', 'variant_type=h7|color_temperature=4300', 4),
+	(72, '2026-02-18 02:34:15.650503+00', 16, 3, 'H7', '5000', NULL, NULL, 0.00, 0.00, 1, 5, false, '', 0.00, '5000K', '{}', 'variant_type=h7|color_temperature=5000', 4),
+	(75, '2026-02-18 02:50:37.887515+00', 18, 3, 'H7', '4200', NULL, NULL, 6500.00, 0.00, 2, 5, false, '', 0.00, '4200K', '{}', 'variant_type=h7|color_temperature=4200', 4),
+	(76, '2026-02-18 02:52:37.055325+00', 19, 27, 'H4', '3000', NULL, NULL, 4500.00, 0.00, 1, 5, false, '', 0.00, '3000K', '{}', 'variant_type=h4|color_temperature=3000', 3),
+	(61, '2026-02-18 01:51:49.178165+00', 13, 48, 'H4', '6000', 'null-61', NULL, 5000.00, 0.00, 1, 5, false, NULL, 0.00, '6000K', '{}', 'variant_type=h4|color_temperature=6000', 3),
+	(60, '2026-02-18 01:51:49.178165+00', 13, 24, 'H1', '6000', 'null-60', NULL, 5000.00, 0.00, 2, 5, false, NULL, 0.00, '6000K', '{}', 'variant_type=h1|color_temperature=6000', 1),
+	(63, '2026-02-18 02:09:41.986286+00', 14, 3, 'H7', '6000-6500', 'null-63', NULL, 3200.00, 0.00, 1, 5, false, NULL, 0.00, '6000-6500K', '{"internal_notes": "", "color_temperature": "6000-6500K"}', 'variant_type=h7|color_temperature=6000-6500', 4),
+	(77, '2026-02-18 03:13:54.22144+00', 11, 18, 'H11', NULL, 'null-77', NULL, 3750.00, 0.00, 5, 5, false, NULL, 0.00, 'universal', '{}', 'variant_type=h11', 7),
+	(30, '2026-02-17 05:00:24.721951+00', 11, 50, 'H4', NULL, 'null-30', 'null-30', 3750.00, 0.00, 23, 5, false, NULL, 0.00, 'universal
+', '{"tags": [], "internal_notes": ""}', 'variant_type=h4', 3),
+	(90, '2026-02-25 06:58:51.051115+00', 31, 53, '6x139.7', 'Bronze', NULL, NULL, 11000.00, 0.00, 4, 4, false, '', 0.00, '17x9.5', '{"color": "17x9.5", "internal_notes": "2 on Display, 1 with JK", "color_temperature": "Bronze", "spec_1772000809098": "-18"}', 'variant_type=6x139.7|color_temperature=bronze', 27),
+	(94, '2026-02-25 07:13:32.106905+00', 34, 53, '6x139.7', 'Matte Black', 'null-94', NULL, 15000.00, 15000.00, 4, 4, false, NULL, 0.00, '17x8', '{"tags": [], "color": "17x8", "internal_notes": "", "color_temperature": "Matte Black", "spec_1772000809098": "20"}', 'variant_type=6x139.7|color_temperature=matte black', 27),
+	(95, '2026-02-25 07:25:49.73047+00', 35, 53, '6x139.7', 'Hyper Silver', NULL, NULL, 15000.00, 0.00, 4, 4, false, '', 0.00, '17x8.5', '{"color": "17x8.5", "internal_notes": "", "color_temperature": "Hyper Silver", "spec_1772000809098": "20"}', 'variant_type=6x139.7|color_temperature=hyper silver', 27),
+	(97, '2026-02-25 07:30:06.016543+00', 37, 53, '6x139.7', 'Bronze', NULL, NULL, 13750.00, 0.00, 4, 4, false, '', 0.00, '17x9', '{"color": "17x9", "internal_notes": "", "color_temperature": "Bronze", "spec_1772000809098": "1"}', 'variant_type=6x139.7|color_temperature=bronze', 27),
+	(99, '2026-02-25 07:34:53.870718+00', 39, 53, '6x139.7', 'Blackout', NULL, NULL, 17500.00, 0.00, 4, 4, false, '', 0.00, '18x9', '{"color": "18x9", "internal_notes": "", "color_temperature": "Blackout", "spec_1772000809098": "20"}', 'variant_type=6x139.7|color_temperature=blackout', 27),
+	(100, '2026-02-25 07:39:26.331067+00', 40, 53, '6x139.7', 'Titanium Matte', NULL, NULL, 15000.00, 0.00, 4, 4, false, '', 0.00, '17x8.5', '{"color": "17x8.5", "internal_notes": "1 with JK", "color_temperature": "Titanium Matte", "spec_1772000809098": "0"}', 'variant_type=6x139.7|color_temperature=titanium matte', 27),
+	(92, '2026-02-25 07:08:33.159337+00', 32, 53, '6x139.7', 'Silver w/machined', NULL, NULL, 15000.00, 0.00, 0, 4, false, '', 0.00, '17x8.5', '{"color": "17x8.5", "internal_notes": "", "color_temperature": "Silver w/machined", "spec_1772000809098": "-10"}', 'variant_type=6x139.7|color_temperature=silver w/machined', 27),
+	(105, '2026-02-25 09:51:45.91821+00', 47, 53, '6x139.7', 'Matte Dark Bronze', NULL, NULL, 20625.00, 0.00, 4, 4, false, '', 0.00, '17x8.5', '{"color": "17x8.5", "internal_notes": "", "color_temperature": "Matte Dark Bronze", "spec_1772000809098": "-10"}', 'variant_type=6x139.7|color_temperature=matte dark bronze', 27),
+	(106, '2026-02-25 09:54:43.252356+00', 48, 53, '6x139.7', 'Matte Black', NULL, NULL, 10500.00, 0.00, 4, 4, false, '', 0.00, '16x8', '{"color": "16x8", "internal_notes": "", "color_temperature": "Matte Black", "spec_1772000809098": "-20"}', 'variant_type=6x139.7|color_temperature=matte black', 27),
+	(91, '2026-02-25 07:08:33.159337+00', 32, 53, '6x139.7', 'Gloss White', NULL, NULL, 15000.00, 0.00, 3, 4, false, '', 0.00, '17x8.5', '{"color": "17x8.5", "internal_notes": "", "color_temperature": "Gloss White", "spec_1772000809098": "-10"}', 'variant_type=6x139.7|color_temperature=gloss white', 27),
+	(85, '2026-02-25 06:43:16.501988+00', 27, 53, '6x139.7', 'Dark Bronze', NULL, NULL, 23750.00, 0.00, 0, 4, false, NULL, 0.00, '17x8', '{"tags": [], "color": "17x8", "internal_notes": "", "color_temperature": "Dark Bronze", "spec_1772000809098": "0"}', 'variant_type=6x139.7|color_temperature=bronze', 27),
+	(65, '2026-02-18 02:09:41.986286+00', 14, 23, '9012 (HIR2)', '6000-6500', NULL, NULL, 3200.00, 0.00, 0, 3, false, NULL, 0.00, '6000-6500K', '{"color": "6000-6500K", "internal_notes": null, "color_temperature": "6000-6500"}', 'variant_type=9012 (hir2)|color_temperature=6000-6500', 25),
+	(313, '2026-04-09 05:26:06.280654+00', 147, 131, 'Driving', NULL, 'LIT-PIA-VRF-DRV-58K-10-SG', 'LIT-PIA-VRF-DRV-58K-10-SG', 12000.00, 0.00, 2, 2, false, NULL, 0.00, '5800K', '{"tags": "[]", "color": "5800K", "variant_color": "5800K", "internal_notes": "", "color_temperature": ""}', 'variant_type=driving', 28),
+	(84, '2026-02-25 06:39:20.7352+00', 26, 53, '6x139.7', 'Gunmetal', NULL, NULL, 50000.00, 0.00, 3, 4, false, NULL, 0.00, '18x9 ', '{"tags": "[]", "color": "18x9 ", "variant_color": "18x9 ", "internal_notes": "", "color_temperature": "Gunmetal", "spec_1772000809098": "0"}', 'variant_type=6x139.7|color_temperature=gunmetal', 27),
+	(86, '2026-02-25 06:46:32.351616+00', 28, 53, '6x139.7', 'Gunblack', NULL, NULL, 15000.00, 0.00, 4, 4, false, NULL, 0.00, '20x9.5', '{"tags": "[]", "color": "20x9.5", "variant_color": "20x9.5", "internal_notes": "1 on Display", "color_temperature": "Gunblack", "spec_1772000809098": "12"}', 'variant_type=6x139.7|color_temperature=gunblack', 27),
+	(107, '2026-02-25 09:56:53.807016+00', 48, 53, '6x139.7', 'Matte Gunmetal', NULL, NULL, 10500.00, 0.00, 4, 4, false, NULL, 0.00, '16x8', '{"color": "16x8", "internal_notes": null, "color_temperature": "Matte Gunmetal", "spec_1772000809098": "-20"}', 'variant_type=6x139.7|color_temperature=matte gunmetal', 27),
+	(108, '2026-02-26 01:35:01.734945+00', 49, 53, '6x139.7', 'Black w/ Silver Ring', NULL, NULL, 7125.00, 0.00, 5, 4, false, '', 0.00, '16x10', '{"color": "16x10", "internal_notes": "", "color_temperature": "Black w/ Silver Ring", "spec_1772000809098": "-44"}', 'variant_type=6x139.7|color_temperature=black w/ silver ring', 27),
+	(109, '2026-02-26 01:38:41.381616+00', 50, 53, '6x139.7', 'Matte Black', NULL, NULL, 21250.00, 0.00, 4, 4, false, '', 0.00, '17x8.5', '{"color": "17x8.5", "internal_notes": "set of 4", "color_temperature": "Matte Black", "spec_1772000809098": "0"}', 'variant_type=6x139.7|color_temperature=matte black', 27),
+	(111, '2026-02-26 01:41:37.852015+00', 51, 53, '6x139.7', 'Gloss Titanium', NULL, NULL, 21250.00, 0.00, 4, 4, false, '', 0.00, '17x8.5', '{"color": "17x8.5", "internal_notes": "with Toyota", "color_temperature": "Gloss Titanium", "spec_1772000809098": "0"}', 'variant_type=6x139.7|color_temperature=gloss titanium', 27),
+	(113, '2026-02-26 01:44:43.463629+00', 52, 53, '6x139.7', 'Matte Black', NULL, NULL, 21250.00, 0.00, 8, 4, false, '', 0.00, '17x8.5', '{"color": "17x8.5", "internal_notes": "set of 4", "color_temperature": "Matte Black", "spec_1772000809098": "0"}', 'variant_type=6x139.7|color_temperature=matte black', 27),
+	(114, '2026-02-26 01:44:43.463629+00', 52, 53, '6x139.7', 'Matte Titanium', NULL, NULL, 21250.00, 0.00, 4, 4, false, '', 0.00, '17x8.5', '{"color": "17x8.5", "internal_notes": "set of 4", "color_temperature": "Matte Titanium", "spec_1772000809098": "0"}', 'variant_type=6x139.7|color_temperature=matte titanium', 27),
+	(115, '2026-02-26 01:47:39.068712+00', 53, 53, '6x139.7', 'Matte Bronze', NULL, NULL, 21250.00, 0.00, 4, 4, false, '', 0.00, '17x8.5', '{"color": "17x8.5", "internal_notes": "set of 4", "color_temperature": "Matte Bronze", "spec_1772000809098": "0"}', 'variant_type=6x139.7|color_temperature=matte bronze', 27),
+	(116, '2026-02-26 01:47:39.068712+00', 53, 53, '6x139.7', 'Matte Black', NULL, NULL, 21250.00, 0.00, 4, 4, false, '', 0.00, '17x8.5', '{"color": "17x8.5", "internal_notes": "set of 4", "color_temperature": "Matte Black", "spec_1772000809098": "0"}', 'variant_type=6x139.7|color_temperature=matte black', 27),
+	(117, '2026-02-26 01:49:33.128622+00', 54, 53, '6x139.7', 'Gloss Titanium', NULL, NULL, 17500.00, 0.00, 4, 4, false, '', 0.00, '17x8.5', '{"color": "17x8.5", "internal_notes": "set of 4", "color_temperature": "Gloss Titanium", "spec_1772000809098": "0"}', 'variant_type=6x139.7|color_temperature=gloss titanium', 27),
+	(118, '2026-02-26 01:52:06.64326+00', 55, 53, '6x139.7', 'Gloss Black', NULL, NULL, 18000.00, 0.00, 4, 4, false, '', 0.00, '17x8.5', '{"color": "17x8.5", "internal_notes": "set of 4", "color_temperature": "Gloss Black", "spec_1772000809098": "0"}', 'variant_type=6x139.7|color_temperature=gloss black', 27),
+	(119, '2026-02-26 01:54:55.213921+00', 56, 53, '6x139.7', 'Satin Black', NULL, NULL, 15000.00, 0.00, 4, 4, false, '', 0.00, '17x8.5', '{"color": "17x8.5", "internal_notes": "set of 4", "color_temperature": "Satin Black", "spec_1772000809098": "-10"}', 'variant_type=6x139.7|color_temperature=satin black', 27),
+	(120, '2026-02-26 01:57:42.210303+00', 57, 53, '6x139.7', 'Machined w/ Satin Black lip', NULL, NULL, 15000.00, 0.00, 4, 4, false, '', 0.00, '17x9', '{"color": "17x9", "internal_notes": "set of 4", "color_temperature": "Machined w/ Satin Black lip", "spec_1772000809098": "0"}', 'variant_type=6x139.7|color_temperature=machined w/ satin black lip', 27),
+	(127, '2026-02-26 02:25:40.827416+00', 62, 53, '6x139.7', 'Matte Black+ Black Bolts', NULL, NULL, 12500.00, 0.00, 4, 4, false, '', 0.00, '17x9', '{"color": "17x9", "internal_notes": "", "color_temperature": "Matte Black+ Black Bolts", "spec_1772000809098": "12"}', 'variant_type=6x139.7|color_temperature=matte black+ black bolts', 27),
+	(128, '2026-02-26 02:28:38.019524+00', 63, 53, '6x139.7', 'Matte Black,  milled rivet flange-silver bolt', NULL, NULL, 13750.00, 0.00, 4, 4, false, '', 0.00, '18x9', '{"color": "18x9", "internal_notes": "", "color_temperature": "Matte Black,  milled rivet flange-silver bolt", "spec_1772000809098": "12"}', 'variant_type=6x139.7|color_temperature=matte black,  milled rivet flange-silver bolt', 27),
+	(130, '2026-02-26 02:39:37.696527+00', 65, 53, '6x139.7', 'Silver Full Machined, Silver Cap', NULL, NULL, 12500.00, 0.00, 4, 1, false, '', 0.00, '17x9', '{"color": "17x9", "internal_notes": "", "color_temperature": "Silver Full Machined, Silver Cap", "spec_1772000809098": "12"}', 'variant_type=6x139.7|color_temperature=silver full machined, silver cap', 27),
+	(129, '2026-02-26 02:33:59.741332+00', 64, 53, '6x139.7', 'Matte Black+ Black Bolts', NULL, NULL, 12500.00, 0.00, 0, 4, false, '', 0.00, '17x9', '{"color": "17x9", "internal_notes": "", "color_temperature": "Matte Black+ Black Bolts", "spec_1772000809098": "25"}', 'variant_type=6x139.7|color_temperature=matte black+ black bolts', 27),
+	(144, '2026-02-26 06:32:32.59082+00', 69, 53, '6x139.7', 'Silver Brush', NULL, NULL, 13000.00, 0.00, 4, 4, false, NULL, 0.00, '17x8.5', '{"tags": [], "color": "17x8.5", "internal_notes": "set of 4", "color_temperature": "Silver Brush", "spec_1772000809098": "-10"}', 'variant_type=6x139.7|color_temperature=silver brush', 27),
+	(112, '2026-02-26 01:41:37.852015+00', 51, 53, '6x139.7', 'Machined Clear Coat', NULL, NULL, 21250.00, 0.00, 8, 4, false, NULL, 0.00, '17x8.5', '{"color": "17x8.5", "internal_notes": "set of 4", "color_temperature": "Machined Clear Coat", "spec_1772000809098": "0"}', 'variant_type=6x139.7|color_temperature=machined clear coat', 27),
+	(18, '2026-02-17 04:02:59.920591+00', 7, 3, 'H7', '6000', 'null-18', 'null-18', 6000.00, 0.00, 1, 5, false, NULL, 0.00, NULL, '{"tags": [], "color": null, "socket": null, "last_restock": {"date": "2026-02-17T04:04:09.409Z", "quantity": 1}, "internal_notes": "", "color_temperature": "All Weather"}', 'variant_type=h7|color_temperature=6000', 4),
+	(96, '2026-02-25 07:28:14.475147+00', 36, 53, '6x139.7', 'Matte Black', NULL, NULL, 15000.00, 0.00, 3, 4, false, '', 0.00, '17x8.5', '{"color": "17x8.5", "internal_notes": "", "color_temperature": "Matte Black", "spec_1772000809098": "20"}', 'variant_type=6x139.7|color_temperature=matte black', 27),
+	(22, '2026-02-17 04:02:59.920591+00', 7, 23, '9012 (HIR2)', '4300', 'null-22', NULL, 6000.00, 0.00, 1, 5, false, NULL, 0.00, NULL, '{}', 'variant_type=9012 (hir2)|color_temperature=4300', 25),
+	(143, '2026-02-26 06:25:36.97464+00', 7, 18, 'H11', '6000', NULL, NULL, 6000.00, 0.00, 0, 5, false, NULL, 0.00, NULL, '{"color": null, "internal_notes": null, "color_temperature": "6000"}', 'variant_type=h11|color_temperature=6000', 7),
+	(140, '2026-02-26 06:18:57.745488+00', 7, 59, 'H4', 'All Weather', NULL, NULL, 6000.00, 0.00, 7, 5, false, NULL, 0.00, NULL, '{"tags": [], "color": null, "socket": null, "last_restock": {"date": "2026-02-17T04:04:09.409Z", "quantity": 1}, "internal_notes": "", "color_temperature": "All Weather"}', 'variant_type=h4|color_temperature=all weather', 3);
+
+
+--
+-- Data for Name: sales; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO "public"."sales" ("id", "created_at", "items", "subtotal", "tax", "total", "payment_method", "customer_name", "customer_email", "receipt_number", "transaction_status", "staff_id", "notes", "staff_uuid") VALUES
+	('720da4d4-0967-4986-bbf2-6d29ba919412', '2026-02-27 08:36:17.784385+00', '[{"id": 141, "name": "GPNE R6 - H11", "price": 6000, "category": "Headlight", "quantity": 1, "variant_id": 18, "specifications": {"tags": [], "color": null, "socket": null, "last_restock": {"date": "2026-02-17T04:04:09.409Z", "quantity": 1}, "internal_notes": null, "color_temperature": "All Weather"}, "variant_dimensions": null}, {"id": 20, "name": "GPNE R6 - 9005 (HB3)", "price": 6000, "category": "Headlight", "quantity": 1, "variant_id": 22, "specifications": {"tags": [], "color": "", "socket": null, "last_restock": {"date": "2026-02-17T04:04:09.409Z", "quantity": 1}, "internal_notes": "", "color_temperature": "All Weather"}, "variant_dimensions": null}]', 12000.00, 0.00, 12000.00, 'Cash', NULL, NULL, NULL, 'completed', NULL, '', NULL),
+	('c4114d40-340d-4826-be4c-1396dc90f675', '2026-03-04 07:42:31.410262+00', '[{"id": 64, "name": "Crawler - 6x139.7", "price": 12500, "category": "Wheels", "quantity": 4, "variant_id": 129, "specifications": {"tags": [], "color": "17x9", "internal_notes": "", "color_temperature": "Matte Black+ Black Bolts", "spec_1772000809098": "25"}, "variant_dimensions": null}]', 50000.00, 0.00, 50000.00, 'Cash', NULL, NULL, NULL, 'completed', NULL, '', NULL),
+	('4c705d2a-67ab-49cb-9e32-9a3fa8a21cf6', '2026-03-06 05:17:10.244949+00', '[{"id": 32, "name": "Awol - 6x139.7", "price": 15000, "category": "Wheels", "quantity": 4, "variant_id": 92, "specifications": {"tags": [], "color": "17x8.5", "internal_notes": "", "color_temperature": "Silver w/machined", "spec_1772000809098": "-10"}, "variant_dimensions": null}]', 60000.00, 0.00, 60000.00, 'Cash', NULL, NULL, NULL, 'completed', NULL, '', NULL),
+	('32a5cc9d-1943-4172-9b42-1c3dbfb6011a', '2026-03-06 07:07:33.830348+00', '[{"id": 7, "name": "GPNE R6 - H11", "price": 6000, "category": "Headlight", "quantity": 1, "variant_id": 141, "specifications": {"tags": [], "color": null, "socket": null, "last_restock": {"date": "2026-02-17T04:04:09.409Z", "quantity": 1}, "internal_notes": "", "color_temperature": "All Weather"}, "variant_dimensions": null}]', 6000.00, 0.00, 6000.00, 'Cash', NULL, NULL, NULL, 'completed', NULL, '', NULL),
+	('6f40da45-6359-4df5-b927-6dd5a43307e0', '2026-03-16 02:42:01.494839+00', '[{"id": 7, "name": "GPNE R6 - H4", "price": 6000, "category": "Headlight", "quantity": 1, "variant_id": 140, "specifications": {"tags": [], "color": null, "socket": null, "last_restock": {"date": "2026-02-17T04:04:09.409Z", "quantity": 1}, "internal_notes": "", "color_temperature": "All Weather"}, "variant_dimensions": null}]', 6000.00, 0.00, 6000.00, 'Cash', NULL, NULL, NULL, 'completed', NULL, '', NULL),
+	('f235635c-fa11-49df-a497-5d6bd7c383a1', '2026-03-18 05:25:19.966711+00', '[{"id": 81, "name": "T/A KO3 - LT265/60R18", "price": 16500, "category": "Tires", "quantity": 4, "variant_id": 206, "specifications": {"tags": [], "color": "114/110s ", "internal_notes": "Need price", "color_temperature": null}, "variant_dimensions": null}]', 66000.00, 0.00, 66000.00, 'Cash', NULL, NULL, NULL, 'completed', NULL, '', NULL),
+	('dd6796e6-eedc-4e59-bbd4-85ec404fd222', '2026-03-18 06:36:25.693419+00', '[{"id": 7, "name": "GPNE R6 - H11", "price": 6000, "category": "Headlight", "quantity": 1, "variant_id": 143, "specifications": {"tags": [], "color": null, "socket": null, "last_restock": {"date": "2026-02-17T04:04:09.409Z", "quantity": 1}, "internal_notes": null, "color_temperature": "6000"}, "variant_dimensions": null}]', 6000.00, 0.00, 6000.00, 'Cash', NULL, NULL, NULL, 'completed', NULL, '', NULL),
+	('8ec0b93a-d6f1-4485-895b-538b64d9ac44', '2026-03-20 07:41:10.094183+00', '[{"id": 14, "name": "Alo - F6 - H8/H9/H11", "price": 3200, "category": "Headlight", "quantity": 1, "variant_id": 64, "specifications": {"tags": [], "internal_notes": "", "color_temperature": "6000-6500K"}, "variant_dimensions": null}, {"id": 14, "name": "Alo - F6 - H8/H9/H11", "price": 3200, "category": "Headlight", "quantity": 1, "variant_id": 62, "specifications": {"tags": [], "internal_notes": "", "color_temperature": "6000-6500K"}, "variant_dimensions": null}]', 6400.00, 0.00, 6400.00, 'Cash', NULL, NULL, NULL, 'completed', NULL, '', NULL),
+	('f3e1648a-4497-4ff3-ba96-367061ec057b', '2026-03-23 06:02:09.8774+00', '[{"id": 9, "name": "GPNE RS6X - H4", "price": 6000, "category": "Headlight", "quantity": 1, "variant_id": 28, "specifications": {"tags": [], "internal_notes": "", "color_temperature": "Dual Color "}, "variant_dimensions": null}]', 6000.00, 0.00, 6000.00, 'Cash', NULL, NULL, NULL, 'completed', NULL, '', NULL),
+	('6fa09349-75af-4939-9729-c602b3ee6c12', '2026-03-23 06:11:41.767531+00', '[{"id": 66, "name": "Trail Cross - 6x139", "price": 18000, "category": "Wheels", "quantity": 4, "variant_id": 131, "specifications": {"tags": [], "color": "17x9", "internal_notes": "", "color_temperature": "Black", "spec_1772000809098": "20"}, "variant_dimensions": null}]', 72000.00, 0.00, 72000.00, 'Cash', NULL, NULL, NULL, 'completed', NULL, '', NULL),
+	('0f342f47-6e66-465e-b49a-ccc67b6d3839', '2026-03-23 06:16:57.709422+00', '[{"id": 71, "name": "K&N Air Filter - 33-2443", "price": 4600, "category": "Air Filter", "quantity": 1, "variant_id": 153, "specifications": {"tags": [], "color": null, "internal_notes": "Montero Strada", "color_temperature": null}, "variant_dimensions": null}]', 4600.00, 0.00, 4600.00, 'Cash', NULL, NULL, NULL, 'completed', NULL, '', NULL),
+	('477725bb-cfbc-45d7-99be-c826690cf95e', '2026-03-23 06:57:56.683754+00', '[{"id": 80, "name": "Falken A/T4W - 235/75R15", "price": 14590, "category": "Tires", "quantity": 8, "variant_id": 289, "specifications": {"tags": [], "color": "109T", "internal_notes": "Need Price", "color_temperature": null}, "variant_dimensions": null}]', 116720.00, 0.00, 116720.00, 'Cash', NULL, NULL, NULL, 'completed', NULL, '', NULL),
+	('8f7c4524-111d-4ab8-88d0-e15d86c81c80', '2026-03-25 04:53:22.01837+00', '[{"id": 80, "name": "Falken A/T4W - 265/75R16", "price": 14567, "category": "Tires", "quantity": 4, "variant_id": 293, "specifications": {"tags": [], "color": "116T", "internal_notes": null, "color_temperature": null}, "variant_dimensions": null}]', 58268.00, 0.00, 58268.00, 'Cash', NULL, NULL, NULL, 'completed', NULL, '', NULL),
+	('aeacc8c2-007c-4be8-824a-ad9384596dbc', '2026-03-28 06:24:24.775141+00', '[{"id": 107, "name": "Rigid Ignite  - Diffused", "price": 11000, "category": "LED Lights", "quantity": 1, "variant_id": 257, "specifications": {"tags": [], "color": "Black", "internal_notes": "", "color_temperature": null}, "variant_dimensions": null}, {"id": 96, "name": "Squadron Sport - Driving/Combo", "price": 20000, "category": "LED Lights", "quantity": 1, "variant_id": 237, "specifications": {"tags": [], "color": "Clear", "internal_notes": "", "color_temperature": null}, "variant_dimensions": null}, {"id": 7, "name": "GPNE R6 - 9005 (HB3)", "price": 6000, "category": "Headlight", "quantity": 1, "variant_id": 20, "specifications": {"tags": [], "color": "", "socket": null, "last_restock": {"date": "2026-02-17T04:04:09.409Z", "quantity": 1}, "internal_notes": "", "color_temperature": "All Weather"}, "variant_dimensions": null}]', 37000.00, 0.00, 37000.00, 'Cash', NULL, NULL, NULL, 'completed', NULL, '', NULL),
+	('e245e639-1fe8-4c55-98eb-eba12f054193', '2026-04-07 01:58:00.048854+00', '[{"id": 12, "name": "Aero Vogue Flex - 20\"", "price": 1200, "category": "Wiper", "quantity": 1, "variant_id": 37, "specifications": {"tags": [], "color": "Green", "last_restock": {"date": "2026-02-17T23:21:56.532Z", "quantity": 1}, "variant_type": "", "internal_notes": "", "color_temperature": "Green"}, "variant_dimensions": null}, {"id": 12, "name": "Aero Vogue Flex - 19\"", "price": 1100, "category": "Wiper", "quantity": 1, "variant_id": 36, "specifications": {"tags": [], "color": "Yellow", "last_restock": {"date": "2026-02-17T23:21:56.532Z", "quantity": 1}, "variant_type": "", "internal_notes": "", "color_temperature": "Red"}, "variant_dimensions": null}]', 2300.00, 0.00, 2300.00, 'Cash', NULL, NULL, NULL, 'completed', NULL, '', NULL),
+	('dba2803c-ca62-4425-97ab-416031441677', '2026-04-08 07:12:04.414087+00', '[{"id": 80, "name": "Falken A/T4W - 265/75R16", "price": 14567, "category": "Tires", "quantity": 5, "variant_id": 293, "specifications": {"tags": [], "color": "116T", "internal_notes": "", "color_temperature": null}, "variant_dimensions": null}]', 72835.00, 0.00, 72835.00, 'Cash', NULL, NULL, NULL, 'completed', NULL, '', NULL),
+	('6d5a0b73-dd51-41f7-ae76-feb7b9102d21', '2026-04-08 08:43:10.425225+00', '[{"id": 99, "name": "LP6 PRO - Driving/Combo", "price": 56000, "category": "LED Lights", "quantity": 1, "variant_id": 248, "specifications": {"tags": [], "color": "Clear", "internal_notes": "", "color_temperature": null}, "variant_dimensions": null}]', 56000.00, 0.00, 56000.00, 'Cash', NULL, NULL, NULL, 'completed', NULL, '', NULL),
+	('7b15bb64-8164-4ad9-879f-0c85b4ec8018', '2026-04-08 08:45:48.394805+00', '[{"id": 930311, "name": "Rays Wheel Nuts (M14 x 1.5)", "price": 16000, "category": "Wheel Nuts", "quantity": 1, "variant_id": "311", "specifications": null, "variant_dimensions": {"Color": "Chrome", "Thread Pitch": "M14 x 1.5"}}]', 16000.00, 0.00, 16000.00, 'Cash', NULL, NULL, NULL, 'completed', NULL, '', NULL),
+	('c6988e5f-f7e5-40cd-bab1-88f45a13ef21', '2026-04-08 08:46:30.967817+00', '[{"id": 138, "name": "Bajaj Rock Guard - 66-8001", "price": 1000, "category": "LED Covers", "quantity": 2, "variant_id": 300, "specifications": {"tags": [], "color": "Black", "internal_notes": "", "color_temperature": null}, "variant_dimensions": null}]', 2000.00, 0.00, 2000.00, 'Cash', NULL, NULL, NULL, 'completed', NULL, '', NULL),
+	('e9bf42e2-4830-454a-895d-bd028d23d265', '2026-04-09 05:09:59.770445+00', '[{"id": 7, "name": "GPNE R6 - H4", "price": 6000, "category": "Headlight", "quantity": 3, "variant_id": 140, "specifications": {"tags": [], "color": null, "socket": null, "last_restock": {"date": "2026-02-17T04:04:09.409Z", "quantity": 1}, "internal_notes": "", "color_temperature": "All Weather"}, "variant_dimensions": null}]', 18000.00, 0.00, 18000.00, 'Cash', NULL, NULL, NULL, 'completed', NULL, '', NULL),
+	('6db2b93e-ad09-43d7-b8fa-53a4c06706ab', '2026-04-09 05:10:57.013107+00', '[{"id": 7, "name": "GPNE R6 - 9006 (HB4)", "price": 6000, "category": "Headlight", "quantity": 1, "variant_id": 17, "specifications": {"tags": [], "color": null, "socket": null, "last_restock": {"date": "2026-02-17T04:04:09.409Z", "quantity": 1}, "internal_notes": "", "color_temperature": "All Weather"}, "variant_dimensions": null}]', 6000.00, 0.00, 6000.00, 'Cash', NULL, NULL, NULL, 'completed', NULL, '', NULL),
+	('6232b15c-fd47-4f78-b893-2f66482d637b', '2026-04-10 07:30:05.293788+00', '[{"id": 108, "name": "Rigid D-SS Pro  - Driving", "price": 20000, "category": "LED Lights", "quantity": 1, "variant_id": 258, "specifications": {"tags": [], "color": "Clear", "internal_notes": "", "color_temperature": null}, "variant_dimensions": null}]', 20000.00, 0.00, 20000.00, 'Cash', NULL, NULL, NULL, 'completed', NULL, '', NULL),
+	('da056366-98df-443b-8e34-b83e1027cf77', '2026-04-10 07:39:10.729328+00', '[{"id": 91, "name": "Fuel Wheel Nuts - M14 x 1.5", "price": 2000, "category": "Wheel Nuts", "quantity": 1, "variant_id": 234, "specifications": {"tags": [], "color": "Black", "internal_notes": null, "color_temperature": null}, "variant_dimensions": null}]', 2000.00, 0.00, 2000.00, 'Cash', NULL, NULL, NULL, 'completed', NULL, '', NULL),
+	('ee27c946-bbc6-4dd5-934e-77d6a393c083', '2026-04-17 06:48:12.58409+00', '[{"id": 7, "name": "GPNE R6 - H4", "price": 6000, "category": "Headlight", "quantity": 1, "variant_id": 140, "specifications": {"tags": [], "color": null, "socket": null, "last_restock": {"date": "2026-02-17T04:04:09.409Z", "quantity": 1}, "internal_notes": "", "color_temperature": "All Weather"}, "variant_dimensions": null}]', 6000.00, 0.00, 6000.00, 'Cash', NULL, NULL, NULL, 'completed', NULL, '', NULL),
+	('708e5cbf-22fb-476a-9851-67a4d20868d0', '2026-04-20 10:53:26.283422+00', '[{"id": 102, "name": "ST3K 21.5 LED LIGHT BAR - 20", "price": 13000, "category": "LED Lights", "quantity": 1, "variant_id": 252, "specifications": {"tags": [], "color": "Clear", "internal_notes": "Need Price", "color_temperature": null}, "variant_dimensions": null}]', 13000.00, 0.00, 13000.00, 'Cash', NULL, NULL, NULL, 'completed', NULL, '', NULL),
+	('69d2890a-2cd9-4992-806e-f4b2b00fc772', '2026-04-24 05:12:59.983399+00', '[{"id": 84, "name": "0PRT - Toyo Tires - LT265/70R17", "price": 18000, "category": "Tires", "quantity": 2, "variant_id": 215, "specifications": {"tags": [], "color": "112Q", "internal_notes": "Need Price", "color_temperature": null}, "variant_dimensions": null}]', 36000.00, 0.00, 36000.00, 'Cash', NULL, NULL, NULL, 'completed', NULL, '', NULL),
+	('5f603280-009d-42c1-be4e-4868696e7531', '2026-04-29 08:10:56.428564+00', '[{"id": 71, "name": "K&N Air Filter - 33-2387", "price": 6000, "category": "Air Filter", "quantity": 2, "variant_id": 151, "specifications": {"tags": "[]", "color": "", "internal_notes": "LC200", "color_temperature": ""}, "variant_dimensions": null}]', 12000.00, 0.00, 12000.00, 'Cash', NULL, NULL, NULL, 'completed', NULL, '', '377c371a-8174-43a4-888c-3db452e19c0d'),
+	('2546a68c-8ca4-473c-84ef-2d7b7265977f', '2026-05-04 05:44:49.71162+00', '[{"id": 7, "name": "GPNE R6 - 9012 (HIR2)", "price": 6000, "category": "Headlight", "quantity": 1, "variant_id": 21, "specifications": {"tags": "[]", "color": "", "socket": "", "last_restock": "{\"date\": \"2026-02-17T04:04:09.409Z\", \"quantity\": 1}", "internal_notes": "", "color_temperature": "6000"}, "variant_dimensions": null}]', 6000.00, 0.00, 6000.00, 'Cash', NULL, NULL, NULL, 'completed', NULL, '', '377c371a-8174-43a4-888c-3db452e19c0d'),
+	('71c02ac3-3195-497b-8931-d1e8c7ec23c2', '2026-05-04 05:45:48.279565+00', '[{"id": 7, "name": "GPNE R6 - H11", "price": 6000, "category": "Headlight", "quantity": 2, "variant_id": 141, "specifications": {"tags": "[]", "color": "", "socket": "", "last_restock": "{\"date\": \"2026-02-17T04:04:09.409Z\", \"quantity\": 1}", "internal_notes": "", "color_temperature": "All Weather"}, "variant_dimensions": null}]', 12000.00, 0.00, 12000.00, 'Cash', NULL, NULL, NULL, 'completed', NULL, '', '377c371a-8174-43a4-888c-3db452e19c0d'),
+	('3880b0c8-ead5-466d-98e8-50238a8e7887', '2026-05-04 05:46:49.183914+00', '[{"id": 96, "name": "Squadron Sport - Driving/Combo", "price": 20000, "category": "LED Lights", "quantity": 1, "variant_id": 238, "specifications": {"tags": "[]", "color": "Amber", "variant_color": "Amber", "internal_notes": "", "color_temperature": ""}, "variant_dimensions": null}]', 20000.00, 0.00, 20000.00, 'Cash', NULL, NULL, NULL, 'completed', NULL, '', '377c371a-8174-43a4-888c-3db452e19c0d'),
+	('73b5fe20-fbd4-4891-b7e5-d323ddc6a021', '2026-05-08 07:31:23.473688+00', '[{"id": 91, "name": "Fuel Wheel Nuts - M14 x 1.5", "price": 2000, "category": "Wheel Nuts", "quantity": 1, "variant_id": 234, "specifications": {"tags": "[]", "color": "Black", "variant_color": "Black", "internal_notes": "", "color_temperature": ""}, "variant_dimensions": null}]', 2000.00, 0.00, 2000.00, 'Cash', NULL, NULL, NULL, 'completed', NULL, '', '377c371a-8174-43a4-888c-3db452e19c0d'),
+	('0d4aa4df-f0ae-4f24-b700-71b0c17a239a', '2026-05-19 01:43:41.934748+00', '[{"id": 7, "name": "GPNE R6 - H4", "price": 6000, "category": "Headlight", "quantity": 1, "variant_id": 140, "specifications": {"tags": "[]", "color": "", "socket": "", "last_restock": "{\"date\": \"2026-02-17T04:04:09.409Z\", \"quantity\": 1}", "internal_notes": "", "color_temperature": "All Weather"}, "variant_dimensions": null}, {"id": 7, "name": "GPNE R6 - H1", "price": 6000, "category": "Headlight", "quantity": 1, "variant_id": 16, "specifications": {"tags": "[]", "color": "", "socket": "", "last_restock": "{\"date\": \"2026-02-17T04:04:09.409Z\", \"quantity\": 1}", "internal_notes": "", "color_temperature": "6000"}, "variant_dimensions": null}]', 12000.00, 0.00, 12000.00, 'Cash', NULL, NULL, NULL, 'completed', NULL, '', '377c371a-8174-43a4-888c-3db452e19c0d'),
+	('1c4f41a4-700c-49de-984d-4e3bd54813b9', '2026-05-19 06:34:29.369129+00', '[{"id": 14, "name": "Alo - F6 - 9012 (HIR2)", "price": 3200, "category": "Headlight", "quantity": 1, "variant_id": 65, "specifications": {"tags": "[]", "color": "6000-6500K", "variant_color": "6000-6500K", "internal_notes": "", "color_temperature": "6000-6500"}, "variant_dimensions": null}]', 3200.00, 0.00, 3200.00, 'Cash', NULL, NULL, NULL, 'completed', NULL, '', '377c371a-8174-43a4-888c-3db452e19c0d'),
+	('815040dc-d1c1-43e4-a40a-4a42e2fcfbdb', '2026-06-05 02:30:11.919896+00', '[{"id": 7, "name": "GPNE R6 - 9005 (HB3)", "price": 6000, "category": "Headlight", "quantity": 1, "variant_id": 142, "specifications": {"tags": "[]", "color": "", "socket": "", "last_restock": "{\"date\": \"2026-02-17T04:04:09.409Z\", \"quantity\": 1}", "internal_notes": "", "color_temperature": "6000"}, "variant_dimensions": null}]', 6000.00, 0.00, 6000.00, 'Cash', NULL, NULL, NULL, 'completed', NULL, '', '377c371a-8174-43a4-888c-3db452e19c0d'),
+	('9c8f60ad-8927-4de0-ada8-fd93aeaafcbe', '2026-06-05 02:38:16.618161+00', '[{"id": 7, "name": "GPNE R6 - 9005 (HB3)", "price": 6000, "category": "Headlight", "quantity": 1, "variant_id": 20, "specifications": {"tags": "[]", "color": "", "socket": "", "last_restock": "{\"date\": \"2026-02-17T04:04:09.409Z\", \"quantity\": 1}", "internal_notes": "", "color_temperature": "4300"}, "variant_dimensions": null}, {"id": 7, "name": "GPNE R6 - 9006 (HB4)", "price": 6000, "category": "Headlight", "quantity": 1, "variant_id": 15, "specifications": {"tags": "[]", "color": "4300", "socket": "", "last_restock": "{\"date\": \"2026-02-17T04:04:09.409Z\", \"quantity\": 1}", "internal_notes": "", "color_temperature": "4300"}, "variant_dimensions": null}, {"id": 7, "name": "GPNE R6 - 9012 (HIR2)", "price": 6000, "category": "Headlight", "quantity": 3, "variant_id": 22, "specifications": {"tags": "[]", "color": "", "socket": "", "last_restock": "{\"date\": \"2026-02-17T04:04:09.409Z\", \"quantity\": 1}", "internal_notes": "", "color_temperature": "4300"}, "variant_dimensions": null}, {"id": 7, "name": "GPNE R6 - H11", "price": 6000, "category": "Headlight", "quantity": 1, "variant_id": 141, "specifications": {"tags": "[]", "color": "", "socket": "", "last_restock": "{\"date\": \"2026-02-17T04:04:09.409Z\", \"quantity\": 1}", "internal_notes": "", "color_temperature": "All Weather"}, "variant_dimensions": null}, {"id": 7, "name": "GPNE R6 - H11", "price": 6000, "category": "Headlight", "quantity": 2, "variant_id": 143, "specifications": {"tags": "[]", "color": "", "socket": "", "last_restock": "{\"date\": \"2026-02-17T04:04:09.409Z\", \"quantity\": 1}", "internal_notes": "", "color_temperature": "6000"}, "variant_dimensions": null}, {"id": 7, "name": "GPNE R6 - H27", "price": 6000, "category": "Headlight", "quantity": 1, "variant_id": 23, "specifications": {"tags": "[]", "color": "", "socket": "", "last_restock": "{\"date\": \"2026-02-17T04:04:09.409Z\", \"quantity\": 1}", "internal_notes": "", "color_temperature": "4300"}, "variant_dimensions": null}, {"id": 7, "name": "GPNE R6 - H4", "price": 6000, "category": "Headlight", "quantity": 1, "variant_id": 140, "specifications": {"tags": "[]", "color": "", "socket": "", "last_restock": "{\"date\": \"2026-02-17T04:04:09.409Z\", \"quantity\": 1}", "internal_notes": "", "color_temperature": "All Weather"}, "variant_dimensions": null}]', 60000.00, 0.00, 60000.00, 'Cash', NULL, NULL, NULL, 'completed', NULL, '', '377c371a-8174-43a4-888c-3db452e19c0d'),
+	('04a5b972-9a11-4ab8-9f83-b012d8213031', '2026-06-09 03:33:59.745822+00', '[{"id": 84, "name": "0PRT - Toyo Tires - 235/70R16", "price": 14500, "category": "Tires", "quantity": 5, "variant_id": 216, "specifications": {"tags": "[]", "color": "106Q", "variant_color": "106Q", "internal_notes": "", "color_temperature": ""}, "variant_dimensions": null}, {"id": 84, "name": "0PRT - Toyo Tires - LT265/70R17", "price": 18000, "category": "Tires", "quantity": 2, "variant_id": 215, "specifications": {"tags": "[]", "color": "112Q", "variant_color": "112Q", "internal_notes": "", "color_temperature": ""}, "variant_dimensions": null}]', 108500.00, 0.00, 108500.00, 'Cash', NULL, NULL, NULL, 'completed', NULL, '', '377c371a-8174-43a4-888c-3db452e19c0d'),
+	('96f98270-3b76-43d0-a693-5b98166f4355', '2026-06-09 03:37:03.711321+00', '[{"id": 86, "name": "Dynamo AT2 Extreme - 265/65R17", "price": 11725.99, "category": "Tires", "quantity": 4, "variant_id": 219, "specifications": {"tags": "[]", "color": "112T", "variant_color": "112T", "internal_notes": "", "color_temperature": ""}, "variant_dimensions": null}, {"id": 86, "name": "Dynamo AT2 Extreme - LT265/65R18", "price": 15947, "category": "Tires", "quantity": 4, "variant_id": 218, "specifications": {"tags": "[]", "color": "10PR", "variant_color": "10PR", "internal_notes": "", "color_temperature": ""}, "variant_dimensions": null}]', 110691.96, 0.00, 110691.96, 'Cash', NULL, NULL, NULL, 'completed', NULL, '', '377c371a-8174-43a4-888c-3db452e19c0d'),
+	('268655fa-3caf-4056-be5c-254f08522c09', '2026-06-09 03:40:25.95225+00', '[{"id": 80, "name": "Falken A/T4W - 285/55R20", "price": 24119, "category": "Tires", "quantity": 4, "variant_id": 204, "specifications": {"tags": "[]", "color": "114T", "variant_color": "114T", "internal_notes": "", "color_temperature": ""}, "variant_dimensions": null}]', 96476.00, 0.00, 96476.00, 'Cash', NULL, NULL, NULL, 'completed', NULL, '', '377c371a-8174-43a4-888c-3db452e19c0d'),
+	('0f6a6d0e-4d14-4b26-a18f-f0627d98cee6', '2026-06-09 03:43:43.098282+00', '[{"id": 83, "name": "T/A KM3 - LT255/85R16", "price": 21950, "category": "Tires", "quantity": 4, "variant_id": 213, "specifications": {"tags": "[]", "color": "123/120Q", "variant_color": "123/120Q", "internal_notes": "", "color_temperature": ""}, "variant_dimensions": null}]', 87800.00, 0.00, 87800.00, 'Cash', NULL, NULL, NULL, 'completed', NULL, '', '377c371a-8174-43a4-888c-3db452e19c0d'),
+	('c4ecebc5-f5da-4341-b144-82821435b1c3', '2026-06-09 03:48:39.598043+00', '[{"id": 81, "name": "T/A KO3 - LT265/65R17", "price": 16500, "category": "Tires", "quantity": 4, "variant_id": 211, "specifications": {"tags": "[]", "color": "116/113S", "variant_color": "116/113S", "internal_notes": "Need Price", "color_temperature": ""}, "variant_dimensions": null}]', 66000.00, 0.00, 66000.00, 'Cash', NULL, NULL, NULL, 'completed', NULL, '', '377c371a-8174-43a4-888c-3db452e19c0d'),
+	('1fd059ad-94fd-410c-b266-a1ad6fc5919b', '2026-06-09 03:53:31.917065+00', '[{"id": 81, "name": "T/A KO3 - LT285/70R17", "price": 16750, "category": "Tires", "quantity": 4, "variant_id": 286, "specifications": {"tags": "[]", "color": "121/118S", "variant_color": "121/118S", "internal_notes": "", "color_temperature": ""}, "variant_dimensions": null}]', 67000.00, 0.00, 67000.00, 'Cash', NULL, NULL, NULL, 'completed', NULL, '', '377c371a-8174-43a4-888c-3db452e19c0d'),
+	('e96b8ae1-5b4e-4b13-93ae-d0287f9db7c0', '2026-06-09 04:03:52.813152+00', '[{"id": 85, "name": "Terrain Contact A/T - 265/70R17", "price": 17351, "category": "Tires", "quantity": 4, "variant_id": 217, "specifications": {"tags": "[]", "color": "115S", "variant_color": "115S", "internal_notes": "", "color_temperature": ""}, "variant_dimensions": null}]', 69404.00, 0.00, 69404.00, 'Cash', NULL, NULL, NULL, 'completed', NULL, '', '377c371a-8174-43a4-888c-3db452e19c0d'),
+	('a0c2479d-b6a0-43bc-a297-106436d699ca', '2026-06-12 02:26:47.005006+00', '[{"id": 14, "name": "Alo - F6 - H8/H9/H11", "price": 3200, "category": "Headlight", "quantity": 2, "variant_id": 62, "specifications": {"tags": "[]", "color": "3000K", "variant_color": "3000K", "internal_notes": "", "color_temperature": "3000"}, "variant_dimensions": null}, {"id": 14, "name": "Alo - F6 - H4", "price": 3200, "category": "Headlight", "quantity": 2, "variant_id": 296, "specifications": {"tags": "[]", "color": "", "internal_notes": "", "color_temperature": "6000-6500k"}, "variant_dimensions": null}, {"id": 14, "name": "Alo - F6 - H8/H9/H11", "price": 3200, "category": "Headlight", "quantity": 2, "variant_id": 64, "specifications": {"tags": "[]", "color": "6000-6500K", "variant_color": "6000-6500K", "internal_notes": "", "color_temperature": "6000-6500"}, "variant_dimensions": null}]', 19200.00, 0.00, 19200.00, 'Cash', NULL, NULL, NULL, 'completed', NULL, '', '377c371a-8174-43a4-888c-3db452e19c0d'),
+	('8fcd0ff1-866f-4183-932a-a5fabf09ee86', '2026-06-16 07:00:13.972413+00', '[{"id": 80, "name": "Falken A/T4W - LT235/70R16", "price": 11771, "category": "Tires", "quantity": 5, "variant_id": 343, "specifications": {"tags": "[]", "color": "116/113R", "internal_notes": "", "color_temperature": ""}, "variant_dimensions": null}]', 58855.00, 0.00, 58855.00, 'Cash', NULL, NULL, NULL, 'completed', NULL, '', '377c371a-8174-43a4-888c-3db452e19c0d');
+
+
+--
+-- Data for Name: sale_items; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO "public"."sale_items" ("id", "sale_id", "product_id", "variant_id", "quantity", "unit_price", "total_price", "discount", "created_at") VALUES
+	('9bae93b2-fb29-46a9-b4fd-3a82ddcac09e', '720da4d4-0967-4986-bbf2-6d29ba919412', 141, 18, 1, 6000, 6000, 0, '2026-04-25 23:08:27.974844+00'),
+	('1fd45e5f-cab3-45d5-abab-2b873c053781', 'c4114d40-340d-4826-be4c-1396dc90f675', 64, 129, 4, 12500, 50000, 0, '2026-04-25 23:08:27.974844+00'),
+	('b2ea9a8b-4421-472c-a0db-cbe5770a292c', '4c705d2a-67ab-49cb-9e32-9a3fa8a21cf6', 32, 92, 4, 15000, 60000, 0, '2026-04-25 23:08:27.974844+00'),
+	('d17154fe-e914-40ab-abc7-7ba1000577cb', '32a5cc9d-1943-4172-9b42-1c3dbfb6011a', 7, 141, 1, 6000, 6000, 0, '2026-04-25 23:08:27.974844+00'),
+	('4d5ef5d0-4807-495c-9783-ea1ca0742de4', '6f40da45-6359-4df5-b927-6dd5a43307e0', 7, 140, 1, 6000, 6000, 0, '2026-04-25 23:08:27.974844+00'),
+	('52ee5411-dbe9-4dd9-80ce-e5038ef892c0', 'f235635c-fa11-49df-a497-5d6bd7c383a1', 81, 206, 4, 16500, 66000, 0, '2026-04-25 23:08:27.974844+00'),
+	('9f3df1fa-8884-483e-a271-ee9f6d9b7045', 'dd6796e6-eedc-4e59-bbd4-85ec404fd222', 7, 143, 1, 6000, 6000, 0, '2026-04-25 23:08:27.974844+00'),
+	('1a4beeae-40e6-4dc8-b0c8-b7aff0276ad0', '8ec0b93a-d6f1-4485-895b-538b64d9ac44', 14, 64, 1, 3200, 3200, 0, '2026-04-25 23:08:27.974844+00'),
+	('f7ae7234-dd1c-418e-b1a0-606408d1863c', '8ec0b93a-d6f1-4485-895b-538b64d9ac44', 14, 62, 1, 3200, 3200, 0, '2026-04-25 23:08:27.974844+00'),
+	('f34305e6-3456-4e8e-86c0-c1f200924644', 'f3e1648a-4497-4ff3-ba96-367061ec057b', 9, 28, 1, 6000, 6000, 0, '2026-04-25 23:08:27.974844+00'),
+	('9da0ccb4-7b5e-4317-b506-6529c203ded3', '6fa09349-75af-4939-9729-c602b3ee6c12', 66, 131, 4, 18000, 72000, 0, '2026-04-25 23:08:27.974844+00'),
+	('a4ada375-342d-45cb-bb08-72b1e5d983f9', '0f342f47-6e66-465e-b49a-ccc67b6d3839', 71, 153, 1, 4600, 4600, 0, '2026-04-25 23:08:27.974844+00'),
+	('16c1411a-5174-4c39-b9ed-231c0aec34b5', '477725bb-cfbc-45d7-99be-c826690cf95e', 80, 289, 8, 14590, 116720, 0, '2026-04-25 23:08:27.974844+00'),
+	('e6a9150d-cfe1-40cf-9c22-12d27190924e', '8f7c4524-111d-4ab8-88d0-e15d86c81c80', 80, 293, 4, 14567, 58268, 0, '2026-04-25 23:08:27.974844+00'),
+	('b77e04dc-1f13-405d-af86-33e4e7a8591c', 'aeacc8c2-007c-4be8-824a-ad9384596dbc', 107, 257, 1, 11000, 11000, 0, '2026-04-25 23:08:27.974844+00'),
+	('18fdfe7c-6b0c-4700-8f4b-d2be1b4d6b16', 'aeacc8c2-007c-4be8-824a-ad9384596dbc', 96, 237, 1, 20000, 20000, 0, '2026-04-25 23:08:27.974844+00'),
+	('9ab436c7-e96d-448c-93cc-433775afeb03', 'aeacc8c2-007c-4be8-824a-ad9384596dbc', 7, 20, 1, 6000, 6000, 0, '2026-04-25 23:08:27.974844+00'),
+	('e107b8db-e3ad-4efb-aaeb-fff65c25f93a', 'e245e639-1fe8-4c55-98eb-eba12f054193', 12, 37, 1, 1200, 1200, 0, '2026-04-25 23:08:27.974844+00'),
+	('65983731-bdef-4c48-8c10-2c96942db444', 'e245e639-1fe8-4c55-98eb-eba12f054193', 12, 36, 1, 1100, 1100, 0, '2026-04-25 23:08:27.974844+00'),
+	('f2e14bdb-b13c-4737-96f8-8ace1b498869', 'dba2803c-ca62-4425-97ab-416031441677', 80, 293, 5, 14567, 72835, 0, '2026-04-25 23:08:27.974844+00'),
+	('29abade1-cc9f-4efa-9ae7-fa0fb573d9f0', '6d5a0b73-dd51-41f7-ae76-feb7b9102d21', 99, 248, 1, 56000, 56000, 0, '2026-04-25 23:08:27.974844+00'),
+	('cb7fd71f-f002-4f56-af99-9ad018fd0347', 'c6988e5f-f7e5-40cd-bab1-88f45a13ef21', 138, 300, 2, 1000, 2000, 0, '2026-04-25 23:08:27.974844+00'),
+	('f55a8088-c163-4172-aadf-01f3249d2422', 'e9bf42e2-4830-454a-895d-bd028d23d265', 7, 140, 3, 6000, 18000, 0, '2026-04-25 23:08:27.974844+00'),
+	('19007c38-c76a-4621-800a-a6a5730a37bf', '6db2b93e-ad09-43d7-b8fa-53a4c06706ab', 7, 17, 1, 6000, 6000, 0, '2026-04-25 23:08:27.974844+00'),
+	('7c265a5a-632e-48f6-9eef-f11cf32fb666', '6232b15c-fd47-4f78-b893-2f66482d637b', 108, 258, 1, 20000, 20000, 0, '2026-04-25 23:08:27.974844+00'),
+	('51d155b9-39cb-4bf5-a97f-b970e0d0ad7c', 'da056366-98df-443b-8e34-b83e1027cf77', 91, 234, 1, 2000, 2000, 0, '2026-04-25 23:08:27.974844+00'),
+	('1e0f69c8-5498-4981-a359-6bd60116394e', 'ee27c946-bbc6-4dd5-934e-77d6a393c083', 7, 140, 1, 6000, 6000, 0, '2026-04-25 23:08:27.974844+00'),
+	('64674975-9f96-4329-80d1-340da90cfefd', '708e5cbf-22fb-476a-9851-67a4d20868d0', 102, 252, 1, 13000, 13000, 0, '2026-04-25 23:08:27.974844+00'),
+	('37bd5b8e-ceea-4369-b64b-83929d1cbc48', '69d2890a-2cd9-4992-806e-f4b2b00fc772', 84, 215, 2, 18000, 36000, 0, '2026-04-25 23:08:27.974844+00'),
+	('bbda7df0-ce72-49ab-83f9-f9f19c252494', '5f603280-009d-42c1-be4e-4868696e7531', 71, 151, 2, 6000, 12000, 0, '2026-04-29 08:10:56.428564+00'),
+	('3733a2d8-d905-441b-a5b9-5280ceb51769', '2546a68c-8ca4-473c-84ef-2d7b7265977f', 7, 21, 1, 6000, 6000, 0, '2026-05-04 05:44:49.71162+00'),
+	('7b7829fd-e821-4806-9f75-9df269b9db09', '71c02ac3-3195-497b-8931-d1e8c7ec23c2', 7, 141, 2, 6000, 12000, 0, '2026-05-04 05:45:48.279565+00'),
+	('4a12d571-b697-4af7-a376-be46506a2d88', '3880b0c8-ead5-466d-98e8-50238a8e7887', 96, 238, 1, 20000, 20000, 0, '2026-05-04 05:46:49.183914+00'),
+	('7629146d-ce52-4f7c-83a1-263004efb68d', '73b5fe20-fbd4-4891-b7e5-d323ddc6a021', 91, 234, 1, 2000, 2000, 0, '2026-05-08 07:31:23.473688+00'),
+	('c5526de4-d29d-4d00-9389-94141b28ddd7', '0d4aa4df-f0ae-4f24-b700-71b0c17a239a', 7, 140, 1, 6000, 6000, 0, '2026-05-19 01:43:41.934748+00'),
+	('900f1828-19cb-4675-ae1e-d36cfd628180', '0d4aa4df-f0ae-4f24-b700-71b0c17a239a', 7, 16, 1, 6000, 6000, 0, '2026-05-19 01:43:41.934748+00'),
+	('d5615dd1-332e-4fbf-a95a-4f495c21e7f1', '1c4f41a4-700c-49de-984d-4e3bd54813b9', 14, 65, 1, 3200, 3200, 0, '2026-05-19 06:34:29.369129+00'),
+	('e4a9c0c9-ebf9-41ce-b0e7-45f87c05a872', '815040dc-d1c1-43e4-a40a-4a42e2fcfbdb', 7, 142, 1, 6000, 6000, 0, '2026-06-05 02:30:11.919896+00'),
+	('1bfea6e2-912f-4622-a2ac-fb9ba06f3df5', '9c8f60ad-8927-4de0-ada8-fd93aeaafcbe', 7, 20, 1, 6000, 6000, 0, '2026-06-05 02:38:16.618161+00'),
+	('84bdc03c-4c56-4f5f-a8c2-aea706107d5b', '9c8f60ad-8927-4de0-ada8-fd93aeaafcbe', 7, 15, 1, 6000, 6000, 0, '2026-06-05 02:38:16.618161+00'),
+	('34764469-27c0-469a-a4ec-138182acd332', '9c8f60ad-8927-4de0-ada8-fd93aeaafcbe', 7, 22, 3, 6000, 18000, 0, '2026-06-05 02:38:16.618161+00'),
+	('0ab6cb08-d6a6-45ac-b18f-01f209bba6a4', '9c8f60ad-8927-4de0-ada8-fd93aeaafcbe', 7, 141, 1, 6000, 6000, 0, '2026-06-05 02:38:16.618161+00'),
+	('bef32978-4878-4679-9c42-6dab95d0e3db', '9c8f60ad-8927-4de0-ada8-fd93aeaafcbe', 7, 143, 2, 6000, 12000, 0, '2026-06-05 02:38:16.618161+00'),
+	('294368aa-850b-4308-9d0c-780d7deb03a5', '9c8f60ad-8927-4de0-ada8-fd93aeaafcbe', 7, 23, 1, 6000, 6000, 0, '2026-06-05 02:38:16.618161+00'),
+	('fd7307e0-82f3-4960-a1e6-08553e8979bd', '9c8f60ad-8927-4de0-ada8-fd93aeaafcbe', 7, 140, 1, 6000, 6000, 0, '2026-06-05 02:38:16.618161+00'),
+	('14092185-f2a4-4045-8907-78eb43e5e4f3', '04a5b972-9a11-4ab8-9f83-b012d8213031', 84, 216, 5, 14500, 72500, 0, '2026-06-09 03:33:59.745822+00'),
+	('ae4711aa-ef82-445c-b7d2-b62a5acbcdc9', '04a5b972-9a11-4ab8-9f83-b012d8213031', 84, 215, 2, 18000, 36000, 0, '2026-06-09 03:33:59.745822+00'),
+	('81201c08-fc3a-4eb1-bd93-9f7c36693634', '96f98270-3b76-43d0-a693-5b98166f4355', 86, 219, 4, 11725.99, 46903.96, 0, '2026-06-09 03:37:03.711321+00'),
+	('dbb13f8d-ba65-4dfa-86b8-d02560a467dd', '96f98270-3b76-43d0-a693-5b98166f4355', 86, 218, 4, 15947, 63788, 0, '2026-06-09 03:37:03.711321+00'),
+	('86c55b78-cf84-42b7-a233-05190ea59541', '268655fa-3caf-4056-be5c-254f08522c09', 80, 204, 4, 24119, 96476, 0, '2026-06-09 03:40:25.95225+00'),
+	('e4c16c1a-fc8e-4458-adde-6c2f1274d0a6', '0f6a6d0e-4d14-4b26-a18f-f0627d98cee6', 83, 213, 4, 21950, 87800, 0, '2026-06-09 03:43:43.098282+00'),
+	('11d0de64-7be5-48bb-a9e3-26b40eb2c6d5', 'c4ecebc5-f5da-4341-b144-82821435b1c3', 81, 211, 4, 16500, 66000, 0, '2026-06-09 03:48:39.598043+00'),
+	('13acc2c0-aacd-4357-94cc-4ad899b02edb', '1fd059ad-94fd-410c-b266-a1ad6fc5919b', 81, 286, 4, 16750, 67000, 0, '2026-06-09 03:53:31.917065+00'),
+	('59c5ef0a-9dd3-448e-a44a-a66adeb47fe6', 'e96b8ae1-5b4e-4b13-93ae-d0287f9db7c0', 85, 217, 4, 17351, 69404, 0, '2026-06-09 04:03:52.813152+00'),
+	('96343ced-13dd-4453-b1bc-1053c7165443', 'a0c2479d-b6a0-43bc-a297-106436d699ca', 14, 62, 2, 3200, 6400, 0, '2026-06-12 02:26:47.005006+00'),
+	('dafe4ca6-2d53-41aa-b56f-d2f2dfc15bb5', 'a0c2479d-b6a0-43bc-a297-106436d699ca', 14, 296, 2, 3200, 6400, 0, '2026-06-12 02:26:47.005006+00'),
+	('38bddccc-970b-41ca-8375-e0f4f8ba89ca', 'a0c2479d-b6a0-43bc-a297-106436d699ca', 14, 64, 2, 3200, 6400, 0, '2026-06-12 02:26:47.005006+00'),
+	('8166603b-e307-4a52-95e8-6385a915ea3d', '8fcd0ff1-866f-4183-932a-a5fabf09ee86', 80, 343, 5, 11771, 58855, 0, '2026-06-16 07:00:13.972413+00');
+
+
+--
+-- Data for Name: store_settings; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO "public"."store_settings" ("id", "store_name", "tax_rate", "low_stock_threshold", "currency", "updated_at") VALUES
+	(1, 'KENS GARAGE', 0, 2, 'PHP', '2026-04-24 06:33:14.989+00');
+
+
+--
+-- Data for Name: variant_specifications; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO "public"."variant_specifications" ("id", "variant_id", "spec_key", "spec_value", "created_at", "key") VALUES
+	(1, 179, 'color_temperature', 'Front', '2026-04-25 23:07:49.37457+00', NULL),
+	(4, 294, 'color_temperature', '6000-6500', '2026-04-25 23:07:49.37457+00', NULL),
+	(5, 36, 'color_temperature', 'Red', '2026-04-25 23:07:49.37457+00', NULL),
+	(6, 255, 'color_temperature', 'Round', '2026-04-25 23:07:49.37457+00', NULL),
+	(7, 29, 'color_temperature', '4300', '2026-04-25 23:07:49.37457+00', NULL),
+	(8, 67, 'color_temperature', '5700', '2026-04-25 23:07:49.37457+00', NULL),
+	(9, 181, 'color_temperature', 'Front', '2026-04-25 23:07:49.37457+00', NULL),
+	(10, 187, 'color_temperature', 'Rear', '2026-04-25 23:07:49.37457+00', NULL),
+	(11, 295, 'color_temperature', '6000-6500k', '2026-04-25 23:07:49.37457+00', NULL),
+	(12, 57, 'color_temperature', 'Yellow', '2026-04-25 23:07:49.37457+00', NULL),
+	(13, 28, 'color_temperature', 'Dual Color', '2026-04-25 23:07:49.37457+00', NULL),
+	(14, 182, 'color_temperature', 'Front', '2026-04-25 23:07:49.37457+00', NULL),
+	(15, 188, 'color_temperature', 'Rear', '2026-04-25 23:07:49.37457+00', NULL),
+	(16, 296, 'color_temperature', '6000-6500k', '2026-04-25 23:07:49.37457+00', NULL),
+	(17, 183, 'color_temperature', 'Rear', '2026-04-25 23:07:49.37457+00', NULL),
+	(18, 189, 'color_temperature', 'Rear', '2026-04-25 23:07:49.37457+00', NULL),
+	(19, 62, 'color_temperature', '3000', '2026-04-25 23:07:49.37457+00', NULL),
+	(20, 64, 'color_temperature', '6000-6500', '2026-04-25 23:07:49.37457+00', NULL),
+	(21, 184, 'color_temperature', 'Front/Rear', '2026-04-25 23:07:49.37457+00', NULL),
+	(22, 68, 'color_temperature', '5700', '2026-04-25 23:07:49.37457+00', NULL),
+	(23, 69, 'color_temperature', '4300', '2026-04-25 23:07:49.37457+00', NULL),
+	(24, 66, 'color_temperature', '5700', '2026-04-25 23:07:49.37457+00', NULL),
+	(25, 38, 'color_temperature', 'Red', '2026-04-25 23:07:49.37457+00', NULL),
+	(26, 39, 'color_temperature', 'Red', '2026-04-25 23:07:49.37457+00', NULL),
+	(27, 40, 'color_temperature', 'Red', '2026-04-25 23:07:49.37457+00', NULL),
+	(28, 70, 'color_temperature', '6000', '2026-04-25 23:07:49.37457+00', NULL),
+	(29, 24, 'color_temperature', '6000', '2026-04-25 23:07:49.37457+00', NULL),
+	(30, 34, 'color_temperature', 'Red', '2026-04-25 23:07:49.37457+00', NULL),
+	(31, 23, 'color_temperature', '4300', '2026-04-25 23:07:49.37457+00', NULL),
+	(32, 26, 'color_temperature', '6000', '2026-04-25 23:07:49.37457+00', NULL),
+	(33, 25, 'color_temperature', '6000', '2026-04-25 23:07:49.37457+00', NULL),
+	(34, 73, 'color_temperature', '5000', '2026-04-25 23:07:49.37457+00', NULL),
+	(35, 35, 'color_temperature', 'Red', '2026-04-25 23:07:49.37457+00', NULL),
+	(36, 46, 'color_temperature', 'Purple', '2026-04-25 23:07:49.37457+00', NULL),
+	(37, 47, 'color_temperature', 'Purple', '2026-04-25 23:07:49.37457+00', NULL),
+	(38, 48, 'color_temperature', 'Purple', '2026-04-25 23:07:49.37457+00', NULL),
+	(39, 49, 'color_temperature', 'Purple', '2026-04-25 23:07:49.37457+00', NULL),
+	(40, 74, 'color_temperature', '5000-5700', '2026-04-25 23:07:49.37457+00', NULL),
+	(41, 15, 'color_temperature', '4300', '2026-04-25 23:07:49.37457+00', NULL),
+	(42, 27, 'color_temperature', 'Dual Color', '2026-04-25 23:07:49.37457+00', NULL),
+	(43, 32, 'color_temperature', 'Red', '2026-04-25 23:07:49.37457+00', NULL),
+	(44, 20, 'color_temperature', '4300', '2026-04-25 23:07:49.37457+00', NULL),
+	(45, 37, 'color_temperature', 'Red', '2026-04-25 23:07:49.37457+00', NULL),
+	(46, 17, 'color_temperature', '6000', '2026-04-25 23:07:49.37457+00', NULL),
+	(47, 21, 'color_temperature', '6000', '2026-04-25 23:07:49.37457+00', NULL),
+	(48, 16, 'color_temperature', '6000', '2026-04-25 23:07:49.37457+00', NULL),
+	(49, 41, 'color_temperature', 'Purple', '2026-04-25 23:07:49.37457+00', NULL),
+	(50, 33, 'color_temperature', 'Red', '2026-04-25 23:07:49.37457+00', NULL),
+	(51, 55, 'color_temperature', 'Green', '2026-04-25 23:07:49.37457+00', NULL),
+	(52, 45, 'color_temperature', 'Purple', '2026-04-25 23:07:49.37457+00', NULL),
+	(53, 44, 'color_temperature', 'Purple', '2026-04-25 23:07:49.37457+00', NULL),
+	(54, 51, 'color_temperature', 'Green', '2026-04-25 23:07:49.37457+00', NULL),
+	(55, 59, 'color_temperature', 'Yellow', '2026-04-25 23:07:49.37457+00', NULL),
+	(56, 88, 'color_temperature', 'Matte Black', '2026-04-25 23:07:49.37457+00', NULL),
+	(57, 42, 'color_temperature', 'Purple', '2026-04-25 23:07:49.37457+00', NULL),
+	(58, 52, 'color_temperature', 'Green', '2026-04-25 23:07:49.37457+00', NULL),
+	(59, 43, 'color_temperature', 'Purple', '2026-04-25 23:07:49.37457+00', NULL),
+	(60, 58, 'color_temperature', 'Yellow', '2026-04-25 23:07:49.37457+00', NULL),
+	(61, 54, 'color_temperature', 'Green', '2026-04-25 23:07:49.37457+00', NULL),
+	(62, 53, 'color_temperature', 'Green', '2026-04-25 23:07:49.37457+00', NULL),
+	(63, 81, 'color_temperature', 'Bronze', '2026-04-25 23:07:49.37457+00', NULL),
+	(64, 93, 'color_temperature', 'Gloss Silver', '2026-04-25 23:07:49.37457+00', NULL),
+	(65, 89, 'color_temperature', 'Black with Machined', '2026-04-25 23:07:49.37457+00', NULL),
+	(66, 82, 'color_temperature', 'Pressed Graphite', '2026-04-25 23:07:49.37457+00', NULL),
+	(67, 98, 'color_temperature', 'Gunmetal Grey', '2026-04-25 23:07:49.37457+00', NULL),
+	(68, 101, 'color_temperature', 'Gunmetal Grey', '2026-04-25 23:07:49.37457+00', NULL),
+	(69, 102, 'color_temperature', 'Gloss Black Milled', '2026-04-25 23:07:49.37457+00', NULL),
+	(70, 56, 'color_temperature', 'Yellow', '2026-04-25 23:07:49.37457+00', NULL),
+	(71, 110, 'color_temperature', 'Matte Black', '2026-04-25 23:07:49.37457+00', NULL),
+	(72, 121, 'color_temperature', 'Satin Black', '2026-04-25 23:07:49.37457+00', NULL),
+	(73, 123, 'color_temperature', 'Matte Anthracite', '2026-04-25 23:07:49.37457+00', NULL),
+	(74, 125, 'color_temperature', 'Black/White', '2026-04-25 23:07:49.37457+00', NULL),
+	(75, 122, 'color_temperature', 'Anthracite', '2026-04-25 23:07:49.37457+00', NULL),
+	(76, 132, 'color_temperature', 'Bronze', '2026-04-25 23:07:49.37457+00', NULL),
+	(77, 138, 'color_temperature', 'Inner Black/Outer Black', '2026-04-25 23:07:49.37457+00', NULL),
+	(78, 139, 'color_temperature', 'White', '2026-04-25 23:07:49.37457+00', NULL),
+	(79, 142, 'color_temperature', '6000', '2026-04-25 23:07:49.37457+00', NULL),
+	(80, 145, 'color_temperature', 'Gunmetal Machined(PressG)', '2026-04-25 23:07:49.37457+00', NULL),
+	(81, 146, 'color_temperature', 'Matte Black', '2026-04-25 23:07:49.37457+00', NULL),
+	(82, 131, 'color_temperature', 'Black', '2026-04-25 23:07:49.37457+00', NULL),
+	(83, 124, 'color_temperature', 'Black', '2026-04-25 23:07:49.37457+00', NULL),
+	(84, 126, 'color_temperature', 'Black/White', '2026-04-25 23:07:49.37457+00', NULL),
+	(85, 167, 'color_temperature', 'Front', '2026-04-25 23:07:49.37457+00', NULL),
+	(86, 168, 'color_temperature', 'Front', '2026-04-25 23:07:49.37457+00', NULL),
+	(87, 166, 'color_temperature', 'Front', '2026-04-25 23:07:49.37457+00', NULL),
+	(88, 141, 'color_temperature', 'All Weather', '2026-04-25 23:07:49.37457+00', NULL),
+	(89, 103, 'color_temperature', 'Gloss Titanium', '2026-04-25 23:07:49.37457+00', NULL),
+	(90, 104, 'color_temperature', 'BZ4 (Gloss Dark Bronze)', '2026-04-25 23:07:49.37457+00', NULL),
+	(91, 140, 'color_temperature', 'All Weather', '2026-04-25 23:07:49.37457+00', NULL),
+	(92, 19, 'color_temperature', '4300', '2026-04-25 23:07:49.37457+00', NULL),
+	(93, 72, 'color_temperature', '5000', '2026-04-25 23:07:49.37457+00', NULL),
+	(94, 75, 'color_temperature', '4200', '2026-04-25 23:07:49.37457+00', NULL),
+	(95, 76, 'color_temperature', '3000', '2026-04-25 23:07:49.37457+00', NULL),
+	(96, 61, 'color_temperature', '6000', '2026-04-25 23:07:49.37457+00', NULL),
+	(97, 60, 'color_temperature', '6000', '2026-04-25 23:07:49.37457+00', NULL),
+	(98, 63, 'color_temperature', '6000-6500', '2026-04-25 23:07:49.37457+00', NULL),
+	(99, 65, 'color_temperature', '6000-6500', '2026-04-25 23:07:49.37457+00', NULL),
+	(100, 84, 'color_temperature', 'Gunmetal', '2026-04-25 23:07:49.37457+00', NULL),
+	(101, 86, 'color_temperature', 'Gunblack', '2026-04-25 23:07:49.37457+00', NULL),
+	(3, 186, 'color_temperature', '6000', '2026-04-25 23:07:49.37457+00', NULL),
+	(102, 90, 'color_temperature', 'Bronze', '2026-04-25 23:07:49.37457+00', NULL),
+	(103, 91, 'color_temperature', 'Gloss White', '2026-04-25 23:07:49.37457+00', NULL),
+	(104, 94, 'color_temperature', 'Matte Black', '2026-04-25 23:07:49.37457+00', NULL),
+	(105, 85, 'color_temperature', 'Dark Bronze', '2026-04-25 23:07:49.37457+00', NULL),
+	(106, 95, 'color_temperature', 'Hyper Silver', '2026-04-25 23:07:49.37457+00', NULL),
+	(107, 96, 'color_temperature', 'Matte Black', '2026-04-25 23:07:49.37457+00', NULL),
+	(108, 97, 'color_temperature', 'Bronze', '2026-04-25 23:07:49.37457+00', NULL),
+	(109, 99, 'color_temperature', 'Blackout', '2026-04-25 23:07:49.37457+00', NULL),
+	(110, 100, 'color_temperature', 'Titanium Matte', '2026-04-25 23:07:49.37457+00', NULL),
+	(111, 92, 'color_temperature', 'Silver w/machined', '2026-04-25 23:07:49.37457+00', NULL),
+	(112, 105, 'color_temperature', 'Matte Dark Bronze', '2026-04-25 23:07:49.37457+00', NULL),
+	(113, 106, 'color_temperature', 'Matte Black', '2026-04-25 23:07:49.37457+00', NULL),
+	(114, 107, 'color_temperature', 'Matte Gunmetal', '2026-04-25 23:07:49.37457+00', NULL),
+	(115, 108, 'color_temperature', 'Black w/ Silver Ring', '2026-04-25 23:07:49.37457+00', NULL),
+	(116, 109, 'color_temperature', 'Matte Black', '2026-04-25 23:07:49.37457+00', NULL),
+	(117, 111, 'color_temperature', 'Gloss Titanium', '2026-04-25 23:07:49.37457+00', NULL),
+	(118, 113, 'color_temperature', 'Matte Black', '2026-04-25 23:07:49.37457+00', NULL),
+	(119, 114, 'color_temperature', 'Matte Titanium', '2026-04-25 23:07:49.37457+00', NULL),
+	(120, 115, 'color_temperature', 'Matte Bronze', '2026-04-25 23:07:49.37457+00', NULL),
+	(121, 116, 'color_temperature', 'Matte Black', '2026-04-25 23:07:49.37457+00', NULL),
+	(122, 117, 'color_temperature', 'Gloss Titanium', '2026-04-25 23:07:49.37457+00', NULL),
+	(123, 118, 'color_temperature', 'Gloss Black', '2026-04-25 23:07:49.37457+00', NULL),
+	(124, 119, 'color_temperature', 'Satin Black', '2026-04-25 23:07:49.37457+00', NULL),
+	(125, 120, 'color_temperature', 'Machined w/ Satin Black lip', '2026-04-25 23:07:49.37457+00', NULL),
+	(126, 127, 'color_temperature', 'Matte Black+ Black Bolts', '2026-04-25 23:07:49.37457+00', NULL),
+	(127, 128, 'color_temperature', 'Matte Black,  milled rivet flange-silver bolt', '2026-04-25 23:07:49.37457+00', NULL),
+	(128, 130, 'color_temperature', 'Silver Full Machined, Silver Cap', '2026-04-25 23:07:49.37457+00', NULL),
+	(129, 129, 'color_temperature', 'Matte Black+ Black Bolts', '2026-04-25 23:07:49.37457+00', NULL),
+	(130, 144, 'color_temperature', 'Silver Brush', '2026-04-25 23:07:49.37457+00', NULL),
+	(131, 112, 'color_temperature', 'Machined Clear Coat', '2026-04-25 23:07:49.37457+00', NULL),
+	(132, 22, 'color_temperature', '4300', '2026-04-25 23:07:49.37457+00', NULL),
+	(133, 18, 'color_temperature', '6000', '2026-04-25 23:07:49.37457+00', NULL),
+	(134, 143, 'color_temperature', '6000', '2026-04-25 23:07:49.37457+00', NULL),
+	(135, 179, 'variant_color', 'Navara/Terra', '2026-04-25 23:07:49.37457+00', NULL),
+	(136, 180, 'variant_color', 'Hilux', '2026-04-25 23:07:49.37457+00', NULL),
+	(137, 186, 'variant_color', 'Montero', '2026-04-25 23:07:49.37457+00', NULL),
+	(138, 208, 'variant_color', '121/118S', '2026-04-25 23:07:49.37457+00', NULL),
+	(139, 226, 'variant_color', 'Black', '2026-04-25 23:07:49.37457+00', NULL),
+	(140, 227, 'variant_color', 'Black', '2026-04-25 23:07:49.37457+00', NULL),
+	(141, 267, 'variant_color', 'White', '2026-04-25 23:07:49.37457+00', NULL),
+	(142, 272, 'variant_color', 'Ion Yellow', '2026-04-25 23:07:49.37457+00', NULL),
+	(143, 280, 'variant_color', 'Black', '2026-04-25 23:07:49.37457+00', NULL),
+	(144, 283, 'variant_color', 'Clear', '2026-04-25 23:07:49.37457+00', NULL),
+	(145, 290, 'variant_color', 'Clear', '2026-04-25 23:07:49.37457+00', NULL),
+	(146, 299, 'variant_color', 'Black', '2026-04-25 23:07:49.37457+00', NULL),
+	(147, 304, 'variant_color', 'Yellow', '2026-04-25 23:07:49.37457+00', NULL),
+	(148, 36, 'variant_color', 'RedK', '2026-04-25 23:07:49.37457+00', NULL),
+	(149, 300, 'variant_color', 'Black', '2026-04-25 23:07:49.37457+00', NULL),
+	(150, 318, 'variant_color', 'Black ', '2026-04-25 23:07:49.37457+00', NULL),
+	(151, 323, 'variant_color', 'Amber', '2026-04-25 23:07:49.37457+00', NULL),
+	(152, 234, 'variant_color', 'Black', '2026-04-25 23:07:49.37457+00', NULL),
+	(153, 327, 'variant_color', '6000k', '2026-04-25 23:07:49.37457+00', NULL),
+	(154, 330, 'variant_color', '6500K', '2026-04-25 23:07:49.37457+00', NULL),
+	(155, 331, 'variant_color', '6000K', '2026-04-25 23:07:49.37457+00', NULL),
+	(156, 221, 'variant_color', '120/117Q', '2026-04-25 23:07:49.37457+00', NULL),
+	(157, 286, 'variant_color', '121/118S', '2026-04-25 23:07:49.37457+00', NULL),
+	(158, 213, 'variant_color', '123/120Q', '2026-04-25 23:07:49.37457+00', NULL),
+	(159, 255, 'variant_color', 'White', '2026-04-25 23:07:49.37457+00', NULL),
+	(160, 276, 'variant_color', 'White/Yellow', '2026-04-25 23:07:49.37457+00', NULL),
+	(161, 314, 'variant_color', '5600k', '2026-04-25 23:07:49.37457+00', NULL),
+	(162, 67, 'variant_color', '5700K', '2026-04-25 23:07:49.37457+00', NULL),
+	(163, 311, 'variant_color', 'Chrome', '2026-04-25 23:07:49.37457+00', NULL),
+	(164, 181, 'variant_color', 'Triton/Montero', '2026-04-25 23:07:49.37457+00', NULL),
+	(165, 187, 'variant_color', 'Fortuner/innova', '2026-04-25 23:07:49.37457+00', NULL),
+	(166, 201, 'variant_color', '112s', '2026-04-25 23:07:49.37457+00', NULL),
+	(167, 228, 'variant_color', 'Black', '2026-04-25 23:07:49.37457+00', NULL),
+	(168, 229, 'variant_color', 'Chrome', '2026-04-25 23:07:49.37457+00', NULL),
+	(169, 230, 'variant_color', 'Chrome', '2026-04-25 23:07:49.37457+00', NULL),
+	(170, 235, 'variant_color', 'Amber', '2026-04-25 23:07:49.37457+00', NULL),
+	(171, 256, 'variant_color', 'Black', '2026-04-25 23:07:49.37457+00', NULL),
+	(172, 268, 'variant_color', 'Clear', '2026-04-25 23:07:49.37457+00', NULL),
+	(173, 273, 'variant_color', 'Yellow', '2026-04-25 23:07:49.37457+00', NULL),
+	(174, 277, 'variant_color', 'Clear', '2026-04-25 23:07:49.37457+00', NULL),
+	(175, 281, 'variant_color', 'n/a', '2026-04-25 23:07:49.37457+00', NULL),
+	(176, 291, 'variant_color', 'Clear', '2026-04-25 23:07:49.37457+00', NULL),
+	(177, 301, 'variant_color', 'Yellow', '2026-04-25 23:07:49.37457+00', NULL),
+	(178, 306, 'variant_color', 'Tri Color', '2026-04-25 23:07:49.37457+00', NULL),
+	(179, 307, 'variant_color', 'Yellow', '2026-04-25 23:07:49.37457+00', NULL),
+	(180, 315, 'variant_color', 'Black', '2026-04-25 23:07:49.37457+00', NULL),
+	(181, 248, 'variant_color', 'Clear', '2026-04-25 23:07:49.37457+00', NULL),
+	(182, 319, 'variant_color', 'Black', '2026-04-25 23:07:49.37457+00', NULL),
+	(183, 324, 'variant_color', 'Clear', '2026-04-25 23:07:49.37457+00', NULL),
+	(184, 328, 'variant_color', '6000k', '2026-04-25 23:07:49.37457+00', NULL),
+	(185, 332, 'variant_color', '6000K', '2026-04-25 23:07:49.37457+00', NULL),
+	(186, 222, 'variant_color', '104/101S', '2026-04-25 23:07:49.37457+00', NULL),
+	(187, 216, 'variant_color', '106Q', '2026-04-25 23:07:49.37457+00', NULL),
+	(188, 215, 'variant_color', '112Q', '2026-04-25 23:07:49.37457+00', NULL),
+	(189, 287, 'variant_color', '118/115S(121R)', '2026-04-25 23:07:49.37457+00', NULL),
+	(190, 209, 'variant_color', '124/121S', '2026-04-25 23:07:49.37457+00', NULL),
+	(191, 261, 'variant_color', 'Clear', '2026-04-25 23:07:49.37457+00', NULL),
+	(192, 182, 'variant_color', 'Navara', '2026-04-25 23:07:49.37457+00', NULL),
+	(193, 188, 'variant_color', 'Everest', '2026-04-25 23:07:49.37457+00', NULL),
+	(194, 202, 'variant_color', '110H', '2026-04-25 23:07:49.37457+00', NULL),
+	(195, 223, 'variant_color', '108/106S', '2026-04-25 23:07:49.37457+00', NULL),
+	(196, 231, 'variant_color', 'Black', '2026-04-25 23:07:49.37457+00', NULL),
+	(197, 249, 'variant_color', 'Amber', '2026-04-25 23:07:49.37457+00', NULL),
+	(198, 269, 'variant_color', 'Red', '2026-04-25 23:07:49.37457+00', NULL),
+	(199, 278, 'variant_color', 'Amber', '2026-04-25 23:07:49.37457+00', NULL),
+	(200, 292, 'variant_color', 'Tri-Colour', '2026-04-25 23:07:49.37457+00', NULL),
+	(201, 257, 'variant_color', 'Black', '2026-04-25 23:07:49.37457+00', NULL),
+	(202, 302, 'variant_color', 'Yellow', '2026-04-25 23:07:49.37457+00', NULL),
+	(203, 308, 'variant_color', 'Yellow', '2026-04-25 23:07:49.37457+00', NULL),
+	(204, 309, 'variant_color', 'Yellow', '2026-04-25 23:07:49.37457+00', NULL),
+	(205, 316, 'variant_color', 'Black', '2026-04-25 23:07:49.37457+00', NULL),
+	(206, 320, 'variant_color', 'Black', '2026-04-25 23:07:49.37457+00', NULL),
+	(207, 325, 'variant_color', 'Clear', '2026-04-25 23:07:49.37457+00', NULL),
+	(208, 329, 'variant_color', '6000k', '2026-04-25 23:07:49.37457+00', NULL),
+	(209, 333, 'variant_color', '112T', '2026-04-25 23:07:49.37457+00', NULL),
+	(210, 288, 'variant_color', '117/114S', '2026-04-25 23:07:49.37457+00', NULL),
+	(211, 210, 'variant_color', '128/125S', '2026-04-25 23:07:49.37457+00', NULL),
+	(212, 217, 'variant_color', '115S', '2026-04-25 23:07:49.37457+00', NULL),
+	(213, 264, 'variant_color', 'Clear', '2026-04-25 23:07:49.37457+00', NULL),
+	(214, 274, 'variant_color', 'Clear', '2026-04-25 23:07:49.37457+00', NULL),
+	(215, 183, 'variant_color', 'Fj Cruiser', '2026-04-25 23:07:49.37457+00', NULL),
+	(216, 189, 'variant_color', 'Navara', '2026-04-25 23:07:49.37457+00', NULL),
+	(217, 203, 'variant_color', '116T', '2026-04-25 23:07:49.37457+00', NULL),
+	(218, 232, 'variant_color', 'Black', '2026-04-25 23:07:49.37457+00', NULL),
+	(219, 238, 'variant_color', 'Amber', '2026-04-25 23:07:49.37457+00', NULL),
+	(220, 250, 'variant_color', 'Black', '2026-04-25 23:07:49.37457+00', NULL),
+	(221, 251, 'variant_color', 'Black', '2026-04-25 23:07:49.37457+00', NULL),
+	(222, 270, 'variant_color', 'White', '2026-04-25 23:07:49.37457+00', NULL),
+	(223, 279, 'variant_color', 'Clear', '2026-04-25 23:07:49.37457+00', NULL),
+	(224, 284, 'variant_color', 'Clear', '2026-04-25 23:07:49.37457+00', NULL),
+	(225, 285, 'variant_color', 'Clear', '2026-04-25 23:07:49.37457+00', NULL),
+	(226, 297, 'variant_color', 'White/Amber', '2026-04-25 23:07:49.37457+00', NULL),
+	(227, 205, 'variant_color', '116/113R', '2026-04-25 23:07:49.37457+00', NULL),
+	(228, 293, 'variant_color', '116T', '2026-04-25 23:07:49.37457+00', NULL),
+	(229, 62, 'variant_color', '3000K', '2026-04-25 23:07:49.37457+00', NULL),
+	(230, 64, 'variant_color', '6000-6500K', '2026-04-25 23:07:49.37457+00', NULL),
+	(231, 298, 'variant_color', 'White', '2026-04-25 23:07:49.37457+00', NULL),
+	(232, 237, 'variant_color', 'Clear', '2026-04-25 23:07:49.37457+00', NULL),
+	(233, 303, 'variant_color', 'Yellow', '2026-04-25 23:07:49.37457+00', NULL),
+	(234, 310, 'variant_color', 'Tri Color', '2026-04-25 23:07:49.37457+00', NULL),
+	(235, 317, 'variant_color', 'Black', '2026-04-25 23:07:49.37457+00', NULL),
+	(236, 219, 'variant_color', '112T', '2026-04-25 23:07:49.37457+00', NULL),
+	(237, 321, 'variant_color', 'Black', '2026-04-25 23:07:49.37457+00', NULL),
+	(238, 322, 'variant_color', 'Amber', '2026-04-25 23:07:49.37457+00', NULL),
+	(239, 326, 'variant_color', '6000k', '2026-04-25 23:07:49.37457+00', NULL),
+	(240, 218, 'variant_color', '10PR', '2026-04-25 23:07:49.37457+00', NULL),
+	(241, 204, 'variant_color', '114T', '2026-04-25 23:07:49.37457+00', NULL),
+	(242, 289, 'variant_color', '109T', '2026-04-25 23:07:49.37457+00', NULL),
+	(243, 211, 'variant_color', '116/113S', '2026-04-25 23:07:49.37457+00', NULL),
+	(244, 305, 'variant_color', 'Yellow', '2026-04-25 23:07:49.37457+00', NULL),
+	(245, 184, 'variant_color', 'Jimny', '2026-04-25 23:07:49.37457+00', NULL),
+	(246, 68, 'variant_color', '5700K', '2026-04-25 23:07:49.37457+00', NULL),
+	(247, 69, 'variant_color', '4300K', '2026-04-25 23:07:49.37457+00', NULL),
+	(248, 66, 'variant_color', '5700K', '2026-04-25 23:07:49.37457+00', NULL),
+	(249, 38, 'variant_color', 'RedK', '2026-04-25 23:07:49.37457+00', NULL),
+	(250, 39, 'variant_color', 'RedK', '2026-04-25 23:07:49.37457+00', NULL),
+	(251, 40, 'variant_color', 'RedK', '2026-04-25 23:07:49.37457+00', NULL),
+	(252, 70, 'variant_color', '6000K', '2026-04-25 23:07:49.37457+00', NULL),
+	(253, 34, 'variant_color', 'RedK', '2026-04-25 23:07:49.37457+00', NULL),
+	(254, 73, 'variant_color', '5000K', '2026-04-25 23:07:49.37457+00', NULL),
+	(255, 35, 'variant_color', 'RedK', '2026-04-25 23:07:49.37457+00', NULL),
+	(256, 46, 'variant_color', 'Purple', '2026-04-25 23:07:49.37457+00', NULL),
+	(257, 47, 'variant_color', 'Purple', '2026-04-25 23:07:49.37457+00', NULL),
+	(258, 48, 'variant_color', 'Purple', '2026-04-25 23:07:49.37457+00', NULL),
+	(259, 49, 'variant_color', 'Purple', '2026-04-25 23:07:49.37457+00', NULL),
+	(260, 74, 'variant_color', 'ZES', '2026-04-25 23:07:49.37457+00', NULL),
+	(261, 32, 'variant_color', 'RedK', '2026-04-25 23:07:49.37457+00', NULL),
+	(262, 37, 'variant_color', 'RedK', '2026-04-25 23:07:49.37457+00', NULL),
+	(263, 33, 'variant_color', 'RedK', '2026-04-25 23:07:49.37457+00', NULL),
+	(264, 88, 'variant_color', '18x9', '2026-04-25 23:07:49.37457+00', NULL),
+	(265, 58, 'variant_color', 'Yellow', '2026-04-25 23:07:49.37457+00', NULL),
+	(266, 53, 'variant_color', 'Green', '2026-04-25 23:07:49.37457+00', NULL),
+	(267, 81, 'variant_color', '16x6', '2026-04-25 23:07:49.37457+00', NULL),
+	(268, 93, 'variant_color', '17x9', '2026-04-25 23:07:49.37457+00', NULL),
+	(269, 89, 'variant_color', '17', '2026-04-25 23:07:49.37457+00', NULL),
+	(270, 82, 'variant_color', '17x8.5', '2026-04-25 23:07:49.37457+00', NULL),
+	(271, 98, 'variant_color', '20x9.5', '2026-04-25 23:07:49.37457+00', NULL),
+	(272, 101, 'variant_color', '20x9', '2026-04-25 23:07:49.37457+00', NULL),
+	(273, 102, 'variant_color', '20x9', '2026-04-25 23:07:49.37457+00', NULL),
+	(274, 110, 'variant_color', '17x8.5', '2026-04-25 23:07:49.37457+00', NULL),
+	(275, 121, 'variant_color', '17x8.5', '2026-04-25 23:07:49.37457+00', NULL),
+	(276, 123, 'variant_color', '17x8', '2026-04-25 23:07:49.37457+00', NULL),
+	(277, 125, 'variant_color', '16x6', '2026-04-25 23:07:49.37457+00', NULL),
+	(278, 122, 'variant_color', '15x7', '2026-04-25 23:07:49.37457+00', NULL),
+	(279, 132, 'variant_color', '18x9', '2026-04-25 23:07:49.37457+00', NULL),
+	(280, 138, 'variant_color', '18x9', '2026-04-25 23:07:49.37457+00', NULL),
+	(281, 139, 'variant_color', '16x6', '2026-04-25 23:07:49.37457+00', NULL),
+	(282, 145, 'variant_color', '16x7', '2026-04-25 23:07:49.37457+00', NULL),
+	(283, 146, 'variant_color', '15x7', '2026-04-25 23:07:49.37457+00', NULL),
+	(284, 131, 'variant_color', '17x9', '2026-04-25 23:07:49.37457+00', NULL),
+	(285, 124, 'variant_color', '15x8', '2026-04-25 23:07:49.37457+00', NULL),
+	(286, 126, 'variant_color', '16x8', '2026-04-25 23:07:49.37457+00', NULL),
+	(287, 167, 'variant_color', 'Ranger', '2026-04-25 23:07:49.37457+00', NULL),
+	(288, 168, 'variant_color', 'LC200', '2026-04-25 23:07:49.37457+00', NULL),
+	(289, 166, 'variant_color', 'Hilux', '2026-04-25 23:07:49.37457+00', NULL),
+	(290, 220, 'variant_color', '152/149M', '2026-04-25 23:07:49.37457+00', NULL),
+	(291, 224, 'variant_color', 'Black', '2026-04-25 23:07:49.37457+00', NULL),
+	(292, 225, 'variant_color', 'Black', '2026-04-25 23:07:49.37457+00', NULL),
+	(293, 233, 'variant_color', 'Chrome', '2026-04-25 23:07:49.37457+00', NULL),
+	(294, 239, 'variant_color', 'Clear', '2026-04-25 23:07:49.37457+00', NULL),
+	(295, 240, 'variant_color', 'Amber', '2026-04-25 23:07:49.37457+00', NULL),
+	(296, 241, 'variant_color', 'Amber', '2026-04-25 23:07:49.37457+00', NULL),
+	(297, 206, 'variant_color', '114/110s ', '2026-04-25 23:07:49.37457+00', NULL),
+	(298, 266, 'variant_color', 'Clear', '2026-04-25 23:07:49.37457+00', NULL),
+	(299, 271, 'variant_color', 'White/Yellow', '2026-04-25 23:07:49.37457+00', NULL),
+	(300, 207, 'variant_color', '125/122s', '2026-04-25 23:07:49.37457+00', NULL),
+	(301, 252, 'variant_color', 'Clear', '2026-04-25 23:07:49.37457+00', NULL),
+	(302, 212, 'variant_color', '123/120R', '2026-04-25 23:07:49.37457+00', NULL),
+	(303, 259, 'variant_color', 'Clear', '2026-04-25 23:07:49.37457+00', NULL),
+	(304, 312, 'variant_color', '5600K', '2026-04-25 23:07:49.37457+00', NULL),
+	(305, 103, 'variant_color', '17x8.5', '2026-04-25 23:07:49.37457+00', NULL),
+	(306, 104, 'variant_color', '17x8.5', '2026-04-25 23:07:49.37457+00', NULL),
+	(307, 265, 'variant_color', 'Clear', '2026-04-25 23:07:49.37457+00', NULL),
+	(308, 275, 'variant_color', 'White', '2026-04-25 23:07:49.37457+00', NULL),
+	(309, 313, 'variant_color', '5800K', '2026-04-25 23:07:49.37457+00', NULL),
+	(310, 258, 'variant_color', 'Clear', '2026-04-25 23:07:49.37457+00', NULL),
+	(311, 72, 'variant_color', '5000K', '2026-04-25 23:07:49.37457+00', NULL),
+	(312, 75, 'variant_color', '4200K', '2026-04-25 23:07:49.37457+00', NULL),
+	(313, 76, 'variant_color', '3000K', '2026-04-25 23:07:49.37457+00', NULL),
+	(314, 61, 'variant_color', '6000K', '2026-04-25 23:07:49.37457+00', NULL),
+	(315, 60, 'variant_color', '6000K', '2026-04-25 23:07:49.37457+00', NULL),
+	(316, 63, 'variant_color', '6000-6500K', '2026-04-25 23:07:49.37457+00', NULL),
+	(317, 77, 'variant_color', 'universal', '2026-04-25 23:07:49.37457+00', NULL),
+	(318, 30, 'variant_color', 'universal
+', '2026-04-25 23:07:49.37457+00', NULL),
+	(319, 65, 'variant_color', '6000-6500K', '2026-04-25 23:07:49.37457+00', NULL),
+	(320, 84, 'variant_color', '18x9 ', '2026-04-25 23:07:49.37457+00', NULL),
+	(321, 86, 'variant_color', '20x9.5', '2026-04-25 23:07:49.37457+00', NULL),
+	(322, 90, 'variant_color', '17x9.5', '2026-04-25 23:07:49.37457+00', NULL),
+	(323, 91, 'variant_color', '17x8.5', '2026-04-25 23:07:49.37457+00', NULL),
+	(324, 94, 'variant_color', '17x8', '2026-04-25 23:07:49.37457+00', NULL),
+	(325, 85, 'variant_color', '17x8', '2026-04-25 23:07:49.37457+00', NULL),
+	(326, 95, 'variant_color', '17x8.5', '2026-04-25 23:07:49.37457+00', NULL),
+	(327, 96, 'variant_color', '17x8.5', '2026-04-25 23:07:49.37457+00', NULL),
+	(328, 97, 'variant_color', '17x9', '2026-04-25 23:07:49.37457+00', NULL),
+	(329, 99, 'variant_color', '18x9', '2026-04-25 23:07:49.37457+00', NULL),
+	(330, 100, 'variant_color', '17x8.5', '2026-04-25 23:07:49.37457+00', NULL),
+	(331, 92, 'variant_color', '17x8.5', '2026-04-25 23:07:49.37457+00', NULL),
+	(332, 105, 'variant_color', '17x8.5', '2026-04-25 23:07:49.37457+00', NULL),
+	(333, 106, 'variant_color', '16x8', '2026-04-25 23:07:49.37457+00', NULL),
+	(334, 107, 'variant_color', '16x8', '2026-04-25 23:07:49.37457+00', NULL),
+	(335, 108, 'variant_color', '16x10', '2026-04-25 23:07:49.37457+00', NULL),
+	(336, 109, 'variant_color', '17x8.5', '2026-04-25 23:07:49.37457+00', NULL),
+	(337, 111, 'variant_color', '17x8.5', '2026-04-25 23:07:49.37457+00', NULL),
+	(338, 113, 'variant_color', '17x8.5', '2026-04-25 23:07:49.37457+00', NULL),
+	(339, 114, 'variant_color', '17x8.5', '2026-04-25 23:07:49.37457+00', NULL),
+	(340, 115, 'variant_color', '17x8.5', '2026-04-25 23:07:49.37457+00', NULL),
+	(341, 116, 'variant_color', '17x8.5', '2026-04-25 23:07:49.37457+00', NULL),
+	(342, 117, 'variant_color', '17x8.5', '2026-04-25 23:07:49.37457+00', NULL),
+	(343, 118, 'variant_color', '17x8.5', '2026-04-25 23:07:49.37457+00', NULL),
+	(344, 119, 'variant_color', '17x8.5', '2026-04-25 23:07:49.37457+00', NULL),
+	(345, 120, 'variant_color', '17x9', '2026-04-25 23:07:49.37457+00', NULL),
+	(346, 127, 'variant_color', '17x9', '2026-04-25 23:07:49.37457+00', NULL),
+	(347, 128, 'variant_color', '18x9', '2026-04-25 23:07:49.37457+00', NULL),
+	(348, 130, 'variant_color', '17x9', '2026-04-25 23:07:49.37457+00', NULL),
+	(349, 129, 'variant_color', '17x9', '2026-04-25 23:07:49.37457+00', NULL),
+	(350, 144, 'variant_color', '17x8.5', '2026-04-25 23:07:49.37457+00', NULL),
+	(351, 112, 'variant_color', '17x8.5', '2026-04-25 23:07:49.37457+00', NULL),
+	(352, 179, 'tags', '[]', '2026-04-25 23:07:49.37457+00', NULL),
+	(353, 179, 'color', 'Navara/Terra', '2026-04-25 23:07:49.37457+00', NULL),
+	(354, 179, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(356, 180, 'tags', '[]', '2026-04-25 23:07:49.37457+00', NULL),
+	(357, 180, 'color', 'Hilux', '2026-04-25 23:07:49.37457+00', NULL),
+	(358, 180, 'internal_notes', 'Need Price', '2026-04-25 23:07:49.37457+00', NULL),
+	(360, 186, 'color', 'Montero', '2026-04-25 23:07:49.37457+00', NULL),
+	(361, 186, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(363, 156, 'tags', '[]', '2026-04-25 23:07:49.37457+00', NULL),
+	(364, 156, 'color', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(365, 156, 'internal_notes', 'Lexus, FJ Cruiser, Prado, Mazda MPY', '2026-04-25 23:07:49.37457+00', NULL),
+	(366, 156, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(367, 208, 'color', '121/118S', '2026-04-25 23:07:49.37457+00', NULL),
+	(368, 208, 'internal_notes', 'Need Price', '2026-04-25 23:07:49.37457+00', NULL),
+	(369, 208, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(370, 226, 'color', 'Black', '2026-04-25 23:07:49.37457+00', NULL),
+	(371, 226, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(372, 226, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(373, 227, 'color', 'Black', '2026-04-25 23:07:49.37457+00', NULL),
+	(374, 227, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(375, 227, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(376, 267, 'color', 'White', '2026-04-25 23:07:49.37457+00', NULL),
+	(377, 267, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(378, 267, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(379, 272, 'color', 'Ion Yellow', '2026-04-25 23:07:49.37457+00', NULL),
+	(380, 272, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(381, 272, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(382, 280, 'color', 'Black', '2026-04-25 23:07:49.37457+00', NULL),
+	(383, 280, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(384, 280, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(385, 283, 'color', 'Clear', '2026-04-25 23:07:49.37457+00', NULL),
+	(386, 283, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(387, 283, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(388, 290, 'color', 'Clear', '2026-04-25 23:07:49.37457+00', NULL),
+	(389, 290, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(390, 290, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(391, 294, 'color', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(392, 294, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(394, 299, 'color', 'Black', '2026-04-25 23:07:49.37457+00', NULL),
+	(395, 299, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(396, 299, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(397, 304, 'color', 'Yellow', '2026-04-25 23:07:49.37457+00', NULL),
+	(398, 304, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(399, 304, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(400, 36, 'tags', '[]', '2026-04-25 23:07:49.37457+00', NULL),
+	(401, 36, 'color', 'Yellow', '2026-04-25 23:07:49.37457+00', NULL),
+	(402, 36, 'last_restock', '{"date": "2026-02-17T23:21:56.532Z", "quantity": 1}', '2026-04-25 23:07:49.37457+00', NULL),
+	(403, 36, 'variant_type', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(404, 36, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(406, 300, 'color', 'Black', '2026-04-25 23:07:49.37457+00', NULL),
+	(407, 300, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(408, 300, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(409, 318, 'color', 'Black ', '2026-04-25 23:07:49.37457+00', NULL),
+	(410, 318, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(411, 318, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(412, 323, 'color', 'Amber', '2026-04-25 23:07:49.37457+00', NULL),
+	(413, 323, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(414, 323, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(415, 234, 'color', 'Black', '2026-04-25 23:07:49.37457+00', NULL),
+	(416, 234, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(417, 234, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(418, 327, 'tags', '[]', '2026-04-25 23:07:49.37457+00', NULL),
+	(419, 327, 'color', '6000k', '2026-04-25 23:07:49.37457+00', NULL),
+	(420, 327, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(421, 327, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(422, 330, 'tags', '[]', '2026-04-25 23:07:49.37457+00', NULL),
+	(423, 330, 'color', '6500K', '2026-04-25 23:07:49.37457+00', NULL),
+	(424, 330, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(425, 330, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(426, 331, 'tags', '[]', '2026-04-25 23:07:49.37457+00', NULL),
+	(427, 331, 'color', '6000K', '2026-04-25 23:07:49.37457+00', NULL),
+	(428, 331, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(429, 331, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(430, 221, 'tags', '[]', '2026-04-25 23:07:49.37457+00', NULL),
+	(431, 221, 'color', '120/117Q', '2026-04-25 23:07:49.37457+00', NULL),
+	(432, 221, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(433, 221, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(434, 286, 'tags', '[]', '2026-04-25 23:07:49.37457+00', NULL),
+	(435, 286, 'color', '121/118S', '2026-04-25 23:07:49.37457+00', NULL),
+	(436, 286, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(437, 286, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(438, 213, 'tags', '[]', '2026-04-25 23:07:49.37457+00', NULL),
+	(439, 213, 'color', '123/120Q', '2026-04-25 23:07:49.37457+00', NULL),
+	(440, 213, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(441, 213, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(442, 255, 'color', 'White', '2026-04-25 23:07:49.37457+00', NULL),
+	(443, 255, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(445, 276, 'tags', '[]', '2026-04-25 23:07:49.37457+00', NULL),
+	(446, 276, 'color', 'White/Yellow', '2026-04-25 23:07:49.37457+00', NULL),
+	(447, 276, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(448, 276, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(449, 314, 'color', '5600k', '2026-04-25 23:07:49.37457+00', NULL),
+	(450, 314, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(451, 314, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(452, 311, 'color', 'Chrome', '2026-04-25 23:07:49.37457+00', NULL),
+	(453, 311, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(454, 311, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(455, 181, 'color', 'Triton/Montero', '2026-04-25 23:07:49.37457+00', NULL),
+	(456, 181, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(458, 187, 'color', 'Fortuner/innova', '2026-04-25 23:07:49.37457+00', NULL),
+	(459, 187, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(461, 201, 'color', '112s', '2026-04-25 23:07:49.37457+00', NULL),
+	(462, 201, 'internal_notes', 'Need price', '2026-04-25 23:07:49.37457+00', NULL),
+	(463, 201, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(464, 228, 'color', 'Black', '2026-04-25 23:07:49.37457+00', NULL),
+	(465, 228, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(466, 228, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(467, 229, 'color', 'Chrome', '2026-04-25 23:07:49.37457+00', NULL),
+	(468, 229, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(469, 229, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(470, 230, 'color', 'Chrome', '2026-04-25 23:07:49.37457+00', NULL),
+	(471, 230, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(472, 230, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(473, 235, 'color', 'Amber', '2026-04-25 23:07:49.37457+00', NULL),
+	(474, 235, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(475, 235, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(476, 256, 'tags', '[]', '2026-04-25 23:07:49.37457+00', NULL),
+	(477, 256, 'color', 'Black', '2026-04-25 23:07:49.37457+00', NULL),
+	(478, 256, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(479, 256, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(480, 268, 'color', 'Clear', '2026-04-25 23:07:49.37457+00', NULL),
+	(481, 268, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(482, 268, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(483, 273, 'color', 'Yellow', '2026-04-25 23:07:49.37457+00', NULL),
+	(484, 273, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(485, 273, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(486, 277, 'tags', '[]', '2026-04-25 23:07:49.37457+00', NULL),
+	(487, 277, 'color', 'Clear', '2026-04-25 23:07:49.37457+00', NULL),
+	(488, 277, 'internal_notes', 'Need Price', '2026-04-25 23:07:49.37457+00', NULL),
+	(489, 277, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(490, 281, 'color', 'n/a', '2026-04-25 23:07:49.37457+00', NULL),
+	(491, 281, 'internal_notes', 'Need Price', '2026-04-25 23:07:49.37457+00', NULL),
+	(492, 281, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(493, 291, 'color', 'Clear', '2026-04-25 23:07:49.37457+00', NULL),
+	(494, 291, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(495, 291, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(496, 295, 'color', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(497, 295, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(499, 301, 'color', 'Yellow', '2026-04-25 23:07:49.37457+00', NULL),
+	(500, 301, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(501, 301, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(502, 306, 'color', 'Tri Color', '2026-04-25 23:07:49.37457+00', NULL),
+	(503, 306, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(504, 306, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(505, 307, 'color', 'Yellow', '2026-04-25 23:07:49.37457+00', NULL),
+	(506, 307, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(507, 307, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(508, 315, 'color', 'Black', '2026-04-25 23:07:49.37457+00', NULL),
+	(509, 315, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(510, 315, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(511, 248, 'tags', '[]', '2026-04-25 23:07:49.37457+00', NULL),
+	(512, 248, 'color', 'Clear', '2026-04-25 23:07:49.37457+00', NULL),
+	(513, 248, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(514, 248, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(515, 319, 'tags', '[]', '2026-04-25 23:07:49.37457+00', NULL),
+	(516, 319, 'color', 'Black', '2026-04-25 23:07:49.37457+00', NULL),
+	(517, 319, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(518, 319, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(519, 324, 'color', 'Clear', '2026-04-25 23:07:49.37457+00', NULL),
+	(520, 324, 'internal_notes', 'Need Price', '2026-04-25 23:07:49.37457+00', NULL),
+	(521, 324, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(522, 328, 'color', '6000k', '2026-04-25 23:07:49.37457+00', NULL),
+	(523, 328, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(524, 328, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(525, 332, 'color', '6000K', '2026-04-25 23:07:49.37457+00', NULL),
+	(526, 332, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(527, 332, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(528, 57, 'tags', '[]', '2026-04-25 23:07:49.37457+00', NULL),
+	(529, 57, 'color', 'Yellow', '2026-04-25 23:07:49.37457+00', NULL),
+	(530, 57, 'last_restock', '{"date": "2026-02-17T23:21:56.532Z", "quantity": 1}', '2026-04-25 23:07:49.37457+00', NULL),
+	(531, 57, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(532, 222, 'tags', '[]', '2026-04-25 23:07:49.37457+00', NULL),
+	(533, 222, 'color', '104/101S', '2026-04-25 23:07:49.37457+00', NULL),
+	(534, 222, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(535, 222, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(536, 216, 'tags', '[]', '2026-04-25 23:07:49.37457+00', NULL),
+	(537, 216, 'color', '106Q', '2026-04-25 23:07:49.37457+00', NULL),
+	(538, 216, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(539, 216, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(540, 215, 'tags', '[]', '2026-04-25 23:07:49.37457+00', NULL),
+	(541, 215, 'color', '112Q', '2026-04-25 23:07:49.37457+00', NULL),
+	(542, 215, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(543, 215, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(544, 287, 'tags', '[]', '2026-04-25 23:07:49.37457+00', NULL),
+	(545, 287, 'color', '118/115S(121R)', '2026-04-25 23:07:49.37457+00', NULL),
+	(546, 287, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(547, 287, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(548, 209, 'tags', '[]', '2026-04-25 23:07:49.37457+00', NULL),
+	(549, 209, 'color', '124/121S', '2026-04-25 23:07:49.37457+00', NULL),
+	(550, 209, 'internal_notes', 'Need Price', '2026-04-25 23:07:49.37457+00', NULL),
+	(551, 209, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(552, 261, 'color', 'Clear', '2026-04-25 23:07:49.37457+00', NULL),
+	(553, 261, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(554, 261, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(555, 28, 'tags', '[]', '2026-04-25 23:07:49.37457+00', NULL),
+	(556, 28, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(558, 182, 'tags', '[]', '2026-04-25 23:07:49.37457+00', NULL),
+	(559, 182, 'color', 'Navara', '2026-04-25 23:07:49.37457+00', NULL),
+	(560, 182, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(562, 188, 'color', 'Everest', '2026-04-25 23:07:49.37457+00', NULL),
+	(563, 188, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(565, 202, 'color', '110H', '2026-04-25 23:07:49.37457+00', NULL),
+	(566, 202, 'internal_notes', 'Need price', '2026-04-25 23:07:49.37457+00', NULL),
+	(567, 202, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(568, 223, 'color', '108/106S', '2026-04-25 23:07:49.37457+00', NULL),
+	(569, 223, 'internal_notes', 'Need Price', '2026-04-25 23:07:49.37457+00', NULL),
+	(570, 223, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(571, 231, 'color', 'Black', '2026-04-25 23:07:49.37457+00', NULL),
+	(572, 231, 'internal_notes', 'Original', '2026-04-25 23:07:49.37457+00', NULL),
+	(573, 231, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(574, 249, 'color', 'Amber', '2026-04-25 23:07:49.37457+00', NULL),
+	(575, 249, 'internal_notes', 'with Harness', '2026-04-25 23:07:49.37457+00', NULL),
+	(576, 249, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(577, 269, 'color', 'Red', '2026-04-25 23:07:49.37457+00', NULL),
+	(578, 269, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(579, 269, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(580, 278, 'color', 'Amber', '2026-04-25 23:07:49.37457+00', NULL),
+	(581, 278, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(582, 278, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(583, 153, 'color', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(584, 153, 'internal_notes', 'Montero Strada', '2026-04-25 23:07:49.37457+00', NULL),
+	(585, 153, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(586, 292, 'color', 'Tri-Colour', '2026-04-25 23:07:49.37457+00', NULL),
+	(587, 292, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(588, 292, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(589, 257, 'tags', '[]', '2026-04-25 23:07:49.37457+00', NULL),
+	(590, 257, 'color', 'Black', '2026-04-25 23:07:49.37457+00', NULL),
+	(591, 257, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(592, 257, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(593, 302, 'color', 'Yellow', '2026-04-25 23:07:49.37457+00', NULL),
+	(594, 302, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(595, 302, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(596, 308, 'color', 'Yellow', '2026-04-25 23:07:49.37457+00', NULL),
+	(597, 308, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(598, 308, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(599, 309, 'color', 'Yellow', '2026-04-25 23:07:49.37457+00', NULL),
+	(600, 309, 'internal_notes', 'HILUX', '2026-04-25 23:07:49.37457+00', NULL),
+	(601, 309, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(602, 316, 'color', 'Black', '2026-04-25 23:07:49.37457+00', NULL),
+	(603, 316, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(604, 316, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(605, 320, 'color', 'Black', '2026-04-25 23:07:49.37457+00', NULL),
+	(606, 320, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(607, 320, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(608, 325, 'color', 'Clear', '2026-04-25 23:07:49.37457+00', NULL),
+	(609, 325, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(610, 325, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(611, 329, 'tags', '[]', '2026-04-25 23:07:49.37457+00', NULL),
+	(612, 329, 'color', '6000k', '2026-04-25 23:07:49.37457+00', NULL),
+	(613, 329, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(614, 329, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(615, 333, 'color', '112T', '2026-04-25 23:07:49.37457+00', NULL),
+	(616, 333, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(617, 333, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(618, 288, 'tags', '[]', '2026-04-25 23:07:49.37457+00', NULL),
+	(619, 288, 'color', '117/114S', '2026-04-25 23:07:49.37457+00', NULL),
+	(620, 288, 'internal_notes', 'Need Price', '2026-04-25 23:07:49.37457+00', NULL),
+	(621, 288, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(622, 210, 'tags', '[]', '2026-04-25 23:07:49.37457+00', NULL),
+	(623, 210, 'color', '128/125S', '2026-04-25 23:07:49.37457+00', NULL),
+	(624, 210, 'internal_notes', 'Need Price', '2026-04-25 23:07:49.37457+00', NULL),
+	(625, 210, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(626, 217, 'tags', '[]', '2026-04-25 23:07:49.37457+00', NULL),
+	(627, 217, 'color', '115S', '2026-04-25 23:07:49.37457+00', NULL),
+	(628, 217, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(629, 217, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(630, 264, 'color', 'Clear', '2026-04-25 23:07:49.37457+00', NULL),
+	(631, 264, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(632, 264, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(633, 274, 'color', 'Clear', '2026-04-25 23:07:49.37457+00', NULL),
+	(634, 274, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(635, 274, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(636, 296, 'color', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(637, 296, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(639, 183, 'color', 'Fj Cruiser', '2026-04-25 23:07:49.37457+00', NULL),
+	(640, 183, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(642, 189, 'color', 'Navara', '2026-04-25 23:07:49.37457+00', NULL),
+	(643, 189, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(645, 203, 'tags', '[]', '2026-04-25 23:07:49.37457+00', NULL),
+	(646, 203, 'color', '116T', '2026-04-25 23:07:49.37457+00', NULL),
+	(647, 203, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(648, 203, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(649, 232, 'color', 'Black', '2026-04-25 23:07:49.37457+00', NULL),
+	(650, 232, 'internal_notes', 'Original', '2026-04-25 23:07:49.37457+00', NULL),
+	(651, 232, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(652, 238, 'color', 'Amber', '2026-04-25 23:07:49.37457+00', NULL),
+	(653, 238, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(654, 238, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(655, 250, 'color', 'Black', '2026-04-25 23:07:49.37457+00', NULL),
+	(656, 250, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(657, 250, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(658, 251, 'color', 'Black', '2026-04-25 23:07:49.37457+00', NULL),
+	(659, 251, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(660, 251, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(661, 270, 'color', 'White', '2026-04-25 23:07:49.37457+00', NULL),
+	(662, 270, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(663, 270, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(664, 279, 'color', 'Clear', '2026-04-25 23:07:49.37457+00', NULL),
+	(665, 279, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(666, 279, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(667, 284, 'color', 'Clear', '2026-04-25 23:07:49.37457+00', NULL),
+	(668, 284, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(669, 284, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(670, 285, 'color', 'Clear', '2026-04-25 23:07:49.37457+00', NULL),
+	(671, 285, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(672, 285, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(673, 297, 'color', 'White/Amber', '2026-04-25 23:07:49.37457+00', NULL),
+	(674, 297, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(675, 297, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(676, 205, 'tags', '[]', '2026-04-25 23:07:49.37457+00', NULL),
+	(677, 205, 'color', '116/113R', '2026-04-25 23:07:49.37457+00', NULL),
+	(678, 205, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(679, 205, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(680, 293, 'tags', '[]', '2026-04-25 23:07:49.37457+00', NULL),
+	(681, 293, 'color', '116T', '2026-04-25 23:07:49.37457+00', NULL),
+	(682, 293, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(683, 293, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(684, 62, 'color', '3000K', '2026-04-25 23:07:49.37457+00', NULL),
+	(685, 62, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(687, 64, 'color', '6000-6500K', '2026-04-25 23:07:49.37457+00', NULL),
+	(688, 64, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(690, 298, 'color', 'White', '2026-04-25 23:07:49.37457+00', NULL),
+	(691, 298, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(692, 298, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(693, 237, 'color', 'Clear', '2026-04-25 23:07:49.37457+00', NULL),
+	(694, 237, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(695, 237, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(696, 303, 'tags', '[]', '2026-04-25 23:07:49.37457+00', NULL),
+	(697, 303, 'color', 'Yellow', '2026-04-25 23:07:49.37457+00', NULL),
+	(698, 303, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(699, 303, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(700, 310, 'color', 'Tri Color', '2026-04-25 23:07:49.37457+00', NULL),
+	(701, 310, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(702, 310, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(703, 317, 'color', 'Black', '2026-04-25 23:07:49.37457+00', NULL),
+	(704, 317, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(705, 317, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(706, 219, 'tags', '[]', '2026-04-25 23:07:49.37457+00', NULL),
+	(707, 219, 'color', '112T', '2026-04-25 23:07:49.37457+00', NULL),
+	(708, 219, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(709, 219, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(710, 321, 'color', 'Black', '2026-04-25 23:07:49.37457+00', NULL),
+	(711, 321, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(712, 321, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(713, 322, 'color', 'Amber', '2026-04-25 23:07:49.37457+00', NULL),
+	(714, 322, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(715, 322, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(716, 326, 'color', '6000k', '2026-04-25 23:07:49.37457+00', NULL),
+	(717, 326, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(718, 326, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(719, 218, 'tags', '[]', '2026-04-25 23:07:49.37457+00', NULL),
+	(720, 218, 'color', '10PR', '2026-04-25 23:07:49.37457+00', NULL),
+	(721, 218, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(722, 218, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(723, 204, 'tags', '[]', '2026-04-25 23:07:49.37457+00', NULL),
+	(724, 204, 'color', '114T', '2026-04-25 23:07:49.37457+00', NULL),
+	(725, 204, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(726, 204, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(727, 289, 'tags', '[]', '2026-04-25 23:07:49.37457+00', NULL),
+	(728, 289, 'color', '109T', '2026-04-25 23:07:49.37457+00', NULL),
+	(729, 289, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(730, 289, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(731, 211, 'tags', '[]', '2026-04-25 23:07:49.37457+00', NULL),
+	(732, 211, 'color', '116/113S', '2026-04-25 23:07:49.37457+00', NULL),
+	(733, 211, 'internal_notes', 'Need Price', '2026-04-25 23:07:49.37457+00', NULL),
+	(734, 211, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(735, 305, 'color', 'Yellow', '2026-04-25 23:07:49.37457+00', NULL),
+	(736, 305, 'internal_notes', 'Fog Light', '2026-04-25 23:07:49.37457+00', NULL),
+	(737, 305, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(738, 184, 'tags', '[]', '2026-04-25 23:07:49.37457+00', NULL),
+	(739, 184, 'color', 'Jimny', '2026-04-25 23:07:49.37457+00', NULL),
+	(740, 184, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(742, 190, 'color', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(743, 190, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(744, 190, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(745, 66, 'color', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(746, 66, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(747, 24, 'tags', '[]', '2026-04-25 23:07:49.37457+00', NULL),
+	(748, 24, 'color', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(749, 24, 'last_restock', '{"date": "2026-02-17T04:04:09.409Z", "quantity": 1}', '2026-04-25 23:07:49.37457+00', NULL),
+	(750, 24, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(751, 34, 'tags', '[]', '2026-04-25 23:07:49.37457+00', NULL),
+	(752, 34, 'color', 'Red', '2026-04-25 23:07:49.37457+00', NULL),
+	(753, 34, 'last_restock', '{"date": "2026-02-17T23:21:56.532Z", "quantity": 1}', '2026-04-25 23:07:49.37457+00', NULL),
+	(754, 34, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(755, 35, 'tags', '[]', '2026-04-25 23:07:49.37457+00', NULL),
+	(756, 35, 'color', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(757, 35, 'last_restock', '{"date": "2026-02-17T23:21:56.532Z", "quantity": 1}', '2026-04-25 23:07:49.37457+00', NULL),
+	(758, 35, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(759, 15, 'tags', '[]', '2026-04-25 23:07:49.37457+00', NULL),
+	(760, 15, 'color', '4300', '2026-04-25 23:07:49.37457+00', NULL),
+	(761, 15, 'last_restock', '{"date": "2026-02-17T04:04:09.409Z", "quantity": 1}', '2026-04-25 23:07:49.37457+00', NULL),
+	(762, 15, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(763, 27, 'tags', '[]', '2026-04-25 23:07:49.37457+00', NULL),
+	(764, 27, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(766, 32, 'tags', '[]', '2026-04-25 23:07:49.37457+00', NULL),
+	(767, 32, 'color', 'Red', '2026-04-25 23:07:49.37457+00', NULL),
+	(768, 32, 'last_restock', '{"date": "2026-02-17T23:21:56.532Z", "quantity": 1}', '2026-04-25 23:07:49.37457+00', NULL),
+	(769, 32, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(770, 191, 'color', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(771, 191, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(772, 191, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(773, 20, 'tags', '[]', '2026-04-25 23:07:49.37457+00', NULL),
+	(774, 20, 'color', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(775, 20, 'socket', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(776, 20, 'last_restock', '{"date": "2026-02-17T04:04:09.409Z", "quantity": 1}', '2026-04-25 23:07:49.37457+00', NULL),
+	(777, 20, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(779, 41, 'tags', '[]', '2026-04-25 23:07:49.37457+00', NULL),
+	(780, 41, 'color', 'Purple', '2026-04-25 23:07:49.37457+00', NULL),
+	(781, 41, 'last_restock', '{"date": "2026-02-17T23:21:56.532Z", "quantity": 1}', '2026-04-25 23:07:49.37457+00', NULL),
+	(782, 41, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(783, 33, 'tags', '[]', '2026-04-25 23:07:49.37457+00', NULL),
+	(784, 33, 'color', 'Red', '2026-04-25 23:07:49.37457+00', NULL),
+	(1035, 225, 'color', 'Black', '2026-04-25 23:07:49.37457+00', NULL),
+	(785, 33, 'last_restock', '{"date": "2026-02-17T23:21:56.532Z", "quantity": 1}', '2026-04-25 23:07:49.37457+00', NULL),
+	(786, 33, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(787, 55, 'tags', '[]', '2026-04-25 23:07:49.37457+00', NULL),
+	(788, 55, 'color', 'Green', '2026-04-25 23:07:49.37457+00', NULL),
+	(789, 55, 'last_restock', '{"date": "2026-02-17T23:21:56.532Z", "quantity": 1}', '2026-04-25 23:07:49.37457+00', NULL),
+	(790, 55, 'variant_type', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(791, 55, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(792, 45, 'tags', '[]', '2026-04-25 23:07:49.37457+00', NULL),
+	(793, 45, 'color', 'Yellow', '2026-04-25 23:07:49.37457+00', NULL),
+	(794, 45, 'last_restock', '{"date": "2026-02-17T23:21:56.532Z", "quantity": 1}', '2026-04-25 23:07:49.37457+00', NULL),
+	(795, 45, 'variant_type', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(796, 45, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(797, 44, 'tags', '[]', '2026-04-25 23:07:49.37457+00', NULL),
+	(798, 44, 'color', 'Purple', '2026-04-25 23:07:49.37457+00', NULL),
+	(799, 44, 'last_restock', '{"date": "2026-02-17T23:21:56.532Z", "quantity": 1}', '2026-04-25 23:07:49.37457+00', NULL),
+	(800, 44, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(801, 51, 'tags', '[]', '2026-04-25 23:07:49.37457+00', NULL),
+	(802, 51, 'color', 'Green', '2026-04-25 23:07:49.37457+00', NULL),
+	(803, 51, 'last_restock', '{"date": "2026-02-17T23:21:56.532Z", "quantity": 1}', '2026-04-25 23:07:49.37457+00', NULL),
+	(804, 51, 'variant_type', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(805, 51, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(806, 59, 'tags', '[]', '2026-04-25 23:07:49.37457+00', NULL),
+	(807, 59, 'color', 'Yellow', '2026-04-25 23:07:49.37457+00', NULL),
+	(808, 59, 'last_restock', '{"date": "2026-02-17T23:21:56.532Z", "quantity": 1}', '2026-04-25 23:07:49.37457+00', NULL),
+	(809, 59, 'variant_type', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(810, 59, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(811, 88, 'color', '18x9', '2026-04-25 23:07:49.37457+00', NULL),
+	(812, 88, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(814, 88, 'spec_1772000809098', '12', '2026-04-25 23:07:49.37457+00', NULL),
+	(815, 42, 'tags', '[]', '2026-04-25 23:07:49.37457+00', NULL),
+	(816, 42, 'color', 'Yellow', '2026-04-25 23:07:49.37457+00', NULL),
+	(817, 42, 'last_restock', '{"date": "2026-02-17T23:21:56.532Z", "quantity": 1}', '2026-04-25 23:07:49.37457+00', NULL),
+	(818, 42, 'variant_type', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(819, 42, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(820, 52, 'tags', '[]', '2026-04-25 23:07:49.37457+00', NULL),
+	(821, 52, 'color', 'Yellow', '2026-04-25 23:07:49.37457+00', NULL),
+	(822, 52, 'last_restock', '{"date": "2026-02-17T23:21:56.532Z", "quantity": 1}', '2026-04-25 23:07:49.37457+00', NULL),
+	(823, 52, 'variant_type', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(824, 52, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(825, 43, 'tags', '[]', '2026-04-25 23:07:49.37457+00', NULL),
+	(826, 43, 'color', 'Yellow', '2026-04-25 23:07:49.37457+00', NULL),
+	(827, 43, 'last_restock', '{"date": "2026-02-17T23:21:56.532Z", "quantity": 1}', '2026-04-25 23:07:49.37457+00', NULL),
+	(828, 43, 'variant_type', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(829, 43, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(831, 58, 'tags', '[]', '2026-04-25 23:07:49.37457+00', NULL),
+	(832, 58, 'color', 'Yellow', '2026-04-25 23:07:49.37457+00', NULL),
+	(833, 58, 'last_restock', '{"date": "2026-02-17T23:21:56.532Z", "quantity": 1}', '2026-04-25 23:07:49.37457+00', NULL),
+	(834, 58, 'variant_type', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(835, 58, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(837, 54, 'tags', '[]', '2026-04-25 23:07:49.37457+00', NULL),
+	(838, 54, 'color', 'Yellow', '2026-04-25 23:07:49.37457+00', NULL),
+	(839, 54, 'last_restock', '{"date": "2026-02-17T23:21:56.532Z", "quantity": 1}', '2026-04-25 23:07:49.37457+00', NULL),
+	(840, 54, 'variant_type', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(841, 54, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(843, 53, 'tags', '[]', '2026-04-25 23:07:49.37457+00', NULL),
+	(844, 53, 'color', 'Green', '2026-04-25 23:07:49.37457+00', NULL),
+	(845, 53, 'last_restock', '{"date": "2026-02-17T23:21:56.532Z", "quantity": 1}', '2026-04-25 23:07:49.37457+00', NULL),
+	(846, 53, 'variant_type', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(847, 53, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(849, 81, 'tags', '[]', '2026-04-25 23:07:49.37457+00', NULL),
+	(850, 81, 'color', '16x6', '2026-04-25 23:07:49.37457+00', NULL),
+	(851, 81, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(853, 81, 'spec_1772000809098', '-5', '2026-04-25 23:07:49.37457+00', NULL),
+	(854, 93, 'color', '17x9', '2026-04-25 23:07:49.37457+00', NULL),
+	(855, 93, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(857, 93, 'spec_1772000809098', '12', '2026-04-25 23:07:49.37457+00', NULL),
+	(858, 89, 'color', '17', '2026-04-25 23:07:49.37457+00', NULL),
+	(859, 89, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(861, 89, 'spec_1772000809098', 'n/a', '2026-04-25 23:07:49.37457+00', NULL),
+	(862, 82, 'color', '17x8.5', '2026-04-25 23:07:49.37457+00', NULL),
+	(863, 82, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(865, 82, 'spec_1772000809098', '-10', '2026-04-25 23:07:49.37457+00', NULL),
+	(866, 98, 'color', '20x9.5', '2026-04-25 23:07:49.37457+00', NULL),
+	(867, 98, 'internal_notes', 'From Warwin', '2026-04-25 23:07:49.37457+00', NULL),
+	(869, 98, 'spec_1772000809098', '1', '2026-04-25 23:07:49.37457+00', NULL),
+	(870, 101, 'color', '20x9', '2026-04-25 23:07:49.37457+00', NULL),
+	(871, 101, 'internal_notes', '1 on Display', '2026-04-25 23:07:49.37457+00', NULL),
+	(873, 101, 'spec_1772000809098', '18', '2026-04-25 23:07:49.37457+00', NULL),
+	(874, 102, 'color', '20x9', '2026-04-25 23:07:49.37457+00', NULL),
+	(875, 102, 'internal_notes', '1 on Display, 1 with JK', '2026-04-25 23:07:49.37457+00', NULL),
+	(877, 102, 'spec_1772000809098', '30', '2026-04-25 23:07:49.37457+00', NULL),
+	(878, 56, 'tags', '[]', '2026-04-25 23:07:49.37457+00', NULL),
+	(879, 56, 'color', 'Green', '2026-04-25 23:07:49.37457+00', NULL),
+	(880, 56, 'last_restock', '{"date": "2026-02-17T23:21:56.532Z", "quantity": 1}', '2026-04-25 23:07:49.37457+00', NULL),
+	(881, 56, 'variant_type', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(882, 56, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(884, 110, 'color', '17x8.5', '2026-04-25 23:07:49.37457+00', NULL),
+	(885, 110, 'internal_notes', 'Jeep PCD', '2026-04-25 23:07:49.37457+00', NULL),
+	(887, 110, 'spec_1772000809098', '0', '2026-04-25 23:07:49.37457+00', NULL),
+	(888, 121, 'color', '17x8.5', '2026-04-25 23:07:49.37457+00', NULL),
+	(889, 121, 'internal_notes', 'set of 4', '2026-04-25 23:07:49.37457+00', NULL),
+	(891, 121, 'spec_1772000809098', '18', '2026-04-25 23:07:49.37457+00', NULL),
+	(892, 123, 'color', '17x8', '2026-04-25 23:07:49.37457+00', NULL),
+	(893, 123, 'internal_notes', 'set of 4', '2026-04-25 23:07:49.37457+00', NULL),
+	(895, 123, 'spec_1772000809098', '30', '2026-04-25 23:07:49.37457+00', NULL),
+	(896, 125, 'color', '16x6', '2026-04-25 23:07:49.37457+00', NULL),
+	(897, 125, 'internal_notes', 'Bearcat/Black', '2026-04-25 23:07:49.37457+00', NULL),
+	(899, 125, 'spec_1772000809098', '0', '2026-04-25 23:07:49.37457+00', NULL),
+	(900, 122, 'tags', '[]', '2026-04-25 23:07:49.37457+00', NULL),
+	(901, 122, 'color', '15x7', '2026-04-25 23:07:49.37457+00', NULL),
+	(902, 122, 'internal_notes', 'set of 5', '2026-04-25 23:07:49.37457+00', NULL),
+	(904, 122, 'spec_1772000809098', '0', '2026-04-25 23:07:49.37457+00', NULL),
+	(905, 132, 'color', '18x9', '2026-04-25 23:07:49.37457+00', NULL),
+	(906, 132, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(908, 132, 'spec_1772000809098', '20', '2026-04-25 23:07:49.37457+00', NULL),
+	(909, 138, 'color', '18x9', '2026-04-25 23:07:49.37457+00', NULL),
+	(910, 138, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(912, 138, 'spec_1772000809098', '0', '2026-04-25 23:07:49.37457+00', NULL),
+	(913, 139, 'color', '16x6', '2026-04-25 23:07:49.37457+00', NULL),
+	(914, 139, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(916, 139, 'spec_1772000809098', '-5', '2026-04-25 23:07:49.37457+00', NULL),
+	(917, 142, 'color', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(918, 142, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(920, 159, 'color', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(921, 159, 'internal_notes', 'Accent', '2026-04-25 23:07:49.37457+00', NULL),
+	(922, 159, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(923, 145, 'tags', '[]', '2026-04-25 23:07:49.37457+00', NULL),
+	(924, 145, 'color', '16x7', '2026-04-25 23:07:49.37457+00', NULL),
+	(925, 145, 'socket', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(926, 145, 'last_restock', '{"date": "2026-02-17T23:21:56.532Z", "quantity": 1}', '2026-04-25 23:07:49.37457+00', NULL),
+	(927, 145, 'internal_notes', 'set of 4', '2026-04-25 23:07:49.37457+00', NULL),
+	(929, 145, 'spec_1772000809098', '0', '2026-04-25 23:07:49.37457+00', NULL),
+	(930, 146, 'tags', '[]', '2026-04-25 23:07:49.37457+00', NULL),
+	(931, 146, 'color', '15x7', '2026-04-25 23:07:49.37457+00', NULL),
+	(932, 146, 'internal_notes', 'set of 4', '2026-04-25 23:07:49.37457+00', NULL),
+	(934, 146, 'spec_1772000809098', '-6', '2026-04-25 23:07:49.37457+00', NULL),
+	(935, 147, 'color', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(936, 147, 'internal_notes', 'New Gen Raptor', '2026-04-25 23:07:49.37457+00', NULL),
+	(937, 147, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(938, 148, 'color', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(939, 148, 'internal_notes', 'Nissan Terra', '2026-04-25 23:07:49.37457+00', NULL),
+	(940, 148, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(941, 149, 'color', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(942, 149, 'internal_notes', 'Hilux', '2026-04-25 23:07:49.37457+00', NULL),
+	(943, 149, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(944, 150, 'color', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(945, 150, 'internal_notes', '15-19 Toyota Land Cruiser/Prado 2.8L', '2026-04-25 23:07:49.37457+00', NULL),
+	(946, 150, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(947, 151, 'color', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(948, 151, 'internal_notes', 'LC200', '2026-04-25 23:07:49.37457+00', NULL),
+	(949, 151, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(950, 154, 'color', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(951, 154, 'internal_notes', 'Lexus LX470, LC/LC Prado', '2026-04-25 23:07:49.37457+00', NULL),
+	(952, 154, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(953, 155, 'color', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(954, 155, 'internal_notes', 'Ford Ranger/Everest/Raptor', '2026-04-25 23:07:49.37457+00', NULL),
+	(955, 155, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(956, 131, 'color', '17x9', '2026-04-25 23:07:49.37457+00', NULL),
+	(957, 131, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(959, 131, 'spec_1772000809098', '20', '2026-04-25 23:07:49.37457+00', NULL),
+	(960, 124, 'color', '15x8', '2026-04-25 23:07:49.37457+00', NULL),
+	(961, 124, 'internal_notes', 'Trak 2/Black', '2026-04-25 23:07:49.37457+00', NULL),
+	(963, 124, 'spec_1772000809098', '-22', '2026-04-25 23:07:49.37457+00', NULL),
+	(964, 126, 'color', '16x8', '2026-04-25 23:07:49.37457+00', NULL),
+	(965, 126, 'internal_notes', 'Trak 2/Black', '2026-04-25 23:07:49.37457+00', NULL),
+	(967, 126, 'spec_1772000809098', '0', '2026-04-25 23:07:49.37457+00', NULL),
+	(968, 157, 'color', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(969, 157, 'internal_notes', 'Honda', '2026-04-25 23:07:49.37457+00', NULL),
+	(970, 157, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(971, 158, 'color', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(972, 158, 'internal_notes', 'Navara, NP300, Nissan Frontier', '2026-04-25 23:07:49.37457+00', NULL),
+	(973, 158, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(974, 160, 'color', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(975, 160, 'internal_notes', 'Vios Gen 2', '2026-04-25 23:07:49.37457+00', NULL),
+	(976, 160, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(977, 161, 'color', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(978, 161, 'internal_notes', 'Vios 2016', '2026-04-25 23:07:49.37457+00', NULL),
+	(979, 161, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(980, 162, 'color', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(981, 162, 'internal_notes', 'Jimny 1.3', '2026-04-25 23:07:49.37457+00', NULL),
+	(982, 162, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(983, 163, 'color', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(984, 163, 'internal_notes', 'Swift 1.2 2016 & 2017', '2026-04-25 23:07:49.37457+00', NULL),
+	(985, 163, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(986, 164, 'color', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(987, 164, 'internal_notes', 'Civic 1.8 2011', '2026-04-25 23:07:49.37457+00', NULL),
+	(988, 164, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(989, 165, 'color', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(990, 165, 'internal_notes', 'Needs Price', '2026-04-25 23:07:49.37457+00', NULL),
+	(991, 165, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(992, 167, 'color', 'Ranger', '2026-04-25 23:07:49.37457+00', NULL),
+	(993, 167, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(995, 168, 'color', 'LC200', '2026-04-25 23:07:49.37457+00', NULL),
+	(996, 168, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(998, 166, 'tags', '[]', '2026-04-25 23:07:49.37457+00', NULL),
+	(999, 166, 'color', 'Hilux', '2026-04-25 23:07:49.37457+00', NULL),
+	(1000, 166, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(1002, 192, 'color', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(1003, 192, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(1004, 192, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(1005, 193, 'color', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(1006, 193, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(1007, 193, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(1008, 194, 'color', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(1009, 194, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(1010, 194, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(1011, 195, 'color', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(1012, 195, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(1013, 195, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(1014, 196, 'color', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(1015, 196, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(1016, 196, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(1017, 197, 'color', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(1018, 197, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(1019, 197, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(1020, 198, 'color', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(1021, 198, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(1022, 198, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(1023, 199, 'color', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(1024, 199, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(1025, 199, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(1026, 200, 'color', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(1027, 200, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(1028, 200, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(1029, 220, 'color', '152/149M', '2026-04-25 23:07:49.37457+00', NULL),
+	(1030, 220, 'internal_notes', 'Need Price', '2026-04-25 23:07:49.37457+00', NULL),
+	(1031, 220, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(1032, 224, 'color', 'Black', '2026-04-25 23:07:49.37457+00', NULL),
+	(1033, 224, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(1034, 224, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(1036, 225, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(1037, 225, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(1038, 233, 'color', 'Chrome', '2026-04-25 23:07:49.37457+00', NULL),
+	(1039, 233, 'internal_notes', 'Original', '2026-04-25 23:07:49.37457+00', NULL),
+	(1040, 233, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(1041, 239, 'color', 'Clear', '2026-04-25 23:07:49.37457+00', NULL),
+	(1042, 239, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(1043, 239, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(1044, 240, 'color', 'Amber', '2026-04-25 23:07:49.37457+00', NULL),
+	(1045, 240, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(1046, 240, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(1047, 241, 'color', 'Amber', '2026-04-25 23:07:49.37457+00', NULL),
+	(1048, 241, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(1049, 241, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(1050, 206, 'tags', '[]', '2026-04-25 23:07:49.37457+00', NULL),
+	(1051, 206, 'color', '114/110s ', '2026-04-25 23:07:49.37457+00', NULL),
+	(1052, 206, 'internal_notes', 'Need price', '2026-04-25 23:07:49.37457+00', NULL),
+	(1053, 206, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(1054, 266, 'color', 'Clear', '2026-04-25 23:07:49.37457+00', NULL),
+	(1055, 266, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(1056, 266, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(1057, 271, 'color', 'White/Yellow', '2026-04-25 23:07:49.37457+00', NULL),
+	(1058, 271, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(1059, 271, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(1060, 207, 'tags', '[]', '2026-04-25 23:07:49.37457+00', NULL),
+	(1061, 207, 'color', '125/122s', '2026-04-25 23:07:49.37457+00', NULL),
+	(1062, 207, 'internal_notes', 'Need price', '2026-04-25 23:07:49.37457+00', NULL),
+	(1063, 207, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(1064, 252, 'tags', '[]', '2026-04-25 23:07:49.37457+00', NULL),
+	(1065, 252, 'color', 'Clear', '2026-04-25 23:07:49.37457+00', NULL),
+	(1066, 252, 'internal_notes', 'Need Price', '2026-04-25 23:07:49.37457+00', NULL),
+	(1067, 252, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(1068, 212, 'tags', '[]', '2026-04-25 23:07:49.37457+00', NULL),
+	(1069, 212, 'color', '123/120R', '2026-04-25 23:07:49.37457+00', NULL),
+	(1070, 212, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(1071, 212, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(1072, 141, 'tags', '[]', '2026-04-25 23:07:49.37457+00', NULL),
+	(1073, 141, 'color', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(1074, 141, 'socket', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(1075, 141, 'last_restock', '{"date": "2026-02-17T04:04:09.409Z", "quantity": 1}', '2026-04-25 23:07:49.37457+00', NULL),
+	(1076, 141, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(1078, 259, 'color', 'Clear', '2026-04-25 23:07:49.37457+00', NULL),
+	(1079, 259, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(1080, 259, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(1081, 312, 'color', '5600K', '2026-04-25 23:07:49.37457+00', NULL),
+	(1082, 312, 'internal_notes', 'Need Price', '2026-04-25 23:07:49.37457+00', NULL),
+	(1083, 312, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(1084, 103, 'color', '17x8.5', '2026-04-25 23:07:49.37457+00', NULL),
+	(1085, 103, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(1087, 103, 'spec_1772000809098', '0', '2026-04-25 23:07:49.37457+00', NULL),
+	(1088, 104, 'color', '17x8.5', '2026-04-25 23:07:49.37457+00', NULL),
+	(1089, 104, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(1091, 104, 'spec_1772000809098', '-10', '2026-04-25 23:07:49.37457+00', NULL),
+	(1092, 265, 'color', 'Clear', '2026-04-25 23:07:49.37457+00', NULL),
+	(1093, 265, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(1094, 265, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(1095, 275, 'color', 'White', '2026-04-25 23:07:49.37457+00', NULL),
+	(1096, 275, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(1097, 275, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(1098, 313, 'color', '5800K', '2026-04-25 23:07:49.37457+00', NULL),
+	(1099, 313, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(1100, 313, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(1101, 258, 'color', 'Clear', '2026-04-25 23:07:49.37457+00', NULL),
+	(1102, 258, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(1103, 258, 'color_temperature', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(1104, 140, 'tags', '[]', '2026-04-25 23:07:49.37457+00', NULL),
+	(1105, 140, 'color', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(1106, 140, 'socket', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(1107, 140, 'last_restock', '{"date": "2026-02-17T04:04:09.409Z", "quantity": 1}', '2026-04-25 23:07:49.37457+00', NULL),
+	(1108, 140, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(1110, 63, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(1112, 30, 'tags', '[]', '2026-04-25 23:07:49.37457+00', NULL),
+	(1113, 30, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(1114, 65, 'color', '6000-6500K', '2026-04-25 23:07:49.37457+00', NULL),
+	(1115, 65, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(1117, 84, 'color', '18x9 ', '2026-04-25 23:07:49.37457+00', NULL),
+	(1118, 84, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(1120, 84, 'spec_1772000809098', '0', '2026-04-25 23:07:49.37457+00', NULL),
+	(1121, 86, 'color', '20x9.5', '2026-04-25 23:07:49.37457+00', NULL),
+	(1122, 86, 'internal_notes', '1 on Display', '2026-04-25 23:07:49.37457+00', NULL),
+	(1124, 86, 'spec_1772000809098', '12', '2026-04-25 23:07:49.37457+00', NULL),
+	(1125, 90, 'color', '17x9.5', '2026-04-25 23:07:49.37457+00', NULL),
+	(1126, 90, 'internal_notes', '2 on Display, 1 with JK', '2026-04-25 23:07:49.37457+00', NULL),
+	(1128, 90, 'spec_1772000809098', '-18', '2026-04-25 23:07:49.37457+00', NULL),
+	(1129, 91, 'color', '17x8.5', '2026-04-25 23:07:49.37457+00', NULL),
+	(1130, 91, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(1132, 91, 'spec_1772000809098', '-10', '2026-04-25 23:07:49.37457+00', NULL),
+	(1133, 94, 'tags', '[]', '2026-04-25 23:07:49.37457+00', NULL),
+	(1134, 94, 'color', '17x8', '2026-04-25 23:07:49.37457+00', NULL),
+	(1135, 94, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(1137, 94, 'spec_1772000809098', '20', '2026-04-25 23:07:49.37457+00', NULL),
+	(1138, 85, 'tags', '[]', '2026-04-25 23:07:49.37457+00', NULL),
+	(1139, 85, 'color', '17x8', '2026-04-25 23:07:49.37457+00', NULL),
+	(1140, 85, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(1142, 85, 'spec_1772000809098', '0', '2026-04-25 23:07:49.37457+00', NULL),
+	(1143, 95, 'color', '17x8.5', '2026-04-25 23:07:49.37457+00', NULL),
+	(1144, 95, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(1146, 95, 'spec_1772000809098', '20', '2026-04-25 23:07:49.37457+00', NULL),
+	(1147, 96, 'color', '17x8.5', '2026-04-25 23:07:49.37457+00', NULL),
+	(1148, 96, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(1150, 96, 'spec_1772000809098', '20', '2026-04-25 23:07:49.37457+00', NULL),
+	(1151, 97, 'color', '17x9', '2026-04-25 23:07:49.37457+00', NULL),
+	(1152, 97, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(1154, 97, 'spec_1772000809098', '1', '2026-04-25 23:07:49.37457+00', NULL),
+	(1155, 99, 'color', '18x9', '2026-04-25 23:07:49.37457+00', NULL),
+	(1156, 99, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(1158, 99, 'spec_1772000809098', '20', '2026-04-25 23:07:49.37457+00', NULL),
+	(1159, 100, 'color', '17x8.5', '2026-04-25 23:07:49.37457+00', NULL),
+	(1160, 100, 'internal_notes', '1 with JK', '2026-04-25 23:07:49.37457+00', NULL),
+	(1162, 100, 'spec_1772000809098', '0', '2026-04-25 23:07:49.37457+00', NULL),
+	(1163, 92, 'color', '17x8.5', '2026-04-25 23:07:49.37457+00', NULL),
+	(1164, 92, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(1166, 92, 'spec_1772000809098', '-10', '2026-04-25 23:07:49.37457+00', NULL),
+	(1167, 105, 'color', '17x8.5', '2026-04-25 23:07:49.37457+00', NULL),
+	(1168, 105, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(1170, 105, 'spec_1772000809098', '-10', '2026-04-25 23:07:49.37457+00', NULL),
+	(1171, 106, 'color', '16x8', '2026-04-25 23:07:49.37457+00', NULL),
+	(1172, 106, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(1174, 106, 'spec_1772000809098', '-20', '2026-04-25 23:07:49.37457+00', NULL),
+	(1175, 107, 'color', '16x8', '2026-04-25 23:07:49.37457+00', NULL),
+	(1176, 107, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(1178, 107, 'spec_1772000809098', '-20', '2026-04-25 23:07:49.37457+00', NULL),
+	(1179, 108, 'color', '16x10', '2026-04-25 23:07:49.37457+00', NULL),
+	(1180, 108, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(1182, 108, 'spec_1772000809098', '-44', '2026-04-25 23:07:49.37457+00', NULL),
+	(1183, 109, 'color', '17x8.5', '2026-04-25 23:07:49.37457+00', NULL),
+	(1184, 109, 'internal_notes', 'set of 4', '2026-04-25 23:07:49.37457+00', NULL),
+	(1186, 109, 'spec_1772000809098', '0', '2026-04-25 23:07:49.37457+00', NULL),
+	(1187, 111, 'color', '17x8.5', '2026-04-25 23:07:49.37457+00', NULL),
+	(1188, 111, 'internal_notes', 'with Toyota', '2026-04-25 23:07:49.37457+00', NULL),
+	(1190, 111, 'spec_1772000809098', '0', '2026-04-25 23:07:49.37457+00', NULL),
+	(1191, 113, 'color', '17x8.5', '2026-04-25 23:07:49.37457+00', NULL),
+	(1192, 113, 'internal_notes', 'set of 4', '2026-04-25 23:07:49.37457+00', NULL),
+	(1194, 113, 'spec_1772000809098', '0', '2026-04-25 23:07:49.37457+00', NULL),
+	(1195, 114, 'color', '17x8.5', '2026-04-25 23:07:49.37457+00', NULL),
+	(1196, 114, 'internal_notes', 'set of 4', '2026-04-25 23:07:49.37457+00', NULL),
+	(1198, 114, 'spec_1772000809098', '0', '2026-04-25 23:07:49.37457+00', NULL),
+	(1199, 115, 'color', '17x8.5', '2026-04-25 23:07:49.37457+00', NULL),
+	(1200, 115, 'internal_notes', 'set of 4', '2026-04-25 23:07:49.37457+00', NULL),
+	(1202, 115, 'spec_1772000809098', '0', '2026-04-25 23:07:49.37457+00', NULL),
+	(1203, 116, 'color', '17x8.5', '2026-04-25 23:07:49.37457+00', NULL),
+	(1204, 116, 'internal_notes', 'set of 4', '2026-04-25 23:07:49.37457+00', NULL),
+	(1206, 116, 'spec_1772000809098', '0', '2026-04-25 23:07:49.37457+00', NULL),
+	(1207, 117, 'color', '17x8.5', '2026-04-25 23:07:49.37457+00', NULL),
+	(1208, 117, 'internal_notes', 'set of 4', '2026-04-25 23:07:49.37457+00', NULL),
+	(1210, 117, 'spec_1772000809098', '0', '2026-04-25 23:07:49.37457+00', NULL),
+	(1211, 118, 'color', '17x8.5', '2026-04-25 23:07:49.37457+00', NULL),
+	(1212, 118, 'internal_notes', 'set of 4', '2026-04-25 23:07:49.37457+00', NULL),
+	(1214, 118, 'spec_1772000809098', '0', '2026-04-25 23:07:49.37457+00', NULL),
+	(1215, 119, 'color', '17x8.5', '2026-04-25 23:07:49.37457+00', NULL),
+	(1216, 119, 'internal_notes', 'set of 4', '2026-04-25 23:07:49.37457+00', NULL),
+	(1218, 119, 'spec_1772000809098', '-10', '2026-04-25 23:07:49.37457+00', NULL),
+	(1219, 120, 'color', '17x9', '2026-04-25 23:07:49.37457+00', NULL),
+	(1220, 120, 'internal_notes', 'set of 4', '2026-04-25 23:07:49.37457+00', NULL),
+	(1222, 120, 'spec_1772000809098', '0', '2026-04-25 23:07:49.37457+00', NULL),
+	(1223, 127, 'color', '17x9', '2026-04-25 23:07:49.37457+00', NULL),
+	(1224, 127, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(1226, 127, 'spec_1772000809098', '12', '2026-04-25 23:07:49.37457+00', NULL),
+	(1227, 128, 'color', '18x9', '2026-04-25 23:07:49.37457+00', NULL),
+	(1228, 128, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(1230, 128, 'spec_1772000809098', '12', '2026-04-25 23:07:49.37457+00', NULL),
+	(1231, 130, 'color', '17x9', '2026-04-25 23:07:49.37457+00', NULL),
+	(1232, 130, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(1234, 130, 'spec_1772000809098', '12', '2026-04-25 23:07:49.37457+00', NULL),
+	(1235, 129, 'color', '17x9', '2026-04-25 23:07:49.37457+00', NULL),
+	(1236, 129, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(1238, 129, 'spec_1772000809098', '25', '2026-04-25 23:07:49.37457+00', NULL),
+	(1239, 144, 'tags', '[]', '2026-04-25 23:07:49.37457+00', NULL),
+	(1240, 144, 'color', '17x8.5', '2026-04-25 23:07:49.37457+00', NULL),
+	(1241, 144, 'internal_notes', 'set of 4', '2026-04-25 23:07:49.37457+00', NULL),
+	(1243, 144, 'spec_1772000809098', '-10', '2026-04-25 23:07:49.37457+00', NULL),
+	(1244, 112, 'color', '17x8.5', '2026-04-25 23:07:49.37457+00', NULL),
+	(1245, 112, 'internal_notes', 'set of 4', '2026-04-25 23:07:49.37457+00', NULL),
+	(1247, 112, 'spec_1772000809098', '0', '2026-04-25 23:07:49.37457+00', NULL),
+	(1248, 18, 'tags', '[]', '2026-04-25 23:07:49.37457+00', NULL),
+	(1249, 18, 'color', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(1250, 18, 'socket', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(1251, 18, 'last_restock', '{"date": "2026-02-17T04:04:09.409Z", "quantity": 1}', '2026-04-25 23:07:49.37457+00', NULL),
+	(1252, 18, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(1254, 143, 'color', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(1255, 143, 'internal_notes', '', '2026-04-25 23:07:49.37457+00', NULL),
+	(2, 180, 'color_temperature', '3000K', '2026-04-25 23:07:49.37457+00', NULL),
+	(1260, 56, 'test_key', 'test_value', '2026-04-27 06:32:44.487194+00', NULL);
+
+
+--
+-- Name: brands_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('"public"."brands_id_seq"', 56, true);
+
+
+--
+-- Name: bulb_type_variants_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('"public"."bulb_type_variants_id_seq"', 161, true);
+
+
+--
+-- Name: bulb_types_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('"public"."bulb_types_id_seq"', 29, true);
+
+
+--
+-- Name: category_metadata_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('"public"."category_metadata_id_seq"', 32, true);
+
+
+--
+-- Name: product_bulb_variants_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('"public"."product_bulb_variants_id_seq"', 347, true);
+
+
+--
+-- Name: product_categories_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('"public"."product_categories_id_seq"', 22, true);
+
+
+--
+-- Name: product_specifications_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('"public"."product_specifications_id_seq"', 316, true);
+
+
+--
+-- Name: products_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('"public"."products_id_seq"', 172, true);
+
+
+--
+-- Name: store_settings_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('"public"."store_settings_id_seq"', 1, false);
+
+
+--
+-- Name: suppliers_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('"public"."suppliers_id_seq"', 1, true);
+
+
+--
+-- Name: variant_specifications_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('"public"."variant_specifications_id_seq"', 1266, true);
+
+
+--
+-- PostgreSQL database dump complete
+--
+
+-- \unrestrict nTIU96dBUfxLujZr16dszHtI6T1thEJLhd6FkIAT5Sh3bLnV2VgwBRnCLdejgi1
+
+RESET ALL;
+-- -----------------------------------------------------------------
+-- LOCAL DEV AUTH USERS
+-- These are seeded into auth.users so supabase db reset keeps
+-- working login credentials without manual steps.
+-- DO NOT add production users here.
+-- -----------------------------------------------------------------
 SET session_replication_role = DEFAULT;
+
+DO $DO$
+DECLARE
+  v_uid UUID;
+BEGIN
+  -- Clean up any broken row first
+  DELETE FROM auth.identities WHERE provider_id = 'user@sample.com';
+  DELETE FROM auth.users WHERE email = 'user@sample.com';
+
+  -- Insert complete row (all non-null columns required by GoTrue)
+  INSERT INTO auth.users (
+    id, instance_id, aud, role, email, encrypted_password,
+    email_confirmed_at, invited_at,
+    confirmation_token, confirmation_sent_at,
+    recovery_token, recovery_sent_at,
+    email_change_token_new, email_change, email_change_sent_at,
+    last_sign_in_at, raw_app_meta_data, raw_user_meta_data,
+    is_super_admin, created_at, updated_at,
+    phone, phone_confirmed_at, phone_change, phone_change_token, phone_change_sent_at,
+    email_change_token_current, email_change_confirm_status,
+    banned_until, reauthentication_token, reauthentication_sent_at,
+    is_sso_user, deleted_at
+  ) VALUES (
+    gen_random_uuid(),
+    '00000000-0000-0000-0000-000000000000',
+    'authenticated', 'authenticated',
+    'user@sample.com',
+    crypt('admin123', gen_salt('bf')),
+    now(), NULL,
+    '', NULL,
+    '', NULL,
+    '', '', NULL,
+    NULL,
+    '{"provider":"email","providers":["email"]}',
+    '{"full_name":"Dev Admin"}',
+    false, now(), now(),
+    NULL, NULL, '', '', NULL,
+    '', 0,
+    NULL, '', NULL,
+    false, NULL
+  );
+
+  SELECT id INTO v_uid FROM auth.users WHERE email = 'user@sample.com';
+
+  -- Insert identity row (required for password logins in GoTrue)
+  INSERT INTO auth.identities (
+    id, user_id, provider_id, identity_data, provider,
+    last_sign_in_at, created_at, updated_at
+  ) VALUES (
+    gen_random_uuid(), v_uid, 'user@sample.com',
+    json_build_object('sub', v_uid::text, 'email', 'user@sample.com'),
+    'email', now(), now(), now()
+  );
+END;
+$DO$;

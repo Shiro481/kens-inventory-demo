@@ -249,11 +249,21 @@ export default function DynamicCategorySpecs({
           // Simple formatting for key
           let displayLabel = key.replace(/_/g, ' ').toUpperCase();
           
-          if (key.startsWith('spec_')) {
-              // If it's a raw spec timestamp, format it slightly better like "Spec Item" instead of "SPEC 177..."
-              displayLabel = 'Specification';
-          } else if (key.startsWith('field_')) {
-              displayLabel = 'Custom Field';
+          if (key.toLowerCase().startsWith('spec_')) {
+              // Attempt to find the real label from config even if it's inactive
+              const dimConfig = config.variantDimensions?.find(d => d.column?.toLowerCase() === key.toLowerCase());
+              if (dimConfig && dimConfig.label) {
+                  displayLabel = dimConfig.label;
+              } else {
+                  displayLabel = 'Specification';
+              }
+          } else if (key.toLowerCase().startsWith('field_')) {
+              const fieldConfig = config.fields?.find(f => f.key?.toLowerCase() === key.toLowerCase());
+              if (fieldConfig && fieldConfig.label) {
+                  displayLabel = fieldConfig.label;
+              } else {
+                  displayLabel = 'Custom Field';
+              }
           }
 
           return (
