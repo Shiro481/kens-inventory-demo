@@ -36,7 +36,7 @@
   margin: 0 0 8px 0;
   font-size: 20px;
   font-weight: 900;
-  color: #fff;
+  color: #e5e7eb;
   text-transform: uppercase;
   letter-spacing: 1.5px;
 }
@@ -78,7 +78,7 @@
 
 .closeButton:hover {
   background-color: #1a1a1a;
-  color: #fff;
+  color: #e5e7eb;
   border-color: #555;
 }
 
@@ -109,7 +109,7 @@
   appearance: none;
   background-color: #111;
   border: 1px solid #333;
-  color: #fff;
+  color: #e5e7eb;
   padding: 16px;
   font-size: 14px;
   font-weight: 600;
@@ -165,7 +165,7 @@
 .detailValue {
   font-size: 14px;
   font-weight: 700;
-  color: #fff;
+  color: #e5e7eb;
   text-transform: uppercase;
 }
 
@@ -251,7 +251,7 @@
   gap: 8px;
   font-size: 14px;
   font-weight: 900;
-  color: #fff;
+  color: #e5e7eb;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
@@ -346,7 +346,7 @@
   height: 36px;
   background: #1a1a1a;
   border: 1px solid #333;
-  color: #fff;
+  color: #e5e7eb;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -369,7 +369,7 @@
 .qtyDisplay {
   font-size: 18px;
   font-weight: 900;
-  color: #fff;
+  color: #e5e7eb;
   min-width: 40px;
   text-align: center;
 }
@@ -397,7 +397,7 @@
 
 .cancelButton:hover {
   border-color: #555;
-  color: #fff;
+  color: #e5e7eb;
 }
 
 .selectButton {

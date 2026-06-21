@@ -161,7 +161,7 @@
 }
 
 .beamTypeBadge {
-  color: #fff;
+  color: #e5e7eb;
   padding: 2px 6px;
   border-radius: 10px;
   font-size: 10px;
@@ -340,7 +340,7 @@
 
 .actionBtn:hover {
   background: #4b5563;
-  color: #fff;
+  color: #e5e7eb;
 }
 
 .deleteBtn:hover {
@@ -483,7 +483,7 @@
 
 .outStock {
   background: linear-gradient(135deg, #ef4444, #dc2626);
-  color: #fff;
+  color: #e5e7eb;
 }
 
 /* Responsive Design */

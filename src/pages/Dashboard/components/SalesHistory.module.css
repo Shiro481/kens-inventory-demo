@@ -1,7 +1,7 @@
 .container {
   padding: 40px;
   background-color: var(--bg-dark);
-  color: #fff;
+  color: #e5e7eb;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -73,7 +73,7 @@
 }
 
 .revenueValue { color: var(--brand-neon); }
-.methodValue  { color: #fff; font-size: 16px; }
+.methodValue  { color: #e5e7eb; font-size: 16px; }
 
 /* ── Toolbar ────────────────────────────────────────────────────────────── */
 .toolbar {
@@ -105,7 +105,7 @@
 .searchInput {
   background: transparent;
   border: none;
-  color: #fff;
+  color: #e5e7eb;
   padding: 16px 12px;
   width: 100%;
   font-size: 14px;
@@ -132,7 +132,7 @@
   transition: color 0.2s;
 }
 
-.clearSearch:hover { color: #fff; }
+.clearSearch:hover { color: #e5e7eb; }
 
 .toolbarRight {
   display: flex;
@@ -158,7 +158,7 @@
 }
 
 .filterBtn:hover, .filterBtnActive {
-  color: #fff;
+  color: #e5e7eb;
   border-color: #444;
 }
 
@@ -184,7 +184,7 @@
 }
 
 .exportBtn:hover {
-  color: #fff;
+  color: #e5e7eb;
   border-color: #444;
 }
 
@@ -229,7 +229,7 @@
   transition: all 0.2s;
 }
 
-.clearBtn:hover { color: #fff; border-color: #555; }
+.clearBtn:hover { color: #e5e7eb; border-color: #555; }
 
 .filterSection {
   display: flex;
@@ -265,7 +265,7 @@
   border-radius: 2px;
 }
 
-.presetBtn:hover { color: #fff; border-color: #444; background: #1a1a1a; }
+.presetBtn:hover { color: #e5e7eb; border-color: #444; background: #1a1a1a; }
 
 .presetBtnActive {
   background: rgba(0, 255, 157, 0.1);
@@ -293,7 +293,7 @@
 .dateInput {
   background: transparent;
   border: none;
-  color: #fff;
+  color: #e5e7eb;
   font-size: 12px;
   outline: none;
   width: 100%;
@@ -482,9 +482,9 @@
 }
 
 .receiptBtn:hover {
-  background-color: #fff;
+  background-color: #e5e7eb;
   color: #000;
-  border-color: #fff;
+  border-color: #e5e7eb;
 }
 
 /* ── Spinner ─────────────────────────────────────────────────────────── */

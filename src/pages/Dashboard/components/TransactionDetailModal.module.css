@@ -47,7 +47,7 @@
   margin: 0;
   font-size: 20px;
   font-weight: 600;
-  color: #fff;
+  color: #e5e7eb;
 }
 
 .receiptNumber {
@@ -69,7 +69,7 @@
 
 .closeButton:hover {
   background: #333;
-  color: #fff;
+  color: #e5e7eb;
 }
 
 .modalContent {
@@ -89,7 +89,7 @@
 .sectionTitle {
   font-size: 16px;
   font-weight: 600;
-  color: #fff;
+  color: #e5e7eb;
   margin: 0 0 16px 0;
   display: flex;
   align-items: center;
@@ -128,7 +128,7 @@
 .value {
   margin: 0;
   font-size: 14px;
-  color: #fff;
+  color: #e5e7eb;
   font-weight: 500;
 }
 
@@ -140,7 +140,7 @@
 
 .statusText {
   font-size: 14px;
-  color: #fff;
+  color: #e5e7eb;
   font-weight: 500;
 }
 
@@ -203,7 +203,7 @@
 .itemName {
   margin: 0 0 4px 0;
   font-size: 14px;
-  color: #fff;
+  color: #e5e7eb;
   font-weight: 500;
 }
 
@@ -233,7 +233,7 @@
 
 .quantityValue {
   font-size: 14px;
-  color: #fff;
+  color: #e5e7eb;
   font-weight: 500;
   min-width: 20px;
 }
@@ -251,7 +251,7 @@
 .itemSubtotal {
   margin: 0;
   font-size: 14px;
-  color: #fff;
+  color: #e5e7eb;
   font-weight: 600;
 }
 
@@ -268,7 +268,7 @@
 .notesText {
   margin: 0;
   font-size: 14px;
-  color: #fff;
+  color: #e5e7eb;
   line-height: 1.5;
   white-space: pre-wrap;
 }
@@ -303,13 +303,13 @@
 
 .summaryValue {
   font-size: 14px;
-  color: #fff;
+  color: #e5e7eb;
   font-weight: 500;
 }
 
 .summaryLabelTotal {
   font-size: 16px;
-  color: #fff;
+  color: #e5e7eb;
   font-weight: 600;
 }
 
@@ -335,7 +335,7 @@
   gap: 8px;
   padding: 10px 16px;
   background: #10b981;
-  color: #fff;
+  color: #e5e7eb;
   border: none;
   border-radius: 6px;
   font-size: 14px;
@@ -351,7 +351,7 @@
 .closeFooterButton {
   padding: 10px 16px;
   background: #333;
-  color: #fff;
+  color: #e5e7eb;
   border: none;
   border-radius: 6px;
   font-size: 14px;
@@ -381,7 +381,7 @@
 }
 
 .dimensionValue {
-  color: #fff;
+  color: #e5e7eb;
   font-weight: 600;
 }
 

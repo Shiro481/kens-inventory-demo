@@ -27,7 +27,7 @@
 .modeBtnActive {
   background: rgba(0, 255, 157, 0.05);
   border-color: var(--brand-neon, #00ff9d);
-  color: #fff;
+  color: #e5e7eb;
 }
 
 .modeIcon {

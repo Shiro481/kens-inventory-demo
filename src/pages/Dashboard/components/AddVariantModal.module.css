@@ -37,7 +37,7 @@
   margin: 0;
   text-transform: uppercase;
   letter-spacing: 2px;
-  color: #fff;
+  color: #e5e7eb;
 }
 
 .closeBtn {
@@ -50,7 +50,7 @@
 }
 
 .closeBtn:hover {
-  color: #fff;
+  color: #e5e7eb;
 }
 
 .searchContainer {
@@ -61,7 +61,7 @@
   width: 100%;
   background-color: #0a0a0a;
   border: 1px solid #333;
-  color: white;
+  color: #e5e7eb;
   padding: 16px;
   font-family: inherit;
   font-size: 14px;

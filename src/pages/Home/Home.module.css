@@ -4,7 +4,7 @@
   width: 100%;
   overflow: hidden;
   background-color: var(--bg-dark);
-  color: #fff;
+  color: #e5e7eb;
   font-family: 'Inter', sans-serif;
   display: flex;
   flex-direction: column;
@@ -114,7 +114,7 @@
   letter-spacing: -0.02em;
   text-transform: uppercase;
   line-height: 1;
-  color: #fff;
+  color: #e5e7eb;
 }
 
 .version {
@@ -187,7 +187,7 @@
   text-transform: uppercase;
   letter-spacing: -0.03em;
   line-height: 0.9;
-  color: #fff;
+  color: #e5e7eb;
   margin: 0;
 }
 
@@ -267,7 +267,7 @@
 }
 
 .primaryBtn:hover {
-  background-color: #fff;
+  background-color: #e5e7eb;
   transform: translateY(-2px);
   box-shadow: 0 10px 30px -10px var(--brand-neon);
 }
@@ -306,7 +306,7 @@
 .secondaryBtn {
   padding: 18px 40px;
   border: 1px solid rgba(255, 255, 255, 0.2);
-  color: #fff;
+  color: #e5e7eb;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -384,7 +384,7 @@
   text-transform: uppercase;
   font-size: 0.75rem;
   letter-spacing: 0.1em;
-  color: #fff;
+  color: #e5e7eb;
 }
 
 .featureDescription {

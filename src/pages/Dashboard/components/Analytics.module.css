@@ -4,7 +4,7 @@
   flex-direction: column;
   gap: 24px;
   background-color: var(--bg-dark);
-  color: #fff;
+  color: #e5e7eb;
   min-height: 100%;
 }
 
@@ -92,7 +92,7 @@
   bottom: -10px;
   opacity: 0.03;
   pointer-events: none;
-  color: #fff;
+  color: #e5e7eb;
 }
 
 .statLabel {
@@ -258,7 +258,7 @@
 .paymentAmount {
   font-size: 14px;
   font-weight: 900;
-  color: #fff;
+  color: #e5e7eb;
 }
 
 .paymentBarTrack {

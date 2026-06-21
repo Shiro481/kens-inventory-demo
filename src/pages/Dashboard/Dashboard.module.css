@@ -2,7 +2,7 @@
   display: flex;
   min-height: 100vh;
   background-color: var(--bg-dark);
-  color: #ffffff;
+  color: #e5e7eb;
 }
 
 .main {
@@ -87,7 +87,7 @@
 .input {
   background: transparent;
   border: none;
-  color: white;
+  color: #e5e7eb;
   outline: none;
   width: 100%;
   font-weight: 500;
@@ -111,7 +111,7 @@
 }
 
 .filterBtn:hover {
-  color: #fff;
+  color: #e5e7eb;
   border-color: #444;
 }
 
@@ -141,7 +141,7 @@
 
 .filterOption:hover {
   background-color: #111;
-  color: #fff;
+  color: #e5e7eb;
 }
 
 .activeFilter {
@@ -209,7 +209,7 @@
 .menuBtn {
   background: transparent;
   border: none;
-  color: #fff;
+  color: #e5e7eb;
   cursor: pointer;
   padding: 8px;
   display: flex;

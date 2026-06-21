@@ -1,7 +1,7 @@
 .container {
   padding: 40px;
   background-color: var(--bg-dark);
-  color: #fff;
+  color: #e5e7eb;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -161,7 +161,7 @@
 .formInput {
   background-color: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  color: white;
+  color: #e5e7eb;
   padding: 16px;
   border-radius: 8px;
   font-family: inherit;
@@ -198,7 +198,7 @@ select.formInput {
 }
 select.formInput option {
   background-color: #111;
-  color: #fff;
+  color: #e5e7eb;
   padding: 12px;
 }
 
@@ -272,7 +272,7 @@ select.formInput option {
   height: 56px;
   background: linear-gradient(135deg, #333 0%, #111 100%);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  color: #fff;
+  color: #e5e7eb;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -291,7 +291,7 @@ select.formInput option {
 .userEmail {
   font-size: 16px;
   font-weight: 700;
-  color: #fff;
+  color: #e5e7eb;
   letter-spacing: 0.5px;
 }
 
@@ -451,7 +451,7 @@ select.formInput option {
 .familyName {
   font-size: 14px;
   font-weight: 700;
-  color: #fff;
+  color: #e5e7eb;
   letter-spacing: 0.5px;
 }
 
@@ -529,7 +529,7 @@ select.formInput option {
 .familyInput {
   background: transparent;
   border: none;
-  color: white;
+  color: #e5e7eb;
   font-size: 13px;
   font-family: inherit;
   outline: none;

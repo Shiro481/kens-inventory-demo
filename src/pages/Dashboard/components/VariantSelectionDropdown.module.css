@@ -196,7 +196,7 @@
 
 .primaryBadge {
   background-color: #10b981;
-  color: white;
+  color: #e5e7eb;
   padding: 2px 6px;
   border-radius: 12px;
   font-size: 10px;
@@ -368,7 +368,7 @@
 .selectButton {
   padding: 10px 20px;
   background-color: #3b82f6;
-  color: white;
+  color: #e5e7eb;
   border: none;
   border-radius: 6px;
   font-weight: 500;

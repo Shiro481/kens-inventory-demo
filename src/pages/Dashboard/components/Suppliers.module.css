@@ -1,7 +1,7 @@
 .container {
   padding: 40px;
   background-color: var(--bg-dark);
-  color: #fff;
+  color: #e5e7eb;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -79,7 +79,7 @@
 .searchInput {
   background: transparent;
   border: none;
-  color: #fff;
+  color: #e5e7eb;
   padding: 16px 12px;
   width: 100%;
   font-size: 14px;
@@ -162,7 +162,7 @@
 }
 
 .contactPerson {
-  color: #fff;
+  color: #e5e7eb;
   font-weight: 700;
 }
 
@@ -189,8 +189,8 @@
 }
 
 .actionBtn:hover {
-  border-color: #fff;
-  color: #fff;
+  border-color: #e5e7eb;
+  color: #e5e7eb;
 }
 
 .deleteBtn:hover {

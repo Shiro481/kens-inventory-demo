@@ -4,7 +4,7 @@
   flex-direction: column;
   gap: 32px;
   background-color: var(--bg-dark);
-  color: #fff;
+  color: #e5e7eb;
   min-height: 100%;
 }
 
@@ -263,7 +263,7 @@
   display: flex;
   align-items: center;
   gap: 16px;
-  color: #fff;
+  color: #e5e7eb;
   cursor: pointer;
   transition: all 0.2s;
   border-radius: 4px;

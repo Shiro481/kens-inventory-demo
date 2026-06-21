@@ -75,7 +75,7 @@
   margin-bottom: 2px;
   letter-spacing: 0.5px;
   font-size: 13px;
-  color: #fff;
+  color: #e5e7eb;
 }
 
 .price {
@@ -182,9 +182,9 @@
 }
 
 .actionBtn:hover {
-  background-color: #fff;
+  background-color: #e5e7eb;
   color: #000;
-  border-color: #fff;
+  border-color: #e5e7eb;
 }
 
 .actionBtn.delete:hover {
@@ -371,7 +371,7 @@
 }
 
 .pageIndicator {
-  color: #fff;
+  color: #e5e7eb;
   font-size: 12px;
   font-weight: bold;
   letter-spacing: 1px;
@@ -399,7 +399,7 @@
 .pageInput {
   background: #0a0a0a;
   border: 1px solid var(--border-dim);
-  color: #fff;
+  color: #e5e7eb;
   width: 45px;
   padding: 6px;
   text-align: center;

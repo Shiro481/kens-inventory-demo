@@ -51,7 +51,7 @@
 }
 
 .itemName {
-  color: #fff;
+  color: #e5e7eb;
   font-weight: 900;
 }
 
@@ -102,7 +102,7 @@
 }
 
 .cancelBtn:hover {
-  color: #fff;
+  color: #e5e7eb;
 }
 
 .spinner {

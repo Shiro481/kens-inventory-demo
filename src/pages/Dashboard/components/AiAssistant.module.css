@@ -112,7 +112,7 @@
   font-weight: 900;
   text-transform: uppercase;
   letter-spacing: 1px;
-  color: #fff;
+  color: #e5e7eb;
 }
 
 .headerSub {
@@ -143,7 +143,7 @@
 }
 
 .iconBtn:hover {
-  color: #fff;
+  color: #e5e7eb;
   background: #1a1a1a;
 }
 
@@ -217,7 +217,7 @@
 .messageUser .bubble {
   background: rgba(0, 255, 157, 0.08);
   border: 1px solid rgba(0, 255, 157, 0.15);
-  color: #fff;
+  color: #e5e7eb;
   border-top-right-radius: 0;
   text-align: left;
 }
@@ -309,7 +309,7 @@
   flex: 1;
   background: transparent;
   border: none;
-  color: #fff;
+  color: #e5e7eb;
   font-size: 13px;
   padding: 14px 16px;
   outline: none;

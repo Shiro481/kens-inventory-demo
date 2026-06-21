@@ -50,8 +50,8 @@
 }
 
 .closeBtn:hover {
-  color: #fff;
-  border-color: #fff;
+  color: #e5e7eb;
+  border-color: #e5e7eb;
 }
 
 .formGrid {
@@ -82,7 +82,7 @@
 .formInput {
   background-color: #000;
   border: 1px solid var(--border-dim);
-  color: white;
+  color: #e5e7eb;
   padding: 16px;
   font-family: inherit;
   font-size: 14px;
@@ -116,7 +116,7 @@
 }
 
 .cancelBtn:hover {
-  color: #fff;
+  color: #e5e7eb;
 }
 
 .saveBtn {
@@ -186,7 +186,7 @@
 .variantHeader h3 {
   font-size: 11px;
   font-weight: 900;
-  color: #fff;
+  color: #e5e7eb;
   text-transform: uppercase;
   letter-spacing: 2px;
   margin: 0;
@@ -226,7 +226,7 @@
 .variantInfoMain {
   font-size: 13px;
   font-weight: 700;
-  color: #fff;
+  color: #e5e7eb;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -332,7 +332,7 @@
 
 .variantCancelBtn:hover {
   border-color: #444;
-  color: #fff;
+  color: #e5e7eb;
   background: #111;
 }
 

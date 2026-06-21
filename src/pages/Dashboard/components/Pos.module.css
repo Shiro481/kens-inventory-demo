@@ -4,7 +4,7 @@
   height: calc(100vh - 48px);
   gap: 0;
   background-color: var(--bg-dark);
-  color: #fff;
+  color: #e5e7eb;
   overflow: hidden;
 }
 
@@ -59,7 +59,7 @@
 .searchInput {
   background: transparent;
   border: none;
-  color: #fff;
+  color: #e5e7eb;
   padding: 18px 12px;
   width: 100%;
   font-size: 14px;
@@ -172,7 +172,7 @@
 .containerName {
   font-size: 18px;
   font-weight: 900;
-  color: #fff;
+  color: #e5e7eb;
   text-transform: uppercase;
   letter-spacing: 1px;
   line-height: 1.2;
@@ -187,7 +187,7 @@
 }
 
 .variantContainerBox:hover .containerFooter {
-  color: #fff;
+  color: #e5e7eb;
 }
 
 /* View Details Button */
@@ -340,7 +340,7 @@
 }
 
 .qtyValue {
-  color: #fff;
+  color: #e5e7eb;
   margin-left: 6px;
 }
 
@@ -490,7 +490,7 @@
 .qtyBtn {
   background-color: #111;
   border: 1px solid var(--border-dim);
-  color: #fff;
+  color: #e5e7eb;
   width: 28px;
   height: 28px;
   display: flex;
@@ -527,7 +527,7 @@
 }
 
 .summaryValue {
-  color: #fff;
+  color: #e5e7eb;
 }
 
 .totalRow {
@@ -618,7 +618,7 @@
   letter-spacing: 1.5px;
   margin: 0 0 8px 0;
   text-transform: uppercase;
-  color: #fff;
+  color: #e5e7eb;
 }
 
 .modalHeader p {
@@ -781,7 +781,7 @@
 
 .cancelModalBtn:hover:not(:disabled) {
   border-color: #444;
-  color: #fff;
+  color: #e5e7eb;
   background-color: #1a1a1a;
 }
 

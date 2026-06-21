@@ -53,7 +53,7 @@
   font-weight: 900;
   font-size: 20px;
   letter-spacing: -0.025em;
-  color: #fff;
+  color: #e5e7eb;
   text-transform: uppercase;
 }
 
@@ -71,7 +71,7 @@
 }
 
 .closeBtn:hover {
-  color: #fff;
+  color: #e5e7eb;
   transform: scale(1.05);
 }
 
@@ -131,7 +131,7 @@
 
 .navItem:hover {
   background: #111827;
-  color: #fff;
+  color: #e5e7eb;
   border-left: 2px solid transparent;
 }
 
@@ -142,7 +142,7 @@
 .active {
   background: #111827;
   border-left: 2px solid #fff;
-  color: #fff;
+  color: #e5e7eb;
 }
 
 .activeWorkOrders {
@@ -192,7 +192,7 @@
 .userName {
   font-size: 14px;
   font-weight: 700;
-  color: #fff;
+  color: #e5e7eb;
   text-transform: uppercase;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -253,7 +253,7 @@
   font-weight: 900;
   text-transform: uppercase;
   letter-spacing: 1px;
-  color: #fff;
+  color: #e5e7eb;
   margin: 0;
 }
 
@@ -305,7 +305,7 @@
 
 .cancelBtn:hover {
   background-color: #1a1a1a;
-  color: #fff;
+  color: #e5e7eb;
   border-color: #444;
 }
 
